@@ -1,0 +1,40 @@
+{
+ "parts": [
+  "parts/seed_20261601",
+  "parts/seed_20261602",
+  "parts/seed_20261604",
+  "parts/seed_20261605",
+  "parts/seed_20261606",
+  "parts/seed_20261607",
+  "parts/seed_20261608",
+  "parts/seed_20261609",
+  "parts/seed_20261610",
+  "parts/seed_20261612",
+  "parts/seed_20261613",
+  "parts/seed_20261614",
+  "parts/seed_20261615",
+  "parts/seed_20261616",
+  "parts/seed_20261617",
+  "parts/seed_20261618",
+  "parts/seed_20261619",
+  "parts/seed_20261620",
+  "parts/seed_20261622",
+  "parts/seed_20261623",
+  "parts/seed_20261624",
+  "parts/seed_20261625",
+  "parts/seed_20261626",
+  "parts/seed_20261627",
+  "parts/seed_20261628",
+  "parts/seed_20261629"
+ ],
+ "jobs": 2730,
+ "figures": [],
+ "minutes": 0.68,
+ "at": "2026-11-19 11:39:22",
+ "set_aside": [
+  20261603,
+  20261611,
+  20261621,
+  20261630
+ ]
+}

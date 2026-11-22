@@ -1,0 +1,98 @@
+[
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:USDC:latestRoundData()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x8fffffd4afb6115b954bd326cbe7b4ba576818f6",
+    "data": "0xfeaf968c"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:USDC:decimals()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x8fffffd4afb6115b954bd326cbe7b4ba576818f6",
+    "data": "0x313ce567"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:WETH:latestRoundData()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc0053f3fbccd593758258334dfce24c2a9a673ad",
+    "data": "0xfeaf968c"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:WETH:decimals()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc0053f3fbccd593758258334dfce24c2a9a673ad",
+    "data": "0x313ce567"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:USDC:latestRoundData()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x8fffffd4afb6115b954bd326cbe7b4ba576818f6",
+    "data": "0xfeaf968c"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:USDC:decimals()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x8fffffd4afb6115b954bd326cbe7b4ba576818f6",
+    "data": "0x313ce567"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:WETH:latestRoundData()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc0053f3fbccd593758258334dfce24c2a9a673ad",
+    "data": "0xfeaf968c"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:WETH:decimals()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc0053f3fbccd593758258334dfce24c2a9a673ad",
+    "data": "0x313ce567"
+   },
+   "0x18fe3c0"
+  ]
+ }
+]

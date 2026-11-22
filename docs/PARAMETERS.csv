@@ -1,0 +1,317 @@
+name,value,unit,meaning,source
+Inputs.o,0.0016666666666666668,a month (rate),"operating cost of pool lending on carried principal (o), 2% a year","Philippon, Has the U.S. Finance Industry Become Less Efficient?, American Economic Review 105(4), 2015: unit cost of intermediation about 2% of intermediated assets a year, a whole-industry figure applied to the pool"
+figures.FIXED_COST.central,2.3224531050269033e-06,months of mean spending a person a month,"the pool's fixed cost (phi), $24.15m a year over 134.556m consumer units, $0.18 a person a year","Aave 2025 paid service providers (TokenLogic, Aave DAO Funding Insights, Feb 2026); BLS CEX 2023 consumer units"
+Economy.owner_spread,0.00020833333333333335,a month (rate),"owners' spread over the reserve rate in their alternative a and in the coupon's capital part, 0.25 point a year",declared
+Economy.issuer_cost,0.00019999999999999998,a month (rate),"the issuer's custody cost c_I on all P outstanding, 0.24% a year","Investment Company Institute, Trends in the Expenses and Fees of Funds, 2025 (news release 25 Mar 2026): asset-weighted money market fund expense ratio 0.24% in 2025, used as a proxy"
+HOLDING_COST,0.00019999999999999998,a month (rate),"real cost of holding money or savings, 0.24% a year","Investment Company Institute, Trends in the Expenses and Fees of Funds, 2025 (news release 25 Mar 2026): asset-weighted money market fund expense ratio 0.24% in 2025, used as a proxy"
+Inputs.f_card,0.017,share,"merchant card fee on each card payment, 1.7%","CMSPI, State of the Industry Report, 2025 edition: US weighted average cost of payments acceptance; 1.70% is its figure for 2022, and it averages all payment types a merchant accepts, not cards alone"
+CARD_REWARDS,0.0075,share,"card rewards paid to the cardholder on card purchases, 0.75%",CFPB card market report Dec 2025; Fed Payments Study 2024
+CONVERSION_FEE,0.002049295774647887,share,fee per conversion between dollars and P: 0.05% plus $0.22 scaled to a $142 payment,"12 CFR 235.3(b), 21 cents plus 5 basis points, and 235.4(a), fraud-prevention adjustment of 1 cent (Regulation II); the $142 payment size is declared"
+USDC_CONVERSION,0,share,fee per conversion between dollars and USDC,"Coinbase Exchange fee table, 1 Jun 2026"
+GAS_PER_TRANSFER,2.6242236024844723e-07,"months of mean spending ($6,440)","gas of one transfer on Base, $0.00169","growthepie, Base transaction costs, Oct 2026 mean"
+GAS_PER_PAYMENT,5.248447204968945e-07,"months of mean spending ($6,440)","gas of a USDC payment, two transfers","growthepie (two legs, declared)"
+GAS_PER_P_PAYMENT,2.6242236024844723e-07,"months of mean spending ($6,440)","gas of a P payment, one transfer",growthepie; declared one leg
+BILL_ANCHOR,0.0405,a year (rate),"three-month bill in Oct 2026, discount basis, the anchor of outside prices","FRED TB3MS, Oct 2026"
+BILL_MONTHLY,0.04134519718907548,a year (rate),the same bill as a nominal rate credited monthly,derived from BILL_ANCHOR
+SSR_LOW,0.036,a year (rate),Sky Savings Rate APY before 7 Oct 2026,"sUSDS ssr() on Ethereum, read 5 Nov 2026"
+SSR_HIGH,0.038,a year (rate),Sky Savings Rate APY from 7 Oct 2026,"sUSDS ssr() on Ethereum, read 5 Nov 2026"
+RESERVE_SPREAD,0.00036749679706417983,a month (rate),"USDC savings rate below the bill, 0.441 point a year",derived: BILL_MONTHLY less Oct 2026 SSR
+FDIC_SAVINGS_RATE,0.00031666666666666665,a month (rate),"savings deposit rate at the anchor, 0.38% a year","FDIC national rate for savings deposits (FRED SNDR), October 2026"
+DEPOSIT_FLOOR,4.9999999999999996e-05,a month (rate),"floor of the savings deposit rate, 0.06% a year",declared
+Economy.deposit_pass_through,0.08,share,pass-through of r_out to the deposit rate,"FRED, Jan 2022 to Jan 2024"
+Economy.vehicle_pass_through,0.75,share,pass-through of r_out to new vehicle loan rates,"Fed G.19 RIFLPBCIANM60NM against TB3MS, Feb 2022 to Feb 2024"
+Economy.personal_pass_through,0.63,share,pass-through of r_out to new personal loan rates,"Fed G.19 TERMCBPER24NS against TB3MS, Feb 2022 to Feb 2024"
+Inputs.buffer_yield,5.833333333333333e-05,a month (rate),"checking yield on bank money E, 0.07% a year","FDIC, National Rates and Rate Caps, national rate for interest checking (non-jumbo), 0.07% in November 2026"
+Inputs.r_ext,0.018333333333333333,a month (rate),"rate on rounding overdrafts, 22% a year","Federal Reserve G.19 Consumer Credit, Q3 2026: credit card plans, 22.36% on accounts assessed interest and 21.19% on all accounts; 22% lies between them"
+Inputs.supply_premium,0,a month (rate),premium of outside savings in best-case DeFi over the participant's own rate,declared zero
+DFA_DEPOSITS[0],777430,$ millions,"deposits by wealth group (bottom 50, 50-90, 90-99, top 1%)","Fed DFA 2026 Q2 (FRED WFRBLDEB50, WFRBLDEN40, WFRBLDEN09, WFRBLTOP1DE)"
+DFA_DEPOSITS[1],5090389,$ millions,"deposits by wealth group (bottom 50, 50-90, 90-99, top 1%)","Fed DFA 2026 Q2 (FRED WFRBLDEB50, WFRBLDEN40, WFRBLDEN09, WFRBLTOP1DE)"
+DFA_DEPOSITS[2],5014713,$ millions,"deposits by wealth group (bottom 50, 50-90, 90-99, top 1%)","Fed DFA 2026 Q2 (FRED WFRBLDEB50, WFRBLDEN40, WFRBLDEN09, WFRBLTOP1DE)"
+DFA_DEPOSITS[3],3323113,$ millions,"deposits by wealth group (bottom 50, 50-90, 90-99, top 1%)","Fed DFA 2026 Q2 (FRED WFRBLDEB50, WFRBLDEN40, WFRBLDEN09, WFRBLTOP1DE)"
+DFA_MONEY_MARKET[0],55950,$ millions,money market fund shares by wealth group,"Fed DFA 2026 Q2 (FRED WFRBLB50088, WFRBLN40061, WFRBLN09034, WFRBLT01007)"
+DFA_MONEY_MARKET[1],1021646,$ millions,money market fund shares by wealth group,"Fed DFA 2026 Q2 (FRED WFRBLB50088, WFRBLN40061, WFRBLN09034, WFRBLT01007)"
+DFA_MONEY_MARKET[2],2075552,$ millions,money market fund shares by wealth group,"Fed DFA 2026 Q2 (FRED WFRBLB50088, WFRBLN40061, WFRBLN09034, WFRBLT01007)"
+DFA_MONEY_MARKET[3],1957779,$ millions,money market fund shares by wealth group,"Fed DFA 2026 Q2 (FRED WFRBLB50088, WFRBLN40061, WFRBLN09034, WFRBLT01007)"
+DFA_GROUP_UPPER[0],0.5,share,upper wealth rank of each DFA group,Fed DFA groups
+DFA_GROUP_UPPER[1],0.9,share,upper wealth rank of each DFA group,Fed DFA groups
+DFA_GROUP_UPPER[2],0.99,share,upper wealth rank of each DFA group,Fed DFA groups
+DFA_GROUP_UPPER[3],1,share,upper wealth rank of each DFA group,Fed DFA groups
+CARD_LENDING_COST,0.0028333333333333335,a month (rate),"real cost of card credit, 3.4% a year of balances","Agarwal, Chomsisengphet, Mahoney and Stroebel (QJE 2015)"
+TERM_LENDING_COST,0.0020833333333333333,a month (rate),"real cost of term credit, 2.5% a year of balances","FDIC Quarterly Banking Profile, Q4 2025"
+FAIL_COST,0.00031055900621118014,"months of mean spending ($6,440)","real cost of a failed payment or a rescuing pool bridge, $2","CFPB overdraft rule, Dec 2024"
+CARD_PROCESSING,1.0714285714285716e-05,"months of mean spending ($6,440)","issuer processing and fraud prevention a card payment, $0.069","Fed Regulation II data, 2023"
+CARD_FRAUD,0.0011,share,"card fraud losses, share of value","Nilson Report, US 2023"
+CARD_NETWORK,0.0009,share,"card network cost, share of value","Visa, fiscal 2025"
+EWA_COST,0.00031055900621118014,"months of mean spending ($6,440)","real cost of an earned-wage advance, $2 a use",declared
+MONTH_USD,6440,$,one unit of money: a month of mean consumer-unit spending,"BLS, Consumer Expenditures in 2023, news release 25 Sep 2024: average annual expenditures $77,280"
+CONSUMER_UNITS,134556000,count,US consumer units the population stands for,"BLS, Consumer Expenditures in 2023, news release 25 Sep 2024: 134,556 thousand consumer units"
+Economy.alpha,1.5,shape,Pareto shape of initial wealth,declared
+Economy.buffer_months,0.6,"months of mean spending ($6,440)","median initial wealth in months of own spending, before survey cushions",declared; no specific study or table gives 0.6 (JPMorgan Chase Institute cash-buffer research is the motivation)
+Economy.beta,0.5,elasticity,elasticity of spending to relative net worth,declared
+Economy.wealth_floor,0.02,share,"floor of relative net worth in the spending rule, of the mean",declared
+Economy.bundles,32,count,service purchases a person a month,declared
+LABOUR_SHARE,0.583,share,share of each person's spending paid as one wage,"declared; the model's share of spending paid as a wage, not a published labour-share statistic"
+Inputs.housing,0.329,share,"housing share of total expenditures, applied to service purchases; the rest is card-eligible","BLS, Consumer Expenditures in 2023, news release 25 Sep 2024: housing 32.9% of total expenditures"
+CYCLE_DAYS[0],1,days,"billing cycles: daily, weekly, fortnightly, monthly, 60-day",declared grid
+CYCLE_DAYS[1],7,days,"billing cycles: daily, weekly, fortnightly, monthly, 60-day",declared grid
+CYCLE_DAYS[2],15,days,"billing cycles: daily, weekly, fortnightly, monthly, 60-day",declared grid
+CYCLE_DAYS[3],30,days,"billing cycles: daily, weekly, fortnightly, monthly, 60-day",declared grid
+CYCLE_DAYS[4],60,days,"billing cycles: daily, weekly, fortnightly, monthly, 60-day",declared grid
+PAY_DAYS[0],7,days,"pay periods of jobs: weekly, every two weeks, twice a month, monthly",declared day count of each pay period (a month is 30 model days)
+PAY_DAYS[1],14,days,"pay periods of jobs: weekly, every two weeks, twice a month, monthly",declared day count of each pay period (a month is 30 model days)
+PAY_DAYS[2],15,days,"pay periods of jobs: weekly, every two weeks, twice a month, monthly",declared day count of each pay period (a month is 30 model days)
+PAY_DAYS[3],30,days,"pay periods of jobs: weekly, every two weeks, twice a month, monthly",declared day count of each pay period (a month is 30 model days)
+PAY_SHARES[0],27,% of establishments,shares of the pay periods,"BLS Current Employment Statistics, Length of pay period, February 2023: shares of establishments, not of workers"
+PAY_SHARES[1],43,% of establishments,shares of the pay periods,"BLS Current Employment Statistics, Length of pay period, February 2023: shares of establishments, not of workers"
+PAY_SHARES[2],19.8,% of establishments,shares of the pay periods,"BLS Current Employment Statistics, Length of pay period, February 2023: shares of establishments, not of workers"
+PAY_SHARES[3],10.3,% of establishments,shares of the pay periods,"BLS Current Employment Statistics, Length of pay period, February 2023: shares of establishments, not of workers"
+SURVEY_RANKS[0],0,share,population ranks of the survey's liquid savings points,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 26, largest emergency expense one could cover using only savings (a proxy for liquid savings); cumulative shares below $100, $500, $2,000 and $5,000; the 2025 question was split-sampled"
+SURVEY_RANKS[1],0.18,share,population ranks of the survey's liquid savings points,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 26, largest emergency expense one could cover using only savings (a proxy for liquid savings); cumulative shares below $100, $500, $2,000 and $5,000; the 2025 question was split-sampled"
+SURVEY_RANKS[2],0.3,share,population ranks of the survey's liquid savings points,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 26, largest emergency expense one could cover using only savings (a proxy for liquid savings); cumulative shares below $100, $500, $2,000 and $5,000; the 2025 question was split-sampled"
+SURVEY_RANKS[3],0.5,share,population ranks of the survey's liquid savings points,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 26, largest emergency expense one could cover using only savings (a proxy for liquid savings); cumulative shares below $100, $500, $2,000 and $5,000; the 2025 question was split-sampled"
+SURVEY_RANKS[4],0.62,share,population ranks of the survey's liquid savings points,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 26, largest emergency expense one could cover using only savings (a proxy for liquid savings); cumulative shares below $100, $500, $2,000 and $5,000; the 2025 question was split-sampled"
+SURVEY_SAVINGS[0],0,$,liquid savings at those ranks,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 26, thresholds of the largest emergency expense one could cover using only savings"
+SURVEY_SAVINGS[1],100,$,liquid savings at those ranks,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 26, thresholds of the largest emergency expense one could cover using only savings"
+SURVEY_SAVINGS[2],500,$,liquid savings at those ranks,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 26, thresholds of the largest emergency expense one could cover using only savings"
+SURVEY_SAVINGS[3],2000,$,liquid savings at those ranks,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 26, thresholds of the largest emergency expense one could cover using only savings"
+SURVEY_SAVINGS[4],5000,$,liquid savings at those ranks,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 26, thresholds of the largest emergency expense one could cover using only savings"
+BUFFER_MULTIPLES[0],0,months of own spending,cash buffers a person compares in its replay,declared grid
+BUFFER_MULTIPLES[1],0.1,months of own spending,cash buffers a person compares in its replay,declared grid
+BUFFER_MULTIPLES[2],0.25,months of own spending,cash buffers a person compares in its replay,declared grid
+BUFFER_MULTIPLES[3],0.5,months of own spending,cash buffers a person compares in its replay,declared grid
+BUFFER_MULTIPLES[4],0.75,months of own spending,cash buffers a person compares in its replay,declared grid
+BUFFER_MULTIPLES[5],1,months of own spending,cash buffers a person compares in its replay,declared grid
+BUFFER_MULTIPLES[6],1.5,months of own spending,cash buffers a person compares in its replay,declared grid
+BUFFER_MULTIPLES[7],2,months of own spending,cash buffers a person compares in its replay,declared grid
+BUFFER_MULTIPLES[8],3,months of own spending,cash buffers a person compares in its replay,declared grid
+FAIL_FEE,0.004192546583850931,"months of mean spending ($6,440)","fee on a failed bill or wage, $27",Bankrate via Checkbook (average overdraft fee)
+Economy.fees_a_month,2,count,most failure fees a payer a month,declared
+Economy.buffer_prices_past_cap,True,flag,buffer replay prices failures past the monthly cap at $27,declared
+Economy.fee_debt_free,True,flag,"failure fee booked as interest-free fee debt, repaid first",declared
+Economy.requeued_once,True,flag,a re-queued wage counts once in the replay,declared
+Economy.pay_dates,True,flag,wages settle on the job's own pay dates,BLS pay frequencies
+Economy.card_base_all,True,flag,every non-housing service purchase is card-eligible,declared
+Economy.linked_rates,True,flag,outside deposit and credit rates follow r_out,declared
+Economy.n12,True,flag,outside safe return follows each wealth group's deposit and money market mix,Fed DFA
+Economy.shocks,False,flag,unexpected-expense shocks (off under normal conditions),declared
+Economy.routing,fee,label,P used only where it saves a card fee,declared
+Economy.routine_conversion,False,flag,routine conversion at every E-P crossing (off),declared
+Economy.merchant_in_experience,False,flag,merchant fee savings counted in experience (off),declared
+Economy.inflation,0.0016666666666666668,a month (rate),"consumer price inflation, 2% a year, every arm",Federal Reserve target
+REQUEST_RATE[0],0.005783333333333333,a month,"request rates: vehicle, personal, business (holding share over term)","Federal Reserve Board, Changes in U.S. Family Finances from 2019 to 2022 (SCF), Oct 2023, Table 4: 34.7% of families hold a vehicle loan, over the 60-month term"
+REQUEST_RATE[1],0.0077083333333333335,a month,"request rates: vehicle, personal, business (holding share over term)","Federal Reserve Board, Changes in U.S. Family Finances from 2019 to 2022 (SCF), Oct 2023, Table 4: 18.5% of families hold other installment loans, over the 24-month term; that category also includes furniture, appliance and medical loans and buy now, pay later"
+REQUEST_RATE[2],0.030833333333333334,a month,"request rates: vehicle, personal, business (holding share over term)","declared: 37% of firms a year, spread over 12 months; the Fed Small Business Credit Survey share of employer firms that applied for financing is 37% in 2023 and 2024 and 38% in 2025; the SCF has no business-loan row"
+TERM_MONTHS[0],60,months,"terms: vehicle, personal, business","Federal Reserve G.19 Consumer Credit, terms at commercial banks: new car loans, 60-month"
+TERM_MONTHS[1],24,months,"terms: vehicle, personal, business","Federal Reserve G.19 Consumer Credit, terms at commercial banks: personal loans, 24-month"
+TERM_MONTHS[2],11,months,"terms: vehicle, personal, business","declared; the source first cited could not be found; the Fed E.2 Survey of Terms of Business Lending (ended after May 2017) gives a weighted-average maturity of 155 days for C&I loans of $1,000 to $9,999 at domestic banks in Q2 2017"
+TERM_SIZE[0],0.4461617753623188,years of own spending,"request size: vehicle (mixed), personal $7,000, business","Experian, State of the Automotive Finance Market, Q4 2025 (press release 5 Mar 2026): average loan $43,582 new and $27,528 used, weighted by the declared 43.3% new share; published coverage gives 42.2% new including leases, which would give 0.444"
+TERM_SIZE[1],0.09057971014492754,years of own spending,"request size: vehicle (mixed), personal $7,000, business","declared, $7,000; TransUnion's Credit Industry Insights Report for Q2 2025 gives an average unsecured personal-loan balance of $8,524"
+TERM_SIZE[2],0.15811388300841897,years of own spending,"request size: vehicle (mixed), personal $7,000, business","declared: geometric midpoint of the $25,000 to $100,000 financing band over that of the $100,000 to $1 million revenue band, Fed Small Business Credit Survey 2019 bands"
+VEHICLE_NEW_SHARE,0.433,share,share of vehicle purchases that are new,"declared; the source first cited could not be found; published coverage of Experian's Q4 2025 report gives 42.2% of financing for new vehicles, including leases"
+VEHICLE_SIZE[0],0.5639492753623189,years of mean spending,"vehicle loan size, new $43,582 and used $27,528","Experian, State of the Automotive Finance Market, Q4 2025 (press release 5 Mar 2026): average new-vehicle loan $43,582"
+VEHICLE_SIZE[1],0.3562111801242236,years of mean spending,"vehicle loan size, new $43,582 and used $27,528","Experian, State of the Automotive Finance Market, Q4 2025 (press release 5 Mar 2026): average used-vehicle loan $27,528"
+VEHICLE_TIER_SCORES[0],501,score,lower edges of the vehicle score tiers,"Experian, State of the Automotive Finance Market, Q2 2026: VantageScore 4.0 tiers (subprime 501, near prime 601, prime 661, super prime 781); the model's other scores are FICO bands"
+VEHICLE_TIER_SCORES[1],601,score,lower edges of the vehicle score tiers,"Experian, State of the Automotive Finance Market, Q2 2026: VantageScore 4.0 tiers (subprime 501, near prime 601, prime 661, super prime 781); the model's other scores are FICO bands"
+VEHICLE_TIER_SCORES[2],661,score,lower edges of the vehicle score tiers,"Experian, State of the Automotive Finance Market, Q2 2026: VantageScore 4.0 tiers (subprime 501, near prime 601, prime 661, super prime 781); the model's other scores are FICO bands"
+VEHICLE_TIER_SCORES[3],781,score,lower edges of the vehicle score tiers,"Experian, State of the Automotive Finance Market, Q2 2026: VantageScore 4.0 tiers (subprime 501, near prime 601, prime 661, super prime 781); the model's other scores are FICO bands"
+VEHICLE_APR[0][0],0.1611,a year (rate),"vehicle APR by tier, new (row 0) and used (row 1)","Experian, State of the Automotive Finance Market, Q2 2026: average new-vehicle loan APR by VantageScore 4.0 tier"
+VEHICLE_APR[0][1],0.1352,a year (rate),"vehicle APR by tier, new (row 0) and used (row 1)","Experian, State of the Automotive Finance Market, Q2 2026: average new-vehicle loan APR by VantageScore 4.0 tier"
+VEHICLE_APR[0][2],0.0971,a year (rate),"vehicle APR by tier, new (row 0) and used (row 1)","Experian, State of the Automotive Finance Market, Q2 2026: average new-vehicle loan APR by VantageScore 4.0 tier"
+VEHICLE_APR[0][3],0.0615,a year (rate),"vehicle APR by tier, new (row 0) and used (row 1)","Experian, State of the Automotive Finance Market, Q2 2026: average new-vehicle loan APR by VantageScore 4.0 tier"
+VEHICLE_APR[0][4],0.0441,a year (rate),"vehicle APR by tier, new (row 0) and used (row 1)","Experian, State of the Automotive Finance Market, Q2 2026: average new-vehicle loan APR by VantageScore 4.0 tier"
+VEHICLE_APR[1][0],0.2162,a year (rate),"vehicle APR by tier, new (row 0) and used (row 1)","Experian, State of the Automotive Finance Market, Q2 2026: average used-vehicle loan APR by VantageScore 4.0 tier"
+VEHICLE_APR[1][1],0.191,a year (rate),"vehicle APR by tier, new (row 0) and used (row 1)","Experian, State of the Automotive Finance Market, Q2 2026: average used-vehicle loan APR by VantageScore 4.0 tier"
+VEHICLE_APR[1][2],0.1393,a year (rate),"vehicle APR by tier, new (row 0) and used (row 1)","Experian, State of the Automotive Finance Market, Q2 2026: average used-vehicle loan APR by VantageScore 4.0 tier"
+VEHICLE_APR[1][3],0.0881,a year (rate),"vehicle APR by tier, new (row 0) and used (row 1)","Experian, State of the Automotive Finance Market, Q2 2026: average used-vehicle loan APR by VantageScore 4.0 tier"
+VEHICLE_APR[1][4],0.0629,a year (rate),"vehicle APR by tier, new (row 0) and used (row 1)","Experian, State of the Automotive Finance Market, Q2 2026: average used-vehicle loan APR by VantageScore 4.0 tier"
+PERSONAL_SCORES[0],620,score,scores of the personal-loan APR points,"Experian, Best Personal Loan Rates, Curinos data, 2026 editions: the table's seven scores, 620 to 740"
+PERSONAL_SCORES[1],640,score,scores of the personal-loan APR points,"Experian, Best Personal Loan Rates, Curinos data, 2026 editions: the table's seven scores, 620 to 740"
+PERSONAL_SCORES[2],660,score,scores of the personal-loan APR points,"Experian, Best Personal Loan Rates, Curinos data, 2026 editions: the table's seven scores, 620 to 740"
+PERSONAL_SCORES[3],680,score,scores of the personal-loan APR points,"Experian, Best Personal Loan Rates, Curinos data, 2026 editions: the table's seven scores, 620 to 740"
+PERSONAL_SCORES[4],700,score,scores of the personal-loan APR points,"Experian, Best Personal Loan Rates, Curinos data, 2026 editions: the table's seven scores, 620 to 740"
+PERSONAL_SCORES[5],720,score,scores of the personal-loan APR points,"Experian, Best Personal Loan Rates, Curinos data, 2026 editions: the table's seven scores, 620 to 740"
+PERSONAL_SCORES[6],740,score,scores of the personal-loan APR points,"Experian, Best Personal Loan Rates, Curinos data, 2026 editions: the table's seven scores, 620 to 740"
+PERSONAL_APR[0],0.1797,a year (rate),personal-loan APR at those scores,"Experian, Best Personal Loan Rates, Curinos data, September 2026 edition, 36-month term; the published 36-month values at this score are 18.52% (August 2026) and 18.30% (November 2026), 0.2 to 0.6 point higher"
+PERSONAL_APR[1],0.1721,a year (rate),personal-loan APR at those scores,"Experian, Best Personal Loan Rates, Curinos data, September 2026 edition, 36-month term; the published 36-month values at this score are 17.84% (August 2026) and 17.58% (November 2026), 0.2 to 0.6 point higher"
+PERSONAL_APR[2],0.1612,a year (rate),personal-loan APR at those scores,"Experian, Best Personal Loan Rates, Curinos data, September 2026 edition, 36-month term; the published 36-month values at this score are 16.72% (August 2026) and 16.46% (November 2026), 0.2 to 0.6 point higher"
+PERSONAL_APR[3],0.1476,a year (rate),personal-loan APR at those scores,"Experian, Best Personal Loan Rates, Curinos data, September 2026 edition, 36-month term; the published 36-month values at this score are 15.43% (August 2026) and 15.06% (November 2026), 0.2 to 0.6 point higher"
+PERSONAL_APR[4],0.1319,a year (rate),personal-loan APR at those scores,"Experian, Best Personal Loan Rates, Curinos data, September 2026 edition, 36-month term; the published 36-month values at this score are 13.67% (August 2026) and 13.48% (November 2026), 0.2 to 0.6 point higher"
+PERSONAL_APR[5],0.1197,a year (rate),personal-loan APR at those scores,"Experian, Best Personal Loan Rates, Curinos data, September 2026 edition, 36-month term; the published 36-month values at this score are 12.35% (August 2026) and 12.25% (November 2026), 0.2 to 0.6 point higher"
+PERSONAL_APR[6],0.1082,a year (rate),personal-loan APR at those scores,"Experian, Best Personal Loan Rates, Curinos data, September 2026 edition, 36-month term; the published 36-month values at this score are 11.10% (August 2026) and 10.99% (November 2026), 0.2 to 0.6 point higher"
+BUSINESS_APR,0.074,a year (rate),business loan APR,"NFIB, Small Business Economic Trends, June 2026: average rate paid on short-maturity loans"
+DTI_CAP,0.43,share,debt-to-income limit for household instalment credit,"declared, a stylised affordability limit; 43% was a condition of the General Qualified Mortgage definition (12 CFR 1026.43(e)(2)(vi)) until it was replaced by a price-based test in 2021"
+EWA_SHARE,0.0743184993608609,share,share of people holding earned-wage access (an upper bound),"CFPB, Jul 2024 (10 million users over consumer units)"
+Economy.earned_wage_share,0.0743184993608609,share,the same share as the settings default,"CFPB, Jul 2024"
+EWA_FEE,0.0245,share,"earned-wage advance fee, of the amount","CFPB, Jul 2024"
+EWA_LIMIT,0.5,share,"share of earned, unpaid wages an advance may take","NCLC, Mar 2020"
+INCOME_BRACKETS[0],0.12900802334062728,share,"households by income: under $25k, $25-50k, $50-100k, $100k and over","Census Bureau, CPS ASEC 2026, Table HINC-06, household money income in 2025"
+INCOME_BRACKETS[1],0.15642596644784829,share,"households by income: under $25k, $25-50k, $50-100k, $100k and over","Census Bureau, CPS ASEC 2026, Table HINC-06, household money income in 2025"
+INCOME_BRACKETS[2],0.26684172137126183,share,"households by income: under $25k, $25-50k, $50-100k, $100k and over","Census Bureau, CPS ASEC 2026, Table HINC-06, household money income in 2025"
+INCOME_BRACKETS[3],0.4477242888402626,share,"households by income: under $25k, $25-50k, $50-100k, $100k and over","Census Bureau, CPS ASEC 2026, Table HINC-06, household money income in 2025"
+CARD_OWNERSHIP[0],0.46,share,card ownership by income bracket,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 40: share with a credit card by family income"
+CARD_OWNERSHIP[1],0.71,share,card ownership by income bracket,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 40: share with a credit card by family income"
+CARD_OWNERSHIP[2],0.88,share,card ownership by income bracket,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 40: share with a credit card by family income"
+CARD_OWNERSHIP[3],0.97,share,card ownership by income bracket,"Federal Reserve Board, Economic Well-Being of U.S. Households in 2025, May 2026, Table 40: share with a credit card by family income"
+FICO_EDGES[0],300,score,edges of the FICO bands,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025"
+FICO_EDGES[1],580,score,edges of the FICO bands,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025"
+FICO_EDGES[2],670,score,edges of the FICO bands,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025"
+FICO_EDGES[3],740,score,edges of the FICO bands,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025"
+FICO_EDGES[4],800,score,edges of the FICO bands,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025"
+FICO_EDGES[5],851,score,edges of the FICO bands,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025; 851 is the upper edge above 850"
+FICO_CUMULATIVE[0],0,share,cumulative share below each band edge,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025"
+FICO_CUMULATIVE[1],0.147,share,cumulative share below each band edge,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025"
+FICO_CUMULATIVE[2],0.296,share,cumulative share below each band edge,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025"
+FICO_CUMULATIVE[3],0.497,share,cumulative share below each band edge,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025"
+FICO_CUMULATIVE[4],0.772,share,cumulative share below each band edge,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025"
+FICO_CUMULATIVE[5],1,share,cumulative share below each band edge,"Experian, What Is the Average Credit Score in the U.S., FICO Score distribution, September 2025"
+SCORE_INCOME_CORRELATION,0.3035567473557669,correlation,Gaussian correlation of score with income rank (rank correlation 0.291),"Federal Reserve, FEDS Notes, Are Income and Credit Scores Highly Correlated?, 13 Aug 2018, Table 1: Spearman correlation 0.291 of VantageScore 2.0 and household income; Gaussian value 2 sin(pi x 0.291 / 6)"
+CARD_TIER_SCORES[0],620,score,edges of the card APR tiers,"CFPB, Credit card data: Small issuers offer lower rates, 16 Feb 2024 (Terms of Credit Card Plans survey): median purchase APR of the 25 largest issuers, variable-rate cards, data of January to June 2023, not of the October 2026 anchor"
+CARD_TIER_SCORES[1],720,score,edges of the card APR tiers,"CFPB, Credit card data: Small issuers offer lower rates, 16 Feb 2024 (Terms of Credit Card Plans survey): median purchase APR of the 25 largest issuers, variable-rate cards, data of January to June 2023, not of the October 2026 anchor"
+CARD_APR[0],0.2849,a year (rate),purchase APR by score tier at the anchor,"CFPB, Credit card data: Small issuers offer lower rates, 16 Feb 2024 (Terms of Credit Card Plans survey): median purchase APR of the 25 largest issuers, variable-rate cards, data of January to June 2023, not of the October 2026 anchor"
+CARD_APR[1],0.282,a year (rate),purchase APR by score tier at the anchor,"CFPB, Credit card data: Small issuers offer lower rates, 16 Feb 2024 (Terms of Credit Card Plans survey): median purchase APR of the 25 largest issuers, variable-rate cards, data of January to June 2023, not of the October 2026 anchor"
+CARD_APR[2],0.2299,a year (rate),purchase APR by score tier at the anchor,"CFPB, Credit card data: Small issuers offer lower rates, 16 Feb 2024 (Terms of Credit Card Plans survey): median purchase APR of the 25 largest issuers, variable-rate cards, data of January to June 2023, not of the October 2026 anchor"
+CARD_LINE_SCORES[0],580,score,edges of the CFPB score tiers,"CFPB, The Consumer Credit Card Market, 30 Dec 2025, Section 1 score tiers (deep subprime 579 or less to superprime 800 and above)"
+CARD_LINE_SCORES[1],620,score,edges of the CFPB score tiers,"CFPB, The Consumer Credit Card Market, 30 Dec 2025, Section 1 score tiers (deep subprime 579 or less to superprime 800 and above)"
+CARD_LINE_SCORES[2],660,score,edges of the CFPB score tiers,"CFPB, The Consumer Credit Card Market, 30 Dec 2025, Section 1 score tiers (deep subprime 579 or less to superprime 800 and above)"
+CARD_LINE_SCORES[3],720,score,edges of the CFPB score tiers,"CFPB, The Consumer Credit Card Market, 30 Dec 2025, Section 1 score tiers (deep subprime 579 or less to superprime 800 and above)"
+CARD_LINE_SCORES[4],800,score,edges of the CFPB score tiers,"CFPB, The Consumer Credit Card Market, 30 Dec 2025, Section 1 score tiers (deep subprime 579 or less to superprime 800 and above)"
+CARD_LINE[0],0.884472049689441,"months of mean spending ($6,440)","credit line by score tier, deep subprime to superprime","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 89 data: average credit line per cardholder, 2023"
+CARD_LINE[1],1.2610248447204968,"months of mean spending ($6,440)","credit line by score tier, deep subprime to superprime","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 89 data: average credit line per cardholder, 2023"
+CARD_LINE[2],1.9447204968944098,"months of mean spending ($6,440)","credit line by score tier, deep subprime to superprime","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 89 data: average credit line per cardholder, 2023"
+CARD_LINE[3],3.4267080745341616,"months of mean spending ($6,440)","credit line by score tier, deep subprime to superprime","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 89 data: average credit line per cardholder, 2023"
+CARD_LINE[4],4.555124223602484,"months of mean spending ($6,440)","credit line by score tier, deep subprime to superprime","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 89 data: average credit line per cardholder, 2023"
+CARD_LINE[5],6.468012422360249,"months of mean spending ($6,440)","credit line by score tier, deep subprime to superprime","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 89 data: average credit line per cardholder, 2023"
+CARD_MAXED[0],0.6841,share,"chance of a starting balance at 90 to 100% of the line, by tier","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 92 data: share of cardholders at 90% or more of the line, July 2024"
+CARD_MAXED[1],0.4688,share,"chance of a starting balance at 90 to 100% of the line, by tier","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 92 data: share of cardholders at 90% or more of the line, July 2024"
+CARD_MAXED[2],0.3232,share,"chance of a starting balance at 90 to 100% of the line, by tier","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 92 data: share of cardholders at 90% or more of the line, July 2024"
+CARD_MAXED[3],0.052,share,"chance of a starting balance at 90 to 100% of the line, by tier","declared, set so that 18% of all cardholders start at 90% or more of the line, the Q1 2024 share in Federal Reserve Bank of New York, Liberty Street Economics, 14 May 2024"
+CARD_MAXED[4],0.052,share,"chance of a starting balance at 90 to 100% of the line, by tier","declared, set so that 18% of all cardholders start at 90% or more of the line, the Q1 2024 share in Federal Reserve Bank of New York, Liberty Street Economics, 14 May 2024"
+CARD_MAXED[5],0.052,share,"chance of a starting balance at 90 to 100% of the line, by tier","declared, set so that 18% of all cardholders start at 90% or more of the line, the Q1 2024 share in Federal Reserve Bank of New York, Liberty Street Economics, 14 May 2024"
+CARD_BANDS[0],0,share,edges of the utilisation bands below 90%,"Federal Reserve Bank of New York, Liberty Street Economics, Delinquency Is Increasingly in the Cards for Maxed-Out Borrowers, 14 May 2024: Q1 2024 shares below 20%, 20 to 60%, 60 to 90% and 90% or more of the line (52, 19, 11, 18%)"
+CARD_BANDS[1],0.2,share,edges of the utilisation bands below 90%,"Federal Reserve Bank of New York, Liberty Street Economics, Delinquency Is Increasingly in the Cards for Maxed-Out Borrowers, 14 May 2024: Q1 2024 shares below 20%, 20 to 60%, 60 to 90% and 90% or more of the line (52, 19, 11, 18%)"
+CARD_BANDS[2],0.6,share,edges of the utilisation bands below 90%,"Federal Reserve Bank of New York, Liberty Street Economics, Delinquency Is Increasingly in the Cards for Maxed-Out Borrowers, 14 May 2024: Q1 2024 shares below 20%, 20 to 60%, 60 to 90% and 90% or more of the line (52, 19, 11, 18%)"
+CARD_BANDS[3],0.9,share,edges of the utilisation bands below 90%,"Federal Reserve Bank of New York, Liberty Street Economics, Delinquency Is Increasingly in the Cards for Maxed-Out Borrowers, 14 May 2024: Q1 2024 shares below 20%, 20 to 60%, 60 to 90% and 90% or more of the line (52, 19, 11, 18%)"
+CARD_BAND_SHARES[0],0.6341463414634146,share,shares of those below 90% in each band,"Federal Reserve Bank of New York, Liberty Street Economics, Delinquency Is Increasingly in the Cards for Maxed-Out Borrowers, 14 May 2024: Q1 2024 shares below 20%, 20 to 60%, 60 to 90% and 90% or more of the line (52, 19, 11, 18%); shares of those below 90%"
+CARD_BAND_SHARES[1],0.23170731707317074,share,shares of those below 90% in each band,"Federal Reserve Bank of New York, Liberty Street Economics, Delinquency Is Increasingly in the Cards for Maxed-Out Borrowers, 14 May 2024: Q1 2024 shares below 20%, 20 to 60%, 60 to 90% and 90% or more of the line (52, 19, 11, 18%); shares of those below 90%"
+CARD_BAND_SHARES[2],0.13414634146341464,share,shares of those below 90% in each band,"Federal Reserve Bank of New York, Liberty Street Economics, Delinquency Is Increasingly in the Cards for Maxed-Out Borrowers, 14 May 2024: Q1 2024 shares below 20%, 20 to 60%, 60 to 90% and 90% or more of the line (52, 19, 11, 18%); shares of those below 90%"
+CARD_REVOLVING[0],0.8806,share,"share of active accounts revolving, by tier","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 50 data: share of active general-purpose accounts revolving, 2024"
+CARD_REVOLVING[1],0.8339,share,"share of active accounts revolving, by tier","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 50 data: share of active general-purpose accounts revolving, 2024"
+CARD_REVOLVING[2],0.8168,share,"share of active accounts revolving, by tier","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 50 data: share of active general-purpose accounts revolving, 2024"
+CARD_REVOLVING[3],0.7217,share,"share of active accounts revolving, by tier","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 50 data: share of active general-purpose accounts revolving, 2024"
+CARD_REVOLVING[4],0.4186,share,"share of active accounts revolving, by tier","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 50 data: share of active general-purpose accounts revolving, 2024"
+CARD_REVOLVING[5],0.1964,share,"share of active accounts revolving, by tier","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Figure 50 data: share of active general-purpose accounts revolving, 2024"
+CASH_ADVANCE_APR,0.3,a year (rate),cash-advance APR at the anchor,"CFPB Data Spotlight, Credit card cash advance fees spike after legalization of sports gambling, 16 Dec 2024: most common term in seven issuers' agreements"
+CASH_ADVANCE_FEE_FLOOR,0.0015527950310559005,"months of mean spending ($6,440)","cash-advance fee floor, $10","CFPB Data Spotlight, Credit card cash advance fees spike after legalization of sports gambling, 16 Dec 2024: most common term in seven issuers' agreements (greater of $10 or 5%)"
+CASH_ADVANCE_FEE_RATE,0.05,share,cash-advance fee rate,"CFPB Data Spotlight, Credit card cash advance fees spike after legalization of sports gambling, 16 Dec 2024: most common term in seven issuers' agreements (greater of $10 or 5%)"
+CASH_LINE_SHARE,0.2,share,cash line as a share of the credit line,"CFPB, The Consumer Credit Card Market, 2023, Section 6.4: 20% of the line is common"
+CARD_MINIMUM_FLOOR,0.006211180124223602,"months of mean spending ($6,440)","minimum payment floor, $40","CFPB, The Consumer Credit Card Market, 30 Dec 2025, Section 4.1.1: most common floor, an issuer practice, not a rule"
+CARD_MINIMUM_SHARE,0.01,share,minimum payment share of the balance,"CFPB, The Consumer Credit Card Market, 30 Dec 2025, Section 4.1.1: most issuers set 1% of the balance plus interest and fees"
+LATE_FEE,0.004658385093167702,"months of mean spending ($6,440)","late fee, $30","12 CFR 1026.52(b)(1)(ii), safe-harbour amounts in force from 1 January 2022 (86 FR 60360); the rule text was amended in 2024"
+LATE_FEE_REPEAT,0.006366459627329193,"months of mean spending ($6,440)","repeat late fee, $41","12 CFR 1026.52(b)(1)(ii), safe-harbour amounts in force from 1 January 2022 (86 FR 60360); the rule text was amended in 2024; repeat amount for the same type of violation within six billing cycles"
+LATE_FEE_CYCLES,6,billing cycles,window in which a late fee counts as a repeat,12 CFR 1026.52(b)(1)(ii)(B): the same billing cycle or one of the next six billing cycles
+CHARGE_OFF_DAYS,180,days,days past due at which a card is charged off,"FFIEC, Uniform Retail Credit Classification and Account Management Policy, 65 FR 36903, 12 Jun 2000: open-end retail loans charged off at 180 days past due (supervisory guidance)"
+Economy.card_line_cut,False,flag,"distress-year line cut, a side check (off)",declared
+CARD_CUT[0],0.32580000000000003,share,line cut by tier at 2 points of distress (side check only),"CFPB, CARD Act Report, Oct 2013, Sec 3.3.1"
+CARD_CUT[1],0.1944,share,line cut by tier at 2 points of distress (side check only),"CFPB, CARD Act Report, Oct 2013, Sec 3.3.1"
+CARD_CUT[2],0.1944,share,line cut by tier at 2 points of distress (side check only),"CFPB, CARD Act Report, Oct 2013, Sec 3.3.1"
+CARD_CUT[3],0.1944,share,line cut by tier at 2 points of distress (side check only),"CFPB, CARD Act Report, Oct 2013, Sec 3.3.1"
+CARD_CUT[4],0.1944,share,line cut by tier at 2 points of distress (side check only),"CFPB, CARD Act Report, Oct 2013, Sec 3.3.1"
+CARD_CUT[5],0.1602,share,line cut by tier at 2 points of distress (side check only),"CFPB, CARD Act Report, Oct 2013, Sec 3.3.1"
+CARD_CUT_LEVEL,0.02,a month (rate),distress level the side-check cut is scaled to,declared
+Inputs.xi0,0.0025,a month (rate),joining: innovation a month (3% a year),"Sultan, Farley and Lehmann (1990), as quoted by Van den Bulte and Stremersch (2003)"
+Inputs.xi1,0.03166666666666667,a month (rate),joining: imitation a month times contact share (38% a year),"Sultan, Farley and Lehmann (1990), as quoted by Van den Bulte and Stremersch (2003)"
+Inputs.upsilon,0.15295376581060036,share,"monthly chance of a review: users leaving, owners leaving, savers entering","Crouzet, Gupta and Mezzanotti (JPE 2023), Table 4: 1 - exp(-0.166)"
+Inputs.noise,0.0001,"months of mean spending ($6,440)","scale of the leaving rule's logistic noise, per unit of own spending",declared
+Economy.leave_noise,1,multiple,multiple of that noise scale,declared (0.5 and 2 reported)
+Economy.h4_months,12,months,experience window of the leaving rule,declared
+Economy.crypto_share,0,share,share of people who can borrow from DeFi against collateral,declared zero (DeFi stated one way)
+CRYPTO_SHARE,0,share,"the same, the runners' default",declared zero
+Economy.comet,reserve,label,best-case DeFi: USDC earns the bill less the Sky spread,declared
+Economy.m0_rates,observed,label,DeFi rates move one for one with r_out from October 2026 levels,"on-chain getters against FRED TB3MS; Barbon, Barthelemy and Nguyen (ECB WP 3280, 2026)"
+C1_HORIZON_DAYS,60,days,longest bridge: due within two months,the contract
+WRITE_OFF_DAYS,90,days,days past due at which a pool loan is written down to zero,the contract
+LOSS_LAG_MONTHS,3,months,lag of exposure in loss learning,derived from WRITE_OFF_DAYS
+EXIT_NOTICE_MONTHS,2,months,notice before an owner's exit executes,declared (fund-run literature)
+OWN_RETURN_MONTHS,12,months,window of an owner's realised return,declared
+STAY_MONTHS,12,months,window of the issuer's stay record,declared
+Economy.self_financing,margin,label,how the pool's paying its own way is read,declared
+Economy.entry_reads,quote,label,entry reads the published quote,declared (realised record a bound)
+Economy.loan_losses,none,label,no loan-loss discharge in the main reading,declared (sourced rates a bound)
+CHARGE_OFF_NORMAL[0],0.03402,a year (rate),"charge-off rates, normal: card, consumer, business (bound only)","FRED CORCCACBS, COROCLACBS, CORBLACBS, 2015-2019 mean"
+CHARGE_OFF_NORMAL[1],0.008289999999999999,a year (rate),"charge-off rates, normal: card, consumer, business (bound only)","FRED CORCCACBS, COROCLACBS, CORBLACBS, 2015-2019 mean"
+CHARGE_OFF_NORMAL[2],0.0033150000000000002,a year (rate),"charge-off rates, normal: card, consumer, business (bound only)","FRED CORCCACBS, COROCLACBS, CORBLACBS, 2015-2019 mean"
+CHARGE_OFF_PEAK[0],0.1054,a year (rate),"charge-off rates, peak (bound only)","FRED, peak quarter 2008-2011"
+CHARGE_OFF_PEAK[1],0.0336,a year (rate),"charge-off rates, peak (bound only)","FRED, peak quarter 2008-2011"
+CHARGE_OFF_PEAK[2],0.025699999999999997,a year (rate),"charge-off rates, peak (bound only)","FRED, peak quarter 2008-2011"
+JOB_LOSER_NORMAL,0.0232,share,jobs without a wage at normal charge-offs (bound only),"FRED U2RATE 2015-2019, CLF16OV / PAYEMS"
+JOB_LOSER_PEAK,0.0768,share,jobs without a wage at peak charge-offs (bound only),"FRED U2RATE Sep 2009, CLF16OV / PAYEMS"
+LOSS_LAG,3,months,lag of jobs without a wage in the bound,declared
+JOB_LOSS,0.0055,a month (rate),normal job loss per job a month,"declared; chosen so that the stock of jobs without a wage is about 1.9%; the published layoff rate (BLS JOLTS, September 2026) is about 1.0% of employment a month and counts every layoff, including those followed by quick recall"
+Economy.job_loss,0.0055,a month (rate),"the same, the settings default","declared; chosen so that the stock of jobs without a wage is about 1.9%; the published layoff rate (BLS JOLTS, September 2026) is about 1.0% of employment a month and counts every layoff, including those followed by quick recall"
+Economy.completed_spells,True,flag,spells are completed lengths consistent with spells in progress,declared
+SPELL_MEDIAN_DAYS,80.5,days,"median duration of spells in progress, 11.5 weeks","BLS Current Population Survey, median duration of unemployment (FRED UEMPMED), September 2026"
+SPELL_MEAN_DAYS,173.6,days,"mean duration of spells in progress, 24.8 weeks","BLS Current Population Survey, mean duration of unemployment (FRED UEMPMEAN), September 2026"
+COMPLETED_SPELL_MEDIAN_DAYS,61.44756026384264,days,median completed spell,derived: log-normal completed spells consistent with the median and mean of spells in progress
+COMPLETED_SPELL_SIGMA,1.0744663327586208,log-sd,log-normal sigma of completed spells,derived: log-normal completed spells consistent with the median and mean of spells in progress
+UNEMPLOYMENT_BY_EDUCATION[0],0.047,share,"unemployment by education, ages 25+","BLS, The Employment Situation, Table A-4, August 2026, ages 25 and over"
+UNEMPLOYMENT_BY_EDUCATION[1],0.044,share,"unemployment by education, ages 25+","BLS, The Employment Situation, Table A-4, August 2026, ages 25 and over"
+UNEMPLOYMENT_BY_EDUCATION[2],0.037,share,"unemployment by education, ages 25+","BLS, The Employment Situation, Table A-4, August 2026, ages 25 and over"
+UNEMPLOYMENT_BY_EDUCATION[3],0.027,share,"unemployment by education, ages 25+","BLS, The Employment Situation, Table A-4, August 2026, ages 25 and over"
+HOUSEHOLDS_BY_EDUCATION[0][0],3251,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[0][1],2375,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[0][2],2244,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[0][3],1419,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[1][0],6192,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[1][1],7360,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[1][2],9977,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[1][3],9305,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[2][0],4265,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[2][1],6098,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[2][2],10560,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[2][3],13742,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[3][0],3000,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[3][1],4473,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[3][2],11799,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+HOUSEHOLDS_BY_EDUCATION[3][3],35491,thousands,householders by education (rows) and income bracket (columns),"Census Bureau, CPS ASEC 2026, Table HINC-01, households by education of householder and money income in 2025; some college includes associate degrees; top bracket is the remainder"
+Economy.distress_start,24,months,months after launch before the distress year,declared
+Economy.distress_length,12,months,length of the distress year,declared
+DAYS,30,days,days in a model month,declared
+Economy.burn_in,6,months,"months of the bank arrangement before launch, shared by every arm",declared
+Economy.months,60,months,months after launch,declared
+Economy.sweeps,20000,count,most settlement sweeps a day,declared
+Economy.n,1000,count,people in development checks (the settings default),declared
+runner.POPULATION,4000,count,people in the final map and confirmation,finite-size check (declared departure from its rule)
+runner.RATES[0],0.02,a year (rate),outside reserve rate r_out on the grid,declared grid
+runner.RATES[1],0.044,a year (rate),outside reserve rate r_out on the grid,declared grid
+runner.RATES[2],0.06,a year (rate),outside reserve rate r_out on the grid,declared grid
+runner.A0S[0],0.05,share,launch participation a0 on the grid,declared grid
+runner.A0S[1],0.1,share,launch participation a0 on the grid,declared grid
+runner.A0S[2],0.2,share,launch participation a0 on the grid,declared grid
+runner.A0S[3],0.3,share,launch participation a0 on the grid,declared grid
+runner.A0S[4],0.45,share,launch participation a0 on the grid,declared grid
+runner.A0S[5],0.6,share,launch participation a0 on the grid,declared grid
+runner.A0S[6],0.8,share,launch participation a0 on the grid,declared grid
+runner.DISTRESS[0],0,a month (rate),extra layoff rate per job in the distress year on the grid,declared grid
+runner.DISTRESS[1],0.005,a month (rate),extra layoff rate per job in the distress year on the grid,declared grid
+runner.DISTRESS[2],0.01,a month (rate),extra layoff rate per job in the distress year on the grid,declared grid
+runner.DISTRESS[3],0.015,a month (rate),extra layoff rate per job in the distress year on the grid,declared grid
+runner.DISTRESS[4],0.02,a month (rate),extra layoff rate per job in the distress year on the grid,declared grid
+runner.SEEDS.development[0],20261021,seed,development seeds,declared
+runner.SEEDS.development[1],20261022,seed,development seeds,declared
+runner.SEEDS.development[2],20261023,seed,development seeds,declared
+runner.CONFIRMATION_START,20261401,seed,first confirmation seed,declared
+Economy.buffer_review,1,share,"buffer review share alpha: the share of people re-choosing their buffer each month, everyone in the base (robustness switch)",declared (0.5 and 0.153 a side check)
+Economy.joining,linear,label,"joining rule: xi0 + xi1 times contact share in the base; threshold rule a side check (robustness switch)",declared
+Economy.thresholds,uniform,label,"joining thresholds under the threshold rule: uniform on 0 to 1, measured log-normal or one common number (robustness switch)",declared
+Economy.sellers,uniform,label,"sellers of services, shocks and instalment purchases: uniform over the others in the base; ring and hubs a side check (robustness switch)",declared
+Economy.local_share,1,share,"on the ring, the chance a purchase goes to one of the buyer's nearest neighbours (robustness switch)",declared (0.35 a side check)
+Economy.launch,scattered,label,"launch placement: each person with chance a0 in the base; one ring neighbourhood or the largest sellers a side check (robustness switch)",declared
+RING_SIDE,16,positions,"ring neighbours each side a local purchase can go to, 32 in all","Watts and Strogatz (1998)"
+SARAFU_DEGREE_EXPONENT,2.9,exponent,"tail exponent of the number of payment partners on the Sarafu network","Mattsson, Criscione and Takes (2023)"
+HUB_WEIGHT_EXPONENT,0.5263157894736842,exponent,"hub weight k^(-0.526) by rank k of initial spending, 1 / (2.9 - 1)","Goh, Kahng and Kim (2001)"
+THRESHOLD_LOG_MEAN,-2,log share,"log-mean of measured joining thresholds","Karsai, Iniguez, Kikas, Kaski and Kertesz (2016)"
+THRESHOLD_LOG_SPREAD,1,log share,"log-spread of measured joining thresholds","Karsai, Iniguez, Kikas, Kaski and Kertesz (2016)"
+runner.SIDE_DISTRESS[0],0.016,a month (rate),"stress boundary level beside the grid, side runs on development seeds only",declared
+runner.SIDE_DISTRESS[1],0.017,a month (rate),"stress boundary level beside the grid, side runs on development seeds only",declared
+runner.SIDE_DISTRESS[2],0.018,a month (rate),"stress boundary level beside the grid, side runs on development seeds only",declared
+runner.SIDE_DISTRESS[3],0.019,a month (rate),"stress boundary level beside the grid, side runs on development seeds only",declared

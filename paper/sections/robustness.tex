@@ -1,0 +1,334 @@
+\section{Robustness}\label{sec:robustness}
+
+The checks here stand beside the confirmation map and outside the registered reading. Most ran
+on the \NumSeedsDev{} development seeds and stand beside the development map on those seeds: the side checks,
+the two bounds, the update scheme, the adoption rule with the network and the launch, and the chains of failure.
+The exploratory side checks ran after the confirmation was read, on seeds kept for that purpose, and the size
+check on its own seeds. Each subsection names its seeds.
+
+\subsection{Side checks and bounds}
+
+Eleven side checks rerun three launch levels (5\%, 20\% and 60\%, at an outside rate of 4.4\%), each with no
+distress and at 2 points, six cells in all, on the development seeds with one setting changed. They are read beside the development map
+on the same seeds. Halving or doubling the noise in the leaving rule, the low and the
+high fixed cost, and pricing failures past the monthly fee cap at zero leave CPM's gains within a few per cent of
+the development map's. Allowing five failure fees a month, not two, raises them. Cutting card lines in the
+distress year raises failed payments in every arrangement and leaves CPM's gain unchanged. The record rule of
+Section~\ref{sec:record}, here on the development seeds and three launch levels, gives the same picture: the pool serves
+fewer bridges, and CPM's gains over both alternatives shrink but stay positive in every cell, with and without
+distress (Table~\ref{tab:side}).
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/side}}
+\caption{Side checks on three cells at an outside rate of 4.4\%, one setting changed in each, on the development
+seeds: CPM's gain in money, in dollars a person a year with no distress, and bridges served in years 4 and 5 at 2
+points of distress.}
+\label{tab:side}
+\end{table}
+
+Two bounds rerun the whole development map on its seeds (Table~\ref{tab:bounds}). In the first the pool loses, and
+prices, the published charge-off rate of each class of loan, where the model as built collects a written-off debt
+later. The bridge price rises, as it must. CPM's gains are almost unchanged and every gain stays positive in every
+cell. As many cells with no distress are stable (Persistent and passing the group clause on a majority of seeds,
+the second view of Section~\ref{sec:measurement}) as on the development map. Fewer are stable under the
+cash-advance bound as well, the table's last column.
+
+The second is the outer bound on money paid to outside lenders. As built, the interest and fees households
+pay to outside lenders and card issuers leave the household economy, so what a household saves by borrowing from
+the pool counts as its gain. In the bound all that money returns to households in proportion to their
+spending, as if they owned the lenders outright and lending cost nothing to supply. CPM's gain in money over
+banks and cards falls by more than half but stays positive in every cell. Its gain in money over best-case DeFi
+falls to zero. Its gain with completed purchases counted stays positive against both in every cell, and it fails
+fewer payments than both in every cell. On a majority of seeds no cell is stable under this bound, because the
+group clause is read in money against banks and cards.
+
+The bound is exact about what the two kinds of gain are. Against best-case DeFi, CPM's gain in money is a
+transfer: interest and fees households no longer pay to outside lenders. Its real gain is the payments that
+no longer fail, delivered with the same real resources (Table~\ref{tab:gains}). How much of the transfer counts
+as a gain to households depends on who owns the lenders. As built nobody in the model does, which leans toward
+CPM; in the bound everybody does, which leans against it; households in fact own a small share. At the sourced
+share, a tenth of lenders' income returning to households as the lenders' owners, the median gain in money is
+\GainBanksShared{} over banks and cards and \GainDefiShared{} over best-case DeFi, read from the confirmation map as built with
+no change in behaviour. On that reading the gain over best-case DeFi reaches zero only when a share of
+\LenderShareZeroDefi{} of lenders' income returns to households.
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/bounds}}
+\caption{The two bound maps beside the development map, each the whole grid on the same development seeds. Gains are medians over the
+cells with no distress, in dollars a person a year, in money alone and with completed purchases at their price.
+Counts of cells with every gain positive and with fewer failed payments are over the whole grid; the last two
+columns count cells with no distress that are stable on a majority of seeds.}
+\label{tab:bounds}
+\end{table}
+
+\subsection{The stress boundary in finer steps}
+
+The grid's distress levels are half a point apart. On the \NumSeedsDev{} development seeds a finer cut between 1.5 and 2
+points at three launch levels shows the shape of the boundary (Table~\ref{tab:boundary}). Bridges served fall
+smoothly with distress at every launch level, with no cliff. On a majority of these seeds owners run on the
+pool from \BoundaryFortyFive{} at a launch of 45\%, and at launches of 20\% and 30\% at no level up to 2 points.
+On the \NumSeeds{} confirmation seeds runs are more frequent (Table~\ref{tab:stress}); the cut shows how bridges served
+fall, not where the boundary lies. The nine runs of this cut with no distress repeat cells of the development map
+and reproduce all \BoundaryRepeatValues{} of their stored values.
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/boundary}}
+\caption{The stress boundary at an outside rate of 4.4\%: bridges served under CPM in years 4 and 5 (seed mean) and
+the seeds where the pool is run, by distress level in steps of a tenth of a point and by launch participation.}
+\label{tab:boundary}
+\end{table}
+
+\subsection{Exploratory side checks}
+
+Four further checks ran after the confirmation map was read, each on \ExploreSeeds{} seeds of the exploratory
+block and the six cells of the side checks above, beside a base run of the same cells on the same seeds
+(Table~\ref{tab:explore}). They are exploratory, and three seeds cannot be read against the claim.
+
+\emph{The fixed cost.} At its sourced level the pool's fixed cost is \SpiralCostSourced{} a person a year, since
+every consumer unit carries it, so the threshold of Proposition~\ref{prop:threshold} is far from binding in
+the maps. Table~\ref{tab:spiral} raises it. At ten times the sourced cost little moves. At a hundred times,
+\SpiralCostHundred{} a person a year, the coupon carries the cost: the bridge price is above ten per cent a year at
+every launch level, the more so the smaller the network, and CPM's gains stay positive. At a thousand times,
+\SpiralCostThousand{} a person a year, the remaining lending cannot carry it. The bridge price runs from several
+hundred to several thousand per cent, participation in years 4 and 5 falls well below the base's, and the gain over banks and cards is
+negative at the two lower launch levels and positive only at a launch of 60\%. This is the threshold of
+Proposition~\ref{prop:threshold} in simulation: the pool carries a fixed cost up to a bound set by its lending,
+and higher adoption moves the bound.
+
+\emph{The two price inputs.} With the issuer's custody cost raised from 0.24\% to 0.44\% a year, at which P yields
+no more than best-case DeFi before the charge, and to 0.74\%, CPM's gain over best-case DeFi stays positive at
+every launch level: at 0.74\% it is \ExploreCustodyDefiLow{} to \ExploreCustodyDefiHigh{} a person a year, against
+\ExploreBaseDefiLow{} to \ExploreBaseDefiHigh{} in the base. The gain does not rest on the custody cost. With the
+owners' spread at 0 or 0.5 point the gains move little, and bridges served under distress are lowest with no
+spread.
+
+\emph{The date of the shock.} With the distress year starting after month 12, not after month 24, CPM fails
+\ExploreShockEarlyFailLow{} to \ExploreShockEarlyFailHigh{} of payments at 2 points against
+\ExploreShockEarlyBanksHigh{} under banks and cards; starting at month 36 it fails \ExploreShockLateFailLow{} to
+\ExploreShockLateFailHigh{} against \ExploreShockLateBanksHigh{}. CPM is ahead at both dates. The reading window
+stays years 4 and 5, so levels at different dates are not comparable.
+
+\emph{Low outside rates.} At outside rates of 0.5\% and 1\% (Table~\ref{tab:lowrates}) the charge falls to a few
+hundredths of a per cent, CPM's gains over both alternatives stay positive, and with no distress it fails fewer
+payments than banks and cards (not shown in the table). At 2 points of distress and a launch of 60\% it fails more, as it does at 2\% in
+the registered map. The pattern of the lowest registered rate continues below it.
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/explore}}
+\caption{Exploratory side checks on \ExploreSeeds{} seeds, six cells at an outside rate of 4.4\%, one setting
+changed in each: CPM's gain in money, in dollars a person a year with no distress, and bridges served in years 4
+and 5 at 2 points of distress.}
+\label{tab:explore}
+\end{table}
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/spiral}}
+\caption{The pool's fixed cost at its sourced level and at multiples of it, with no distress, by launch
+participation: the price of a bridge, participation in years 4 and 5 and CPM's gain over banks and cards in
+dollars a person a year. Exploratory, \ExploreSeeds{} seeds.}
+\label{tab:spiral}
+\end{table}
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/lowrates}}
+\caption{Outside rates below the grid's, beside the base at 4.4\%, by launch participation: the holding charge at
+a launch of 20\%, CPM's gains in dollars a person a year with no distress, and payments that fail at 2 points of
+distress under CPM and under banks and cards. Exploratory, \ExploreSeeds{} seeds.}
+\label{tab:lowrates}
+\end{table}
+
+\subsection{The update scheme}
+
+Three readings test whether the results depend on the update scheme of Section~\ref{sec:updating}.
+
+A result made by everyone moving at once shows as a series alternating about its trend month to month. For
+every monthly series of every run of the development map, the trend, a centred five-month mean, was removed and the share of the
+remainder's variance at a period of two months computed (Table~\ref{tab:periodtwo}). White noise through the same
+filter gives \PeriodTwoWhiteNoise{} and a flip-flop \PeriodTwoFlipFlop{}. Participation, pool capital, the charge,
+the coupons, buffers, offers and exits sit at the noise level: their largest median share is
+\PeriodTwoOthersMost{}. One series has a two-month rhythm, the failed share of people not in a job-loss spell, with
+a median share of \PeriodTwoBanks{} under banks and cards and \PeriodTwoCpm{} under CPM. Its size is
+\PeriodTwoAmplitude{} of the series' level, and its direction follows the seed: it is positive in
+\PeriodTwoSignFirstSeed{} of the runs on the first development seed, \PeriodTwoSignSecondSeed{} on the second and
+\PeriodTwoSignThirdSeed{} on the third. An artefact of people starting and re-choosing together would have one
+direction in every seed. The 60-day billing cycle gives a direction fixed by the seed, since each seed's
+population holds slightly more 60-day billers in one parity of months than the other. It is a feature of the
+calendar, and pooled bridging smooths it.
+
+The one decision everyone takes in the same month is the cash buffer. Letting only a random half of people
+re-choose it each month, or a random 15.3\%, the model's review chance, lowers CPM's gains slightly, most at the
+highest launch level under the slower schedule, and leaves bridges served unchanged (the last two rows of
+Table~\ref{tab:side}). The results do not rest on buffers moving together.
+
+The day's settlement is simultaneous, and by Proposition~\ref{prop:settlement} it can differ from payment one at a
+time only through a closed loop of payers without money. Every run records the payments that rest on such loops:
+they are at most \NettingShareMost{} of completed value in any run, and with payments under one cent set aside
+no payer was in such a loop on any day of the runs of Table~\ref{tab:chains} (Section~\ref{sec:chains}).
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/periodtwo}}
+\caption{The share of each monthly series' variance about its trend that lies at a period of two months, over the
+runs of the development map. The upper rows are the failed share of people not in a job-loss spell, by arrangement,
+with the size of the alternation against the series' level and the share of runs on each seed where its sign is
+positive.}
+\label{tab:periodtwo}
+\end{table}
+
+\subsection{The adoption rule, the network and the launch}
+
+The base joins people by a simple contagion, draws sellers uniformly and scatters the launch. Table~\ref{tab:robust}
+and Figure~\ref{fig:robustpaths} replace each of the three in turn, at an outside rate of 4.4\% with no distress,
+on the development seeds.
+
+\emph{Thresholds.} Under the threshold rule a person imitates only once the share of its trading partners in the
+network reaches its own threshold, which it keeps for the run. The base rule is the case of a threshold drawn
+afresh, uniformly, every month. Keeping the threshold sorts people: those with low thresholds join first, those
+still outside hold the higher ones, and adoption falls behind. With uniform thresholds kept, participation from a
+20\% launch runs below the base's by up to \RuleCheckGapMean{}, and the well-mixed path that follows the share
+outside threshold by threshold reproduces the shortfall (Figure~\ref{fig:robustpaths}).
+
+With the thresholds measured for a paid online service \cite{karsaicascades}, adoption is faster than under the
+base rule: from a 5\% launch participation reaches \RobustMeasuredPartFive{} at month 60 against
+\RobustBasePartFive{}, since about a sixth of people have a threshold below 5\%. With one common threshold
+\cite{watts} the outcome turns on its height (Figure~\ref{fig:thresholdmap}). At 0.1 every launch level tips. At
+0.3 launches of 5\% and 10\% do not tip within the run, but a launch of 20\% does: from 5\% participation reaches
+\RobustThresholdThirtyPartFive{} by month 60, which is what innovation alone gives. At 0.2 the well-mixed hand case says a 5\% launch should not tip within five years, but it
+does, reaching \RobustThresholdTwentyPartFive{}. A person meets the share among its own partners of the month,
+which differs from person to person and counts each partner by how often the two deal, so some people are over
+their threshold while the population is under it. A critical mass exists under a common threshold, but the network
+a person sees blurs it. The rule fixed in advance for a critical mass, a rise of at least 0.05 over the
+launch share by month 60, is met from the lowest launch level at every threshold, because innovation alone clears
+it. It does not separate tipping from innovation; the comparison with the innovation path above does.
+
+In every threshold run CPM's gain over banks and cards and over best-case DeFi survives in all seven launch cells,
+positive on the seed mean and in at least two of three seeds. Where adoption stalls the gain per person is smaller,
+since fewer people are in the network.
+
+\emph{The ring.} On a ring where everyone buys only from its 32 nearest neighbours, the base rule with a
+scattered launch gives the base's participation and gains almost to the dollar (Table~\ref{tab:robust}). Locality
+of trade changes nothing by itself, because a scattered launch puts members in every neighbourhood. Launching in
+one neighbourhood slows adoption under either rule: from a 5\% launch participation reaches
+\RobustRingNeighbourhoodPartFive{} at month 60 against \RobustRingPartFive{} scattered under the base rule, and
+\RobustRingThresholdNeighbourhoodPartFive{} against \RobustRingThresholdPartFive{} under a common threshold of 0.2.
+A neighbourhood's members trade mostly with one another, so their example reaches few people outside and the
+network grows at its edge. The theory of complex contagion favours a clustered start \cite{centolamacy},
+but it does not help here; the reason is in the scattered runs above. With dozens of trading partners a month,
+enough people cross a threshold of 0.2 from a scattered launch that it tips without clustering. When 35\% of
+purchases are local, the share of card transactions made within a short walk of home \cite{farrell}, the
+neighbourhood launch loses most of its handicap (\RobustRingLocalThresholdNeighbourhoodPartFive{} from 5\%).
+
+\emph{Hub sellers.} With hub sellers, whose number of buyers has the tail measured on a community currency
+\cite{mattsson,goh}, receipts are concentrated and payments fail more often in every arrangement, under banks and
+cards as under CPM. CPM still fails fewer, and participation follows the base's path. Launching with the largest
+sellers first speeds adoption from a small launch, \RobustHubsLargestPartFive{} at month 60 from 5\% against
+\RobustHubsPartFive{}, since many people buy from a large seller.
+
+In all fifteen variants CPM's gain over banks and cards and over best-case DeFi survives in each of the seven
+launch cells. The adoption rule, the network and the launch change how fast the network fills, and with it the size
+of the gain per person at a given date. They do not change its sign.
+
+Two variants were also run under 2 points of distress, over the seven launch levels on the development
+seeds: the ring with a scattered launch, and hub sellers, both under the base rule. On the ring CPM fails
+\RobustStressRingFailCpm{} of payments, against \RobustStressRingFailBanks{} under banks and cards and
+\RobustStressRingFailDefi{} under best-case DeFi. With hub sellers it fails \RobustStressHubsFailCpm{}, against
+\RobustStressHubsFailBanks{} and \RobustStressHubsFailDefi{}. The base at the same cells reads
+\RobustStressBaseFailCpm{}, \RobustStressBaseFailBanks{} and \RobustStressBaseFailDefi{}. In each of the three
+worlds CPM fails fewer payments than both alternatives in all \RobustStressRingCells{} cells, and its gain in money
+over both is positive in all. The pool is stretched alike: at a launch of 80\% it serves
+\RobustStressRingServedHigh{} of the bridges asked of it on the ring and \RobustStressHubsServedHigh{} with hub
+sellers, against \RobustStressBaseServedHigh{} in the base. On these seeds the comparison under distress is the
+same on the ring and with hub sellers as on the uniform network. The other variants were not run under distress.
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/robustness}}
+\caption{The adoption rule, the sellers' network and the launch placement, each replaced in turn: seven launch
+levels at an outside rate of 4.4\% with no distress, development seeds. Participation is the seed mean at month 60.
+Gains are CPM's, in money, in dollars a person a year: the median over the seven cells and their range. A gain
+survives in a cell when it is positive on the seed mean and in at least two of three seeds.}
+\label{tab:robust}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth,height=0.86\textheight,keepaspectratio]{figures/fig_robust_paths.pdf}
+\caption{Participation under CPM month by month in every variant, from the seven launch levels: the seed mean thick
+and each seed thin. Dashed lines are the well-mixed path with each person's threshold kept, one leaving rate
+fitted.}
+\label{fig:robustpaths}
+\end{figure}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_threshold_map.pdf}
+\caption{Participation at month 60 less the launch share, by launch share and common threshold, uniform sellers.
+The mark in each row is the hand case: to its right, innovation alone carries a well-mixed population to the
+threshold within 60 months.}
+\label{fig:thresholdmap}
+\end{figure}
+
+\subsection{Chains of failure}\label{sec:chains}
+
+A failed payment is missing income for its payee, so failure can pass from payer to payee. Two readings measure how
+far it does.
+
+Within a day each payer's failure is split into the part it would fail even if paid in full that day and the part
+due to short receipts, the fundamental and contagious defaults of \cite{elsinger}
+(Table~\ref{tab:chains}). The second part is small: \KnockOnBanks{} of failed value under banks and cards and
+\KnockOnCpm{} under CPM with no distress, \KnockOnBanksStress{} and \KnockOnCpmStress{} at 2 points. Under CPM it
+is lower by \KnockOnGap{} of failed value with no distress (\KnockOnGapRange{} over cells and seeds); at 2 points
+the range, \KnockOnGapStressRange{}, includes runs where it is higher. The pool changes who bears it. Under banks
+and cards a knock-on failure touches a few payers on most days and never as many as 32. With a pool it touches many
+borrowers at once on some days: 32 or more on \ManyKnockOnCpm{} of days under CPM and \ManyKnockOnPool{} in the
+pool without the charge, and \ManyKnockOnCpmStress{} and \ManyKnockOnPoolStress{} at 2 points. When receipts fall
+short the pool's cash is rationed pro rata, so one payer's shortfall is spread thinly over everyone who borrows that
+day. More payers are touched and less value fails.
+
+Across days no such split exists, since a failure today changes every later day. What can be read is how far a
+shock spreads. A run at a distress level differs from the same seed's run with no distress only through the extra
+layoffs, which can be drawn again from the seed, so the extra failed payments divide between the people an
+extra layoff hit and everyone else (Table~\ref{tab:spread}, read on the development map, whose runs store each
+person's failed payments). Between \SpreadWideLow{} and \SpreadWideHigh{} of the
+excess over the three years from the shock falls on people not laid off, when everything a hit person
+fails from its first hit on counts as its own, and \SpreadNarrowLow{} to \SpreadNarrowHigh{} when only what it
+fails in a month it is hit does. The shares are alike in every arrangement and mix three channels: income
+missing along the payment network, the wages of extra layoffs leaving the household economy, and the shift in
+everyone's spending. They measure the spread of distress to people not laid off, not the length of a chain.
+
+In the distress year the excess is lower under CPM than under banks and cards in \SpreadLowerYearHalf{},
+\SpreadLowerYearOne{}, \SpreadLowerYearOneHalf{} and \SpreadLowerYearTwo{} of \SpreadCells{} cells at 0.5, 1, 1.5
+and 2 points. Over the three years it is lower in \SpreadLowerHalf{}, \SpreadLowerOne{}, \SpreadLowerOneHalf{} and
+\SpreadLowerTwo{}. At 2 points the median difference over the three years is \SpreadGapTwo{} failed shares a person
+a year, against CPM: where the pool is run, those who relied on it lose more of what they had than those who
+never had it. The level of failed payments is still lower under CPM (Table~\ref{tab:arrangements}); the excess is what a
+shock adds to each arrangement's own level.
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/chains}}
+\caption{Failure passed on within a day, on six cells (an outside rate of 4.4\%; launch participation of 5\%, 20\%
+and 60\%): the share of failed value that fails only because receipts were short, the payers with such a failure a
+day, the share of days when 32 or more payers had one, and the payments that rest on a closed loop of payers
+without money. Medians and ranges over the three launch levels of the seed means.}
+\label{tab:chains}
+\end{table}
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/spread}}
+\caption{The extra failed payments at a distress level over the same seed's run with no distress, in failed shares
+of bills and wages a person a year, over the three years from the shock and in the distress year: medians and
+ranges over the 21 cells of a level of the seed means, with the share that falls on people no extra layoff hit.}
+\label{tab:spread}
+\end{table}
+
+\subsection{Population size}
+
+Figure~\ref{fig:size} shows the size check beside the choice of \NumPeople{} people (Section~\ref{sec:measurement}): eight seeds kept for nothing
+else, at five population sizes. CPM's gains over banks and cards and over best-case DeFi do not move with size.
+The gain over the pool without the charge grows with size, so the present population understates what the charge
+adds. The count of seeds with a pool run at 2 points rises with size, then levels off: small populations hide
+the stress boundary, and it is not an artefact of size.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=0.92\linewidth]{figures/fig_size_check.pdf}
+\caption{The population size check, three cells at an outside rate of 4.4\%: CPM's gain over banks and cards, over
+best-case DeFi and over the pool without the charge, and the number of seeds, of eight, with a pool run at 2
+points of distress, against population size.}
+\label{fig:size}
+\end{figure}

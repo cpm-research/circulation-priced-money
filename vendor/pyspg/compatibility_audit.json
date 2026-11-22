@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/tessonec/PySPG",
+  "commit": "2e6b4bb8512cd73838c190b8c9a616b7ebef188a",
+  "upstream_sha256": "ab997003b0b50572e48bb6c56654c5250cbe596ccdba0f15ffbd118cfb1ed73e",
+  "converted_sha256": "9bc1163dc905acc644ca9289acc9e137547bf19482fbb28a49b4433ae4a07689",
+  "conversion": "Python 3.12 lib2to3 fix_print only; no change to iterator state/advance logic",
+  "fixers": [
+    "lib2to3.fixes.fix_print"
+  ],
+  "protocol_aliases": "experiments.py aliases Iterator/IterConstant/MultIterator.__next__ to original next",
+  "license_conflict": "iterator.py header says GNU/GPL Version 2; repository LICENCE and setup classifier say GPLv3; originals retained verbatim",
+  "version_conflict": "VERSION says 4.0.0; spg/__init__.py says 4.0.1; neither is an installed-version claim",
+  "scope": "Iterator and MultIterator explicit finite value lists only; parser, CLI, mutable operators and eval paths are unused"
+}

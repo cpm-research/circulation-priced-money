@@ -1,0 +1,286 @@
+\section{Measurement and the registered claim}\label{sec:measurement}
+
+This section states how the study measures and tests its claim, as the simulation code computes it and as the
+project's record of decisions fixed it before any confirmation run. The contract is in Section~\ref{sec:contract} and
+the model in Section~\ref{sec:model}; nothing here changes either. Every quantity is a paired difference between
+two arrangements run on the same simulated people and the same random draws. One agent is one consumer unit, so
+money is reported in dollars a person a year unless stated.
+
+\subsection{The experiment}
+
+Three controls vary over a full cross of 105 cells:
+\begin{enumerate}[nosep]
+  \item the reserve rate $\rho$, equal to the outside rate $r_{\mathrm{out}}$: 2, 4.4 and 6\% a year;
+  \item launch participation $a_{0}$, the share of people in the network at launch: 0.05, 0.1, 0.2, 0.3, 0.45,
+        0.6 and 0.8;
+  \item the intensity of a distress year, the extra monthly rate at which jobs lose their wage in months 25 to 36
+        after launch, above normal job loss of 0.55\% of jobs a month: 0, 0.5, 1, 1.5 and 2 points.
+\end{enumerate}
+The five distress levels are named by these points, 0 to 2. At month 36 the share of jobs without a wage is
+about 1.9, 3.4, 4.9, 6.3 and 7.7\% in that order. The rule for the wage of an extra layoff is in
+Section~\ref{sec:model} and is the same at every level. The 2-point level is the headline of the stress clause and
+is labelled 2009's wage loss before unemployment insurance.
+
+The whole grid, run on a set of seeds, is called a map. A run is one cell on one seed, in five arrangements:
+the bank arrangement (bank money, cards and outside lenders); best-case DeFi (stablecoin payments and a
+reserve-funded yield, and no credit for a payer who is short, Section~\ref{sec:model}); the pool without the charge
+(the payment money $P$ and the household-owned pool, with no demurrage); CPM; and indexed CPM, in which $P$ is
+indexed to consumer prices. Indexed CPM is defined only at a positive real reserve rate, so its cells at
+$\rho = 2\%$, where the real rate is zero at 2\% inflation, are its declared limit and stay outside its region.
+
+The arrangements share common random numbers and the burn-in (Section~\ref{sec:model}), so wealth at launch, and
+with it every group used below, is the same in all five.
+Within a cell and seed the runs at different distress levels are identical up to the start of the distress year,
+and the bank arrangement does not read $a_{0}$. Both facts are checked bit for bit against direct runs before
+every map, and the simulation code refuses to proceed otherwise.
+
+Of the 60 months after launch (Section~\ref{sec:model}) two windows are read: the first covers months 13 to 36
+and the second months 37 to 60. The rest of the paper calls the second window years 4 and 5. Gains and real cost
+are summed over all 60 months after launch and expressed a year. The contract's state, participation and owners' return are read by
+window, and where one figure is given it is the second window's mean.
+
+\subsection{Outcomes}
+
+Table~\ref{tab:outcomes} defines each measured quantity. A difference is always the named arrangement less its
+yardstick, the bank arrangement or best-case DeFi, so a positive gain or saving favours the arrangement
+named and a negative difference in failed payments favours it.
+
+\begin{table}[ht]
+\centering\small
+\caption{Measured quantities, as the simulation code computes them.}
+\label{tab:outcomes}
+\begin{tabularx}{\textwidth}{@{}l X l@{}}
+\toprule
+Quantity & Definition & Unit \\
+\midrule
+Failed share & Of the value of the bills and purchases that fell due in the second window, the part not paid on
+  its due day. Wages are left out of both; a wage not paid on its due date stays owed and is recorded apart. The
+  text calls it the share of payments that fail. & \% of value due \\
+Failed payments & The unpaid share of each failed bill or wage, each obligation counted once whatever the fee or
+  the monthly fee cap; the arrangement less the yardstick. & shares a person a year \\
+Wealth gain & End net wealth after 60 months less the yardstick's, person by person, expressed a year and averaged
+  over people. & \$ a person a year \\
+Complete gain & The wealth gain plus the difference in purchases received (a person's own service and shock
+  purchases completed as buyer and the price of each durable bought that settled), with sellers' extra sales counted
+  at face value; at the zero end, the same less the difference in sales as seller. At a surplus share between the
+  ends it is the zero end plus that share of the difference in sales. & \$ a person a year \\
+Real cost & The resources an arrangement's payments and credit use, each service at one sourced rate whoever
+  provides it: card-type credit 3.4\% and term credit 2.5\% of balances a year, \$2 for each failed or pool-rescued
+  share of a bill or wage, the card rails' costs, chain fees, 0.24\% of balances held and \$2 an earned-wage
+  advance. Reported as the saving, the yardstick's real cost less the arrangement's. & \$ a person a year \\
+Owners' return less $a$ & Households' realised return as pool owners, the income credited to
+  their shares over their capital-time, before inflation, less their alternative $a$, the reserve rate on the
+  arrangement's own unit floored at zero plus a declared spread of 0.25 point. & \% a year, by window \\
+Bridges served & The bridges the pool drew over the bridges payers asked of it. & share, second window \\
+Holding charge $c$ & The demurrage rate on wallet balances of $P$, which funds the liquidity the pool keeps ready
+  (Section~\ref{sec:contract}). & \% a year, second window \\
+$\theta$ & The coupon reduction the charge paid on carried pool bridges, over that reduction plus the coupons
+  borrowers accrued on them: demurrage's share of bridging finance. & share, second window \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Owners' return against their alternative is reported with its seed mean and 95\% interval by window, and no verdict
+reads it. Beside the real cost two read-outs are stored from counts already recorded. The break-even cost of one
+rescued payment is the cost at which CPM and best-case DeFi would use the same real resources; it is computed as \$2 less
+the difference in real cost over the difference in rescued shares, on the cell's seed means. The other read-out is the real cost per
+dollar of purchases completed in each arrangement.
+
+\subsection{The claim}
+
+The claim is read for CPM and for indexed CPM separately, in each $(\rho, a_{0})$ cell at distress level 0, on the
+seeds' paired differences. Every interval check uses two intervals over the $n$ seeds: the two-sided $t$ interval
+\begin{equation}
+  \bar{d} \pm t_{1-\alpha/2,\,n-1}\,\frac{s}{\sqrt{n}},
+  \label{eq:tinterval}
+\end{equation}
+with $\bar{d}$ the seed mean and $s$ the spread of the paired difference across seeds, and the bootstrap percentile
+interval of the seed mean over 10,000 resamples of the seeds on a fixed random stream. A check reads supported
+when both intervals lie wholly on the clause's side of its margin, falsified when both lie wholly on the wrong
+side, and inconclusive otherwise. It holds only when it reads supported. Each check is read at $\alpha = 0.05$ and at
+the arrangement's Bonferroni level, 0.05 over its 21 cells for CPM and over its 14 valid cells for indexed CPM.
+
+The clauses are evaluated as follows.
+\begin{enumerate}[label=(\alph*), leftmargin=*, itemsep=2pt]
+  \item \emph{CPM operates and pays its own way.} A seed counts when households hold at least 90\% of pool capital,
+        net of exit requests still queued, in every month of the second window, and $P$ payments complete in every
+        month of it. The clause holds when the Wilson lower bound of the share of such seeds is above one half, no
+        seed records that the issuer would leave, no seed has issuer top-ups to the reserves, and the cell reads
+        Persistent (below). The pool's own margin and the joint issuer-and-pool test, as the claim first worded them,
+        are stored beside; with break-even coupons and free entry both centre on zero by construction.
+  \item \emph{Real cost.} The lower bound of the real resources saved is at or above $-\$2$ a person a year against
+        best-case DeFi and against the bank arrangement. A real saving is claimed only where both lower $t$ bounds
+        are above zero.
+  \item \emph{Completed service.} Failed payments are lower, and purchases completed higher, than under best-case
+        DeFi. With no distress this holds in every cell, as it must once a pool lends without collateral, so it
+        is reported and is not evidence. Under distress it can fail where owners run on the pool
+        (Section~\ref{sec:stress}).
+  \item \emph{No group loses.} Eleven groups are read: the four classes of card holding crossed with wage or
+        business income, the five quintiles of wealth at launch and the short and long billing cycles. For every
+        group the lower bound of its mean complete gain must be at or above $-\$2$ against the bank arrangement at
+        both ends of the bracket and against best-case DeFi at the face end, 33 checks in all. A group defined in
+        fewer than two seeds has no interval and fails the clause.
+  \item \emph{Stress.} For a cell that passes (a), (b) and (d) at level 0, the levels 0.5, 1, 1.5 and 2 points are
+        tested in that order at level 0's Bonferroni level, stopping at the first failure. A level is withstood when
+        clauses (a) to (d) hold on its run and the upper bound of the dip is at most one failed payment a year
+        against the bank arrangement's dip and against best-case DeFi's. The dip is each seed's cumulative excess of
+        failed shares over months 25 to 60 over the same seed's run at level 0, divided by three. The clause reports
+        the highest level withstood and whether the cell withstands 2 points; it is not part of passing.
+\end{enumerate}
+
+Against best-case DeFi the registered clause values completed purchases at their price: no class, wealth quintile
+or billing-cycle group may be shown behind by more than the \$2 margin. On the confirmation map every group
+is ahead on this reading in every cell (Section~\ref{sec:results}). The money-only reading, with completed purchases valued at zero, is negative
+only for people who are never short, by the yield the holding charge takes, the premium for the pooled
+buffer. Its break-even value is the smallest surplus share, on a grid of 0.01, from which every group's bound holds
+at every larger share. That value is computed on the bounds and on the group means and decides no verdict; it is
+stored with the results and is not reported here.
+
+A cell passes when (a), (b) and (d) hold at 95\%, with (d) holding both as built and under the cash-advance bound
+of the next subsection. A falsifier overrides a pass: CPM is read as worse than best-case DeFi when, in at least
+80\% of seeds, its failed share in the second window is higher, or the median wealth of a group of launch-wealth
+quintile and billing cycle falls short of best-case DeFi's by more than 2\% of that group's median wealth at
+launch. It is also read as worse when, on both intervals, the interest rate borrowers pay over the principal they borrow is higher, or
+owners' second-window return is below DeFi's savings rate. Together these four are the falsifier
+``worse than best-case DeFi'', one of the six listed under persistence below, and any one of them falsifies the
+cell. Under the first two, the seeds in which CPM is worse stop counting as Persistent; under the last two, which
+are read across seeds, every seed does. The cell then fails (a) and stays outside the region. A pass is worded
+``non-inferior real cost with more completed service''. It is conditional on three things: the pool, the $P$ rail
+and the issuer bear the sourced cost of what they replace; the card fee is today's 1.7\%; and best-case DeFi lends
+only against collateral.
+
+The region is read in five slices, one per distress level, with level 0 the headline. At level 0 it is the largest
+set of passing cells joined edge to edge in the $(\rho, a_{0})$ grid, corners not joining and ties named. A cell
+the seed count leaves underpowered cannot enter it. At a stressed level a cell enters when its level-0 cell passes,
+its highest level withstood reaches that level, and its stress leg is not underpowered. On a stressed run clause
+(d) is read as built; the cash-advance bound enters a stressed slice only through the level-0 cell, which must
+pass under it. ``Holds somewhere'' is the
+set of level-0 cells that pass at the Bonferroni level.
+
+Persistence is read seed by seed from the second window against the first. Use holds when participation is at
+least the first window's less 0.05 and at least the launch share less 0.05. Lending recurs when the pool makes new
+loans in at least 80\% of months and lends at least 80\% as much per participant. Owners stay when capital is at
+least 80\% of the first window's and at least 95\% of exit value is paid within two months. The pool pays its own
+way when it runs without outside money. Credit quality holds when the write-off rate and the arrears share each
+rise by at most one point. A seed is Persistent when all five hold and no falsifier fires: collapse, credit death,
+dependence on subsidy, worse than best-case DeFi, unsafe backing or write-offs, or an issuer that would leave. A cell
+reads Persistent when the Wilson lower bound of its share of Persistent seeds is above one half. A second view,
+stored beside the claim and read by no clause, combines persistence with the group test on $t$ bounds alone.
+
+\subsection{Bounds reported beside the claim}
+
+\emph{The cash-advance bound.} Every gain is also computed with the cash-advance fees and cash-advance interest the
+person saves against the yardstick taken out, to first order with no change in behaviour, for everyone and for each
+group. The bound exists because card holders' use of cash advances in the bank arrangement runs about 15 times the
+United States level. As built, that excess leans toward CPM, because the fees and interest saved on those advances
+count as gain; under the bound they do not. A cell counts in the region only when it passes both as built and
+under the bound.
+
+\emph{Money paid to outside lenders and intermediaries.} The efficiency claim rests on real cost alone, which reads
+no destination of any flow; interest and fees are transfers. The household gain is reported three ways. As built,
+outside lenders' income leaves the households, and every verdict reads this case; it leans toward CPM on wealth and
+leaves real cost unchanged. At a central share of 0.10 of that income returning to households as owners of the
+lenders (range 0.06 to 0.14), the return is added as a ledger line by wealth group, for means only and for no
+verdict. With all of it returned, in proportion to spending, the outer bound also hands back the lenders' staff,
+funding and loss costs, and so leans against CPM.
+
+\emph{The loan-loss bound.} As built a written-off debt stays owed and is later collected, which leans toward CPM
+on the bridge price. Under the bound every lender, the pool included, loses each month the published charge-off
+rate of its loan class on its average balance, moving with the share of jobs without a wage three months earlier,
+and the pool's coupons carry that rate. The bound leans against CPM.
+
+\emph{Interest returned.} The outer bound above is run as its own map, with outside lenders' interest, and the
+card's cash-advance and late fees, returned to households in proportion to spending. The loan-loss bound and this
+one run over the whole map on the three development seeds of the final development map, and are reported as bounds
+from development seeds.
+
+\subsection{Sample sizes}
+
+\emph{Population.} The number of agents is a numerical setting, fixed by a finite-size check whose rule was written
+before the check was read. Populations of 500, 1,000, 2,000, 4,000 and 8,000 people were run on eight seeds kept for
+nothing else, in three cells ($\rho = 4.4\%$; $a_{0} = 0.05$, 0.2 and 0.6) with every arrangement. The rule takes
+the smallest size at which doubling the population moves none of twelve headline numbers in any of the three cells
+by more than that number's own 95\% interval at the smaller size. The numbers are CPM's complete gain over best-case DeFi and over
+the bank arrangement at both ends, its gain over the pool without the charge at face value, real cost saved against
+best-case DeFi, the difference in failed payments against the bank arrangement, owners' return less their
+alternative in years 4 and 5, the bridge cost to the borrower, the instalment coupon, $\theta$ and $c$. Read as
+written, no size up to 4,000 passes and the rule takes 8,000. The population is set at 4,000 people, a declared
+departure: the rule makes 36 comparisons at each doubling with no allowance for their number, and what still moves
+at 4,000 moves when a single large loan is written down. The check was repeated after card limits and the rule for
+an extra layoff's wage (Section~\ref{sec:model}) were built into the model, with its reading written before the run. Between 4,000 and 8,000 no gain over the bank
+arrangement or best-case DeFi, at either end, moves in any of the three cells, nor does real cost or the gap in
+failed payments. Four of the 36 numbers move: the charge's edge over the pool without it at $a_{0} = 0.05$ and 0.6,
+owners' return at $a_{0} = 0.05$, and $c$ at $a_{0} = 0.6$.
+
+\emph{Seeds for dollar readings.} The seed-count rule asks for the fewest seeds $n \ge 2$ at which the paired $t$ test at
+the arrangement's Bonferroni level $\alpha$ shows a true difference of zero clear of a margin $\Delta$ with
+probability 0.8:
+\begin{equation}
+  n^{*} = \min\Bigl\{\, n \ge 2 \;:\; \Pr\bigl[\,T_{n-1}(\lambda_{n}) > t_{1-\alpha/2,\,n-1}\,\bigr] \ge 0.8 \Bigr\},
+  \qquad \lambda_{n} = \frac{\Delta\sqrt{n}}{s},
+  \label{eq:seeds}
+\end{equation}
+where $T_{n-1}(\lambda)$ is a noncentral $t$ variable with $n-1$ degrees of freedom. The spread is pooled across the
+cells $k$ of a reading, each with $n_{k}$ seeds and spread $s_{k}$,
+\begin{equation}
+  s = \Bigl(\sum_{k}(n_{k}-1)\,s_{k}^{2} \Big/ \sum_{k}(n_{k}-1)\Bigr)^{1/2}.
+  \label{eq:pooled}
+\end{equation}
+The readings are, for CPM and indexed CPM, the real cost saved against best-case DeFi and against the bank
+arrangement, pooled over the level-0 cells with $\Delta = \$2$, and the dip against each, pooled over the cells of
+each stressed level with $\Delta$ one failed payment a year, at $\alpha = 0.05/21$ for CPM and $0.05/14$ for indexed
+CPM. The largest count is taken, at most 100. A cell whose own spread needs more seeds than it ran is underpowered.
+
+\emph{Yes-or-no readings.} A share of $k$ of $n$ seeds is read by the lower end of its Wilson interval,
+\begin{equation}
+  L = \frac{\hat{p} + \dfrac{z^{2}}{2n} - z\sqrt{\dfrac{\hat{p}(1-\hat{p})}{n} + \dfrac{z^{2}}{4n^{2}}}}
+           {1 + \dfrac{z^{2}}{n}}, \qquad \hat{p} = \frac{k}{n}, \quad z = \Phi^{-1}(1-\alpha/2),
+  \label{eq:wilson}
+\end{equation}
+and the share reads above one half when $L > 1/2$. At $\alpha = 0.05$, $z = 1.96$; under the Bonferroni correction
+over 21 cells, $z = 3.04$, and over 14, $z = 2.91$. Twenty seeds need 15 such seeds at 95\% and 17 under the
+correction over 21 cells; \SeedsConfirm{} seeds need \WilsonConfirm{} at 95\%, \WilsonConfirmBonf{} under the
+correction over 21 cells and \WilsonConfirmBonfIndexed{} over 14; \SeedsExtended{} seeds need \WilsonExtended{},
+\WilsonExtendedBonf{} and \WilsonExtendedBonfIndexed{}.
+
+\emph{The confirmation count.} The seed-count rule reads each spread from the development map, so the spread is
+itself an estimate. That map has three seeds a cell, so each cell adds only two degrees of freedom to the estimate.
+The confirmation count allows for this: each
+reading's pooled spread~\eqref{eq:pooled} is taken at the upper end of its one-sided interval at assurance
+$q = \SeedAssurance{}$, the level of the power,
+\begin{equation}
+  s^{+} = s\,\sqrt{\frac{\nu}{\chi^{2}_{1-q}(\nu)}}, \qquad \nu = \sum_{k}(n_{k}-1),
+  \label{eq:spreadbound}
+\end{equation}
+where $\chi^{2}_{1-q}(\nu)$ is the $1-q$ quantile of the chi-square distribution with $\nu$ degrees of freedom, so
+the true spread lies below $s^{+}$ with probability $q$. The count is the largest $n^{*}$ of~\eqref{eq:seeds}
+at $s^{+}$ over the readings, at most 100. On the final development map the seed-count rule's own count, at the spreads
+themselves, is \SeedsPlanned{}, set by the dip against best-case DeFi at 2 points of distress. That reading's spread is
+\SpreadBinding{} failed payments a year on $\nu = \FreedomBinding{}$ degrees of freedom, so $s^{+} =
+\SpreadBindingBound{}$, and the allowance takes the count to \SeedsAssured{}. The confirmation count is
+$n = \SeedsConfirm{}$, fixed by this rule before any confirmation seed was run or read. No cell with no distress
+needs more than \SeedsCellMost{} seeds on its own spread, so \SeedsConfirm{} seeds leave \CellsUnderpowered{} cells
+underpowered on the development spreads. The \SeedsConfirm{} seeds run one seed a part, each part written when
+it is done. Between parts only integrity is checked: that no run failed, that every run of the seed is there and
+that money is conserved. The parts are joined into the stored results that a single pass over all the seeds would
+write, which a test reproduces value for value. The claim is read once, at \SeedsConfirm{}.
+One extension is declared in advance: the cells the seed-count rule marks underpowered at \SeedsConfirm{} may be run to
+\SeedsExtended{} seeds, all such cells together, and are then read once at \SeedsExtended{}. On the development
+check run after card limits were built into the model, the pooled spread of the cost reading was \$0.99 without stress and \$1.42 at 2
+points, against the \SpreadResolved{} up to which \SeedsConfirm{} seeds resolve the \$2 margin at the Bonferroni
+level.
+
+\subsection{Development and confirmation}
+
+Three development seeds were used to build and tune the model and to read every development map. The final
+development map runs on them at 4,000 people over all 105 cells, and the bounds from development seeds are read from
+it. Three earlier blocks of seeds are retired and never read as confirmation: one because review scripts rebuilt
+a population from it, one because a confirmation attempt crashed on it and was debugged there with no outcome
+stored or read, and the eight seeds of the size check. The confirmation seeds are the first $n$ of a block never run,
+and the simulation code refuses a confirmation run until the count is fixed at the freeze. The plan, the count and the code's
+commit are frozen together. The confirmation map is then run under the decided entry rule, the quote rule
+(entrants read the published quote), and under the record rule (they read the pool's realised twelve-month
+return), the pessimistic one. Its outcomes are read once.
+Nothing in the code, the plan or the reading changes after a confirmation seed is read, and any later analysis is
+labelled exploratory. The headline results of Section~\ref{sec:results} and the registered claim are that
+reading. What was run on development seeds is reported in Section~\ref{sec:robustness} and labelled so.

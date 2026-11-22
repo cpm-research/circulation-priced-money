@@ -1,0 +1,218 @@
+[
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:0",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000000"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:1",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000001"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:2",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000002"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:3",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000003"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:4",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000004"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:5",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000005"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:6",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000006"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:7",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000007"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:8",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000008"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:9",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000009"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:10",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b000000000000000000000000000000000000000000000000000000000000000a"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:11",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b000000000000000000000000000000000000000000000000000000000000000b"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:12",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b000000000000000000000000000000000000000000000000000000000000000c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "base_cash",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "base_price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e090000000000000000000000008fffffd4afb6115b954bd326cbe7b4ba576818f6"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "supply_rate",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xd955759d0000000000000000000000000000000000000000000000000caa3693d4727c9e"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "borrow_rate",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9fa83b5a0000000000000000000000000000000000000000000000000caa3693d4727c9e"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "reward_config",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x1B0e765F6224C21223AeA2af16c1C46E38885a40",
+    "data": "0x2289b6b8000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ }
+]

@@ -1,0 +1,11 @@
+{
+ "seed_set": "confirmation",
+ "passed": [
+  "--n",
+  "4000",
+  "--workers",
+  "12",
+  "--entry-reads",
+  "realised"
+ ]
+}

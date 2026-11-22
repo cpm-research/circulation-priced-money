@@ -1,0 +1,22 @@
+{
+  "no_model_edits": true,
+  "no_population_runs": true,
+  "snapshot": "aggregate contract snapshot complete for listed fields",
+  "snapshot_crosschecks_passed": true,
+  "history": "three market observations and one decoded historical liquidation receipt retrieved",
+  "missing": [
+    "historical oracle price observations for 10/16 October were not retrieved",
+    "direct historical rate getter outputs were not retrieved; raw deployed coefficients and utilisation were retrieved and rates reconstructed",
+    "reliable unattended archive retrieval is not established: Blast later challenged requests; other public providers require tokens or limit history",
+    "immediate pre-transaction state trace for the liquidation, including exact account health and isolated reserve effect",
+    "complete ownership/debt census and historical reward-entitlement coverage, outside this aggregate snapshot scope",
+    "household collateral distribution and borrowing/selling/repayment behavior are not calibrated by protocol records"
+  ],
+  "access_notes": [
+    "PublicNode archive access requires a personal token; older receipt returned null there",
+    "Blast delivered historical receipt and 76 state calls, then returned a Cloudflare challenge; no bypass attempted",
+    "BlockReq delivered current pinned fields but refused older historical calls",
+    "RPCFree returned an HTML landing page saying the RPC is paused, not JSON-RPC data",
+    "Sourcify had no match; Blockscout supplied matching fully verified implementation source instead"
+  ]
+}

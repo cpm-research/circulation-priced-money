@@ -1,0 +1,604 @@
+\section{Results}\label{sec:results}
+
+This section reports the confirmation map: all \CellsAll{} cells on \NumSeeds{} seeds never run before
+the freeze, with \NumPeople{} people, read once and as registered. Numbers come from it unless stated
+otherwise. Figure~\ref{fig:grid} shows every cell in the space of the three controls.
+
+The section has three steps. First, what the arrangement does with no distress: the payments that go
+unpaid, what households gain, and where the gain comes from. Second, what demurrage does within it: the
+price and availability of bridging, the speed of circulation, and the equations of Section~\ref{sec:implications}
+set against the simulation. Third, the registered claim and where it ends: the cells where it holds, the
+edge at low outside rates, distress, and the record rule for how savers enter the pool.
+Section~\ref{sec:robustness} then reports the checks beside the map.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_grid.pdf}
+\caption{The whole experiment in the space of its three controls. Each marker is one cell: a launch participation,
+an outside rate and a level of distress, read on its seeds; each layer is one level of distress. (a) The registered
+claim: the cells in the region of their map. (b) CPM's share of payments that fail against that of banks and
+cards, as a relative difference: green where CPM's is lower, purple where higher. (c) and (d) CPM's gain in
+money over banks and cards and over best-case DeFi over the sixty months, as a share of a year's spending, on one
+scale. The outside rates in italics, 2.5, 3 and 3.5\%, are the exploratory rate cut (Section~\ref{sec:lowrates}) on \CutSeeds{} seeds; the
+others are the registered map on \NumSeeds{} seeds.}
+\label{fig:grid}
+\end{figure}
+
+\subsection{Payments}
+
+Table~\ref{tab:arrangements} and Figure~\ref{fig:failed} give the share of payments that fail: of the value of
+bills and purchases due in years 4 and 5, the part not paid on its due day. Wages are counted
+apart, below. With no distress the share is \FailBanksMean{} under banks and cards and
+\FailDefiMean{} under best-case DeFi, against \FailPoolMean{} with the pool without the charge and \FailCpmMean{}
+under CPM, as means over the \CellsNoDistress{} cells. CPM's share is \FailCutBanks{} below that of banks and
+cards and \FailCutDefi{} below best-case DeFi's. The pool without the charge is already \FailCutPoolBanks{} below
+banks and cards. On this measure the pool and its credit do most of the work; what demurrage adds is the
+price of that credit and the cash kept ready for it (Section~\ref{sec:demurrage}). The gap to both
+alternatives opens with launch participation, since only a participant can draw a bridge, and is present at
+every outside rate. Best-case DeFi stays close to banks and cards at every level: it moves payments and pays a
+yield but does nothing for a payer who is short.
+
+Each person pays 58.3\% of its spending as a wage to another. A wage not paid on
+its due date stays owed and is paid later, so it is recorded apart. Taking bills, purchases
+and wages together, the value not paid on its first due date is \FailedValueBanks{} a person a year under banks
+and cards and \FailedValueCpm{} under CPM. Wages paid late are \FailedWageShareBanks{} of it under banks and
+cards and \FailedWageShareCpm{} under CPM; purchases lost are the rest. The unpaid value falls mostly on people without a
+card: the \NoCardPeople{} who hold none are the payers of \NoCardFailedShareBanks{} of it
+under banks and cards and \NoCardFailedShareCpm{} under CPM. Shortfalls in the model come from the timing of receipts and
+payments and from job loss. Unexpected expenses are switched off in every run (Section~\ref{sec:model}), so they do
+not drive the need for bridging.
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/arrangements}}
+\caption{Payments that fail: the value of bills and purchases not paid on their due day, as a share of the value
+due in years 4 and 5 (wages counted apart), with no distress and at 2 points of distress, by
+arrangement: the mean and the range over cells of the seed means. The last column is purchases completed.}
+\label{tab:arrangements}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_failed_payments.pdf}
+\caption{Payments that fail against launch participation, by outside rate, with no distress (top) and at 2 points
+of distress (bottom). Thick lines are seed means, bands the range of the seeds and thin lines the single seeds. Under
+distress at high launch the seeds part, and the mean is the path of none of them.}
+\label{fig:failed}
+\end{figure}
+
+\subsection{Gains}
+
+Figure~\ref{fig:gains} and Table~\ref{tab:gains} give CPM's gain per person per year. A person in the model
+stands for one United States consumer unit, so a figure per person is per household. Against banks and
+cards the
+median over cells is \GainBanksMedian{} in money alone and \GainBanksFaceMedian{} with completed purchases
+counted at their price. Against best-case DeFi the two are \GainDefiMedian{} and \GainDefiFaceMedian{}. The
+gain is positive in every cell at both ends of the bracket. It stays positive in every cell when the cash-advance
+fees and interest CPM saves are taken out: the lowest cell then reads \GainBanksBoundLow{} against banks and
+cards and \GainDefiBoundLow{} against best-case DeFi, in money alone. In
+\CellsGainPositive{} of the \CellsAll{} cells, at every level of distress, CPM's mean gain over both
+alternatives is positive in money alone, with completed purchases counted, and under the cash-advance bound.
+
+The same result can be stated without dollars, which depend on the model's unit, a month of mean spending of
+\$6,440. As a share of a year's spending the gain in money is \GainBanksSpending{} over banks and cards and
+\GainDefiSpending{} over best-case DeFi, and \GainBanksFaceSpending{} and \GainDefiFaceSpending{} with completed
+purchases at their price. A larger number is the change in what households pay intermediaries outside the
+household economy, net of what those pay back: interest and the cash-advance and late fees of outside lenders,
+failure fees, card fees less rewards, the spread banks and funds keep on balances and, under CPM, the issuer's custody, the pool's
+operating cost and gas. At the median cell it is \OutsidePaidBanks{} a person a year under banks and cards,
+\OutsidePaidDefi{} under best-case DeFi and \OutsidePaidCpm{} under CPM. Cell by cell CPM cuts it by a median of
+\OutsideCutBanks{} against banks and cards, from \OutsideCutBanksLow{} at the lowest launch level to
+\OutsideCutBanksHigh{} at the highest, and by \OutsideCutDefi{} against best-case DeFi. Without the spread on
+balances, which is yield forgone and not cash paid, the cut against banks and cards is \OutsideCashCutBanks{}.
+These payments are transfers, not resources used; the efficiency reading is the real cost below.
+
+These are averages over people, and the average is above the typical person. In money alone the median person at
+the median cell gains \PersonMedianBanks{} a year over banks and cards and \PersonMedianDefi{} over best-case
+DeFi, \PersonMedianBanksSpending{} and \PersonMedianDefiSpending{} of a year's spending and less than half the
+mean. At the fifth percentile the gain is \PersonFifthBanks{} and
+\PersonFifthDefi{} a year. In money alone
+\ShareBehindBanksMoney{} of people end more than \$2 a year behind the bank arrangement and
+\ShareBehindDefiMoney{} behind best-case DeFi; with completed purchases at their price the shares are
+\ShareBehindBanks{} and \ShareBehindDefi{} (Table~\ref{tab:gains}). The claim's group clause reads the mean of
+each group, not each person.
+
+In real resources CPM uses less than banks and cards in every cell, by at least \RealCostBanksLow{} a person a
+year. Against best-case DeFi the difference is small in every cell, from \RealCostDefiLow{} to
+\RealCostDefiHigh{} a person a year, with CPM using slightly more at the highest launch levels
+(Table~\ref{tab:gains}). So the gain over best-case DeFi is the credit the pool supplies, apart from
+0.20 point of yield on balances, which the custody check of Section~\ref{sec:robustness} removes without changing
+the sign. It is not a cheaper way of moving money.
+
+Two read-outs stored with the real cost say the same in other units. The model costs each payment the pool
+rescues at \$2, as it does a failed one. CPM would use the same real resources as best-case DeFi if a rescue cost
+between \RescueEvenDefiLow{} and \RescueEvenDefiHigh{} across the cells with no distress (median
+\RescueEvenDefiMedian{}), and the same as banks and cards if it cost between \RescueEvenBanksLow{} and
+\RescueEvenBanksHigh{} (median \RescueEvenBanksMedian{}). Against banks and cards the comparison has room to
+spare; against best-case DeFi it rests on what a rescue is taken to cost. For each dollar of purchases completed
+the real cost is \CentsCompletedBanks{} cents under banks and cards, \CentsCompletedDefi{} under best-case DeFi
+and \CentsCompletedCpm{} under CPM, on average over the same cells.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_gains.pdf}
+\caption{CPM's gain per person per year against banks and cards (top) and against best-case DeFi (bottom), by
+outside rate, with no distress. The band runs from the gain in money alone to the gain with completed purchases at
+their price; the dashed band is the same under the cash-advance bound.}
+\label{fig:gains}
+\end{figure}
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/gains}}
+\caption{CPM against banks and cards and against best-case DeFi over the \CellsNoDistress{} cells with no distress,
+in dollars a person a year: median and range over cells. The lower block counts the cells where each clause of
+the registered claim passes on the \NumSeeds{} confirmation seeds.}
+\label{tab:gains}
+\end{table}
+
+\subsection{Where the gain comes from}
+
+Table~\ref{tab:sources} splits CPM's gain in money over banks and cards by the flow it comes from, at each outside
+rate with no distress. The split is an accounting identity: in every cell its lines add up to the gain. Four lines
+carry it. The reserve return paid on P is \SourceYieldTwo{} a person a year at an outside rate of 2\%,
+\SourceYieldFourFour{} at 4.4\% and \SourceYieldSix{} at 6\%, or \SourceYieldShareTwo{},
+\SourceYieldShareFourFour{} and \SourceYieldShareSix{} of the gain. Interest no longer paid to cards and outside
+lenders, because the pool lent instead and its interest stays with the households that own it, is
+\SourceInterestTwo{}, \SourceInterestFourFour{} and \SourceInterestSix{}, or \SourceInterestShareTwo{},
+\SourceInterestShareFourFour{} and \SourceInterestShareSix{} of the gain. Cash-advance, late and failure fees saved are \SourceFeesTwo{},
+\SourceFeesFourFour{} and \SourceFeesSix{}, and card fees saved, less the rewards given up, about
+\SourceCardFourFour{} at every rate. Against them stand the pool's operating cost and the savings income given up
+on money moved into P and the pool.
+
+The reserve return moves most with the outside rate; the fees saved also nearly double between 2\% and 4.4\%. Best-case DeFi also pays its holders a return on the
+reserve and moves money off the card rails, so of these lines the two that come from credit, the interest and the
+fees saved, separate CPM from it. That is why the gain over best-case DeFi is the smaller of the two and
+changes less with the outside rate (Figure~\ref{fig:gains}). The reserve return is also one of the two reasons the
+claim is weakest at low outside rates (Section~\ref{sec:lowrates}).
+
+\begin{table}[htbp]\centering\small
+\input{tables/sources}
+\caption{CPM's gain in money over banks and cards by the flow it comes from, in dollars a person a year: the median
+over the seven launch levels at each outside rate, with no distress. The lines add up to the gain in each cell;
+medians over cells need not add up exactly.}
+\label{tab:sources}
+\end{table}
+
+Figure~\ref{fig:sources} gives the same split in every cell, in dollars and as shares of the cell's gain. As launch
+participation rises, card fees saved take a larger share of the gain and the fees saved on shortfalls a smaller
+one; the shares of the reserve return and of the interest move less.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_sources.pdf}
+\caption{CPM's gain in money over banks and cards by the flow it comes from, in each of the \CellsNoDistress{} cells
+with no distress: dollars a person a year (top) and each flow as a share of the cell's gain (bottom). Costs are
+stacked below zero and the dot marks the gain.}
+\label{fig:sources}
+\end{figure}
+
+\subsection{What demurrage does}\label{sec:demurrage}
+
+The pool without the charge is the same money and the same pool on the same people and draws, so its difference
+from CPM is what demurrage does (Tables~\ref{tab:buys} and~\ref{tab:charge}, Figure~\ref{fig:charge}).
+
+The demurrage rate is \ChargeFrom{} to \ChargeTo{} a year across cells. At the median cell the holding charge costs holders
+\ChargeDollars{} a person a year, and Table~\ref{tab:buys} sets beside that cost what it pays for. The price a
+bridge borrower pays falls from between \BridgePricePoolLow{} and \BridgePricePoolHigh{}, depending on the outside
+rate, to \BridgePriceCpm{} at every rate, a cut of \BridgeCutLow{} to \BridgeCutHigh{}, as
+equation~\eqref{eq:bridgeprice} requires: the capital part of the coupon moves from the borrower to all holders.
+The pool keeps \StandbyChange{} more cash standing by, \StandbyCpm{} a person against \StandbyPool{}, because its
+capital target now includes cash against the peak of bridging, and serves a larger share of the bridges asked
+of it at every outside rate. Bridging by the pool rises by \PoolBridgingChange{}, from \PoolBridgingPool{} to
+\PoolBridgingCpm{} a person a year. Balances revolved on cards fall by \RevolvedChange{}, from \RevolvedPool{} to
+\RevolvedCpm{}, and the value of payments that fail from \FailedDollarsPool{} to \FailedDollarsCpm{}.
+
+By Corollary~\ref{cor:neutral} the charge cannot create wealth at fixed quantities: what holders pay, borrowers
+and owners receive. So CPM's net gain over the pool without the charge is the value of the quantities
+that changed. At the median cell it is \GainOverPool{} a person a year over the whole run and
+\GainOverPoolLate{} in years 4 and 5, when the charge collected is \ChargeDollars{}: household
+wealth is \GainPerChargeDollar{} dollars higher for each dollar collected. That compares two runs; it is not
+a payment the contract makes. The size check (Section~\ref{sec:robustness}) shows the gain still grows
+with the population. Demurrage here is insurance
+and is priced like it: a small premium on every balance, paid out as cheap and available credit to whoever
+is short.
+
+In dollars this is the smallest gain the paper reports, so it is read with its interval. CPM and the pool without
+the charge run on the same people and draws, and their difference is paired seed by seed.
+Table~\ref{tab:chargegain} and Figure~\ref{fig:chargegain} give it at every distress level (Section~\ref{sec:stress}). Under the quote rule, where savers enter on the
+pool's published quote, the median over cells is
+\ChargeGainFirstMedianZero{} a person a year with no distress and \ChargeGainFirstMedianTwo{} at 2 points. The
+lower end of the 95\% interval across seeds is above zero in \ChargeGainFirstAboveAll{} of the
+\ChargeGainFirstCells{} cells of the grid; the lowest, at 2 points, is \ChargeGainFirstLowTwo{}. CPM fails fewer
+payments than the pool without the charge in \ChargeGainFirstFewerAll{} of those cells. Under the record rule,
+where they enter on its realised return (Section~\ref{sec:record}), the medians are \ChargeGainSecondMedianZero{} and
+\ChargeGainSecondMedianTwo{}, the lower end is above zero in \ChargeGainSecondAboveAll{} cells and CPM fails fewer
+payments in \ChargeGainSecondFewerAll{}. These intervals are not part of the registered claim and carry no
+correction for the number of cells.
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/chargegain}}
+\caption{CPM's gain in money over the pool without the charge, in dollars a person a year, by distress level and
+under the two entry rules: the median over the \CellsNoDistress{} cells of each level; the lowest,
+over those cells, of the lower end of the 95\% interval of the paired gain across the \NumSeeds{} seeds; the cells
+where that lower end is above zero; and the cells where CPM fails fewer payments than the pool without the
+charge.}
+\label{tab:chargegain}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_charge_gain.pdf}
+\caption{CPM's gain in money over the pool without the charge in every cell of the grid: the mean across the
+\NumSeeds{} seeds and its 95\% interval, by distress level, under the quote rule (top) and the record rule
+(bottom). Within a level the cells run by outside rate and then by launch participation.}
+\label{fig:chargegain}
+\end{figure}
+
+Table~\ref{tab:buys} also measures liquidity support across arrangements. Banks and cards hold \PrecautionBanks{} dollars of
+precautionary money for each dollar of shortfall a lender covers in a year, and best-case DeFi \PrecautionDefi{}.
+The pool holds \PrecautionPool{} without the charge and \PrecautionCpm{} with it, and covers more shortfalls than
+either. Each dollar of precautionary money covers more shortfall once part of it is pooled; households' own
+buffers are no smaller (Table~\ref{tab:buys}).
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/buys}}
+\caption{What demurrage buys, and liquidity support by arrangement: medians over the cells with no
+distress, years 4 and 5. A shortfall is what a payer's own money and same-day savings could not pay; a lender
+covers it through the pool, the card, a balance revolved on the card or earned-wage access. Precautionary money
+is households' chosen buffers and the pool's idle cash.}
+\label{tab:buys}
+\end{table}
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/charge}}
+\caption{CPM against the pool without the charge, with no distress, by outside rate: medians over launch levels of
+the seed means in years 4 and 5.}
+\label{tab:charge}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_charge.pdf}
+\caption{What demurrage does. (a) The price a bridge borrower pays. (b) Bridges served. (c) The charge,
+with the value $a\,B/W$ of Proposition~\ref{prop:size} where the stored fields allow. (d) The charge's share of
+bridging finance against its ceiling $a/(a+o)$.}
+\label{fig:charge}
+\end{figure}
+
+\subsection{Circulation}
+
+The arrangement's name invites a question its mechanism does not depend on: whether a charge on balances makes
+money move faster. We measure circulation with MicroVelocity \cite{campajola} in years 4 and 5
+(Table~\ref{tab:circulation}, Figure~\ref{fig:circulation}). A unit of money held for $\tau$ days between
+receipt and spending adds $1/\tau$ for each day it is held; a person's MicroVelocity is that sum over the
+money it holds, divided by the total stock of money, so people's MicroVelocities add up to the velocity of
+money. Money spent is matched to money received last in first out, as in \cite{decollibus}, with first in first
+out beside it, and money not spent again within the run is left out, as in both papers. Wallet turnover is
+also reported: a person's payments to others over a year divided by its own average balance of bank money
+and $P$, the inverse of its average holding time. The time between
+receipt and spending is the holding time of \cite{campajola}; \cite{zhang} call it the lifespan.
+
+Gesell's demurrage \cite{gesell} was meant to make money circulate faster. This one does not speed circulation by
+any amount that matters. Under CPM the money a participant spends has been
+held for \HoldingDaysCpm{} days on average, against \HoldingDaysPool{} days in the pool without the charge, and the
+velocity of all money is \VelocityCpm{} turns a year against \VelocityPool{}. The differences have a consistent
+sign and are about one per cent. The size of the charge implies as much: a fraction of a percentage
+point a year gives nobody a reason to spend sooner. The demurrage works through the price and availability of
+bridging, as Section~\ref{sec:implications} derives, not through the speed of spending.
+
+The pool, with or without the charge, does change the measure. The velocity of all money is \VelocityBanks{} turns
+a year under banks and cards and \VelocityDefi{} under best-case DeFi, against \VelocityCpm{} under CPM. The measure counts bank money, $P$ and
+outside savings. Spare money placed in the pool is lent on and spent, where spare money in outside savings
+sits, so a smaller stock of money carries the same spending. The rise reflects where spare money rests,
+not people spending faster. Circulation is no more concentrated under the pool: the tenth of
+people who contribute most to velocity carry about a quarter of it in every arrangement.
+
+\begin{table}[htbp]\centering\footnotesize
+\resizebox{\linewidth}{!}{\input{tables/circulation}}
+\caption{Circulation in years 4 and 5 with no distress, by arrangement: median and range over cells of the seed
+means. Wallet turnover is a person's outflow over its own average balance of bank money and $P$. MicroVelocity and
+holding times are computed from the age of every unit of bank money, $P$ and outside savings when it is spent.
+Banks and cards have no network, so their rows cover everyone; the other rows cover each arrangement's
+participants unless marked.}
+\label{tab:circulation}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_circulation.pdf}
+\caption{Holding times of money spent, years 4 and 5, no distress. (a) The distribution of value spent by holding
+time under CPM and under the pool without the charge at one cell. (b) The mean holding time against launch
+participation at an outside rate of 4.4\%. (c) CPM less the pool without the charge. Filled markers count the
+newest money as spent first, open markers the oldest.}
+\label{fig:circulation}
+\end{figure}
+
+\subsection{Theory against simulation}
+
+Table~\ref{tab:docking} sets the equations of Section~\ref{sec:implications} beside the simulation over the cells
+with no distress, with the largest gap in any cell; its last column says how each row holds. Four rows hold by
+construction. The simulation computes the charge, the bridge price and the quote by the contract's own equations,
+and the charge's share of bridging finance is a ratio of recorded flows the coupon fixes. These rows check
+that the code runs the contract as written and that its records add up. Their value is the size of the
+numbers: the charge of Proposition~\ref{prop:size}, computed from the bridge book and wallet balances without its
+small standby term, matches the simulated charge, and the share follows Proposition~\ref{prop:theta}. The other
+rows predict behaviour. Participation follows the one curve of Proposition~\ref{prop:diffusion}
+from every launch level with one fitted leaving rate (Figure~\ref{fig:participation}).
+
+One prediction holds only in part. Proposition~\ref{prop:capital} puts capital at its target when the money offered
+exceeds the room. With savers reviewing entry at the monthly rate, offers do not always fill the room, and in the
+worst cell capital is below 95\% of its target in the share of seed-months given in the fourth row of
+Table~\ref{tab:docking}. The proposition's condition is real, not a formality. Its other half, that
+entrants act on the quote, is taken up in Section~\ref{sec:record}.
+
+Proposition~\ref{prop:fair} says the quote is right on average and that an owner's shortfall is a loss tail. Both show.
+Owners earn their alternative at the median, with a tail below it. Table~\ref{tab:owners} gives the realised
+return on pool capital less the alternative in years 4 and 5 over the seed-cells with no distress. At every
+outside rate the median is within \OwnersMedianWorst{} of a percentage point of zero. In one seed-cell in ten
+owners fall short of their alternative by \OwnersTenthLeast{} to \OwnersTenthWorst{} of a point a year or more,
+depending on the outside rate. The tail matters, because an owner decides whether to stay on its realised
+return (Section~\ref{sec:entry}).
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/docking}}
+\caption{Theory against simulation over CPM's cells with no distress: each quantity's formula value and the
+simulated value, as ranges over cells, and the largest gap in any cell. A row holds by construction where the
+simulation computes the quantity by that equation, as predicted where the equation describes behaviour, and in
+part where the prediction's condition is not always met.}
+\label{tab:docking}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_participation.pdf}
+\caption{Participation under CPM at an outside rate of 4.4\% with no distress. (a) Paths from the seven launch
+levels, the seed mean thick and each seed thin, with the prediction of equation~\eqref{eq:diffusion}. (b) The
+seed-mean paths shifted in time onto the path from the lowest launch level.}
+\label{fig:participation}
+\end{figure}
+
+\begin{table}[htbp]\centering\small
+\input{tables/owners}
+\caption{Owners' realised return less their alternative in years 4 and 5, in percentage points a year, over the
+seed-cells with no distress.}
+\label{tab:owners}
+\end{table}
+
+\subsection{The registered claim}
+
+Table~\ref{tab:region} and Figure~\ref{fig:region} give the claim as registered, read once on the \NumSeeds{}
+confirmation seeds. With no distress \ClaimCellsAsBuilt{} of the \CellsNoDistress{} cells pass clauses (a), (b) and
+(d) as built, and \ClaimCellsBoth{} pass also under the cash-advance bound. Those cells join edge to edge, so the
+region is one block of \RegionCellsZero{} cells: every cell at outside rates of 4.4\% and 6\%, and five of the
+seven at 2\%. At the Bonferroni level over the \CellsNoDistress{} cells the claim holds in \ClaimHoldsSomewhere{}.
+A falsifier fires in \ClaimCellsFalsified{} cell. The seed-count rule marks \ClaimCellsUnderpowered{} cell
+underpowered: on the confirmation map's own spreads no cell needs more than \ClaimSeedsCellMost{} seeds, so the
+declared extension to \SeedsExtended{} seeds is not used.
+
+In every seed of every cell of the grid the pool forms, households hold at least 90\% of its capital through the
+second window and the issuer stays. With no distress at least \SeedsPersistentLeast{} of the \NumSeeds{} seeds are Persistent in every
+cell, and clause (a) passes in all of them (Table~\ref{tab:gains}).
+
+The group clause decides little. Against best-case DeFi, with completed purchases at their price, the lowest lower
+bound of any group in any cell is \GroupLowDefiFace{} a person a year as built and \GroupLowDefiFaceBound{} under
+the bound: every group is ahead of best-case DeFi on the registered clause, by a wide margin. Against banks and
+cards the clause is also read at the other end of the bracket, the group's gain in wealth plus the purchases it
+received less its own extra sales, so with a seller's extra sales valued at nothing. For a group that is not its
+gain in money alone. There the lowest is \GroupLowBanksZero{} as built and \GroupLowBanksZeroBound{} under the
+bound, both at an outside rate of 2\% and a launch of 5\%. The second lies sixty cents beyond the \$2 margin, and
+that cell is one of the two that miss. Its group means are positive; it misses on the lower end of an interval.
+
+The other cell that misses is at an outside rate of 2\% and a launch of 80\%, on the real-cost clause. There the
+real resources CPM saves against best-case DeFi are \RealCostDefiLow{} a person a year, at the margin itself, and
+the interval reaches past it. Neither cell reads falsified: in both the interval straddles the margin. They are the
+edge of the region and are reported as such.
+
+Indexed CPM is read separately, in the \IndexedValid{} cells where it is defined. With no distress it is in its
+region in \IndexedRegionZero{} of them and holds at its Bonferroni level in \IndexedHolds{}. Under distress its
+region holds \IndexedRegionHalf{} cells at half a point, \IndexedRegionOne{} at 1 point, \IndexedRegionOneHalf{} at
+1.5 points and \IndexedRegionTwo{} at 2 points, against \RegionCellsHalf{}, \RegionCellsOne{},
+\RegionCellsOneHalf{} and \RegionCellsTwo{} for CPM, whose region under distress also lies at 4.4\% and 6\% only (Section~\ref{sec:stress}). Indexed CPM's
+median gain over its \IndexedValid{} cells is \IndexedGainBanks{} a person a year over banks and cards and \IndexedGainDefi{} over best-case DeFi, where
+CPM's is \IndexedCpmGainBanks{} and \IndexedCpmGainDefi{}. At 2\% inflation, stating the contract in
+purchasing-power terms leaves the result unchanged.
+
+\begin{table}[htbp]\centering\small
+\input{tables/region}
+\caption{The registered claim on the \NumSeeds{} confirmation seeds, by distress level, outside rate (rows) and
+launch participation (columns): $\bullet$ in the region, $\circ$ passing outside the largest joined block,
+$\times$ not passing. A cell at a level of distress is in the region when its cell with no distress passes and
+withstands every level up to that one. The last column counts the cells in the region at each level.}
+\label{tab:region}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_region.pdf}
+\caption{The registered claim on the \NumSeeds{} confirmation seeds, one panel per distress level.}
+\label{fig:region}
+\end{figure}
+
+\subsection{The edge at low outside rates}\label{sec:lowrates}
+
+The registered grid has three outside rates, and the sharpest change in the claim lies between two of them: under
+distress the region holds no cell at 2\% and, at half a point, every cell at 4.4\%. After the confirmation map was
+read the gap was filled with a rate cut, outside rates of 2.5, 3 and 3.5\% over the same launch and distress
+levels, on the frozen model and read by the same rules. It is exploratory. It was run on \CutSeedsTried{} seeds
+of a block kept for runs after the confirmation, of which \CutSeeds{} completed; \CutSeedsAside{} were set
+aside because one of their \CutCells{} runs stopped on a day whose settlement did not converge
+(Section~\ref{sec:limits}). No clause of the registered claim reads it.
+
+Table~\ref{tab:cut} sets the cut's rows between the registered ones. With no distress the claim passes in
+\CutPassZeroTwoFive{} of seven cells at 2.5\%, \CutPassZeroThree{} at 3\% and \CutPassZeroThreeFive{} at 3.5\%, so
+the edge lies between 3\% and 3.5\%. Under distress the region widens step by step with the rate: at half a point
+it holds \CutPassHalfTwoFive{}, \CutPassHalfThree{} and \CutPassHalfThreeFive{} cells at the three rates, and at 1
+point \CutPassOneTwoFive{}, \CutPassOneThree{} and \CutPassOneThreeFive{}. The cells that miss with no distress
+miss as the cells at 2\% do, on the group clause under the cash-advance bound at the lowest launch levels and on
+real cost against best-case DeFi at a launch of 80\%. Every gain is positive in \CutGainPositive{} of the cut's
+\CutCells{} cells, and CPM fails fewer payments than both alternatives in \CutFewerFailures{}. Across the six
+rates the gains, the bridges served and pool capital against its target all rise with the rate, with no reversal
+between the grid's points. One count does not: with no distress fewer cells pass at 2.5\% (\CutPassZeroTwoFive{}) than
+in the registered row at 2\% (Table~\ref{tab:cut}). The cut's rows are read on other seeds than the registered rows, and on fewer. They
+locate the edge and are not a second test of the claim.
+
+\begin{table}[htbp]\centering\footnotesize
+\input{tables/cut}
+\caption{The claim over six outside rates, by distress level and launch participation: $\bullet$ in its map's
+region, $\circ$ passing outside the largest joined block, $\times$ not passing. Rates marked $\dagger$ are the
+exploratory rate cut on \CutSeeds{} seeds; the others are the registered map on \NumSeeds{} seeds.}
+\label{tab:cut}
+\end{table}
+
+Two things make the claim weakest at low outside rates. The first is the reserve return: there is less of it to
+pass on (Table~\ref{tab:sources}), so every gain in money is smaller. The second is what is asked of the pool
+(Table~\ref{tab:lending}, Figure~\ref{fig:lowrates}). The pool lends an instalment loan
+only when its coupon is no dearer than the outside lender's rate on that loan. Its coupon moves one for one
+with the outside rate, while the outside lender's rates on new vehicle and personal loans move by 0.75 and 0.63 of
+a change in it (Section~\ref{sec:model}). So at a low outside rate the pool undercuts the outside lender on
+loans it leaves to that lender at a higher one. At 2\% its instalment coupon is \LendCouponTwo{}, below the outside
+lender's \LendNewCarTwo{} on new-car loans to borrowers with scores of 661 to 780 and \LendUsedCarTwo{} on used-car
+loans to those with higher scores. At 4.4\% it is \LendCouponFourFour{} against \LendNewCarFourFour{} and
+\LendUsedCarFourFour{}, and those loans stay with the outside lender. The cut's rates place the crossing
+between 2.5\% and 3.5\%, and the edge of the region with no distress lies between 3\% and 3.5\%
+(Table~\ref{tab:cut}).
+
+These are sixty-month loans, and within a day the pool's cash goes to instalment purchases before
+bridges. With them the pool lends \LendTermMore{} more in instalment loans at 2\% than at 4.4\%,
+\LendTermTwo{} a person a year against \LendTermFourFour{}, and its capital target is \LendTargetMore{} higher,
+\LendTargetTwo{} a person against \LendTargetFourFour{}. Capital follows the target, to \LendCapitalTwo{} of it
+against \LendCapitalFourFour{}, but less cash is left for bridging: bridging refused is \LendRefusedMore{} higher,
+\LendRefusedTwo{} a person a year against \LendRefusedFourFour{}, and bridges served are \LendServedTwo{} against
+\LendServedFourFour{}. Every row of the table moves in one direction across the six
+rates. So the weak edge at low outside rates has two sources, both stated in the model: a smaller reserve
+return, and a pool whose instalment book grows when the outside lender's rates fall by less than its own coupon.
+The contract studied here has no rule that keeps pool cash back for bridging when instalment lending asks for it.
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/lending}}
+\caption{What is asked of the pool, by outside rate with no distress. The first three rows compare the pool's
+instalment coupon with the outside lender's rate on the two kinds of vehicle loan for which the comparison changes
+side within these rates; the pool lends such a loan when its coupon is no dearer. The other rows are medians over
+the seven launch levels. Rates marked $\dagger$ are the exploratory rate cut on \CutSeeds{} seeds; the others are
+the registered map on \NumSeeds{} seeds.}
+\label{tab:lending}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_low_rates.pdf}
+\caption{The edge at low outside rates, with no distress. (a) The pool's term coupon less the outside lender's rate
+on the two kinds of vehicle loan of Table~\ref{tab:lending}; the pool lends such a loan where the difference is
+not above zero. (b) The pool's term lending, each launch level set to 100 at an outside rate of 4.4\%. (c) Bridges
+served. Thin lines are launch levels and the thick line their median. Hollow markers are the exploratory rate
+cut.}
+\label{fig:lowrates}
+\end{figure}
+
+\subsection{Stress}\label{sec:stress}
+
+Table~\ref{tab:stress} and Figure~\ref{fig:stress} show where the result ends. Under distress the share of bridges
+the pool serves in years 4 and 5 falls, and falls further the higher launch participation is. At 2 points and
+an outside rate of 4.4\% a pool run, bridges served below 60\%, appears in at least one of the \NumSeeds{} seeds from \RunAdoption{}
+launch participation upward; at an outside rate of 2\% runs begin at lower participation and lower distress
+(Figure~\ref{fig:stress}). A run starts when a write-off takes owners' realised return below their alternative:
+owners file to leave, the cash set aside for them cannot be lent, and long loans cannot be called. Bridges served
+can fall below 60\% without owners leaving: with no distress they do in 1 of the \NumSeeds{} seeds at a launch of
+60\% and in 6 at 80\%, where the pool is stretched (Table~\ref{tab:stress}).
+
+Payments still fail less often under CPM on average: \FailCpmStressMean{} at 2 points of distress, against
+\FailBanksStressMean{} under banks and cards and \FailDefiStressMean{} under best-case DeFi. That is
+\FailCutBanksStress{} and \FailCutDefiStress{} lower, where with no distress it is \FailCutBanks{} and
+\FailCutDefi{}. Across the whole grid,
+by the share of payments that fail, CPM fails fewer than both alternatives in \CellsFewerFailures{} of \CellsAll{} cells. The six exceptions
+all lie at an outside rate of 2\%, at launch participation of 45\% and above and distress of 1 point and above
+(Figure~\ref{fig:failed}).
+
+The gains above are earned over the whole run, which includes two years before the shock. Counting only
+what is earned after it, in months 37 to 60, CPM's gain in money over banks and cards is positive in
+\GainAfterBanksPositive{} of the \CellsAll{} cells, the lowest being \GainAfterBanksLow{} a person a year. Over
+best-case DeFi it is positive in \GainAfterDefiPositive{}. The cells where it is negative, the lowest at
+\GainAfterDefiLow{}, lie in the same corner: an outside rate of 2\%, launch participation of 45\% and above and
+distress of 1.5 points and above, where owners run on the pool. There a household is still ahead over the sixty months
+and is losing ground to best-case DeFi when the run ends. At 2 points the median cell earns
+\GainAfterBanksMedianTwo{} a person a year over banks and cards after the shock and \GainAfterDefiMedianTwo{} over
+best-case DeFi, against \GainAfterBanksMedianZero{} and \GainAfterDefiMedianZero{} over the same months with no
+distress: \GainAfterBanksLowerTwo{} and \GainAfterDefiLowerTwo{} less.
+
+The registered region narrows with distress: \RegionCellsHalf{} cells at half a point, \RegionCellsOne{} at 1
+point, \RegionCellsOneHalf{} at 1.5 points and \RegionCellsTwo{} at 2 points (Table~\ref{tab:region}). At an
+outside rate of 2\% no cell withstands half a point. At 4.4\% and 6\% launch levels of 20\% and 30\% withstand 2
+points, launch levels of 5\%, 10\% and 45\% withstand 1.5 points, and launch levels of 60\% and 80\% withstand 1
+point, or half a point at 6\% and a launch of 80\%. The claim withstands the most distress in the middle of the
+launch range, and the two ends fail for different reasons. At launches of 5\% and 10\% the 2-point level fails on
+clause (a): too few seeds read Persistent, though the pool still serves most of the bridges asked of it. At
+launches of 45\% and above the level that fails does so on the dip in payments and on real cost, where the pool
+serves about half the bridges asked of it.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_stress_boundary.pdf}
+\caption{Bridges served under CPM in years 4 and 5, by launch participation and distress level, one panel per
+outside rate. The number in each cell is the count of seeds, of \NumSeeds{}, with a pool run.}
+\label{fig:stress}
+\end{figure}
+
+\begin{table}[htbp]\centering\footnotesize
+\resizebox{\linewidth}{!}{\input{tables/stress}}
+\caption{CPM under distress at an outside rate of 4.4\%: bridges served in years 4 and 5, the seeds with a pool run,
+the seeds whose bridges served fall below their own level in years 1 to 3, the share of offers to the pool left
+unused, and write-offs in dollars a person a year.}
+\label{tab:stress}
+\end{table}
+
+\subsection{When savers judge the pool by its record}\label{sec:record}
+
+The confirmation map was run again on the same seeds with one rule changed. Under the quote rule, the
+decided one, a saver who reviews entry offers its money when the pool's published quote is at least the saver's
+alternative. Under the record rule it does so when the pool's realised return over the last twelve months is.
+The record rule is the pessimistic reading of the condition in Proposition~\ref{prop:capital}.
+Table~\ref{tab:readings} sets the two rules side by side.
+
+CPM stays ahead of both alternatives under either rule. Every gain over banks and cards and over best-case DeFi is
+positive in \ReadSecondGainPositive{} of the \CellsAll{} cells of the grid. The median gain is
+\ReadSecondGainBanks{} a person a year over banks and cards and \ReadSecondGainDefi{} over best-case DeFi,
+\ReadSecondGainBanksLower{} and \ReadSecondGainDefiLower{} below the gains under the quote rule. CPM
+fails \ReadSecondFailCpm{} of payments against \ReadSecondFailBanks{} under banks and cards. The real-cost clause
+and the group clause pass in all \CellsNoDistress{} cells with no distress, as built and under the cash-advance
+bound, and no falsifier fires.
+
+The rule decides whether the pool sustains itself. Over years 4 and 5 pool capital stands at
+\ReadSecondCapital{} of its target, against \ReadFirstCapital{} under the quote rule, and the pool serves
+\ReadSecondServedCpm{} of the bridges asked of it, against \ReadFirstServedCpm{}. The pool is Persistent in \ReadSecondPersistentLow{} to
+\ReadSecondPersistentHigh{} of the \NumSeeds{} seeds, depending on the cell, where clause (a) needs
+\WilsonConfirm{}. That clause fails in all but \ReadSecondRegion{} cells, so under this reading the registered
+claim holds in \ReadSecondRegion{} of the \CellsNoDistress{} cells with no distress and in none under distress.
+The condition of Proposition~\ref{prop:capital} is the knife-edge of the design, and these numbers are its size.
+
+Neither level of capital is a resting point. Table~\ref{tab:path} follows the pool year by year and Figure~\ref{fig:path} month by month. Its capital target rises
+throughout the run under both rules, as the network grows and the term book fills: the longest loans run
+sixty months, so the book is still filling when the run ends. Under the quote rule capital follows the
+target to within one per cent for four years and stands at \PathFirstRatioFive{} of it in the fifth. Under the
+record rule capital falls behind from the first year. It is \PathSecondRatioFour{} of the target in year 4
+and \PathSecondRatioFive{} in year 5, and bridges served fall from \PathSecondServedFour{} to
+\PathSecondServedFive{}. Capital still grows in dollars, from \PathSecondCapitalFour{} to \PathSecondCapitalFive{}
+a person, but more slowly than what is asked of it. So sixty months do not show where the pool comes to
+rest under this reading, only that it has not come to rest and is still losing ground when the run ends.
+
+The record rule is also where demurrage does most. Without the charge the pool serves \ReadSecondServedPool{} of
+bridges at a price of \ReadSecondPricePool{} and fails \ReadSecondFailPool{} of payments, close to the bank
+arrangement. With the charge it serves \ReadSecondServedCpm{} at \ReadSecondPriceCpm{}. CPM's gain over the pool
+without the charge is \ReadSecondGainOverPool{} a person a year under this reading, against
+\ReadFirstGainOverPool{} under the quote rule. The two maps share their seeds and the bank arrangement is
+the same in both, so they are one body of evidence read under two assumptions, not two confirmations.
+
+\begin{table}[htbp]\centering\small
+\input{tables/readings}
+\caption{The confirmation map under the two entry rules, on the same \NumSeeds{} seeds: medians over
+the \CellsNoDistress{} cells with no distress, and counts of cells. The second row is the range over those cells of
+the number of seeds, of \NumSeeds{}, where the pool reads Persistent.}
+\label{tab:readings}
+\end{table}
+
+\begin{table}[htbp]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/path}}
+\caption{The pool year by year after launch under the two entry rules, with no distress: for each
+year the median over the \CellsNoDistress{} cells of the seed mean of the year's months. Capital and its target
+are in dollars a person.}
+\label{tab:path}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{figures/fig_path.pdf}
+\caption{Pool capital over its target (top) and bridges served (bottom), month by month after launch at an outside
+rate of 4.4\%, under the quote rule and the record rule: the median over the seven launch levels of each cell's
+seed mean, and their range. Left, no distress; right, 2 points of distress.}
+\label{fig:path}
+\end{figure}

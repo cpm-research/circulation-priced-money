@@ -1,0 +1,60 @@
+2026-11-18 13:41:01  seed 20261601: running 105 jobs
+2026-11-18 14:14:10  seed 20261601: done in 33.1 minutes, 105 jobs, integrity passed
+2026-11-18 14:14:10  seed 20261602: running 105 jobs
+2026-11-18 14:46:02  seed 20261602: done in 31.9 minutes, 105 jobs, integrity passed
+2026-11-18 14:46:02  seed 20261603: running 105 jobs
+2026-11-18 16:25:49  seed 20261603: FAILED in 99.8 minutes, exit code 1; see parts/seed_20261603.log
+2026-11-18 16:26:48  seed 20261604: running 105 jobs
+2026-11-18 16:58:28  seed 20261604: done in 31.7 minutes, 105 jobs, integrity passed
+2026-11-18 16:58:28  seed 20261605: running 105 jobs
+2026-11-18 17:30:09  seed 20261605: done in 31.7 minutes, 105 jobs, integrity passed
+2026-11-18 17:30:09  seed 20261606: running 105 jobs
+2026-11-18 18:02:10  seed 20261606: done in 32.0 minutes, 105 jobs, integrity passed
+2026-11-18 18:02:10  seed 20261607: running 105 jobs
+2026-11-18 18:37:32  seed 20261607: done in 35.3 minutes, 105 jobs, integrity passed
+2026-11-18 18:37:32  seed 20261608: running 105 jobs
+2026-11-18 19:10:52  seed 20261608: done in 33.3 minutes, 105 jobs, integrity passed
+2026-11-18 19:10:52  seed 20261609: running 105 jobs
+2026-11-18 19:42:53  seed 20261609: done in 32.0 minutes, 105 jobs, integrity passed
+2026-11-18 19:42:53  seed 20261610: running 105 jobs
+2026-11-18 20:15:34  seed 20261610: done in 32.7 minutes, 105 jobs, integrity passed
+2026-11-18 20:15:34  seed 20261611: running 105 jobs
+2026-11-18 20:46:24  seed 20261611: SET ASIDE after 30.8 minutes (a job failed); see seed_20261611.failed.log
+2026-11-18 20:46:24  seed 20261612: running 105 jobs
+2026-11-18 21:18:45  seed 20261612: done in 32.3 minutes, 105 jobs, integrity passed
+2026-11-18 21:18:45  seed 20261613: running 105 jobs
+2026-11-18 21:52:07  seed 20261613: done in 33.3 minutes, 105 jobs, integrity passed
+2026-11-18 21:52:07  seed 20261614: running 105 jobs
+2026-11-18 22:26:28  seed 20261614: done in 34.3 minutes, 105 jobs, integrity passed
+2026-11-18 22:26:28  seed 20261615: running 105 jobs
+2026-11-18 23:00:09  seed 20261615: done in 33.7 minutes, 105 jobs, integrity passed
+2026-11-18 23:00:09  seed 20261616: running 105 jobs
+2026-11-18 23:33:09  seed 20261616: done in 33.0 minutes, 105 jobs, integrity passed
+2026-11-18 23:33:09  seed 20261617: running 105 jobs
+2026-11-19 00:05:30  seed 20261617: done in 32.3 minutes, 105 jobs, integrity passed
+2026-11-19 00:05:30  seed 20261618: running 105 jobs
+2026-11-19 00:37:51  seed 20261618: done in 32.3 minutes, 105 jobs, integrity passed
+2026-11-19 00:37:51  seed 20261619: running 105 jobs
+2026-11-19 01:10:12  seed 20261619: done in 32.3 minutes, 105 jobs, integrity passed
+2026-11-19 01:10:12  seed 20261620: running 105 jobs
+2026-11-19 01:42:32  seed 20261620: done in 32.3 minutes, 105 jobs, integrity passed
+2026-11-19 01:42:32  seed 20261621: running 105 jobs
+2026-11-19 02:03:43  seed 20261621: SET ASIDE after 21.2 minutes (a job failed); see seed_20261621.failed.log
+2026-11-19 02:03:43  seed 20261622: running 105 jobs
+2026-11-19 02:36:24  seed 20261622: done in 32.7 minutes, 105 jobs, integrity passed
+2026-11-19 02:36:24  seed 20261623: running 105 jobs
+2026-11-19 03:08:24  seed 20261623: done in 32.0 minutes, 105 jobs, integrity passed
+2026-11-19 03:08:24  seed 20261624: running 105 jobs
+2026-11-19 03:40:05  seed 20261624: done in 31.7 minutes, 105 jobs, integrity passed
+2026-11-19 03:40:05  seed 20261625: running 105 jobs
+2026-11-19 04:12:06  seed 20261625: done in 32.0 minutes, 105 jobs, integrity passed
+2026-11-19 04:12:06  seed 20261626: running 105 jobs
+2026-11-19 04:43:47  seed 20261626: done in 31.7 minutes, 105 jobs, integrity passed
+2026-11-19 04:43:47  seed 20261627: running 105 jobs
+2026-11-19 05:16:07  seed 20261627: done in 32.3 minutes, 105 jobs, integrity passed
+2026-11-19 05:16:07  seed 20261628: running 105 jobs
+2026-11-19 05:48:08  seed 20261628: done in 32.0 minutes, 105 jobs, integrity passed
+2026-11-19 05:48:08  seed 20261629: running 105 jobs
+2026-11-19 06:20:29  seed 20261629: done in 32.3 minutes, 105 jobs, integrity passed
+2026-11-19 06:20:29  seed 20261630: running 105 jobs
+2026-11-19 06:47:39  seed 20261630: SET ASIDE after 27.2 minutes (a job failed); see seed_20261630.failed.log

@@ -1,0 +1,30 @@
+{
+ "20261603": {
+  "reason": "a job failed",
+  "message": "RuntimeError: Job failed: cell r_out 0.035, a0 0.8, distress [0.0, 0.005, 0.01, 0.015, 0.02], seed 20261603, lenders' interest leaving: RuntimeError: Day 1493: settlement did not reach its fixed point in 20000 sweeps. Arm=M1, seed=20261603, n=4000, a0=0.8, r_out=0.035, distress=0.0, lender income recirculated=False. Largest change in payment completion in the last sweep: 0.0178157; against the sweep before: 0. Payers whose completion moves: [0, 4, 21, 26, 35, 57, 93, 102, 106, 127, 146, 194] (94 in all); whose pool request moves: [1306] (1); of them holders [1306], screened out in either sweep []. The movers hold a card: [False, False, False, False, False, True, False, False, False, False, False, False]; their money: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.008508661946834768, 0.0, 0.08981228520721093, 0.0]; their amounts due today: [0.023079150685676467, 0.007192435322894987, 0.0037339836803585353, 0.029943424245505078, 0.023591752091154796, 0.005315594828728085, 0.007867080782605503, 0.010739670091665127, 0.024251454652475867, 0.004066551428232865, 0.15443642287462475, 0.005262877050878243]; their payments to each other today: 1, in P 0, by card 0, past a holder's room 0, of kinds [1, 0, 0, 0, 0, 0]; their other payments: 181.",
+  "minutes": null,
+  "at": "2026-11-18 15:08",
+  "by": "scripts/run_confirmation.py"
+ },
+ "20261611": {
+  "reason": "a job failed",
+  "message": "RuntimeError: Job failed: cell r_out 0.03, a0 0.6, distress [0.0, 0.005, 0.01, 0.015, 0.02], seed 20261611, lenders' interest leaving: RuntimeError: Day 1940: settlement did not reach its fixed point in 20000 sweeps. Arm=U, seed=20261611, n=4000, a0=0.6, r_out=0.03, distress=0.02, lender income recirculated=False. Largest change in payment completion in the last sweep: 0.0337368; against the sweep before: 0. Payers whose completion moves: [2, 14, 15, 23, 29, 37, 40, 61, 73, 77, 79, 85] (198 in all); whose pool request moves: [79, 429, 492, 972, 1011, 1414, 2619, 3087] (8); of them holders [79, 1011, 1414, 3087], screened out in either sweep []. The movers hold a card: [False, False, False, True, False, True, False, True, True, False, True, True]; their money: [0.0, 0.0, 0.008776418259919878, 5.421010862427522e-19, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]; their amounts due today: [0.015652278925409442, 0.025608910125839573, 0.1355907390369001, 0.039661025562931454, 0.010262088981824385, 0.006777293022704805, 0.008092122266808038, 0.00736456207977894, 0.002346128517245927, 0.019060787741873718, 0.003535016473929008, 0.16410195189686447]; their payments to each other today: 41, in P 0, by card 1, past a holder's room 0, of kinds [9, 3, 0, 29, 0, 0]; their other payments: 422.",
+  "minutes": 30.8,
+  "at": "2026-11-18 20:46:24",
+  "by": "rate_cut_resume.py"
+ },
+ "20261621": {
+  "reason": "a job failed",
+  "message": "RuntimeError: Job failed: cell r_out 0.03, a0 0.3, distress [0.0, 0.005, 0.01, 0.015, 0.02], seed 20261621, lenders' interest leaving: RuntimeError: Day 1504: settlement did not reach its fixed point in 20000 sweeps. Arm=M1, seed=20261621, n=4000, a0=0.3, r_out=0.03, distress=0.02, lender income recirculated=False. Largest change in payment completion in the last sweep: 0.0371555; against the sweep before: 0. Payers whose completion moves: [7, 21, 32, 38, 39, 47, 59, 70, 81, 126, 152, 182] (109 in all); whose pool request moves: [1009, 1159, 3627] (3); of them holders [1009, 1159, 3627], screened out in either sweep []. The movers hold a card: [False, False, False, False, False, False, False, False, False, False, False, False]; their money: [0.0, 0.0, 0.0, 0.0, 0.0, 0.268586982422175, 0.06614979181557451, 0.0, 0.0, 0.03844325417231484, 0.0, 0.0]; their amounts due today: [0.04039105880934641, 0.009379014293219634, 0.006499233659916328, 0.005861630201161999, 0.022789245551612013, 0.368967664794652, 0.2731814184625797, 0.2587445465457739, 0.02809779662932315, 0.3258961206240801, 0.009419368503425332, 0.004786547564632275]; their payments to each other today: 3, in P 0, by card 0, past a holder's room 0, of kinds [1, 2, 0, 0, 0, 0]; their other payments: 234.",
+  "minutes": 21.2,
+  "at": "2026-11-19 02:03:43",
+  "by": "rate_cut_resume.py"
+ },
+ "20261630": {
+  "reason": "a job failed",
+  "message": "RuntimeError: Job failed: cell r_out 0.035, a0 0.05, distress [0.0, 0.005, 0.01, 0.015, 0.02], seed 20261630, lenders' interest leaving: RuntimeError: Day 1437: settlement did not reach its fixed point in 20000 sweeps. Arm=U, seed=20261630, n=4000, a0=0.05, r_out=0.035, distress=0.015, lender income recirculated=False. Largest change in payment completion in the last sweep: 0.0640583; against the sweep before: 0. Payers whose completion moves: [25, 31, 82, 115, 132, 167, 185, 200, 214, 264, 278, 284] (45 in all); whose pool request moves: [1474] (1); of them holders [1474], screened out in either sweep []. The movers hold a card: [False, False, True, False, False, False, False, False, False, False, False, False]; their money: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.028667324091891207, 1.2490009027033011e-15, 0.0]; their amounts due today: [0.014466111142200365, 0.0070022142935288675, 0.014405532641183917, 0.01007743510723834, 0.006149549702491858, 0.013637062206426987, 0.012244840453222718, 0.002677019381233276, 0.0277513361517465, 0.12683993195289156, 0.013202869962745166, 0.013383876053158024]; their payments to each other today: 5, in P 0, by card 0, past a holder's room 0, of kinds [0, 1, 0, 4, 0, 0]; their other payments: 89.",
+  "minutes": 27.2,
+  "at": "2026-11-19 06:47:39",
+  "by": "rate_cut_resume.py"
+ }
+}

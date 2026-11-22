@@ -1,0 +1,239 @@
+[
+ {
+  "jsonrpc": "2.0",
+  "id": "borrower_basic",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xdc4abafd0000000000000000000000005889d3094799dcc8d22869d3ecc1d78753b1be4f"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "borrower_debt_previous_block",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x374c49b40000000000000000000000005889d3094799dcc8d22869d3ecc1d78753b1be4f"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "borrower_supply_previous_block",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x70a082310000000000000000000000005889d3094799dcc8d22869d3ecc1d78753b1be4f"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "totals_basic",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xb9f0baf7"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "base_scale",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x44c1e5eb"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "storefront",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x1f5954bd"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "target_reserves",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x32176c49"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "num_assets",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xa46fe83b"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "borrower_COMP",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x2b92a07d0000000000000000000000005889d3094799dcc8d22869d3ecc1d78753b1be4f000000000000000000000000c00e94cb662c3520282e6f5717214004a7f26888"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "borrower_LINK",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x2b92a07d0000000000000000000000005889d3094799dcc8d22869d3ecc1d78753b1be4f000000000000000000000000514910771af9ca656af840dff83e8264ecf986ca"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "COMP_info",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000000"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "LINK_info",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000004"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "LINK_total_customers",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd000000000000000000000000514910771af9ca656af840dff83e8264ecf986ca"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "COMP_total_customers",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd000000000000000000000000c00e94cb662c3520282e6f5717214004a7f26888"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "LINK_protocol_inventory",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f8000000000000000000000000514910771af9ca656af840dff83e8264ecf986ca"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "COMP_protocol_inventory",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f8000000000000000000000000c00e94cb662c3520282e6f5717214004a7f26888"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "base_cash",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "LINK_custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x514910771af9ca656af840dff83e8264ecf986ca",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "COMP_custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "old_implementation_code",
+  "method": "eth_getCode",
+  "params": [
+   "0xbfc4feec175996c08c8f3a0469793a7979526065",
+   "0x11e40e7"
+  ]
+ }
+]

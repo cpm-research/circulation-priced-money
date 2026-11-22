@@ -1,0 +1,50 @@
+[
+  {
+    "id": "base_oracle_round",
+    "method": "eth_call",
+    "params": [
+      {
+        "data": "0xfeaf968c",
+        "to": "0x8fffffd4afb6115b954bd326cbe7b4ba576818f6"
+      },
+      "0x18fffe0"
+    ],
+    "jsonrpc": "2.0"
+  },
+  {
+    "id": "base_oracle_decimals",
+    "method": "eth_call",
+    "params": [
+      {
+        "data": "0x313ce567",
+        "to": "0x8fffffd4afb6115b954bd326cbe7b4ba576818f6"
+      },
+      "0x18fffe0"
+    ],
+    "jsonrpc": "2.0"
+  },
+  {
+    "id": "base_oracle_description",
+    "method": "eth_call",
+    "params": [
+      {
+        "data": "0x7284e416",
+        "to": "0x8fffffd4afb6115b954bd326cbe7b4ba576818f6"
+      },
+      "0x18fffe0"
+    ],
+    "jsonrpc": "2.0"
+  },
+  {
+    "id": "reward_governor",
+    "method": "eth_call",
+    "params": [
+      {
+        "data": "0x0c340a24",
+        "to": "0x1B0e765F6224C21223AeA2af16c1C46E38885a40"
+      },
+      "0x18fffe0"
+    ],
+    "jsonrpc": "2.0"
+  }
+]

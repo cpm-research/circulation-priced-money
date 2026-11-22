@@ -1,0 +1,8 @@
+2026-11-19 07:49:23  seed 20261631: running 6 jobs
+2026-11-19 07:53:40  seed 20261631: done in 4.3 minutes, 6 jobs, integrity passed
+2026-11-19 07:53:40  seed 20261632: running 6 jobs
+2026-11-19 07:57:55  seed 20261632: done in 4.3 minutes, 6 jobs, integrity passed
+2026-11-19 07:57:55  seed 20261633: running 6 jobs
+2026-11-19 08:02:11  seed 20261633: done in 4.3 minutes, 6 jobs, integrity passed
+2026-11-19 08:02:11  joining the parts
+2026-11-19 08:02:11  joined 3 parts in 0.0 minutes

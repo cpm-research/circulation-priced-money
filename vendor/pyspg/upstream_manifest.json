@@ -1,0 +1,43 @@
+{
+  "repository": "https://github.com/tessonec/PySPG",
+  "commit": "2e6b4bb8512cd73838c190b8c9a616b7ebef188a",
+  "files": {
+    "spg/base/iterator.py": {
+      "github_blob_sha": "cbbe644baaedaf1d23766c3c5dbd1fa167ef6ad0",
+      "sha256": "ab997003b0b50572e48bb6c56654c5250cbe596ccdba0f15ffbd118cfb1ed73e",
+      "url": "https://api.github.com/repos/tessonec/PySPG/contents/spg/base/iterator.py?ref=2e6b4bb8512cd73838c190b8c9a616b7ebef188a",
+      "bytes": 9994
+    },
+    "README.rst": {
+      "github_blob_sha": "c7860d8440480766c4643affa7269d97e857146b",
+      "sha256": "fca47f436c15203f99b7d12405f1131fdca804ef39219bae971665f1c03afaa1",
+      "url": "https://api.github.com/repos/tessonec/PySPG/contents/README.rst?ref=2e6b4bb8512cd73838c190b8c9a616b7ebef188a",
+      "bytes": 2538
+    },
+    "LICENCE": {
+      "github_blob_sha": "94a9ed024d3859793618152ea559a168bbcbb5e2",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "url": "https://api.github.com/repos/tessonec/PySPG/contents/LICENCE?ref=2e6b4bb8512cd73838c190b8c9a616b7ebef188a",
+      "bytes": 35147
+    },
+    "spg/__init__.py": {
+      "github_blob_sha": "39d4fcb2f782def2d73f49f16cf9d1585776e9e4",
+      "sha256": "4b5355fee0d84da1710551fcd7f7159af6b7069fc5476099311752c94b2c5113",
+      "url": "https://api.github.com/repos/tessonec/PySPG/contents/spg/__init__.py?ref=2e6b4bb8512cd73838c190b8c9a616b7ebef188a",
+      "bytes": 438
+    },
+    "VERSION": {
+      "github_blob_sha": "fcdb2e109f68cff5600955a73908885fe8599bb4",
+      "sha256": "e1d49c569ae09b2ede16e2d83820a3809b35eb6c44c13ba9b5330598d6b8f43c",
+      "url": "https://api.github.com/repos/tessonec/PySPG/contents/VERSION?ref=2e6b4bb8512cd73838c190b8c9a616b7ebef188a",
+      "bytes": 6
+    },
+    "setup.py": {
+      "github_blob_sha": "822826cabc8887c747bbe49130fcd818d227a373",
+      "sha256": "af0643dae3a4449c110aaa721f8aba670b48122400e088ece0656a05b66b3aab",
+      "url": "https://api.github.com/repos/tessonec/PySPG/contents/setup.py?ref=2e6b4bb8512cd73838c190b8c9a616b7ebef188a",
+      "bytes": 2043
+    }
+  },
+  "role": "configuration enumeration outside monetary execution; not a rate solver"
+}

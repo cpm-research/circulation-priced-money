@@ -1,0 +1,9 @@
+--- upstream/iterator.py
++++ compat_iterator.py
+@@ -314,5 +314,5 @@
+     mu.add(Iterator(name = "c", data=[0,-1]))
+ #    mu.add(SPGIterator(name = "b", data=[2,4,8]))
+     for i in mu:
+-      print i
++      print(i)
+ #    m2 = SPGIterator(name = "a", data=[1,2,4,8])

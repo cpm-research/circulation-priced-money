@@ -1,0 +1,25 @@
+% Written by scripts/paper_numbers.py from confirmation_quote.
+\begin{tabular}{llrrrrrrrrrrrrrr}
+\toprule
+ & & \multicolumn{3}{c}{Participation at month 60} & \multicolumn{2}{c}{Gain over banks} & \multicolumn{2}{c}{Gain over DeFi} & \multicolumn{2}{c}{Cells where it survives} & \multicolumn{2}{c}{Failed payments} & & & \\
+Sellers & Joining and launch & from 5\% & from 20\% & from 60\% & Median & Range & Median & Range & Banks & DeFi & CPM & Banks & Bridge price & Demurrage & Critical mass \\
+\midrule
+Uniform & linear joining (the base) & 0.45 & 0.69 & 0.92 & \$311 & \$119 to \$518 & \$156 & \$62 to \$233 & 7 of 7 & 7 of 7 & 2.03\% & 3.61\% & 2.10\% & 0.140\% &  \\
+ & measured thresholds & 0.78 & 0.86 & 0.94 & \$382 & \$246 to \$523 & \$184 & \$123 to \$234 & 7 of 7 & 7 of 7 & 1.88\% & 3.61\% & 2.05\% & 0.145\% &  \\
+ & common threshold 0.1 & 0.84 & 0.90 & 0.95 & \$398 & \$275 to \$524 & \$188 & \$133 to \$234 & 7 of 7 & 7 of 7 & 1.83\% & 3.61\% & 2.05\% & 0.144\% & 5\% \\
+ & common threshold 0.2 & 0.54 & 0.89 & 0.95 & \$398 & \$96 to \$524 & \$189 & \$55 to \$234 & 7 of 7 & 7 of 7 & 1.83\% & 3.61\% & 2.08\% & 0.141\% & 5\% \\
+ & common threshold 0.3 & 0.18 & 0.80 & 0.95 & \$385 & \$61 to \$524 & \$187 & \$31 to \$234 & 7 of 7 & 7 of 7 & 1.85\% & 3.61\% & 2.10\% & 0.140\% & 5\% \\
+\midrule
+Ring & local share 1, linear joining & 0.44 & 0.69 & 0.92 & \$312 & \$117 to \$530 & \$159 & \$61 to \$245 & 7 of 7 & 7 of 7 & 2.03\% & 3.72\% & 2.09\% & 0.149\% &  \\
+ & local share 1, linear, one neighbourhood & 0.35 & 0.48 & 0.77 & \$245 & \$99 to \$501 & \$122 & \$50 to \$237 & 7 of 7 & 7 of 7 & 2.55\% & 3.72\% & 2.08\% & 0.145\% &  \\
+ & local share 1, threshold 0.2 & 0.58 & 0.88 & 0.95 & \$394 & \$127 to \$535 & \$189 & \$69 to \$247 & 7 of 7 & 7 of 7 & 1.85\% & 3.72\% & 2.10\% & 0.153\% & 5\% \\
+ & local share 1, threshold 0.2, one neighbourhood & 0.39 & 0.54 & 0.84 & \$243 & \$90 to \$503 & \$123 & \$48 to \$237 & 7 of 7 & 7 of 7 & 2.55\% & 3.72\% & 2.09\% & 0.141\% & 5\% \\
+ & local share 0.35, linear joining & 0.44 & 0.69 & 0.92 & \$310 & \$116 to \$512 & \$157 & \$59 to \$228 & 7 of 7 & 7 of 7 & 2.07\% & 3.65\% & 2.06\% & 0.137\% &  \\
+ & local share 0.35, threshold 0.2, one neighbourhood & 0.50 & 0.86 & 0.94 & \$379 & \$93 to \$514 & \$174 & \$53 to \$229 & 7 of 7 & 7 of 7 & 2.09\% & 3.65\% & 2.08\% & 0.132\% & 5\% \\
+\midrule
+Hubs & linear joining & 0.45 & 0.69 & 0.92 & \$314 & \$121 to \$533 & \$170 & \$66 to \$258 & 7 of 7 & 7 of 7 & 3.31\% & 5.09\% & 2.20\% & 0.211\% &  \\
+ & linear joining, largest sellers first & 0.58 & 0.77 & 0.92 & \$359 & \$208 to \$534 & \$143 & \$85 to \$245 & 7 of 7 & 7 of 7 & 3.57\% & 5.09\% & 2.20\% & 0.175\% &  \\
+ & measured thresholds & 0.78 & 0.85 & 0.93 & \$381 & \$249 to \$530 & \$191 & \$128 to \$250 & 7 of 7 & 7 of 7 & 3.12\% & 5.09\% & 2.19\% & 0.204\% &  \\
+ & measured thresholds, largest sellers first & 0.82 & 0.86 & 0.93 & \$394 & \$313 to \$539 & \$158 & \$136 to \$248 & 7 of 7 & 7 of 7 & 3.41\% & 5.09\% & 2.17\% & 0.184\% &  \\
+\bottomrule
+\end{tabular}

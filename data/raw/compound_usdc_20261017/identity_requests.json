@@ -1,0 +1,46 @@
+[
+  {
+    "params": [
+      "0x63e749153baf1838f63ca22c275370bd2b1ceb15",
+      "0x18fffe0"
+    ],
+    "id": "implementation_code",
+    "jsonrpc": "2.0",
+    "method": "eth_getCode"
+  },
+  {
+    "params": [
+      "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+      "0x18fffe0"
+    ],
+    "id": "proxy_code",
+    "jsonrpc": "2.0",
+    "method": "eth_getCode"
+  },
+  {
+    "params": [
+      "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+      "0x18fffe0"
+    ],
+    "id": "extension_code",
+    "jsonrpc": "2.0",
+    "method": "eth_getCode"
+  },
+  {
+    "params": [
+      "0x1B0e765F6224C21223AeA2af16c1C46E38885a40",
+      "0x18fffe0"
+    ],
+    "id": "rewards_code",
+    "jsonrpc": "2.0",
+    "method": "eth_getCode"
+  },
+  {
+    "params": [
+      "0x656970313936372e70726f78792e61646d696e"
+    ],
+    "id": "admin_slot_hash",
+    "jsonrpc": "2.0",
+    "method": "web3_sha3"
+  }
+]

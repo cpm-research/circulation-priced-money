@@ -1,0 +1,119 @@
+{
+  "scope": "Three block-pinned market observations, not a calibrated price process or a long-run shock sample",
+  "archive_endpoint": "https://ethereum-public.nodies.app",
+  "raw_inputs": [
+    "historical_sample_before_followup.json",
+    "historical_completion_requests.json",
+    "historical_completion_responses.json",
+    "historical_oracle_round_requests.json",
+    "historical_oracle_round_responses.json",
+    "../independent_archive_price_probe.json",
+    "../snapshot.json"
+  ],
+  "observations": [
+    {
+      "block": 26163968,
+      "block_hash": "0xe24bc6876b15cc5c095bc507734fc04109a5533863c201206e251900639826c5",
+      "utc": "2026-10-10T18:56:47+00:00",
+      "supply_apr_percent": "4.1511383918064",
+      "borrow_apr_percent": "5.0263335811728",
+      "oracles": {
+        "USDC": {
+          "price_usd": "0.99988047",
+          "price_raw": "99988047",
+          "round_id": "73786976294838206492",
+          "answered_in_round": "73786976294838206492",
+          "updated_at_utc": "2026-10-10T13:39:35+00:00",
+          "age_seconds": 19032,
+          "decimals": 8
+        },
+        "WETH": {
+          "price_usd": "2508.26044172",
+          "price_raw": "250826044172",
+          "round_id": "36893488147419121508",
+          "answered_in_round": "36893488147419121508",
+          "updated_at_utc": "2026-10-10T18:32:35+00:00",
+          "age_seconds": 1452,
+          "decimals": 8
+        }
+      },
+      "checks_passed": [
+        "block identity matches saved header",
+        "direct supply and borrow rate getters equal exact curve reconstruction",
+        "oracle answers equal Comet getPrice outputs",
+        "round timestamps are nonfuture and answeredInRound covers roundId"
+      ]
+    },
+    {
+      "block": 26207168,
+      "block_hash": "0xe3516fdb3476280fb0c5d29b601c9278189b7e7a035afedb13e1d37f98b612d7",
+      "utc": "2026-10-16T19:23:23+00:00",
+      "supply_apr_percent": "5.0818543017408",
+      "borrow_apr_percent": "6.0746994334944",
+      "oracles": {
+        "USDC": {
+          "price_usd": "0.99987322",
+          "price_raw": "99987322",
+          "round_id": "73786976294838206498",
+          "answered_in_round": "73786976294838206498",
+          "updated_at_utc": "2026-10-16T07:41:47+00:00",
+          "age_seconds": 42096,
+          "decimals": 8
+        },
+        "WETH": {
+          "price_usd": "2401.14",
+          "price_raw": "240114000000",
+          "round_id": "36893488147419121725",
+          "answered_in_round": "36893488147419121725",
+          "updated_at_utc": "2026-10-16T18:44:23+00:00",
+          "age_seconds": 2340,
+          "decimals": 8
+        }
+      },
+      "checks_passed": [
+        "block identity matches saved header",
+        "direct supply and borrow rate getters equal exact curve reconstruction",
+        "oracle answers equal Comet getPrice outputs",
+        "round timestamps are nonfuture and answeredInRound covers roundId"
+      ]
+    },
+    {
+      "block": 26214368,
+      "block_hash": "0x3a282d5aceb3cc24dfaf339fabe2d89a879b64158311b4b9e7d13463b8c8158e",
+      "utc": "2026-10-17T19:28:23+00:00",
+      "supply_apr_percent": "7.2675618155424",
+      "borrow_apr_percent": "8.5366978893648",
+      "oracles": {
+        "USDC": {
+          "price_usd": "0.9998503",
+          "price_raw": "99985030",
+          "round_id": "73786976294838206499",
+          "answered_in_round": "73786976294838206499",
+          "updated_at_utc": "2026-10-17T06:42:23+00:00",
+          "age_seconds": 45960,
+          "decimals": 8
+        },
+        "WETH": {
+          "price_usd": "2413.16400966",
+          "price_raw": "241316400966",
+          "round_id": "36893488147419121750",
+          "answered_in_round": "36893488147419121750",
+          "updated_at_utc": "2026-10-17T19:26:59+00:00",
+          "age_seconds": 84,
+          "decimals": 8
+        }
+      },
+      "checks_passed": [
+        "block identity matches saved header",
+        "direct supply and borrow rate getters equal exact curve reconstruction",
+        "oracle answers equal Comet getPrice outputs",
+        "round timestamps are nonfuture and answeredInRound covers roundId"
+      ]
+    }
+  ],
+  "limits": [
+    "Same archive provider used for historical price methods; these are not independent historical state providers",
+    "Round metadata checked for positive answers and nonfuture timestamps; no claim about oracle decentralisation, economic accuracy or universal freshness guarantees",
+    "Three observations do not estimate collateral volatility or liquidation frequencies"
+  ]
+}

@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use this model, its results or the paper, please cite the paper."
+title: "Circulation-Priced Money: a holding charge that pays for pooled liquidity"
+type: software
+authors:
+  - family-names: Totla
+    given-names: Siddharth
+date-released: "2026-11-22"
+license: MIT
+repository-code: "https://github.com/cpm-research/circulation-priced-money"
+abstract: >-
+  An agent-based model of Circulation-Priced Money, a payment money whose holders pay a small holding charge
+  (demurrage) that goes to one liquidity pool owned by its users, compared on the same simulated people with banks
+  and cards, a best-case decentralised arrangement and the pool without the charge. The repository holds the model,
+  the registered analysis plan, the tests that tie the paper's equations and parameters to the code, and the stored
+  results the paper is rebuilt from.
+keywords:
+  - demurrage
+  - holding charge
+  - pooled liquidity
+  - household credit
+  - payments
+  - decentralised finance
+  - agent-based model
+  - mechanism design
+preferred-citation:
+  type: unpublished
+  title: "Circulation-Priced Money: a holding charge that pays for pooled liquidity"
+  authors:
+    - family-names: Totla
+      given-names: Siddharth
+  year: 2026
+  month: 11
+  notes: "Preliminary draft"

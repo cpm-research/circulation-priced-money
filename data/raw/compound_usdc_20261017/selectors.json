@@ -1,0 +1,227 @@
+[
+  {
+    "signature": "baseToken()",
+    "selector": "0xc55dae63",
+    "hash": "0xc55dae638bf15a7f1a6c10d9b393a8363c8056720808bb4c2472c9e8a6226204"
+  },
+  {
+    "signature": "baseTokenPriceFeed()",
+    "selector": "0xe7dad6bd",
+    "hash": "0xe7dad6bdf4d9203300675c2b120d07cee4debee42386eb994ae4b98382b9dffd"
+  },
+  {
+    "signature": "baseScale()",
+    "selector": "0x44c1e5eb",
+    "hash": "0x44c1e5eb287187a340fc94d0c4bb0d576ac55cfa3ca8f051f712c4fceeca8909"
+  },
+  {
+    "signature": "decimals()",
+    "selector": "0x313ce567",
+    "hash": "0x313ce567add4d438edf58b94ff345d7d38c45b17dfc0f947988d7819dca364f9"
+  },
+  {
+    "signature": "numAssets()",
+    "selector": "0xa46fe83b",
+    "hash": "0xa46fe83b09160d6d993802d5f4e21e81db1382b736009549d26bbf4cab7e53b4"
+  },
+  {
+    "signature": "baseBorrowMin()",
+    "selector": "0x300e6beb",
+    "hash": "0x300e6beb41c9c3429c76a4b8b266d540286f06cc0bf28c284204f66380e89e19"
+  },
+  {
+    "signature": "targetReserves()",
+    "selector": "0x32176c49",
+    "hash": "0x32176c49e49ad44582b57f329592920ad0bb1322bb0bab6b24cbb56470b0200f"
+  },
+  {
+    "signature": "storeFrontPriceFactor()",
+    "selector": "0x1f5954bd",
+    "hash": "0x1f5954bd6130e9b86d0f829e6858926c6ca7c2d2aa63bcc956a0d3f0a8a5442c"
+  },
+  {
+    "signature": "getReserves()",
+    "selector": "0x0902f1ac",
+    "hash": "0x0902f1ac5dbaeedd3217f11b3cbaf929216c9c5abc2d69da89d54964bead575d"
+  },
+  {
+    "signature": "totalSupply()",
+    "selector": "0x18160ddd",
+    "hash": "0x18160ddd7f15c72528c2f94fd8dfe3c8d5aa26e2c50c7d81f4bc7bee8d4b7932"
+  },
+  {
+    "signature": "totalBorrow()",
+    "selector": "0x8285ef40",
+    "hash": "0x8285ef40c225de6c552377c8ebf87716fecf23a4b92eb01b9a1a75e853327505"
+  },
+  {
+    "signature": "getUtilization()",
+    "selector": "0x7eb71131",
+    "hash": "0x7eb71131be8ecf88846a53dcbc51c77ee71072a71d7b3f99b4a79fc0288b6641"
+  },
+  {
+    "signature": "totalsBasic()",
+    "selector": "0xb9f0baf7",
+    "hash": "0xb9f0baf7b5a83a5128a53a6011628cd8cc94ef0d01c100f9fff71dd57c0a26a0"
+  },
+  {
+    "signature": "supplyKink()",
+    "selector": "0xa5b4ff79",
+    "hash": "0xa5b4ff793bab4d8e2f313991f7310ed8c898bc0f586ef8f1fe9658b5f8b71362"
+  },
+  {
+    "signature": "supplyPerSecondInterestRateSlopeLow()",
+    "selector": "0x5a94b8d1",
+    "hash": "0x5a94b8d1b2eaaccf75f3e130bbc6916eb270c6d6b3e217bfa40683c18074ddef"
+  },
+  {
+    "signature": "supplyPerSecondInterestRateSlopeHigh()",
+    "selector": "0x804de71f",
+    "hash": "0x804de71fc9675d32548dd5712f100c500fba02a832be6867df15d97c2139eb7f"
+  },
+  {
+    "signature": "supplyPerSecondInterestRateBase()",
+    "selector": "0x94920cca",
+    "hash": "0x94920cca8b08dae14cb6eb625c97511d579d0d0b4e77fd0cd9e5c3235e35aadd"
+  },
+  {
+    "signature": "borrowKink()",
+    "selector": "0x9241a561",
+    "hash": "0x9241a561303acfb41949e0764000ca34093a242667c3da5fb69a665edcad664c"
+  },
+  {
+    "signature": "borrowPerSecondInterestRateSlopeLow()",
+    "selector": "0x2d05670b",
+    "hash": "0x2d05670b12aebf7d9280060cc7fdcf64c39f2bfa3cda80bca52922a58cb583c3"
+  },
+  {
+    "signature": "borrowPerSecondInterestRateSlopeHigh()",
+    "selector": "0x2a48cf12",
+    "hash": "0x2a48cf12cfadc66ca4ba5cbfa39be1e2442c85cbbf95ab231eebb32fffe651ca"
+  },
+  {
+    "signature": "borrowPerSecondInterestRateBase()",
+    "selector": "0x7914acc7",
+    "hash": "0x7914acc784e5052cdb6e85bde0bb437f43ca7493ddf0ca061399744e0f3345f6"
+  },
+  {
+    "signature": "baseTrackingSupplySpeed()",
+    "selector": "0x189bb2f1",
+    "hash": "0x189bb2f1d8b1982f426051e7d9875b8cc4de04accca49e41311d37663eb19e7c"
+  },
+  {
+    "signature": "baseTrackingBorrowSpeed()",
+    "selector": "0x9ea99a5a",
+    "hash": "0x9ea99a5ae584fe6cbdee5039197431a968b82490deff2b8f8c9439db769ff6f1"
+  },
+  {
+    "signature": "baseMinForRewards()",
+    "selector": "0x9364e18a",
+    "hash": "0x9364e18a97d0b11bd3755d8c0fb2053ee8ebc7476b4c0ff6fde3b55767be2965"
+  },
+  {
+    "signature": "trackingIndexScale()",
+    "selector": "0xaba7f15e",
+    "hash": "0xaba7f15e58ad79d016b31f42d0b257c0d5a7092e2240f5a44d6a33ea63f9aaff"
+  },
+  {
+    "signature": "baseAccrualScale()",
+    "selector": "0xa20ed596",
+    "hash": "0xa20ed596b47cb108d4ce891a542ad3d04fb4f7f4b141242199678dcbe2f77b31"
+  },
+  {
+    "signature": "governor()",
+    "selector": "0x0c340a24",
+    "hash": "0x0c340a243ac6136c5aa7202e5000cb7d5ebaa7364c24ed0ef793d54aa22348c4"
+  },
+  {
+    "signature": "pauseGuardian()",
+    "selector": "0x24a3d622",
+    "hash": "0x24a3d622f2de885c2b6b4611abd3f0e160ad9667abc2b78b3d4fc52251f13f77"
+  },
+  {
+    "signature": "extensionDelegate()",
+    "selector": "0x44ff241d",
+    "hash": "0x44ff241dc1623dcb1f709c3d4c47c9a9e4e8831dfaba8f3100dccd8dadd47452"
+  },
+  {
+    "signature": "isSupplyPaused()",
+    "selector": "0x0bc47ad1",
+    "hash": "0x0bc47ad1efa7f314b74980630a5843fcec186997da28e5793407a8b3eac3b929"
+  },
+  {
+    "signature": "isTransferPaused()",
+    "selector": "0xa1a1ef43",
+    "hash": "0xa1a1ef437b1b09b698e2c135cd4b5989638b9daa196ce475541d9121f1c92307"
+  },
+  {
+    "signature": "isWithdrawPaused()",
+    "selector": "0x67800b5f",
+    "hash": "0x67800b5f7ca471d59e190a7303fa2ae858a8f8c4dfc7eec9f70323616b3f85c0"
+  },
+  {
+    "signature": "isAbsorbPaused()",
+    "selector": "0x8d5d814c",
+    "hash": "0x8d5d814c4ba652ab298b4e440f60f82bb95ce56b90c20f101b4431d927141ade"
+  },
+  {
+    "signature": "isBuyPaused()",
+    "selector": "0xd8e5f611",
+    "hash": "0xd8e5f6111fd0af8386eadab255d0abdff8d69d88b544d470bc7c17d5f233ee47"
+  },
+  {
+    "signature": "getAssetInfo(uint8)",
+    "selector": "0xc8c7fe6b",
+    "hash": "0xc8c7fe6b218dd4268e502eaae4ec7a8fdc8eaffdb9b99e1baaa2dc85dd05211b"
+  },
+  {
+    "signature": "totalsCollateral(address)",
+    "selector": "0x59e017bd",
+    "hash": "0x59e017bda72823a6f881051616397df687c8817d793b9a16f5e97bf486455a2b"
+  },
+  {
+    "signature": "getCollateralReserves(address)",
+    "selector": "0x9ff567f8",
+    "hash": "0x9ff567f80ab79dfd31a8bd75ee4ee75ceceaa016cd0c56fb85e3289bf3f5d9e3"
+  },
+  {
+    "signature": "getPrice(address)",
+    "selector": "0x41976e09",
+    "hash": "0x41976e0924e084835685c91898001f69cccb35bc0c6e18e30ce86f3869f2a8a4"
+  },
+  {
+    "signature": "getSupplyRate(uint256)",
+    "selector": "0xd955759d",
+    "hash": "0xd955759d732f6cb357be4247785181c6cce35e399c7826ce1de4f0dd1277c2da"
+  },
+  {
+    "signature": "getBorrowRate(uint256)",
+    "selector": "0x9fa83b5a",
+    "hash": "0x9fa83b5a44af59d34535886e110a6a299897fafe73c08fa23ae0477c998fe55e"
+  },
+  {
+    "signature": "balanceOf(address)",
+    "selector": "0x70a08231",
+    "hash": "0x70a08231b98ef4ca268c9cc3f6b4590e4bfec28280db06bb5d45e689f2a360be"
+  },
+  {
+    "signature": "symbol()",
+    "selector": "0x95d89b41",
+    "hash": "0x95d89b41e2f5f391a79ec54e9d87c79d6e777c63e32c28da95b4e9e4a79250ec"
+  },
+  {
+    "signature": "latestRoundData()",
+    "selector": "0xfeaf968c",
+    "hash": "0xfeaf968c92170f878bbe01f267c8c6f5faf34a9192f39d9bd2b066b6cbfd3a06"
+  },
+  {
+    "signature": "description()",
+    "selector": "0x7284e416",
+    "hash": "0x7284e416b404dc25ce1d7ccfcfdd0c385b0e836e94b9e6364e5c3cc120e5a43c"
+  },
+  {
+    "signature": "rewardConfig(address)",
+    "selector": "0x2289b6b8",
+    "hash": "0x2289b6b86676e4b01b3728907ea02cad2f2236b6a8141e07b36ebf609f9e0fa6"
+  }
+]

@@ -1,0 +1,206 @@
+{
+  "status": "passed",
+  "scope": "Exact transaction-specific integer-accounting reconstruction, not an EVM storage diff or model implementation.",
+  "transaction": "0x3306dbba82611000046953d24f873523a717d1e797ab99061bca379373418870",
+  "block": 18759911,
+  "block_hash": "0xf1b62d6e25c2c470ab45e463f9fa3ff7ddccc3d73f562bb0387159c0afc1c300",
+  "transaction_index": 5,
+  "utc": "2023-12-11T02:13:47+00:00",
+  "units": {
+    "base_raw": "USDC / 1e6",
+    "collateral_raw": "token units / 1e18",
+    "usd_raw": "USD / 1e8",
+    "factor_raw": "/ 1e18",
+    "principal_index": "/ 1e15"
+  },
+  "identity": {
+    "proxy": "0xc3d688b66703497daa19211eedff47f25384cdc3",
+    "implementation": "0xbfc4feec175996c08c8f3a0469793a7979526065",
+    "runtime_bytes": 19027,
+    "runtime_sha256": "ca5dbed7b31f4ef839e2ae1d5af0e2b1fb2052cef50916fe174387fb726285f5",
+    "verified_runtime_match": true
+  },
+  "evidence_boundary": {
+    "archive_economic_calls": "19 calls at previous block 18759910",
+    "runtime_code_call": "target block 18759911",
+    "prefix_trace_nodes": [
+      68,
+      45,
+      10,
+      1,
+      5
+    ],
+    "target_trace_nodes": 48,
+    "trees_complete": true,
+    "prior_proxy_or_implementation_action_mentions": 0,
+    "first_proxy_call_path": [
+      0,
+      3
+    ],
+    "oracle_prices": "actual target-transaction staticcall outputs; LINK updated in the block",
+    "post_absorb_values": "reconstructed from matched verified source, unchanged Comet storage prefix, dated accrual and receipt logs; not directly observed storage diffs"
+  },
+  "accrual": {
+    "elapsed_seconds": 12,
+    "stored_utilisation_1e18": "950661774462895014",
+    "supply_rate_per_second_1e18": "1985434477",
+    "borrow_rate_per_second_1e18": "2281889321",
+    "supply_index": "1038617951372296",
+    "borrow_index": "1055747629414296",
+    "borrower_principal_before_raw": "-83021073407",
+    "base_oracle_usd_1e8": "100002000"
+  },
+  "liquidation_test": {
+    "debt_raw": "87649301440",
+    "debt_usd_1e8": "8765105442602",
+    "collateral_value_usd_1e8": "10185297985565",
+    "liquidation_capacity_usd_1e8": "8655076809548",
+    "signed_liquidity_usd_1e8": "-110028633054",
+    "coverage_ratio": "0.9874469698311653150517385961115575778992",
+    "ratio_note": "derived capacity/debt ratio, not an onchain Aave health-factor getter",
+    "eligible": true
+  },
+  "collateral": {
+    "COMP": {
+      "seized_raw": "3162901000000000000",
+      "price_usd_1e8": "5114457015",
+      "value_usd_1e8": "16176521207",
+      "capacity_usd_1e8": "11323564844",
+      "credit_usd_1e8": "14235338662"
+    },
+    "LINK": {
+      "seized_raw": "7000748643887927346781",
+      "price_usd_1e8": "1452576286",
+      "value_usd_1e8": "10169121464358",
+      "capacity_usd_1e8": "8643753244704",
+      "credit_usd_1e8": "9457282961852"
+    }
+  },
+  "absorption_reconstructed": {
+    "credited_base_raw": "94713288739",
+    "nominal_positive_balance_raw": "7063987299",
+    "supplier_principal_after_raw": "6801333723",
+    "minted_supplier_claim_raw": "7063987297",
+    "rounding_remainder_raw": "2",
+    "borrower_debt_after_raw": "0",
+    "supply_before_raw": "392451461756165",
+    "supply_after_raw": "392458525743463",
+    "borrow_before_raw": "373088604350920",
+    "borrow_after_raw": "373000955049479",
+    "physical_cash_before_and_after_raw": "22862714777227",
+    "reserves_before_raw": "3499857371982",
+    "reserves_after_raw": "3405144083243",
+    "reserve_debit_raw": "94713288739"
+  },
+  "sale_reconstructed": {
+    "asset": "LINK",
+    "base_paid_raw": "105661329933",
+    "discount_factor_1e18": "42000000000000000",
+    "discounted_price_usd_1e8": "1391568081",
+    "collateral_bought_raw": "7593120638673132946055",
+    "cash_after_raw": "22968376107160",
+    "reserves_after_raw": "3510805413176",
+    "target_reserves_raw": "5000000000000"
+  },
+  "inventory": {
+    "COMP": {
+      "columns": [
+        "customers_raw",
+        "protocol_inventory_raw",
+        "physical_custody_raw"
+      ],
+      "before": [
+        "899980054459551797428200",
+        "10762179343396564029",
+        "899990816638895193992229"
+      ],
+      "after_absorb_reconstructed": [
+        "899976891558551797428200",
+        "13925080343396564029",
+        "899990816638895193992229"
+      ],
+      "after_sale_reconstructed": [
+        "899976891558551797428200",
+        "13925080343396564029",
+        "899990816638895193992229"
+      ]
+    },
+    "LINK": {
+      "columns": [
+        "customers_raw",
+        "protocol_inventory_raw",
+        "physical_custody_raw"
+      ],
+      "before": [
+        "3204283002382509915411824",
+        "592372699907683363821",
+        "3204875375082417598775645"
+      ],
+      "after_absorb_reconstructed": [
+        "3197282253738621988065043",
+        "7593121343795610710602",
+        "3204875375082417598775645"
+      ],
+      "after_sale_reconstructed": [
+        "3197282253738621988065043",
+        "705122477764547",
+        "3197282254443744465829590"
+      ]
+    }
+  },
+  "checks": {
+    "count": 26,
+    "all_passed": true,
+    "executed": [
+      "receipt_and_block_identity",
+      "full_five_transaction_prefix",
+      "all_prefix_call_trees_complete",
+      "no_prior_proxy_or_implementation_action",
+      "target_call_tree_complete_without_errors",
+      "first_proxy_interaction_is_absorb",
+      "trace_implementation_runtime_equals_verified_runtime",
+      "nineteen_previous_block_calls_and_target_block_code",
+      "borrower_principal_and_previous_debt",
+      "COMP_absorption_event_exact",
+      "COMP_repeat_oracle_returns_consistent",
+      "LINK_absorption_event_exact",
+      "LINK_repeat_oracle_returns_consistent",
+      "eligible_negative_liquidity",
+      "LINK_updated_in_target_block",
+      "AbsorbDebt_exact_base_and_usd",
+      "minted_claim_exact_principal_rounding",
+      "reserve_debit_equals_absorption_credit",
+      "quote_matches_sale_event_and_transfer",
+      "sale_payment_matches_funded_transfer",
+      "cash_and_LINK_custody_observed_before_sale",
+      "COMP_custody_and_inventory_identities",
+      "LINK_custody_and_inventory_identities",
+      "LINK_transaction_physical_balance_changes_exact",
+      "USDC_transaction_physical_balance_changes_exact",
+      "sale_reserves_below_target"
+    ]
+  },
+  "raw_inputs": [
+    "followup/liquidation_archive_requests.json",
+    "followup/liquidation_archive_responses.json",
+    "followup/old_verified_source.json",
+    "followup/raw_trace.json",
+    "followup/state_changes.json",
+    "followup/prefix_transaction_hashes.json",
+    "followup/prefix_trace_access.json",
+    "followup/prefix_trace_0.json",
+    "followup/prefix_trace_1.json",
+    "followup/prefix_trace_2.json",
+    "followup/prefix_trace_3.json",
+    "followup/prefix_trace_4.json",
+    "history_state_responses.json",
+    "provider_access_checks.json"
+  ],
+  "limits": [
+    "Archive runtime matched explorer-verified runtime; source was not recompiled locally.",
+    "Comet storage carries across the transaction prefix, but time and oracle prices do not.",
+    "Curve coefficients are immutable historical implementation getters at target-block end; current coefficients are not substituted.",
+    "No independent immediate post-absorb storage diff was retrieved.",
+    "One successful absorption and sale does not validate all protocol branches, reserve shortfalls or household behaviour."
+  ]
+}

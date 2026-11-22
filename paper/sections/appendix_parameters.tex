@@ -1,0 +1,119 @@
+\section{Parameters and sources}\label{app:parameters}
+
+Table~\ref{tab:parameters} lists every calibrated value and every setting that affects the results, in the units a
+reader would quote; the code holds money in months of mean spending (\$6,440) and rates a month. The same table in
+machine form, with each value in the code's own units and the code's own name, is \texttt{docs/PARAMETERS.csv}, and a
+test fails if any value in it differs from the code. ``Declared'' marks a modelling choice, not a sourced fact. The
+sources were checked against the publishers' own pages and documents in November 2026; where a published figure
+differs from the value used, the Source column says so.
+
+{\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}p{0.17\textwidth}p{0.15\textwidth}p{0.08\textwidth}p{0.28\textwidth}p{0.24\textwidth}@{}}
+\caption{Parameters, values and sources.}\label{tab:parameters}\\
+\toprule
+Symbol or name & Value & Unit & Meaning & Source \\
+\midrule
+\endfirsthead
+\toprule
+Symbol or name & Value & Unit & Meaning & Source \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\multicolumn{5}{@{}l}{\textit{Rates and costs}}\\
+$\rho = r_{\mathrm{out}}$ & 2, 4.4, 6 & \% a year & reserve rate, the outside rate (a control) & three-month bill, declared grid \\
+$o$ & 2 & \% a year & pool operating cost on carried principal & Philippon (2015), unit cost of US financial intermediation, applied to the pool \\
+$\phi$ & 0.18 (0.10, 0.50) & \$ a person a year & pool fixed cost, central (low, high) & Aave (central), Compound (low), Sky (high) paid service providers, 2025, over 134.556m consumer units \\
+$a - \rho$ & 0.25 & points a year & owners' spread in their alternative and in the coupon's capital part & declared \\
+$c_I$ & 0.24 & \% a year & issuer's custody cost on all P; $p = \rho - c_I$ & ICI (2026), money market fund expense ratio, 2025, a proxy \\
+merchant card fee & 1.7 & \% & paid by the seller on each card payment & CMSPI (2025), average acceptance cost over all payment types, 2022 \\
+card rewards & 0.75 & \% & paid to the cardholder on card purchases & CFPB card market report (2025); Fed Payments Study (2024) \\
+conversion fee & 0.05\% + \$0.22 & per conversion & dollars to P and back, the cents scaled to a \$142 payment & 12 CFR 235.3(b), 235.4(a); payment size declared \\
+USDC conversion & 0 & \% & dollars to USDC and back & Coinbase Exchange fee table, June 2026 \\
+gas & \$0.00169 & per transfer & one transfer for P, two for USDC & growthepie, Base, October 2026 \\
+bill anchor & 4.05 (4.135) & \% a year & bill rate on a discount basis (credited monthly) & FRED TB3MS, October 2026 \\
+USDC yield spread & 0.441 & points a year & bill less the Sky Savings Rate (3.60\%, 3.80\% APY) & sUSDS \texttt{ssr()} on Ethereum, October 2026 \\
+deposit rate & 0.38 (floor 0.06) & \% a year & savings deposits at the anchor & FDIC national savings rate (FRED SNDR), October 2026; floor declared \\
+pass-through & 0.08 / 1 / 0.75 / 0.63 / 1 & share & of $r_{\mathrm{out}}$ to deposit, card, vehicle, personal and business rates & FRED, 2022 to 2024; Fed G.19 against TB3MS, February 2022 to February 2024 \\
+checking yield & 0.07 & \% a year & on bank money & FDIC national interest-checking rate, November 2026 \\
+overdraft rate & 22 & \% a year & on rounding overdrafts & Fed G.19, credit card plans, Q3 2026 (21.19\% all accounts, 22.36\% accounts assessed interest) \\
+DFA mix & table & \$ millions & deposits and money market shares by wealth group (bottom 50, 50--90, 90--99, top 1\%) & Fed Distributional Financial Accounts, 2026 Q2 \\
+real cost, card credit & 3.4 & \% a year & of balances & Agarwal et al.\ (2015) \\
+real cost, term credit & 2.5 & \% a year & of balances & FDIC Quarterly Banking Profile, Q4 2025 \\
+real cost, failure & \$2 & per item & a failed payment, or a pool bridge that replaced one & CFPB overdraft rule, December 2024 \\
+real cost, card rail & \$0.069; 0.11\%; 0.09\% & per payment; of value & processing and fraud prevention; fraud; network & Fed Regulation II data 2023; Nilson Report 2023; Visa 2025 \\
+real cost, holding & 0.24 & \% a year & of money and savings balances & ICI (2026), money market fund expense ratio, 2025 \\
+real cost, earned-wage advance & \$2 & per use & & declared \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{Households and income}}\\
+unit of money & \$6,440 & per month & mean consumer-unit spending & BLS, Consumer Expenditures in 2023 (2024) \\
+Pareto shape & 1.5 & & initial wealth, by quantile band means & declared \\
+median wealth & 0.6 & months of own spending & before survey cushions & declared \\
+survey cushions & \$0, 100, 500, 2,000, 5,000 & at ranks 0, 0.18, 0.30, 0.50, 0.62 & liquid savings caps by rank & Federal Reserve Board (2026), SHED 2025, Table 26, largest emergency expense covered from savings \\
+spending elasticity & 0.5 (floor 0.02) & & to relative net worth (floor of mean) & declared \\
+wage share & 58.3 & \% of spending & one wage contract to one other person & declared \\
+service purchases & 32 & a month & each to a random seller & declared \\
+housing share & 32.9 & \% & of total expenditures, applied to service purchases, not card-eligible & BLS, Consumer Expenditures in 2023 (2024) \\
+billing cycles & 1, 7, 15, 30, 60 & days & shares 20.9, 15.7, 36.6, 16.4, 10.4\% & BLS CES, length of pay period, February 2023, for wages; business split declared \\
+pay periods & 7, 14, 15, 30 & days & shares 27.0, 43.0, 19.8, 10.3 (normalised) & BLS CES, length of pay period, February 2023, shares of establishments; day counts declared \\
+buffer grid & 0 to 3 & months of own spending & 0, 0.1, 0.25, 0.5, 0.75, 1, 1.5, 2, 3 & declared \\
+failure fee & \$27 & per failed bill or wage & at most one a day and two a month & Bankrate via Checkbook; monthly cap declared \\
+request rates & 0.347/60, 0.185/24, 0.37/12 & a month & vehicle, personal, business & SCF 2022 (Federal Reserve Board, 2023), Table 4, vehicle and other instalment loans; business declared, near the Fed SBCS share applying for financing (37\% in 2023 and 2024) \\
+terms & 60, 24, 11 & months & vehicle, personal, business & Fed G.19 (new car 60-month, personal 24-month); business declared \\
+loan sizes & \$43,582 new, \$27,528 used (43.3\% new); \$7,000; 0.158 of a year's spending & for a mean spender, scaled by own spending & vehicle, personal, business & Experian (2026), Q4 2025, new and used; 43.3\% new declared (42.2\% reported, including leases); personal declared (TransUnion, Q2 2025: \$8,524 average); business declared, geometric midpoints of Fed SBCS 2019 bands \\
+vehicle APR & 16.11 to 4.41 new; 21.62 to 6.29 used & \% a year & by five score tiers & Experian, State of the Automotive Finance Market, Q2 2026, VantageScore 4.0 tiers \\
+personal APR & 17.97 to 10.82 & \% a year & at scores 620 to 740 & Experian (Curinos), September 2026, 36 months; August and November 2026 tables 0.2 to 0.6 point higher \\
+business APR & 7.4 & \% a year & business loans & NFIB, Small Business Economic Trends, June 2026, short-maturity loans \\
+debt-to-income limit & 43 & \% & household instalment credit & declared; the General QM limit of 12 CFR 1026.43(e)(2)(vi) until replaced in 2021 \\
+earned-wage access & 7.43; 2.45; 50 & \% & holders (an upper bound); fee; share of unpaid wages & CFPB (2024); NCLC (2020) \\
+inflation & 2 & \% a year & every arrangement & Federal Reserve target \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{Cards}}\\
+income brackets & 12.9, 15.6, 26.7, 44.8 & \% & households under \$25k, \$25--50k, \$50--100k, over \$100k & Census, CPS ASEC 2026, HINC-06 \\
+card ownership & 46, 71, 88, 97 & \% & by income bracket & Federal Reserve Board (2026), SHED 2025, Table 40 \\
+FICO bands & 14.7, 14.9, 20.1, 27.5, 22.8 & \% & below 580, 580--669, 670--739, 740--799, 800 and above & Experian, FICO Score distribution, September 2025 \\
+score and income & 0.291 & rank correlation & Gaussian link 0.3036 & FEDS Notes, 13 August 2018, Table 1 \\
+purchase APR & 28.49, 28.20, 22.99 & \% a year & scores to 619, 620--719, 720 and above & CFPB (2024), large issuers' median, January to June 2023 \\
+credit line & 5,696; 8,121; 12,524; 22,068; 29,335; 41,654 & \$ & deep subprime to superprime & CFPB, Consumer Credit Card Market, 2025, Fig.~89 \\
+start at 90--100\% & 68.41, 46.88, 32.32, 5.2 & \% & deep subprime, subprime, near-prime, prime and above & CFPB 2025 Fig.~92, July 2024; 5.2\% declared so 18\% start there (NY Fed, 2024) \\
+utilisation bands & under 20, 20--60, 60--90 & \% of line & held by 52, 19, 11\% of borrowers & NY Fed, Liberty Street Economics, 2024, Q1 2024 \\
+revolving share & 88.06 to 19.64 & \% & by tier, scales the bands & CFPB 2025, Fig.~50, general-purpose cards, 2024 \\
+cash advance & 30; \$10 or 5\%; 20 & \% a year; fee; \% of line & APR, fee, cash line & CFPB Data Spotlight (2024); CFPB (2023), Sec.~6.4 \\
+minimum payment & \$40 or 1\% & & plus interest, fees and past due & CFPB (2025), Sec.~4.1.1 \\
+late fee & \$30 (\$41 repeat in 6 cycles) & & & 12 CFR 1026.52(b)(1)(ii), amounts in force from 2022 (86 FR 60360); amended in 2024 \\
+charge-off & 180 & days past due & line closed, balance still owed & FFIEC (2000), 65 FR 36903 \\
+line cut (side check) & 32.6, 19.4, 16.0 & \% at 2 points & deep subprime, middle tiers, superprime; off & CFPB, CARD Act Report, 2013 \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{Network and adoption}}\\
+$a_{0}$ & 0.05, 0.1, 0.2, 0.3, 0.45, 0.6, 0.8 & share & launch participation (a control) & declared grid \\
+$\xi_{0}$, $\xi_{1}$ & 3, 38 & \% a year & joining: innovation, imitation times contact share & Sultan, Farley and Lehmann (1990), as quoted by Van den Bulte and Stremersch (2003) \\
+$\upsilon$ & 0.153 & a month & chance of a review (users, owners, savers) & Crouzet, Gupta and Mezzanotti (2023), $1-e^{-0.166}$ \\
+leaving noise & $10^{-4}$ & of own spending & logistic scale (0.5 and 2 times reported) & declared \\
+experience window & 12 & months & leaving rule & declared \\
+DeFi collateral & 0 & share & people who can borrow against collateral & declared \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{Pool}}\\
+bridge horizon & 60 & days & longest bridge & the contract \\
+write-down & 90 & days past due & pool loan written down to zero & the contract \\
+loss lag & 3 & months & exposure lag in loss learning & derived \\
+exit notice & 2 & months & before an exit executes & declared \\
+owners' window & 12 & months & realised return read at exit & declared \\
+charge-off bound & 3.40, 0.83, 0.33 (10.54, 3.36, 2.57) & \% a year & card, consumer, business, normal (peak); off in the main reading & FRED CORCCACBS, COROCLACBS, CORBLACBS \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{Distress}}\\
+distress level & 0, 0.5, 1, 1.5, 2 & \% of jobs a month & extra layoffs in the distress year (a control) & declared grid \\
+normal job loss & 0.55 & \% of jobs a month & every month, every arrangement & declared, for a stock of about 1.9\% of jobs without a wage; BLS JOLTS layoffs are about 1.0\% of employment a month \\
+spells in progress & 11.5 (24.8) & weeks & median (mean) & BLS CPS (FRED UEMPMED, UEMPMEAN), September 2026 \\
+completed spells & 61.4; 1.074 & days; log-sd & median; sigma, derived & derived \\
+layoff tilt & 1.13, 1.09, 1.03, 0.92 & times average & by income bracket & BLS, Employment Situation, Table A-4, August 2026; Census, CPS ASEC 2026, HINC-01 \\
+distress year & 25 to 36 & months after launch & & declared \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{Run design}}\\
+month & 30 & days & & declared \\
+burn-in, run & 6, 60 & months & bank arrangement before launch; months after launch & declared \\
+population & 4,000 (1,000) & people & final map (development checks) & finite-size check, declared departure from its rule \\
+seeds & 20261021--23; from 20261401 & & development; confirmation, \SeedsConfirm{} seeds (extension to \SeedsExtended{}) & declared; confirmation count by the seed-count rule \\
+settlement sweeps & 20,000 & a day, most & & declared \\
+\end{longtable}
+}

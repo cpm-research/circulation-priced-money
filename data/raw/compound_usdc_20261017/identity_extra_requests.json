@@ -1,0 +1,21 @@
+[
+ {
+  "jsonrpc": "2.0",
+  "id": "admin",
+  "method": "eth_getStorageAt",
+  "params": [
+   "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+   "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "extension_code",
+  "method": "eth_getCode",
+  "params": [
+   "0xa70a0227028ad005f4fc9376a82cd1462e3aaedc",
+   "0x18fffe0"
+  ]
+ }
+]

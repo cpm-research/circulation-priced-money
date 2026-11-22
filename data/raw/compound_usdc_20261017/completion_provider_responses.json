@@ -1,0 +1,438 @@
+[
+  {
+    "endpoint": "https://rpcfree.com/ethereum-rpc",
+    "responses": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title>Free Ethereum RPC — No Signup, No API Key</title>\n    <meta name=\"description\" content=\"Free public Ethereum mainnet RPC endpoint. No signup, no API key. Listed on chainlist.org. 333K calls/day. Archive data and trace methods included.\">\n    <meta name=\"robots\" content=\"index,follow,max-image-preview:large\">\n    <link rel=\"canonical\" href=\"https://rpcfree.com/ethereum-rpc\">\n\n    <meta property=\"og:type\" content=\"website\">\n    <meta property=\"og:site_name\" content=\"rpcfree\">\n    <meta property=\"og:title\" content=\"Free Ethereum RPC — No Signup, No API Key\">\n    <meta property=\"og:description\" content=\"Free public Ethereum mainnet RPC endpoint. No signup, no API key. Listed on chainlist.org. 333K calls/day. Archive data and trace methods included.\">\n    <meta property=\"og:url\" content=\"https://rpcfree.com/ethereum-rpc\">\n\n    <meta name=\"twitter:card\" content=\"summary\">\n    <meta name=\"twitter:title\" content=\"Free Ethereum RPC — No Signup, No API Key\">\n    <meta name=\"twitter:description\" content=\"Free public Ethereum mainnet RPC endpoint. No signup, no API key. Listed on chainlist.org. 333K calls/day. Archive data and trace methods included.\">\n\n    <script type=\"application/ld+json\">\n    {\n      \"@context\": \"https://schema.org\",\n      \"@graph\": [\n        {\n          \"@type\": \"WebPage\",\n          \"name\": \"Free Ethereum RPC — No Signup, No API Key\",\n          \"url\": \"https://rpcfree.com/ethereum-rpc\",\n          \"description\": \"Free public Ethereum mainnet RPC endpoint. No signup, no API key. Listed on chainlist.org. 333K calls/day. Archive data and trace methods included.\"\n        },\n        {\n          \"@type\": \"Service\",\n          \"serviceType\": \"Blockchain RPC Endpoint\",\n          \"name\": \"Free Ethereum Mainnet RPC Endpoint\",\n          \"url\": \"https://rpcfree.com/ethereum-rpc\",\n          \"description\": \"Free public Ethereum mainnet RPC endpoint. No signup, no API key. Listed on chainlist.org. 333K calls/day. Archive data and trace methods included.\",\n          \"provider\": {\n            \"@type\": \"Organization\",\n            \"name\": \"Etox\",\n            \"url\": \"https://etox.io\"\n          },\n          \"areaServed\": \"Worldwide\",\n          \"audience\": {\n            \"@type\": \"Audience\",\n            \"audienceType\": \"Web3 Developers\"\n          },\n          \"offers\": {\n            \"@type\": \"Offer\",\n            \"price\": \"0\",\n            \"priceCurrency\": \"USD\",\n            \"availability\": \"https://schema.org/InStock\"\n          }\n        },\n        {\n          \"@type\": \"BreadcrumbList\",\n          \"itemListElement\": [\n            {\n              \"@type\": \"ListItem\",\n              \"position\": 1,\n              \"name\": \"Home\",\n              \"item\": \"https://rpcfree.com\"\n            },\n            {\n              \"@type\": \"ListItem\",\n              \"position\": 2,\n              \"name\": \"Ethereum RPC\",\n              \"item\": \"https://rpcfree.com/ethereum-rpc\"\n            }\n          ]\n        },\n        {\n          \"@type\": \"HowTo\",\n          \"name\": \"How to add Ethereum to MetaMask\",\n          \"description\": \"Add Ethereum Mainnet (chain ID 1) to MetaMask using Chainlist or manual network settings with the free rpcfree.com RPC endpoint.\",\n          \"totalTime\": \"PT2M\",\n          \"step\": [\n            {\n              \"@type\": \"HowToStep\",\n              \"position\": 1,\n              \"name\": \"Open MetaMask\",\n              \"text\": \"Open the MetaMask browser extension or mobile app and unlock your wallet.\"\n            },\n            {\n              \"@type\": \"HowToStep\",\n              \"position\": 2,\n              \"name\": \"Add via Chainlist (recommended)\",\n              \"text\": \"Visit chainlist.org/chain/1 and click Add to MetaMask — approve the network prompt.\"\n            },\n            {\n              \"@type\": \"HowToStep\",\n              \"position\": 3,\n              \"name\": \"Or add the network manually\",\n              \"text\": \"In MetaMask go to Settings → Networks → Add a network → Add a network manually.\"\n            },\n            {\n              \"@type\": \"HowToStep\",\n              \"position\": 4,\n              \"name\": \"Enter Ethereum Mainnet details\",\n              \"text\": \"Network name: Ethereum Mainnet. RPC URL: https://rpcfree.com/ethereum-rpc. Chain ID: 1. Currency symbol: ETH. Block explorer: https://etherscan.io\"\n            },\n            {\n              \"@type\": \"HowToStep\",\n              \"position\": 5,\n              \"name\": \"Save and switch network\",\n              \"text\": \"Save the network, switch to Ethereum Mainnet, and ensure you hold ETH for gas before sending transactions.\"\n            }\n          ]\n        }\n      ]\n    }\n    </script>\n    <link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\">\n    <link rel=\"stylesheet\" href=\"/assets/chain.css\">\n  </head>\n  <body data-endpoint=\"https://rpcfree.com/ethereum-rpc\" data-address=\"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045\" data-usdc=\"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48\">\n    <header class=\"site-header\" role=\"banner\">\n      <div class=\"site-header-bar\">\n        <a href=\"/\" class=\"site-brand\">\n          <img src=\"/logo.svg\" alt=\"\" class=\"site-brand-mark\" width=\"40\" height=\"40\">\n          <span class=\"site-brand-lockup\">\n            <span class=\"site-brand-name\">rpcfree</span>\n            <span class=\"site-brand-sub\">Public JSON-RPC</span>\n          </span>\n        </a>\n        <button type=\"button\" class=\"site-nav-toggle\" aria-expanded=\"false\" aria-controls=\"site-nav-panel\">\n          <span class=\"site-nav-toggle-box\" aria-hidden=\"true\"><span></span><span></span><span></span></span>\n          <span class=\"site-nav-toggle-label\">Menu</span>\n        </button>\n        <div class=\"site-nav-panel\" id=\"site-nav-panel\">\n          <nav class=\"site-nav\" aria-label=\"Main\">\n            <div class=\"site-nav-section\">\n              <span class=\"site-nav-heading\">Networks</span>\n              <ul class=\"site-nav-chains\">\n                  <li><a href=\"/ethereum-rpc\" class=\"active\" aria-current=\"page\">Ethereum</a></li>\n                  <li><a href=\"/base-rpc\">Base</a></li>\n                  <li><a href=\"/polygon-rpc\">Polygon</a></li>\n                  <li><a href=\"/arbitrum-rpc\">Arbitrum</a></li>\n                </ul>\n            </div>\n            <ul class=\"site-nav-meta\">\n              <li><a href=\"/blog\">Blog</a></li>\n              <li><a href=\"/faq\">FAQ</a></li>\n              <li><a href=\"/status\">Status</a></li>\n            </ul>\n            <a href=\"https://etox.io\" class=\"btn primary btn-sm site-header-cta\" target=\"_blank\" rel=\"noopener noreferrer\">Higher limits</a>\n          </nav>\n        </div>\n      </div>\n    </header>\n\n    <main class=\"container\">\n      <header>\n        <p class=\"chain-page-kicker\">Settlement layer · Chain ID 1</p>\n        <h1>Ethereum Mainnet RPC</h1>\n        <p class=\"sub chain-page-lead ai-lead\">rpcfree.com provides a free public JSON-RPC endpoint for Ethereum Mainnet (chain ID 1). No signup, no API key required. 333,000 calls per day. Supports archive data, trace methods, and is compatible with MetaMask, ethers.js, viem, and hardhat.</p>\n      </header>\n\n      <section aria-labelledby=\"endpoint-heading\">\n        <h2 id=\"endpoint-heading\" class=\"chain-section-title\">HTTPS endpoint <span class=\"badge\">LIVE</span></h2>\n        <pre><code>https://rpcfree.com/ethereum-rpc</code></pre>\n        <p class=\"chain-meta-line\">Chain ID 1 · Currency ETH · Block time ~12s · L1 finality ~13 min (probabilistic)</p>\n        <div class=\"chain-hero-actions\">\n          <button type=\"button\" class=\"btn ghost btn-sm\" data-mm-spec='{\"chainId\":1,\"chainName\":\"Ethereum Mainnet\",\"nativeCurrency\":{\"name\":\"Ether\",\"symbol\":\"ETH\",\"decimals\":18},\"rpcUrl\":\"https://rpcfree.com/ethereum-rpc\",\"blockExplorerUrls\":[\"https://etherscan.io\"]}'>Add to MetaMask</button>\n          <button type=\"button\" class=\"btn primary btn-sm\" data-copy-rpc=\"https://rpcfree.com/ethereum-rpc\" data-copy-label=\"Copy URL\">Copy URL</button>\n          <a class=\"btn ghost btn-sm\" href=\"#test-heading\">Try in browser <span class=\"btn-chevron\" aria-hidden=\"true\">↓</span></a>\n        </div>\n      </section>\n\n      <section class=\"live-stats\" id=\"live-stats-root\" aria-labelledby=\"live-stats-heading\" aria-live=\"polite\">\n        <h2 id=\"live-stats-heading\">Live from this RPC</h2>\n        <p class=\"live-stats-note\">Values refresh every 12 seconds via public <a href=\"https://drpc.org\" target=\"_blank\" rel=\"noopener noreferrer\">dRPC</a> while rpcfree RPC is paused. Gas is shown in Gwei (wei ÷ 10<sup>9</sup>).</p>\n        <div class=\"live-stats-grid\">\n          <div class=\"live-stat-card\">\n            <span class=\"live-stat-label\">Latest block</span>\n            <strong class=\"live-stat-value\" id=\"live-stat-block\">—</strong>\n          </div>\n          <div class=\"live-stat-card\">\n            <span class=\"live-stat-label\">Suggested gas price</span>\n            <strong class=\"live-stat-value\" id=\"live-stat-gas\">—</strong>\n          </div>\n          <div class=\"live-stat-card\">\n            <span class=\"live-stat-label\">Round-trip latency</span>\n            <strong class=\"live-stat-value\" id=\"live-stat-latency\">—</strong>\n          </div>\n        </div>\n      </section>\n\n      <hr>\n\n      <section class=\"chain-prose\" aria-labelledby=\"ethers-heading\">\n        <h2 id=\"ethers-heading\">Quick start with ethers.js</h2>\n        <p class=\"sample-code-caption\">Archive queries work without configuration. Compatible with ethers v6, viem, web3.js, web3.py, go-ethereum, and any standard EVM client.</p>\n        <pre class=\"sample-code\"><code>import { JsonRpcProvider, formatEther } from \"ethers\";\n\nconst provider = new JsonRpcProvider(\"https://rpcfree.com/ethereum-rpc\");\n\n// Read current block\nconst block = await provider.getBlockNumber();\n\n// Read vitalik.eth's balance\nconst bal = await provider.getBalance(\"vitalik.eth\");\nconsole.log(formatEther(bal), \"ETH\");\n\n// Archive query — vitalik's balance at block 18000000 (June 2023)\nconst oldBal = await provider.getBalance(\"vitalik.eth\", 18000000);\nconsole.log(formatEther(oldBal), \"ETH at block 18000000\");</code></pre>\n      </section>\n\n      <hr>\n\n      <section class=\"chain-prose\" aria-labelledby=\"pitfalls-heading\">\n        <h2 id=\"pitfalls-heading\">Common pitfalls on Ethereum</h2>\n        <p>Mainnet-specific debugging — these patterns do not map 1:1 to rollups or alt-L1s.</p>\n\n        <h3>Transaction stuck pending</h3>\n        <p>If your transaction has not been mined after a few minutes, check:</p>\n        <ol>\n          <li><strong>Gas price too low.</strong> Current base fee is surfaced in the live widget above. Your <code>maxFeePerGas</code> should typically be ≥ 2× the base fee headroom during volatility.</li>\n          <li><strong>Nonce gap.</strong> Query <code>eth_getTransactionCount</code> for the next expected nonce. If a pending tx uses a higher nonce than expected, an earlier tx is blocking the queue.</li>\n          <li><strong>Resend to replace.</strong> Re-broadcast the same nonce with a higher gas price (often ≥10% bump) to replace the original.</li>\n        </ol>\n\n        <h3>“Execution reverted” with no reason</h3>\n        <p>Pre–Solidity 0.8.4 contracts often <code>revert()</code> without messages. For 0.8.4+, decode custom errors — viem’s <code>simulateContract</code> parses errors like <code>InsufficientBalance(uint256,uint256)</code> cleanly.</p>\n        <p>If a low-level <code>call</code>/<code>delegatecall</code> reverts, the reason may not bubble — use <code>debug_traceTransaction</code> (supported on this endpoint) for a full execution trace.</p>\n\n        <h3>Archive data depth</h3>\n        <p>This endpoint serves the <strong>full archive</strong>: balances, storage slots, and <code>eth_call</code> against any block since Frontier (July 2015). Ideal for indexers, accounting, and forensics.</p>\n        <p class=\"sample-code-caption\">Note: very old pre-Byzantium blocks (&lt; 4,370,000) can be slower due to historical state proof complexity.</p>\n      </section>\n\n      <hr>\n\n      <section aria-labelledby=\"test-heading\">\n        <h2 id=\"test-heading\">Try it now</h2>\n        <p>Copy and run in your terminal:</p>\n        <pre><code>curl -X POST https://rpcfree.com/ethereum-rpc \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}'</code></pre>\n\n        <p>Or click to test live:</p>\n        <div class=\"buttons rpc-try-grid\">\n          <button class=\"btn primary\" id=\"btn-block-number\" type=\"button\">eth_blockNumber</button>\n          <button class=\"btn secondary\" id=\"btn-get-balance\" type=\"button\">eth_getBalance</button>\n          <button class=\"btn secondary\" id=\"btn-gas-price\" type=\"button\">eth_gasPrice</button>\n          <button class=\"btn secondary\" id=\"btn-chain-id\" type=\"button\">eth_chainId</button>\n          <button class=\"btn secondary\" id=\"btn-get-block\" type=\"button\">eth_getBlockByNumber</button>\n          <button class=\"btn secondary\" id=\"btn-eth-call-usdc\" type=\"button\">eth_call (USDC)</button>\n        </div>\n\n        <div id=\"rpc-result\" class=\"rpc-result\" aria-live=\"polite\">\n          <div class=\"rpc-meta\">\n            <span>Method: <strong id=\"rpc-method\"></strong></span>\n            <span>Response time: <strong id=\"rpc-time\"></strong></span>\n            <span>CU cost: <strong id=\"rpc-cu\"></strong></span>\n          </div>\n          <pre id=\"rpc-response\" class=\"rpc-response\"></pre>\n        </div>\n      </section>\n\n      <hr>\n\n      <section aria-labelledby=\"links-heading\">\n        <h2 id=\"links-heading\">Useful links</h2>\n        <div class=\"chips\">\n          <a class=\"chip\" href=\"https://ethereum.org\" target=\"_blank\" rel=\"noopener noreferrer\">Official site</a>\n          <a class=\"chip\" href=\"https://ethereum.org/developers/docs/\" target=\"_blank\" rel=\"noopener noreferrer\">Developer docs</a>\n          <a class=\"chip\" href=\"https://ethereum.github.io/execution-apis/\" target=\"_blank\" rel=\"noopener noreferrer\">Execution API spec</a>\n          <a class=\"chip\" href=\"https://etherscan.io\" target=\"_blank\" rel=\"noopener noreferrer\">Explorer</a>\n        </div>\n      </section>\n\n      <hr>\n\n      <section aria-labelledby=\"limits-heading\">\n        <h2 id=\"limits-heading\">Free vs Pro</h2>\n        <table>\n          <thead>\n            <tr>\n              <th scope=\"col\">Limit</th>\n              <th scope=\"col\">Free (no signup)</th>\n              <th scope=\"col\">Etox Pro</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr><td>CU / month</td><td>10M</td><td>300M</td></tr>\n            <tr><td>CU / day</td><td>333,333</td><td>unlimited</td></tr>\n            <tr><td>Req / sec</td><td>10</td><td>100</td></tr>\n            <tr><td>Archive depth</td><td>full (since block 0)</td><td>full (since block 0)</td></tr>\n            <tr><td>trace / debug API</td><td>Yes</td><td>Yes</td></tr>\n            <tr><td>Avg response time</td><td>~80–150ms</td><td>~30–60ms (dedicated)</td></tr>\n            <tr><td>API key</td><td>not required</td><td>included</td></tr>\n          </tbody>\n        </table>\n      </section>\n\n      <hr>\n\n      <section class=\"cta\" aria-label=\"Upgrade plan\">\n        Need more throughput?\n        <a href=\"https://etox.io\" target=\"_blank\" rel=\"noopener noreferrer\"><strong>etox.io</strong></a>\n        — Pro from $49/mo, 300M CU/month, 100 req/sec.\n      </section>\n\n      <hr>\n\n      <section aria-labelledby=\"faq-heading\">\n        <h2 id=\"faq-heading\">FAQ — Ethereum</h2>\n        <details>\n          <summary>Why are my Ethereum transactions so expensive right now?</summary>\n          <p>Ethereum’s transaction fees depend on network demand. When many people transact at the same time — during NFT mints, token launches, or DeFi liquidations — the base fee spikes. Outside peak hours, fees drop significantly. Check current gas prices on <a href=\"https://etherscan.io/gastracker\" target=\"_blank\" rel=\"noopener noreferrer\">Etherscan Gas Tracker</a> before sending.</p>\n          <p>To pay less: avoid weekday business hours (especially 12pm–8pm UTC), use Layer 2s like Base, Arbitrum, or Polygon for transfers under $1000, and set a lower <code>maxPriorityFeePerGas</code> (1–2 gwei is usually enough). Wallets like MetaMask let you customise gas — selecting “Low” can cut fees by 30–50% if you can wait a few minutes.</p>\n        </details>\n        <details>\n          <summary>How do I send a transaction faster on Ethereum?</summary>\n          <p>Speed on Ethereum depends entirely on gas price relative to the current base fee. To prioritise your transaction:</p>\n          <ul>\n            <li>Set <code>maxFeePerGas</code> to at least 2× the current base fee (headroom for spikes).</li>\n            <li>Set <code>maxPriorityFeePerGas</code> higher than typical — 3–5 gwei during congestion vs 1 gwei normally.</li>\n            <li>Avoid sending during peak congestion if it is not urgent.</li>\n          </ul>\n          <p>Wallets show “Fast / Average / Slow” options that adjust these automatically. “Fast” usually means included in 1–2 blocks (12–24 seconds); “Average” 3–5 blocks (~1 minute).</p>\n        </details>\n        <details>\n          <summary>What’s the difference between Ethereum and other “Ethereum” chains like Polygon, Base, or Arbitrum?</summary>\n          <p>Ethereum (Mainnet) is the original — the most decentralised and secure, but slower and more expensive. The others are Layer 2s or sidechains built on top:</p>\n          <ul>\n            <li><strong>Base</strong> and <strong>Arbitrum</strong> are Layer 2 rollups: cheaper and faster, but rely on Ethereum for final security.</li>\n            <li><strong>Polygon PoS</strong> is a sidechain with its own validators, bridged to Ethereum.</li>\n          </ul>\n          <p>All four use ETH (or similar EVM mechanics), accept the same wallets like MetaMask, and run the same smart contract code. The same Solidity contract can deploy to any. Choose Ethereum for max security and liquidity (DeFi blue chips); choose L2s for cheap everyday transactions.</p>\n        </details>\n        <details>\n          <summary>Why does my transaction say “Pending” for hours on Ethereum?</summary>\n          <p>Three common causes:</p>\n          <ol>\n            <li><strong>Gas price too low.</strong> The network has moved on and your tx’s <code>maxFeePerGas</code> is below the current base fee. It may eventually clear when fees drop, or stay pending until you cancel or replace it.</li>\n            <li><strong>Nonce gap.</strong> An earlier transaction got stuck and is blocking later ones. Future transactions wait until that one resolves.</li>\n            <li><strong>Network never received it.</strong> Sometimes RPC errors cause the tx to fail propagation silently.</li>\n          </ol>\n          <p>Open your wallet, find the pending transaction, and either “Speed Up” (resend with higher gas) or “Cancel” (replace with a 0-value tx to yourself at the same nonce). MetaMask and most modern wallets expose this.</p>\n        </details>\n        <details>\n          <summary>Is Ethereum safe? Can I lose my money?</summary>\n          <p>The Ethereum network itself has never been hacked at the protocol level since launching in 2015. However, you can lose funds through:</p>\n          <ul>\n            <li>Phishing scams — fake sites that ask you to “connect wallet” and approve malicious transactions.</li>\n            <li>Smart contract bugs — flawed dApps where attackers drain funds.</li>\n            <li>Lost seed phrases — there is no password recovery; if you lose your 12-word phrase, the wallet is gone.</li>\n            <li>Approving malicious tokens — granting unlimited spending to bad contracts.</li>\n          </ul>\n          <p>Best practices: store seed phrases offline (paper or hardware wallet like Ledger), revoke unused token approvals at <a href=\"https://revoke.cash\" target=\"_blank\" rel=\"noopener noreferrer\">revoke.cash</a>, double-check URLs before connecting, and never share your seed phrase with anyone — not even “support.”</p>\n        </details>\n        <details>\n          <summary>How do I check if an Ethereum transaction was successful?</summary>\n          <p>Copy the transaction hash (starts with 0x…) and paste it into <a href=\"https://etherscan.io\" target=\"_blank\" rel=\"noopener noreferrer\">Etherscan</a>. You’ll see:</p>\n          <ul>\n            <li>Status: Success (green) or Fail (red).</li>\n            <li>Block number (confirms it is on-chain).</li>\n            <li>Gas used and fee paid.</li>\n            <li>From / To addresses and the value transferred.</li>\n            <li>Internal transactions if it called a smart contract.</li>\n          </ul>\n          <p>If a transaction failed, Etherscan shows the revert reason — usually a short message from the contract. Common reasons: “insufficient funds,” “transfer amount exceeds balance,” or “execution reverted.”</p>\n        </details>\n      </section>\n\n      <hr>\n\n      <footer class=\"footer footer-trust\">\n        <div class=\"footer-links\">\n          <a href=\"/privacy\">Privacy</a>\n          <a href=\"/faq\">FAQ</a>\n          <a href=\"/status\">Status</a>\n          <a href=\"https://etox.io/docs\" target=\"_blank\" rel=\"noopener noreferrer\">Docs</a>\n          <a href=\"https://github.com/etoxdev\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>\n          <a href=\"https://x.com/RpcFree\" target=\"_blank\" rel=\"noopener noreferrer\">X</a>\n          <a href=\"#\" class=\"footer-contact-mail\" rel=\"nofollow\">Contact</a>\n        </div>\n        <small class=\"footer-powered\">Powered by <a href=\"https://etox.io\" target=\"_blank\" rel=\"noopener noreferrer\">Etox</a> — blockchain RPC infrastructure</small>\n      </footer>\n    </main>\n    <script src=\"/assets/site-header.js\"></script>\n    <script src=\"/assets/contact-mail.js\"></script>\n    <script src=\"/assets/rpc-demo-endpoints.js?v=20260605-drpc\"></script>\n    <script src=\"/assets/chain-live-stats.js?v=20260605-drpc\"></script>\n    <script src=\"/assets/chain.js\"></script>\n    <script src=\"/assets/chain-hero.js\"></script>\n  <script type=\"module\" src=\"https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092\" integrity=\"sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==\" data-cf-beacon='{\"version\":\"2024.11.0\",\"token\":\"4e8f7f9697c9454d8b97329d5283b1a6\",\"r\":1,\"spa\":2}' crossorigin=\"anonymous\"></script>\n</body>\n</html>\n"
+  },
+  {
+    "endpoint": "https://ethereum-rpc.blockreq.com/v1/rpc/public",
+    "responses": [
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "26207168:supply_rate",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "26207168:borrow_rate",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "26207168:base_price",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "26207168:weth_price",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "26163968:supply_rate",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "26163968:borrow_rate",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "26163968:base_price",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "26163968:weth_price",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "18759910:supply_rate",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "18759910:borrow_rate",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "18759910:base_price",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "18759910:weth_price",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "18759911:supply_rate",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "18759911:borrow_rate",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "18759911:base_price",
+        "jsonrpc": "2.0"
+      },
+      {
+        "error": {
+          "code": -32601,
+          "message": "public endpoint only serves recent blocks (last 1024). Register at blockreq.com for historical / archive access."
+        },
+        "id": "18759911:weth_price",
+        "jsonrpc": "2.0"
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": "current:check:totalSupply()",
+        "result": "0x00000000000000000000000000000000000000000000000000015ac58f279cce"
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": "current:check:totalBorrow()",
+        "result": "0x00000000000000000000000000000000000000000000000000013c76ee3b3ddc"
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": "current:check:getUtilization()",
+        "result": "0x0000000000000000000000000000000000000000000000000caa3693d4727c9e"
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": "current:check:getReserves()",
+        "result": "0x000000000000000000000000000000000000000000000000000007b065e9e97d"
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": "current:check:baseBorrowMin()",
+        "result": "0x0000000000000000000000000000000000000000000000000000000005f5e100"
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": "current:block",
+        "result": {
+          "hash": "0x3a282d5aceb3cc24dfaf339fabe2d89a879b64158311b4b9e7d13463b8c8158e",
+          "parentHash": "0x3322598f4d8cf301766cf8a8e6cbe5e2b8265883b2a696184e1335086c25bd04",
+          "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+          "miner": "0x9563e32bf5a78abf29404d9ecce007a2548dd239",
+          "stateRoot": "0xcef3f4d2442bd6bb8355a1945cafc1d077a20985c50d7583efd15a8bb1a284ee",
+          "transactionsRoot": "0x259f9aeb94e908d297df20e8d246e1598d61ba020a9a8eb799e13b561f4ab12b",
+          "receiptsRoot": "0xe2d9ba1babb60a74783a378445a5f39834db59ed593179fce71e9ff532a8e62a",
+          "logsBloom": "0x572900865c23385420480485f461401d9300344a365a2411cc97c02c016218941598c2aca1ab47144ab47bdb50384940ea8308980f3d84684910a9968b30318246a8b04ab70a473088bd0ccc6a6e31ad45c4046d613c002510fb2ed6dac25900543c2b2cd2947c527084a802f24bace51812007140f009807680005714e427de0098478a044615219148936b0602001fd2a086c19501cc68ce0707d039787438ab84200710a03b02ce5213a73b29ac21801c4c560c9e1a08b28c1a1f1c20855018597c6305092070a4a18458193c810f444e02d3b3af0694120aa00495e9a15412322d0eb2a0a038224726c1bc0bef69d604228028980c6a174a3128939600a3",
+          "difficulty": "0x0",
+          "number": "0x18fffe0",
+          "gasLimit": "0x3938700",
+          "gasUsed": "0x6bff52",
+          "timestamp": "0x6ad3cc57",
+          "extraData": "0x",
+          "mixHash": "0xdbcb4f1ceb509b0a576c1ae9ab924f69c75d337dc1101f311749f53ea0d30463",
+          "nonce": "0x0000000000000000",
+          "baseFeePerGas": "0x4553913",
+          "withdrawalsRoot": "0xd7654e7c5b34dae2e4a0418b0df2c79336debf62676622cf1c60dd763a7f4760",
+          "blobGasUsed": "0x20000",
+          "excessBlobGas": "0xa9f77b1",
+          "parentBeaconBlockRoot": "0xc7db076756f82b2308c2b27370e37bb99319f37426bc6ec5e6a164de84944fcd",
+          "requestsHash": "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": "0xcb5a",
+          "uncles": [],
+          "transactions": [
+            "0x32afefc2ccc92bd16cd6ff0c0d628f4f9291944f3626e07b14179fe526e7185c",
+            "0xcb182bfaafa0ff8b7601424822fbb0731ae81efff0d65d11b544e04228b76c58",
+            "0x64ef3d2dab03e9b87cc3a45a4191e76c3193c8e646483feee851cff59179e363",
+            "0x5af953989f89c890905af529f6d6c85c74d7a8d1ed5b6d655943f6182dac0a9e",
+            "0x7c54df43f12851c07e5c3359a06f30c56f4f8e497dd57ea51baf1d84dabee84d",
+            "0xc41382a2c848b510c957b5135b472f89dc6510c218c4346bf0918e5980b89f0c",
+            "0xed447de28bf1851243103c4e6f328a8f42f694c8636ba1f90c8621dfcf48f375",
+            "0x68dc12172918b2088dcb3e47e9387933783a1bdf384117ecd959355d84612cd2",
+            "0xcb828a234b89b5b14cd43594f88949bcbae726313daa784ed417088404098b0b",
+            "0x42bbe84ba8b610f1eaf6df591e88fc03eaffd1a0dc450e0dbc1ea484c6ce3740",
+            "0x74d29f472bed35562ec966605710e4e0748a058a528264b1805a2d42b8ac0d66",
+            "0x885678731580be180bd226e72fea84d0ae8feb963b7b0ad721ed28db31b79ac9",
+            "0xef45a1ef669cf4a8bb82c4a41b515a0b6f7021e7b1fc866a887a8415dc873396",
+            "0xe5c6d98ba2c259e120398281d56aef1b3ef4a548917dad4f2d0b03341aae3136",
+            "0xb77b33e13e48536ec87f5ded19b9c9c85b4a31d72d444f9d86acb48d4762293a",
+            "0x2e21bebccc157babea29fe67176b4cdaf8827b5782bba54352c9860ee70af694",
+            "0xb77dd9856ac1d7482d855be9559003eb83e915a65ec21455f5de18a43fafe56b",
+            "0x6ff6c1d7a4c8a7712a077f64fe2e6dfc9c60f376333aa3c7fc13a198b3d34ef5",
+            "0x25887f1bbe74bcbc1a804e606346b425e42b7c96fcfde974bec24fa49a414787",
+            "0xa3f325d49609c48eeefab3d1803b19f7b46c46db4931e99137553ac1400278bc",
+            "0x8fff39c0b6eeea3bb01a736bbd938f860365cc95c0e2a173d2b0f1dd78801378",
+            "0xacc51df60410d5fc3da3cb34457a0d365b475be9c96609dc2610368370aefbaf",
+            "0x8823ea729d7f952449413cae8e7711de5600a98b4c47692ceed0df778823e8fc",
+            "0xa919a9f11989711feef39f5efdb9f68dbc20f411bd610a6f03853c7e23381365",
+            "0x02483dc547cae7d31294a2355cd6d7c3acd1b1d6d6d8863b5752be0adc0067aa",
+            "0xc5f6e54e06b1ea70ccb2666605de8da5adcb24a95aae596b9b033033c4ac8a12",
+            "0x36378de9f95d06d9b54a482bd3886e8ba08904a24380bdc713246090d59e402e",
+            "0x9133c19417d42fa2439c77bb181d4ca2950659c6f180b036b59bc751956f3157",
+            "0x43d0738f63be434c0bb9462617af6e941e9cf0135e6e2ea2145ed7c595a03de2",
+            "0xc97651e1b179c2bf6880b062c90ec17b78dc6934c9ff7e5288afc8db8552098a",
+            "0x46e521e1c7d6d458603c8073a8b0fbf376fa59d841261158ed54dd9743343bf1",
+            "0x2145274378289f7ab2dcea484fe7c19680af0bb28d670c5dea5441cf9d1e5390",
+            "0xba732a78df618224687fb493f457fd36b8532223b26be738229b38b0ef5782fb",
+            "0x0e0bff6b00232787494f0326a4ed8e8071d5a91e7f7acc044bd83eea066e75e0",
+            "0xbf1229626cb74e95242a14eba04fbb755a93798a05d138ef8c0b5d7949fc1569",
+            "0xced36f2d77f93b438cca5a60f74127666cd135f682b7a5159294b4a3856df364",
+            "0x90aacc45f2539ddaefb7983039138974bdf7296ed0eb80b669e2287886a2947f",
+            "0xb42943f0d37929e2ca470beeb7d78a768039805b62e3a36696d9c3adecbe5ecb",
+            "0x4bd41ebed5574ab203d0329ad6e1accc5ee8792984e0184838fdbc02834ff6fc",
+            "0xa69084286a8137c1fd1f80d1ea0f4f6b817563465196d879f939ea4aea1b047a",
+            "0x5b6c8ec1ed2de77bdee97e7eeed0d0d9c670076aa79231fb64fc15a000fb7d45",
+            "0x4902d328800f4adb8817dbdb8165df30ee304c30c0f9f0c8a181b66e1227654a",
+            "0x9745efbf547c835a295913b8721b612decdeb13e8d31612b1f925600b4e736fd",
+            "0xfb9f62529ecc8bec4104edf8ea260f0b40b95d5429a059760b53cd53242d9c29",
+            "0xbe3d58826befac9ac2f50a896e4819deb4b1d29a39f7ca12b619b37aadbe77bf",
+            "0xebbc86a17fe746f15f8d7fc8cd0a1d21c7e308063fe0f48a617c65626acf9c6c",
+            "0x42a46ecec063bb32a048ec3c59c12d03924365ee2ff23cd6ae8a6acb3fa30bf0",
+            "0x7b9f53d2630c2effb1ec4469abf2488a3bf0d3ca92ed7ffc1603926e5ce1ad05",
+            "0x5a32d530cf30cf9753433d35c58600c6e252eba1b1f42a397617329594dbe88f",
+            "0x9cda3e444df0e98c4e3b27066c85fcbfac2887149f67cafe51334153fbdd8023",
+            "0x5416232d0fd5a6aae19ff2492e078486edd86277dc856fbfb2be32ab30a830d4",
+            "0x14e6e07a2cf70bb260a4ab1f5217907b3b4d181c97007b0864e3591f5d3c4bb3",
+            "0x55176941bfecce394ec7390d897d87250c0a97819f8ee0cff7c0e008e0770f08",
+            "0xc5d5f6f83cd7cdc3acd4b7bdc1279d0dc30a67c35af18b84a55bd774ea84dc5e",
+            "0x2e54127efb5e3587d3e1156ab182b95d4159172a8ab49e9eec9c5150f47567d6",
+            "0x61518c20cd236840a520bd567e7968d8ee7b3dcedc9c729e15ee41b9472623e8",
+            "0xb3d29a686bffef6d04739746a8c0d58afa47a29a172ecb9e432d368ecce44b17",
+            "0x6c2120b3cd5907d7c7da3c5784496cad2cfb046e9ef78471c8a5099181ad9905",
+            "0x6ec631d35e33ddd3737e06aef92afd4697ce4b6e8e91459a627810ded943907d",
+            "0xa3689ea6ec8d5d1508a3ef9723cad3f7e2b660e0581238cd457bace3494b198c",
+            "0xd8a462140114edefb0c82feeb1c868d289c67f478efb5e0db5d4ca725927e2e0",
+            "0x72f09ab72b225b257e404e639fe13555326f4cc78354f0e6f5ea1f8c8f3cb0cb",
+            "0x16adf4d3ff00db79caa392224963baf23f905c2ccfeac44daeaa0805b3743539",
+            "0x5e18aba2b8426bb933b7cb7abace2ac7daab6ce29d1ab6d1ed087390ba649248",
+            "0x681b55070e9407f38e8f374452ffab86e614b146b7c610d0868138fd0003918a",
+            "0x5286489156ea587a1af7cb57a38eeef93693bd861852179b09bfedf0739ac37e",
+            "0xa356c05ab1e05446515a0ac93b8b8e07165260d25c9b35278ec74b54acf507ec",
+            "0xf5b990327ba85ba443531da8c4a7e1020789e386fce73a3aa19d182a2ffa1210",
+            "0xeeaf64f4f00f92992957aa7113375462402eb9215ad8cdbf2d233688cdb50d07",
+            "0x49c99726b52eb70b5b697887ba3636d5f675c8326b5b321b389dae1140c2038d",
+            "0xc072c411639b46ad9442d6ae3ec4913f22d00281901114374f6a561c7d0a8ae1",
+            "0xf5a5d5cc2beacef226b43aa6773ce3fa98f826d9870112c486d59a5bc2746ff1",
+            "0x95f1a04e7559088cedbab25ef24b588b64898e5878a03a0f2674374fd8799f85",
+            "0xab3bab476ef787d3618d1c59ef1b0a4a9a69ce7b356914b36d584d481a60a5bc",
+            "0x04d1cdb36def12fc687a027988998bbfddc9da501e4c768a2b7cda0d9aa3a949",
+            "0x04eccd666ba10d093d6f244db0555b0fccc8670c804ca58043cfd0017217653f",
+            "0x0b156dc353f6f78c3e9e7b50e5b2210016d4262d8d31acfd0ac002cf391ef3c3",
+            "0xb1acc8cd3bae56819c7dce839a05131352c2065af557cbf66cecefa147e8e535",
+            "0x604e3e213991c35d9ca987f23dc285f1c4805f767a9283133272e94e2b96bbf5",
+            "0x8ab7de380c2380e815f2363e365fdff6b37dfb7743963d14e72b1d8a3cbe19d4",
+            "0x0a8d599a0bcca6e9e84c42cc5604d3d5c2b73fb662483eed0a157d0fb89c7a9f",
+            "0xf1dcf09ec3ffe78dd423f040845495d7f93739b78fb18da101354fb233b68d9d",
+            "0xcdc6b26863f9fb62f086419b923fc7bf20f88052756a238c3e70756d1bb1ba1a",
+            "0x98a7ddceecd064e8b93ef7b438cc19a1a5c917e7e2db47f1cdce8bf48f25b99a",
+            "0x20763de3f615852c1d9ef8c19b447eacbb155a06bdae0b06a8021b6f0c58c264",
+            "0x4d1214e4bdf173002072121333c4b051a30626f73ae05d63089e83591562352e",
+            "0x3f2d732b946685e6156c724f8f696a312725a1546b0e2eb33b8b8a4eb2e6f82a",
+            "0x269f72fd24edf7dd7c2d1183812e766f922c303885a4fdd4e1d7c38d2ded4f78",
+            "0xd6dfa93062981a58c31cbbe9bae824e78bccd53f03d7e07380a8e9ce75fd13f6",
+            "0x2ac6d2649d62bcad141743dbaf58a4e7ad3c5288bb6f9aa21081b30d731a1786",
+            "0x9d0d1450257ce4fb268003e3daab16ba8478cb001225df869493150bd636893c",
+            "0xee6118ff719e16c8f00f8a2c4bcb7021d816f22acca2e324472010e076822753",
+            "0xd6c0040271599930f4267389a90bc089a7e74102f9b3376364602a8cef8fb25d",
+            "0x1ff5e7110c00b23a1030fa6e0185f35a251b22cb1db5652acf8fd811cb8618ea",
+            "0xcf0b52fed915907d445a216df558aefe08ea7fd791e01fa86fdd185c6e96a16b",
+            "0xcf145d0d52d13548bcb3676b76825acd3ecee9df2b1d85e316cc89ae43e05d3b",
+            "0x320133cc8122c03ad1ecf0111da4e5d59d8680e4f663ea3bf146756cb589f559",
+            "0xf9f55a0e678a780ef20cdc72edcabca72dbd3bf652a2a05e8dd82151faa86c9f",
+            "0xf62bd5f9ae02d85fe61de211aa43e1d1deb6c246ded243e6ada58aa24ab60498",
+            "0xcdff7048cc5554406ec4cbfd097611f8841beac6d56458c46311f4686121cf8a",
+            "0x36e66d8e430325489f83e7f68396df2706bce4915ae0dceade1031bfad44166e",
+            "0xcecafaf75a2af258d78f521eb83e43da1cddf269873d67a744591fb069b752e8",
+            "0x383d513c47df8461f390fe1a0da8de207e2fb5928b9a34294a48539ffdc5ae99",
+            "0x35b74aba3b53a5ece61c491a97708bd10a886fc14c5a80fab78dd8a7b4552999",
+            "0x29e8a9d745d0cea88c88e9a21a4bba2b414a02b39f41ee89711daa01f685c67a",
+            "0xe5b53194fa54c64d076d73fcc6ae32d7bdf79fd0b2fddc00e79fa5796225a88b",
+            "0x53e1f439e75eaf4ef59c838d5e8b5bc2adc4ca089bc54e974c30550386a469eb",
+            "0x4e9f0e28327a45a520d26fc0039f9b816720401a0181b1a141d6bb1c0348a844",
+            "0xcc619ea4e61e8a3b5e7308adbd8069a3400b6d615323b21bf3b40e7a2b417d42",
+            "0x8b4df6ecb89f3c17d321bf7bc5ea0b9f7deba35c2a88ec6c09660d632205bdde",
+            "0x2a5b8cb565ef3ec939938393dcb9fa06da59c9cdb87fc4d0a957fc219d817082",
+            "0x814e40aad8b561e7c6ae2e90d2db066bc837d8ff026f9ee685e4ec325ec5b918",
+            "0x46b96d430b3a6f1ea0cd4d1e13c067a753083b5edc79df381a16eb7526acacf8",
+            "0xb7bead29fec5dc8f46dc8f9fa01bdb877acc6b1f4f23e786b1947433a368d35d",
+            "0x1bb5db5ed76c0527ac9df374137491246efc2ffa41a7574248c61abaa2922e3f",
+            "0xc299320d9a0e83570a4323b869fbe1f2efad083191443b592b1c960f16aa182d",
+            "0xb8d8a29f24edd27fd51f0547e1a480620ee5ddb98ba52848415851ab7088c331",
+            "0xe8ec52593d57d86fc8bbfa269df7c0d5eda506628a35fbe87bcef69d160d672e",
+            "0x4ee13c450aef60ec5602bde0ae770a4a0128dac71c5ffe95a6edc4df3b5a6bb2",
+            "0x9bcc4c1f8bbacbf3ba4c6f514ad48ebacd7ba59813233a6a4310c8278d1ef016",
+            "0x12696233ced54bbf58497450d810aa0ac267eb88d77162ee35935aa26be519b8",
+            "0x1d0edaeaee776230a179f1b6ce8ae1841539559395b83d1416e2a3b35f460eee",
+            "0x21fe466b03fbe1036f218ac3ce140e2d35846f2c671edcff919e4b16ae8656b8",
+            "0x1ff8b8c5c2b12e133000cf40621d09e759cf923d9a51b39da4dfc28e57250b83"
+          ],
+          "withdrawals": [
+            {
+              "index": "0x8c110eb",
+              "validatorIndex": "0x1d0d56",
+              "address": "0xc494588aa736c18bb1e48204bf635d3519782f57",
+              "amount": "0xc9c88e"
+            },
+            {
+              "index": "0x8c110ec",
+              "validatorIndex": "0x1d0d57",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd2db5"
+            },
+            {
+              "index": "0x8c110ed",
+              "validatorIndex": "0x1d0d58",
+              "address": "0xe839a3e9efb32c6a56ab7128e51056585275506c",
+              "amount": "0xc72fce"
+            },
+            {
+              "index": "0x8c110ee",
+              "validatorIndex": "0x1d0d59",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd5cc0"
+            },
+            {
+              "index": "0x8c110ef",
+              "validatorIndex": "0x1d0d5a",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd3c86"
+            },
+            {
+              "index": "0x8c110f0",
+              "validatorIndex": "0x1d0d5b",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd5464"
+            },
+            {
+              "index": "0x8c110f1",
+              "validatorIndex": "0x1d0d5c",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd7490"
+            },
+            {
+              "index": "0x8c110f2",
+              "validatorIndex": "0x1d0d5d",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd54a4"
+            },
+            {
+              "index": "0x8c110f3",
+              "validatorIndex": "0x1d0d5e",
+              "address": "0xe839a3e9efb32c6a56ab7128e51056585275506c",
+              "amount": "0xc6498e"
+            },
+            {
+              "index": "0x8c110f4",
+              "validatorIndex": "0x1d0d5f",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd3d88"
+            },
+            {
+              "index": "0x8c110f5",
+              "validatorIndex": "0x1d0d60",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd3487"
+            },
+            {
+              "index": "0x8c110f6",
+              "validatorIndex": "0x1d0d61",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd3cca"
+            },
+            {
+              "index": "0x8c110f7",
+              "validatorIndex": "0x1d0d62",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd6489"
+            },
+            {
+              "index": "0x8c110f8",
+              "validatorIndex": "0x1d0d63",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd344d"
+            },
+            {
+              "index": "0x8c110f9",
+              "validatorIndex": "0x1d0d64",
+              "address": "0xe839a3e9efb32c6a56ab7128e51056585275506c",
+              "amount": "0xc6a931"
+            },
+            {
+              "index": "0x8c110fa",
+              "validatorIndex": "0x1d0d65",
+              "address": "0x8e609ac80f4324e499a6efd24f221a2caa868224",
+              "amount": "0xcd2e03"
+            }
+          ]
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": "base_oracle_round",
+        "result": "0x00000000000000000000000000000000000000000000000400000000000000230000000000000000000000000000000000000000000000000000000005f5a686000000000000000000000000000000000000000000000000000000006ad318bb000000000000000000000000000000000000000000000000000000006ad318cf0000000000000000000000000000000000000000000000040000000000000023"
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": "base_oracle_decimals",
+        "result": "0x0000000000000000000000000000000000000000000000000000000000000008"
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": "base_oracle_description",
+        "result": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000a55534443202f2055534400000000000000000000000000000000000000000000"
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": "reward_governor",
+        "result": "0x0000000000000000000000006d903f6003cca6255d85cca4d3b5e5146dc33925"
+      }
+    ]
+  }
+]

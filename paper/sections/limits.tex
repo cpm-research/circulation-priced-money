@@ -1,0 +1,174 @@
+\section{Limits}\label{sec:limits}
+
+This section collects what bounds the result, with the direction each limit leans where known. It
+has four groups: the boundaries of the result, the modelling choices that lean towards or against CPM, the
+method, and the inputs and the standing of the evidence.
+
+\subsection{Boundaries of the result}
+
+\emph{The stress boundary.} Under 2 points of distress owners can run on the pool. At 2 points they leave after a
+write-off takes their realised return below their alternative, pool capital falls short, and bridges served drop:
+on the first development check at $a_{0} = 0.6$ this happened in two of three seeds, with bridges served of 0.29 and
+0.30 in years 4 and 5 against 0.90 in the third. The repeated size check counts the seeds with such a run, bridges
+served below 0.6 in years 4 and 5, out of eight at each population of 500, 1,000, 2,000, 4,000 and 8,000: none at any
+size at $a_{0} = 0.05$; 0, 0, 1, 3 and 3 at $a_{0} = 0.2$; and 1, 4, 7, 7 and 5 at $a_{0} = 0.6$. Where runs occur the counts rise with
+population and then level off, and one falls back at the largest size. The run does not go away as the population
+grows, so it is a boundary of the design at every size, reached from 20\% launch
+participation upward at 2,000 people and more, and populations of 500 to 1,000 hide it. Its cause is long loans funded by capital on two months' notice. Term
+lending stays in the model, with the bridge and term parts of the pool's book, income and losses reported
+apart. Changing the cash set aside for exits or ranking bridges first after seeing the result would favour the
+pool, so neither is done. The limit leans against CPM where it binds. On the size check's three cells at 4,000
+people CPM still fails fewer payments than the bank arrangement in all eight seeds at 2 points, and its mean gain
+over the bank arrangement and over best-case DeFi is positive in every seed. On the confirmation map the mean gain
+is positive in every cell at every level of distress, and CPM fails fewer payments in \CellsFewerFailures{} of the
+\CellsAll{} cells (Section~\ref{sec:results}). Figure~\ref{fig:stress} and Table~\ref{tab:stress} show the cells and seeds
+with a pool run at each level of distress.
+
+\emph{How a run unfolds.} An owner reviews its holding with a chance of 15.3\% a month, a rate decided for users and
+with no source for investors, reads only its own realised return, and does not react to other owners leaving. The
+exit notice is fixed at two months. A run where owners leave because others are leaving, the first-mover
+advantage of the literature on fund runs, is therefore absent, and the stress boundary is a lower
+bound on run risk. This leans toward CPM. Neither the review rate nor the notice is varied.
+
+\emph{Capital and the published quote.} Pool capital holds at its target under the quote rule, because entrants
+act on the published quote, which with no fee margin equals their alternative. Under the record rule, when they
+read the pool's realised twelve-month return instead, capital sat below 95\% of its target in 29 to 51\% of months on the development checks, at 1,000 and
+4,000 people, while the gain over best-case DeFi stayed positive. The quote rule leans toward CPM. The record
+rule is run over the confirmation map as the pessimistic one, with its own region. A third rule, each saver
+reading the record with the leaving rule's noise, is a side check on three cells. The record rule is one
+pessimistic rule, not a proven worst case: savers who trusted the pool less than its own record would do
+worse, and on one of the side check's nine numbers the noisy reading serves fewer bridges than it. The two maps
+share their seeds and the bank arrangement, so they are one body of evidence read under two
+assumptions, not two confirmations.
+
+\emph{The shock, the low rates and the price inputs.} The registered maps hit the pool with one shock, in months
+25 to 36, at outside rates of 2\% and above, with an owners' spread of 0.25 point and a custody cost of 0.24\%.
+The exploratory side checks of Section~\ref{sec:robustness} move each of these on three seeds and six cells: they
+change the sizes; the gains stay positive, and under 2 points of distress the low rates behave as the lowest registered
+rate does. A shock in the first months after launch, a rate that moves within a run,
+and a rate rise on a book of fixed coupons are not studied.
+
+\subsection{Choices that lean one way}
+
+\emph{Cash advances in the bank arrangement.} Card holders reach the card for bills and wages only through cash
+advances. By inference from the model's weights about four fifths of those advances pay wages the holder owes
+as an employer, which consumer cash
+advances do not pay in practice. On the development check holders' cash advances ran about 15 times the United
+States level (\$1,777 a person a year against \$112 to \$118 a consumer unit) and their fees about 31 times (\$163
+against \$5.33). The fees avoided were 11 to 27\% of CPM's wealth gain over the bank arrangement and 38 to 50\% of its
+gain over best-case DeFi, so the excess leans toward CPM. The card contract is left as built, every gain is
+reported with the cash-advance fees and interest saved taken out, and a cell counts in the region only if it passes
+both ways.
+
+\emph{The bank arrangement's alternatives.} A payer short under banks and cards can draw on savings, a card
+cash advance, a revolved card balance or earned-wage access. Payday loans, buy now pay later and loans from family
+are not in the model, and a failed payment is charged the \$27 fee without the bank paying the item, as an
+overdraft would. Each gives the bank arrangement fewer ways to cover a shortfall than households have,
+which leans toward CPM.
+
+\emph{Best-case DeFi is generous to DeFi.} It keeps the full reserve-funded savings yield, converts to and from bank
+money at no fee where $P$ pays about 0.2\%, is accepted by every seller, and bears none of its own
+operational or legal risks. Its over-collateralised loan is in the arrangement as it is: a payer who is short has
+already used its own money and same-day savings, so nothing is left to lock and the loan covers none of the
+shortfall. Each leans against CPM. On the registered clause every group is ahead of best-case DeFi; the
+money-only number is the premium paid by people never short, and it decides no verdict.
+
+\emph{No growth.} Total spending is fixed, and no production, growth or wider-economy effect is modelled: a firm that
+borrows earns no more afterwards, and completed trade creates no income. This leans against CPM, and is why
+completed trade is reported beside the headline as a bracket from zero to face value, not inside it. In the
+other direction, a failed bill is erased, not paid later, so completed-trade dollars are an upper bound.
+
+\emph{Owners' return.} Owners' return against their alternative has a loss tail that shrinks with population. One
+loan is a share of the pool that falls as one over the number of people: at 1,000 people a single business loan reached 15\% of the
+pool and one default drove a shortfall, while at 4,000 owners earned their alternative in every year on an earlier
+development check. A loan of \$25,000 to \$100,000 is still 0.7\% of the pool at 8,000. The model also has no permanent default,
+since a written-off debt stays owed and is collected later, which keeps bridge losses near zero and leans toward
+CPM on the bridge price. The loan-loss bound prices the published charge-off rates instead. Owners' return against
+their alternative is reported with its interval and read by no verdict; a separate falsifier fires only if owners'
+return is shown below DeFi's savings rate. On the confirmation map owners' return less their alternative has a
+median within \OwnersMedianWorst{} of a percentage point of zero at every outside rate, and one seed-cell in ten falls
+short by \OwnersTenthLeast{} to \OwnersTenthWorst{} of a point or more (Table~\ref{tab:owners}).
+
+\subsection{Method}
+
+\emph{A paired transient.} Each run lasts 60 months after launch and every gain is measured during a transition:
+participation is still growing in most cells when the run ends, so the comparison is of two paths from the same
+start over the same five years, not of two steady states. The lowest launch level is 5\%, so neither a launch from
+an empty network nor a long-run state is shown. The direction of this limit is not known. The mean wealth gain is
+also read at 36 and 48 months (Table~\ref{tab:gains}), and Figure~\ref{fig:participation} shows participation still
+rising at month 60 from every launch level.
+
+\emph{Settlement within a day.} The model's day has no earlier and later. Payments due on a day are settled
+together, money received can be paid on within the day, and where more than one outcome fits the
+day's rules the one with the most payments completed is taken (Proposition~\ref{prop:settlement}). This is the same
+in every arrangement and leans toward completion in each. The payments that rest on the choice of outcome are at
+most \NettingShareMost{} of completed value in any run, so the comparison between arrangements does not turn on
+it. The daily clock removes failure through timing within a day, from every arrangement alike.
+
+\emph{A day the settlement cannot resolve.} When the pool's cash is short its requests are served pro rata and the
+day's map need not be monotone (Section~\ref{sec:updating}). The model resolves two states that repeat when a
+request qualifies in one and fails the repayment check in the other. A day when the iteration still does not
+come to rest has no further rule: the model stops the run and does not guess. This happened in no run of the two
+confirmation maps or the side checks. It happened in \CutSeedsAside{} of the \CutSeedsTried{} seeds of
+the rate cut, once each, at outside rates of 3\% and 3.5\%; each such seed is set aside whole and named in the
+cut's record. The cut is therefore read on the seeds where every run completed, and what those four seeds would
+have shown is not known.
+
+\emph{Chains of failure.} Failure passed on within a day is measured exactly. Failure passed on across days is not:
+the spread of a shock to people not laid off mixes the payment network with the money that extra layoffs'
+wages take out of the household economy and with the shift in everyone's spending. A count of chains across days
+would need a record of receipts lost by payee and a run where those wages stay inside the economy.
+
+\emph{What demurrage adds on its own.} CPM against the pool without the charge, on the same people and draws, is
+what the holding charge adds. This edge has not settled with population size: it grows at every doubling from 500 to
+8,000 people. With completed purchases at their price, as the size check reads it, between 4,000 and 8,000
+it moves from \$15.4 to \$19.0 a person a year at $a_{0} = 0.05$, from
+\$35.6 to \$43.5 at $a_{0} = 0.2$ (inside its interval) and from \$64.8 to \$78.8 at $a_{0} = 0.6$. At 4,000 people the paper therefore understates what the
+charge adds, which leans against CPM.
+
+\emph{The adoption rule and the network.} The base joins people by a simple contagion among trading partners drawn
+uniformly, with a scattered launch. Section~\ref{sec:robustness} replaces each on the development seeds, and the sign
+of CPM's gain survives every replacement while the speed of adoption does not. Thresholds for a payment money have
+not been measured: the measured ones are those of one paid online service, and a common threshold is a design, not
+an estimate. Under a common threshold of 0.3 a launch of 10\% or less does not tip within five years, and the gain
+per person is then the smaller gain of a network that stays small. The hub world's tail is that of the number of
+trading partners in one community currency, whose source could not estimate the tail of amounts; a heavier tail, a
+network grown from payment data and one that changes as people join are not modelled. Wage links are uniform in
+every world.
+
+\subsection{Inputs and evidence}
+
+\emph{Inputs and their sources.} The model's inputs are United States figures, each listed with its value and
+source in Appendix~\ref{app:parameters}, as in the agent-based models used in central banks. The question is
+whether CPM moves money better in that economy; no output forecasts a quantity of the United States economy. Some
+inputs are proxies or have no primary source: the 1.7\% merchant card fee, found only in trade
+press, which scales the saving against the bank arrangement and leaves the comparison with best-case DeFi unchanged;
+the issuer's cost of 0.24\% of $P$, a money-market fund expense ratio; the 43\% debt cap; and the loan terms.
+Mortgages are left out. No unemployment insurance is modelled, which overstates the losses of workers hit by the
+stress and leans against the pool, since benefits would be receipts a bridge lends against.
+
+\emph{Inputs set by declaration.} The parameter table marks each input as sourced or declared. Of those
+declared or resting on a proxy, the leaving noise, the fixed cost, the failure-fee cap, the buffer review share, the
+custody cost, the owners' spread and the date of the shock have a sensitivity run. The shape and median of initial wealth, the
+spending elasticity, the wage share, the number of purchases a month, the twelve-month windows, the debt-to-income
+limit, the exit notice and the review rate have none. The direction in which each would move the result is not
+known.
+
+\emph{Where the robustness checks sit.} The checks of Section~\ref{sec:robustness} other than the two bound maps and
+the spread of distress are run at the central outside rate of 4.4\%: the side checks, the finer cut of the stress
+boundary and the adoption, network and launch variants on development seeds, the exploratory side checks on three
+side seeds, and the size check on its own eight. The two bound maps cover all three rates. Nothing here shows that the variants
+leave the result unchanged at 2\% or 6\%.
+
+\emph{What registered means.} The claim, its tests and the seed count were fixed in the dated record of decisions
+and the analysis plan shipped with the code, before any confirmation seed was run. They were not deposited with a
+public registry, so their dates rest on that record. The plan lists its departures from earlier registered
+text, and the two additions made after the first confirmation map was read, the rate cut and the exploratory side
+checks, are labelled exploratory there and here.
+
+\emph{Development and confirmation.} The headline results and the registered claim are read on the confirmation
+map, \SeedsConfirm{} seeds never run before the freeze and read once after it. The loan-loss bound, the
+interest-returned bound, the side checks, the finer cut of the stress boundary, the robustness sets, the
+update-scheme reading and the spread of distress are read on the three development seeds, on which the model was
+built and its rules decided, and the size check on eight seeds of its own. Each is labelled so, and none is
+confirmed.

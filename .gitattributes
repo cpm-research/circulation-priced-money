@@ -1,0 +1,11 @@
+* text=auto eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.pdf binary
+*.png binary
+*.gz binary
+*.gz.* binary
+# Inputs checked by byte hashes keep their supplied bytes.
+data/raw/** -text
+vendor/pyspg/** -text

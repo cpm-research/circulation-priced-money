@@ -1,0 +1,18 @@
+[project]
+name = "cpm-abm-research"
+version = "0.0.0"
+description = "Agent-based model of Circulation-Priced Money: banks and cards, best-case DeFi, the pool without the holding charge, CPM and indexed CPM"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+authors = [{ name = "Siddharth Totla" }]
+dependencies = ["numpy==2.5.3", "scipy==1.18.1", "networkx==3.7", "matplotlib==3.11.2"]
+
+[tool.cpm]
+source = "src"
+tests = "tests"
+model = "docs/MODEL.md"
+decisions = "docs/DECISIONS.md"
+
+# Tests and scripts run this source tree directly (see README.md). No package
+# build, wheel, editable installation or release is claimed by this metadata.

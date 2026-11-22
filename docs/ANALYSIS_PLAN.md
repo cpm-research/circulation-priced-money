@@ -1,0 +1,333 @@
+# Analysis plan, frozen before the confirmation runs
+
+Drafted 12 November 2026 from the register at commit `99ab192` and amended twice, on 16 and 17 November 2026 (below). One addition was made on 17 November 2026 after the first confirmation map was read, the rate cut, and a second on 18 November, the exploratory side checks; both are exploratory runs that change nothing of the registered claim (below). Every test below traces to a row of `docs/DECISIONS.md`, cited by the first six words of its rule in square brackets. Where two rows share those words the date is added. Where the register is silent or contradicts itself the plan does not fill the gap; the point is listed in the last section. No number from the development runs is a finding here; a development number appears only where the register gives it as the reason for a rule.
+
+Freeze commit: **`da2f11d`**, 17 November 2026 (on it the whole test suite passed, 462 tests with none skipped, and the six side-check cells reproduced every value the final development map stores for them, 356,670 in all; later commits change documents, the paper and shipped results only). Confirmation seed count n: **30** [The confirmation seed count is 30].
+
+## Amendment of 16 November 2026
+
+The plan was amended once, on 16 November 2026, after the final development map was read and before any confirmation seed was run or read. The seed count it records was fixed on 15 November, before that map was read. The amendment brings the plan into agreement with the register's rows of 13 to 16 November and with the code that evaluates the claim (`src/cpm_abm/experiment/`: `claims.py`, `region.py`, `gains.py`, `statistics.py`, `grid.py` and `notes.py`). Where a register row and the code still differ, the plan follows the code and section 9 names the difference. Each line gives what the plan said, what it says now, and the decision or code it follows; the body below is the plan in force.
+
+1. Seed count. Said: n fixed at the freeze by the planner from the development spread, at most 100. Now: n = 50, run in two chunks of 20 and 30 with only integrity checks between, read once at 50, with one declared extension to 100 seeds for the cells marked underpowered at 50, read once at 100 (sections 3, 5, 11). Follows [The confirmation seed count is 50]. Replaced by point 1 of the amendment of 17 November 2026.
+2. Wilson counts. Said: 15 of 20 seeds, 17 under Bonferroni. Now: 32 of 50 at 95%, and 36 of 50 at the Bonferroni level over M1's 21 cells and over M2's 14 alike; 60, 66 and 65 of 100 for a cell extended to 100 (sections 4, 5). Follows `wilson_bounds` in `statistics.py` at z = 1.96, 3.04 and 2.91. Replaced by point 2 of the amendment of 17 November 2026.
+3. Interval checks. Said: t intervals "with a bootstrap check". Now: a check holds only when the t interval and the bootstrap interval both read supported, reads falsified only when both lie wholly on the wrong side, and is otherwise inconclusive; a group with no interval fails clause (d) (sections 4, 5). Follows `check` and `combined` in `statistics.py` and [The statistics row's terms, fixed as].
+4. A passing cell. Said: (a), (b) and (d) supported. Now: (a), (b) and (d) hold at 95%, with (d) holding both as built and under the cash-advance bound; "holds somewhere" asks the same at the Bonferroni level, and the region follows (sections 4, 5). Follows [The cash-advance bound (decided 15 Nov).] and `_claim_cell` in `claims.py`.
+5. Card lines. Said: card lines are unlimited, so card holders cannot fail and the stress claim covers people without a card. Now: finite lines, cash advances, a minimum payment, late fees and charge-off, the same in every arm; holders can fail, and the stress claim covers them (sections 2, 4, 10). Follows [Card lines (decided 14 Nov). Card] and the card rows after it.
+6. Distress design. Said: an extra rate of job loss in months 25 to 36. Now: the harsh stress, in which the wages of the distress year's extra layoffs leave the household economy, with no unemployment insurance, five levels labelled by jobs without a wage, and a headline at 2 points (sections 3, 4). Follows [The harsh stress (decided 14 Nov):], [Size and labels of the harsh] and [No unemployment insurance (decided 14 Nov;].
+7. Stress boundary. Said: nothing. Now: the pool run at high adoption under the harsh stress is the declared stress boundary; bridges served is reported beside every verdict, each run is shown month by month, and no rule changes because of it (sections 4, 8, 9). Follows [The pool run at high adoption].
+8. Term lending. Said: nothing. Now: pool term lending stays, with the bridge part and the term part of the pool's book, income and losses reported apart (sections 2, 8, 10). Follows [Pool term lending stays in the].
+9. Money paid to outside lenders. Said: one bound, outside lenders' interest returned to households. Now: three readings, as built (read by every verdict), a ledger line at a share of 0.10 (band 0.06 to 0.14) for means and wealth groups and no verdict, and all of it returned as the outer bound, its own map on development seeds; the efficiency claim rests on real cost alone (sections 7, 8). Follows [Money paid to outside lenders and].
+10. Population. Said: 4,000 people, a departure from the size rule. Now: the same, with the size check repeated on the engine with card limits and the harsh stress, and its reading (sections 3, 9). Follows [The size check is repeated on] and [The repeated size check, read (16].
+11. Harm falsifier. Said: a group's wealth falling more than 2% of its median starting wealth below M0's in at least 80% of seeds. Now: the ten groups of launch-wealth quintile by billing cycle, each group's median change in end wealth against M0 below -2% of its median wealth at launch, the same group in at least 80% of seeds (sections 4, 6). Follows `v3_harmed` in `gains.py` and `decide` in `region.py`; the register row is worded differently (section 9).
+12. Issuer transfers. Said: gains net of issuer transfers, and a label "passes on issuer transfers". Now: the label is removed, since the issuer is a pure custodian and no issuer transfer exists; the share worse off is still reported (section 4). Follows `clause_d` in `claims.py`, [The issuer is a pure custodian] and [M2's indexation is the holder's own].
+13. Second region view. Said: one region. Now: the claim's region and, stored beside it and read by no clause, the persistence-and-groups view on t bounds alone (section 5). Follows `region` in `region.py`.
+14. Stress dip. Said: a development value of 0.06 failed payments a year, measured before the harsh stress. Now: no development value; the test as the code runs it, at level 0's Bonferroni level, margin one failed payment a year, levels 0.5, 1, 1.5 and 2 points in order, stopping at the first failure (section 4). Follows `stress_leg` and `_withstood` in `claims.py`.
+15. Entry readings. Said: the quote and the realised record as bounds, every result under both; the leaving-rule reading on three cells. Now: the realised reading runs over the whole confirmation map as the lower bound, with its own region; the leaving-rule reading is a side check on three cells, on development seeds (sections 5, 7). Follows [The statistics row's terms, fixed as] and [Where each bound runs (decided 12].
+16. Development and confirmation. Said: implicit. Now: stated, with the loan-loss bound, the outer bound and the side checks read on development seeds only (sections 3, 7). Follows [Where each bound runs (decided 12] and [Money paid to outside lenders and].
+17. The comparison with DeFi. Said: clause (d) against M0 at face value with the break-even share stored. Now: the same test; the money-only number is reported as a break-even value and as nothing else, never as a group losing, and M0 is called best-case DeFi (sections 2, 4). Follows [How the comparison with DeFi is].
+18. Persistence test 4 and the subsidy falsifier. Said: open, the 3 Nov and 5 Nov rows differing. Now: test 4 holds whenever households held pool capital in the window, and the subsidy falsifier does not fire (section 6). Follows [Persistence tests 2, 3 and 5] and [The pool pays its own way] (5 Nov).
+19. The pool's fixed cost. Said: low $0.10 and high $0.49. Now: central $0.18, low $0.10 and high $0.50 a consumer unit a year, as the code computes them on one count of consumer units (section 7). Follows [The source audit of 13 Nov:]; the 5 Nov row's $0.49 differs (section 9).
+20. MicroVelocity. Said: no ages of units are tracked. Now: it is also recorded from holding times, first in first out and last in first out (section 13). Follows [Three measures recorded and read by].
+
+## Amendment of 17 November 2026
+
+The plan was amended a second time on 17 November 2026, before any confirmation seed was run or read. It replaces the seed count of the first amendment by the count the planner's rule gives, and it records what the engine gained before the freeze: two records and four switches, built for the checks of `docs/ROBUSTNESS_PLAN.md`, which change no rule of the model and no clause of the claim. Each line gives what the plan said, what it says now, and the decision or code it follows; the body below is the plan in force.
+
+1. Seed count. Said: n = 50, a round number fixed on 15 Nov in place of the planner's count, run in two chunks of 20 and 30, read once at 50, with one declared extension to 100 seeds for the cells marked underpowered at 50. Now: n is the planner's count with an allowance for the spread being itself an estimate. Each reading's pooled spread s is taken at the upper end of its one-sided interval at assurance 0.8, the level of the power, s x sqrt(nu / chi2_0.2(nu)), with nu the reading's pooled degrees of freedom (the sum over its cells of seeds less one) and chi2_0.2(nu) the 0.2 quantile of the chi-square distribution; n is the largest number of seeds any reading needs at that bound, at most 100. On the final development map the binding reading is M1's dip against M0 at 2 points, s = 1.1658 failed payments a year over 21 cells of 3 seeds, nu = 42, bound 1.293, so n = 30 (26 at the point estimate; 33 at assurance 0.9 and 36 at 0.95). The seeds are 20261401 to 20261430, run one seed at a time, each part written when it is done, with only integrity checks between the parts, and the parts joined and read once at 30. One extension is declared in advance: the cells the planner marks underpowered at 30 may be run to 60 seeds, adding 20261431 to 20261460, all such cells together, and are then read once at 60 (sections 3, 5, 9, 11, 13). Follows [The confirmation seed count is 30], `confirmation_seeds` in `grid.py` and `spread_bound` in `statistics.py`.
+2. Wilson counts. Said: 32 of 50 at 95%, and 36 of 50 at the Bonferroni level over M1's 21 cells and over M2's 14 alike; 60, 66 and 65 of 100 for a cell extended to 100. Now: 21 of 30 at 95%, 24 of 30 at the Bonferroni level over M1's 21 cells and 23 over M2's 14; 38, 42 and 42 of 60 for a cell extended to 60 (sections 4, 5). Follows `wilson_bounds` in `statistics.py` at z = 1.96, 3.04 and 2.91.
+3. Records. Said: nothing. Now: the engine writes two records in every run, own shortfall against knock-on on the same day, and dependence on netting. They are observation only: they change no value the model uses, and no rule or clause reads them. Follows `docs/ROBUSTNESS_PLAN.md`, section 4.
+4. Switches and side levels. Said: nothing. Now: the engine has four switches, all off by default: the buffer review share, the joining rule, the choice of sellers (a ring or hubs) and the launch placement. The runner also takes finer distress levels, 1.6, 1.7, 1.8 and 1.9 points, beside the grid's levels and never part of the grid. Both are for side runs on development seeds; the runner refuses them on any other seeds, so the confirmation run uses neither, and no clause reads them (section 7). Follows `docs/ROBUSTNESS_PLAN.md`, sections 5 and 6.
+5. Proof that the main map is unchanged. Said: nothing. Now: at the freeze commit the six side-check cells (r_out 4.4%; a0 0.05, 0.2 and 0.6; distress 0 and 2 points) are rerun on the development seeds with every switch at its default, and every value the final development map stores for them is compared exactly. The freeze is made only if none differs (section 11). Follows `docs/ROBUSTNESS_PLAN.md`, section 7.
+6. Robustness runs. Said: nothing. Now: the runs of `docs/ROBUSTNESS_PLAN.md` use the development seeds only, are reported whatever they show, and change no rule of the model and no clause of the claim (section 7). Follows `docs/ROBUSTNESS_PLAN.md`, sections 6 and 8.
+7. The realised entry reading's name. Said: the lower bound, with its own region. Now: the pessimistic reading, with its own region. It is one pessimistic rule and no proven worst case: on the side-check cells the leaving-rule reading serves fewer bridges at one launch level under 2 points of distress (0.32 against 0.34), and savers who trusted the pool less than its own record would do worse. The two maps share seeds and the bank arrangement, so they are one body of evidence under two assumptions. Nothing about what is run or read changes (sections 5, 7, 13).
+
+## Addition of 17 November 2026, after the confirmation map was read: the rate cut
+
+This addition was written on 17 November 2026, after the confirmation map under the quote rule (30 seeds, joined that evening) had been read once and while the map under the realised reading was running, unread. It changes no clause, no reading and no result of the registered claim, which stays as read on the 105 cells of section 3. It follows [The rate cut (decided 17 Nov].
+
+1. What was seen. With no distress the registered region holds every cell at outside rates of 4.4% and 6% and five of seven at 2%. Under distress it holds no cell at 2%, and every cell at 4.4% at half a point. The grid has no rate between 2% and 4.4%, so the claim's edge along the rate is not located.
+2. What is run. The rate cut: outside rates of 2.5, 3 and 3.5% over the seven launch levels and the five distress levels, 105 cells, with every arm, the quote entry rule and every switch at its default, at 4,000 people.
+3. Seeds. 30 exploratory seeds, 20261601 to 20261630, as section 3 requires of any run made after the confirmation is read [Seeds for the frozen run, renewed]. The confirmation seeds do not run the cut: the runner refuses it on them.
+4. Reading. Each cell is read by the same clauses, margins, intervals and levels as a cell of the grid, with `claims.py` evaluating them as before, and its region is joined edge to edge along the cut's own three rates. The Bonferroni levels stay the grid's: 0.05 over 21 cells for M1, which is also the cut's count of cells with no distress, and 0.05 over 14 for M2, the less strict level, although all 21 of M2's cells in the cut are valid. The reading is exploratory. It is reported beside the registered claim, labelled, whatever it shows, and no clause of the claim reads it.
+5. What changed in the code. `notes.py` names the three rates beside the grid (`SIDE_RATES`); `grid.py` lets a run select them and names the exploratory seeds; `claims.py` joins a region along the rates a run covers and `store.py` lists them, both exactly as before for a run of the grid's own rates; the runner and the driver accept the cut on exploratory or development seeds and refuse it on the confirmation seeds. No engine file changes.
+6. Proof that nothing else moved. Before the cut is run, the six side-check cells are rerun on the development seeds at the cut's commit, and every value is compared exactly with the freeze commit's run of the same cells, as in point 5 of the amendment above. The cut is run only if none differs.
+
+## Addition of 18 November 2026: the exploratory side checks
+
+Written on 18 November 2026, after the confirmation map under the quote rule had been read and while the map under the realised reading was running, unread. Like the rate cut above, it changes no clause, no reading and no result of the registered claim. It follows [The exploratory side checks (decided 18].
+
+1. Why. An independent read of the paper and the plans listed what was never varied: the pool's fixed cost beyond its low and high sourced levels, so that the fixed-cost spiral is never exercised in simulation; the owners' spread and the issuer's custody cost, which carry the price comparison; the date of the shock; and any outside rate under 2%.
+2. What is run. Six cells (outside rate 4.4%; launch 5, 20 and 60%; distress 0 and 2 points), at 4,000 people with every arm: a base at the build's settings, then one setting changed at a time. The fixed cost at 10, 100 and 1,000 times its sourced level; the custody cost at 0.44 and 0.74% a year; the owners' spread at 0 and 0.5 point a year; the distress year from month 12 and from month 36. And the outside rates 0.5 and 1% at the same launch and distress levels.
+3. Seeds. Three side seeds, 20261631 to 20261633, of the exploratory block that section 3 requires of any run made after the confirmation is read [Seeds for the frozen run, renewed]. The runner refuses a side check on any other seeds.
+4. Reading. Each set is read beside the base on the same cells and seeds, as the side checks of section 7 are, with no verdict word. Three seeds cannot pass the claim's rule on the share of seeds, so no cell of these sets is read against the claim. The fixed windows of the readings (years 4 and 5, and the dip over months 25 to 60) are kept when the shock date moves, and the text says what that does to them.
+5. What changed in the code. `notes.py` names the low rates and `grid.py` the side seeds; the fixed cost's multiples are levels beside low, central and high; the runner takes the custody cost, the owners' spread and the shock date and passes them to the Economy only when named, so a run that names none builds exactly the Economy it built before. No engine file changes. The exit notice is a constant of the engine and the owners' review rate an input of the core model that the runs do not thread, so neither is varied; the paper names both as limits.
+6. Proof that nothing else moved. As for the rate cut: the six side-check cells are rerun on the development seeds at this commit and compared exactly with the freeze commit's run before any side check is run.
+
+## 1. The question and what counts as an answer
+
+Can CPM run itself with voluntary participants and leave every party better off than banks and cards and than best-case DeFi, and under which rates, adoption and stress? The answer is a map. For each arm read (M1 and M2) it shows the cells of the three controls where the registered claim holds, the cells where it is inconclusive and the cells where it is falsified, with the reason in each. Two other outcomes are results and are reported in the same form [Order of work. The 3 Nov]:
+- a partial answer, where the claim holds in part of the map, or some clauses hold and others do not;
+- a negative answer, where the claim holds nowhere or no household-owned pool forms.
+
+## 2. The five arrangements
+
+All five run on the same people and the same random draws. Every intermediary sits outside the household economy, and nothing it is paid is handed back [One boundary for every intermediary: in].
+
+**S0, banks and cards.** Bank money, cards for the holders, outside instalment lenders, and earned-wage access for the share that holds it. Card holders have finite lines, each its score tier's 2023 average, with a starting balance that uses part of the line; bills reach the card only as cash advances, up to a cash line of 20% of the line; each statement carries a minimum payment, with a late fee when it is missed; a card 180 days past due is charged off. The card contract is the same in every arm [Card lines (decided 14 Nov). Card] [The starting balance. Each holder starts] [Cash advances for non-card bills. A] [Minimum payment and late fee. The] [Charge-off. A card 180 days past]. A payer still short after its own money, same-day savings, its card room and cash line and earned-wage access fails and pays a flat $27 fee under the caps, card holders included; a card-eligible purchase that cannot be paid is declined without a fee [A failed bill or wage costs] [Alternatives to failing. Earned-wage access runs].
+
+**M0, best-case DeFi.** USDC payments on Base at the chain's gas. A reserve-funded yield of the bill rate less the Sky spread, moving one for one with r_out [M0 is the strongest real DeFi] [M0's rates move with the outside]. Its loan is the DeFi loan as it is: over-collateralised, an exchange of assets rather than credit. A lender is asked only for what a payer's own money and same-day savings could not pay. Nothing is then left to lock, so the loan covers none of any shortfall, and the arm runs with no collateral drawn (`--crypto-share 0`). It is not an arm with lending switched off [The rigidity of DeFi that the] [The DeFi arm is real DeFi:]. It is called best-case DeFi [How the comparison with DeFi is].
+
+**U, the pool without demurrage.** The CPM token and the household-owned lending pool with no holding charge. P pays the reserve return less the issuer's custody cost, and a bridge pays its full coupon. M1 less U is what demurrage adds [Demurrage (decided 4 Nov; replaces the] [Competitive P (decided 5 Nov; amends].
+
+**M1, CPM.** As U, but wallet P pays demurrage c. Demurrage is the capital cost of the liquidity the pool keeps available, over last cycle's wallet P balance-time; it is published in advance and paid to the pool [Demurrage pays for liquidity kept available]. P runs on stablecoin rails with no provider fee [P payments run on stablecoin rails]. Households alone own the pool: they enter freely at the published quote and leave by the users' rule. The issuer is a custodian keeping 0.24% [The issuer is a pure custodian] [Owners leave by the users' rule]. The pool makes bridges and term loans, and both stay in the frozen model [Pool term lending stays in the].
+
+**M2, purchasing-power CPM.** As M1 with P indexed to prices; the indexation is paid from the holder's own reserve return [M2's indexation is the holder's own]. Its domain is a positive real reserve rate. Its cells at r_out 2% are its declared limit and stay outside the region. It is labelled not issuable as a US payment stablecoin [Controls: r_out (2, 4.4, 6%), launch] [The claim, registered before the changed].
+
+## 3. The design
+
+**Controls and cells.**
+- r_out at 2, 4.4 and 6%.
+- Launch participation a0 at 0.05, 0.1, 0.2, 0.3, 0.45, 0.6 and 0.8.
+- Distress, the extra monthly rate of job loss in months 25 to 36 after launch, at 0, 0.5, 1, 1.5 and 2 points above the normal 0.55%, labelled by the share of jobs without a wage at month 36, about 1.9, 3.4, 4.9, 6.3 and 7.7% [Distress design: wage contracts (jobs) are].
+
+The distress year is the harsh stress. The wage of each extra layoff leaves the household economy for the whole spell: its payer still owes it to the outside on the job's pay dates, and nobody in the economy receives it. The wages of normal job loss stay with their payers, as before [The harsh stress (decided 14 Nov):]. No unemployment insurance is modelled [No unemployment insurance (decided 14 Nov;]. The stress clause's headline is the 2-point level, labelled "2009's wage loss before unemployment insurance"; every level still runs and is tested in order [Size and labels of the harsh].
+
+The full cross is 105 cells. Each job (one cell, one seed) runs every arm on common random numbers [The main experiment's grid: the full] [Distress design: wage contracts (jobs) are]. Unexpected-expense shocks are off [Normal conditions first: unexpected-expense shocks are].
+
+**Population.** 4,000 people, one agent a consumer unit [The population for the final map]. This departs from the written size rule, which takes 8,000 (section 9) [Population size is fixed by a]. The check was repeated on the engine with card limits and the harsh stress, with its reading written before it ran. Between 4,000 and 8,000 people no gain over S0 or M0, at either end of the bracket, moves in any of the three cells, nor does real cost or the gap in failed payments; the charge's edge over U still grows with the population, which is declared and leans against CPM; and at 2 points the share of seeds with a pool run does not fall as the population grows, so that run is read as the stress boundary at every size. The population stays 4,000 [The size check is repeated on] [The repeated size check, read (16].
+
+**Time.** Six months of S0 before launch (as built), then 60 months. W1 is months 13 to 36 after launch and W2 is months 37 to 60 [Windows: W1 months 13 to 36,]. At launch a share a0 of people is in the network. The pool forms by free entry from the first dealing with a lending need.
+
+**Seeds.**
+- Development: 20261021, 20261022 and 20261023. They were used for every reading so far and stay for development checks [Seeds: the three development seeds (20261021].
+- Retired, never to be read as confirmation [Seeds for the frozen run, renewed]:
+  - 20261101 to 20261120: review scripts rebuilt the population of 20261101 on 2 and 3 Nov.
+  - 20261201 to 20261220: the 5 Nov confirmation attempt ran on them and its crash was debugged on 20261210. No outcome was stored or read.
+  - 20261301 to 20261308: used for the 12 Nov size check and its repeat of 16 Nov.
+- Confirmation: seeds from 20261401 upward, never run. n = 30, the planner's count with each spread at its upper bound (section 5), fixed on 17 Nov before any confirmation seed was run or read, so the seeds are 20261401 to 20261430 [The confirmation seed count is 30]. They run one seed at a time (`scripts/run_confirmation.py`), each part written when it is done. Between the parts only integrity is checked: that the part's run exited cleanly with every job of the grid for its seed, so no job failed, and that money is conserved, each arm's gain against S0 equal to the sum of its split by outside flow; no claim, cell or figure is read. The parts are then joined into the map (`scripts/join_parts.py`), the stores one run over the 30 seeds writes, and the claim is read once, at 30. One extension is declared in advance: the cells marked underpowered at 30 (section 5) may be run to 60 seeds, adding 20261431 to 20261460, all such cells together, and they are then read once at 60. The runner refuses a confirmation run until the freeze sets its count.
+- Exploratory: any run made after the confirmation is read uses seeds from 20261601 upward and is labelled exploratory [Seeds for the frozen run, renewed].
+
+**Development evidence and confirmation.** Everything read before the confirmation run is development evidence: the development maps, the final development map at 4,000 people on the three development seeds over all 105 cells, the size checks on the sweep seeds and the checks of 14 Nov. The loan-loss bound, the outer bound of money paid to outside lenders and the side-check pack are read on the three development seeds of the final development map only, and are reported as bounds from development seeds [Where each bound runs (decided 12] [Money paid to outside lenders and]. Confirmation evidence is the confirmation seeds' two maps, under the quote and under the realised entry reading (section 5), and nothing else.
+
+## 4. The claim, clause by clause
+
+The claim is read for M1 and M2 separately, in each (r_out, a0) cell at distress 0, paired within seed over all confirmation seeds. Each interval check reads one of three ways (section 5): supported; inconclusive, where the intervals straddle the margin or disagree; or falsified, where both lie wholly on the wrong side. Each clause is read at 95% and at the arm's Bonferroni level. A cell passes when (a), (b) and (d) hold at 95%, with (d) holding both as built and under the cash-advance bound (section 7). (c) is reported and is not evidence, and (e) is read for passing cells [The claim, registered before the changed] [The cash-advance bound (decided 15 Nov).]. The cell's three-way reading takes the worse of the two readings of (d) and names the clause, comparison or group that decided it; the reading with (d) as built is stored beside. A pass is worded "non-inferior real cost with more completed service".
+
+**(a) CPM operates and pays its own way.**
+- Measured per seed: households hold at least 90% of pool capital, net of exits still queued, in every W2 month, and P routes through W2 [Readings for Steps 4 and 5,].
+- Test: the Wilson lower bound of the share of such seeds, at the level read, is above one half: 21 of 30 seeds at 95%, 24 of 30 at M1's Bonferroni level and 23 at M2's (for a cell extended to 60 seeds, 38 of 60 at 95% and 42 at either arm's Bonferroni level).
+- Pays its own way: the pool runs without outside money. No seed has issuer backing top-ups (above $0.005; a seed without that record does not pass) and no seed records the issuer "would leave" [The pool pays its own way] (5 Nov). With break-even coupons and free entry the pool's own margin and the joint issuer-and-pool test centre on zero by construction, so the claim row's first wording (the margin's lower bound above zero, the joint test's at or above zero) cannot hold and says nothing about the pool. Both are computed and stored for every cell, with the clause as first worded beside the clause as read here. This is a declared departure, decided on 12 Nov [Clause (a) of the claim reads].
+- The cell must also read Persistent: the Wilson lower bound of its share of Persistent seeds, at the level read, is above one half [The statistics row's terms, fixed as].
+- Failing means the pool does not operate on households' money alone in that cell.
+
+**(b) Real cost.**
+- Measured: the real part, the intermediation resources each arm uses at one sourced rate per service, in $ a consumer unit a year [The boundary rule's real cost shares:].
+- Test: the real resources saved, CPM against M0 and CPM against S0, each have a lower bound at or above -$2, on the t interval and the bootstrap interval both. A real saving is claimed only where both t lower bounds are above zero. The interval and the two read-outs (section 8) are stored and shown for every cell beside the verdict, and at every distress level at the Bonferroni level [Clause (b), real cost, is reported].
+- Failing means CPM uses more real resources than the comparator by more than one failed payment's handling cost a year.
+
+**(c) Completed service.**
+- Measured: failed shortfall payments in the real failure line's unit, and purchases completed plus durables bought, against M0 and against S0 [The real failure line counts, in].
+- It holds against M0 when the failed shares' upper bound is below zero and the completed purchases' lower bound is above zero; against S0 it is reported beside. This holds by construction once a pool lends to payers without a card, and the erased-bill rule leans for CPM here. It is reported, not evidence.
+
+**(d) No group loses.**
+- Groups: eleven, the four classes (card holder or not, by wage or business income), the five launch-wealth quintiles and the short (1 to 15 days) and long (30 to 60 days) billing cycles [The class in the claim's no-harm].
+- Measured: each person's complete gain, the difference in end wealth plus the difference in purchases received [Claim (d) reads the complete gain]. It is read at both ends of the completed-trade bracket:
+  - face value: sellers' extra sales counted in full;
+  - zero: the face reading less the difference in sales.
+- Test: every group's mean paired gain has a lower bound at or above -$2, on the t interval and the bootstrap interval both, against S0 at both ends and against M0 at face value, 33 checks. A group defined in fewer than two seeds has no interval and fails the clause [Claim (d) against DeFi is reported].
+- The clause is read a second time under the cash-advance bound, with the same groups, yardsticks, ends, intervals and margin, and a cell passes only when both readings hold [The cash-advance bound (decided 15 Nov).].
+- For each yardstick the surplus share from which every group holds is stored, on the t bounds and on the group means, in the persistence-and-groups view (section 5). No share is assumed. The share of people worse off is stored at each reading.
+- Against M0 the money-only reading (completed purchases valued at zero) is reported as a break-even value and as nothing else; it is never described as a group losing to DeFi [How the comparison with DeFi is].
+- No issuer transfer exists to net out: the issuer is a pure custodian and M2's indexation is the holder's own yield [The issuer is a pure custodian] [M2's indexation is the holder's own]. Wealth alone is read by one falsifier, not by this clause (section 6) [The falsifier "worse than M0" reads harm].
+- Failing means some group is shown worse off by more than $2 a year.
+
+**(e) Stress.**
+- Each distress level's leg is clauses (a) to (d), (c) included and (d) as built, read on the level's paired run at level 0's Bonferroni level, together with the dip [Distress is read from the paired] [The reviews of 13 Nov and].
+- Measured: the dip, each seed's cumulative excess of failed shortfall payments a person over months 25 to 60, the level's run less the same seed's run at level 0, in the real failure line's unit, less S0's excess and less M0's. It is read a year, the 36-month sum over 3; the sum is stored beside.
+- A level is withstood when the four clauses hold and the dip's upper bound, on the t interval and the bootstrap interval both, is at most one failed payment a year against S0 and against M0.
+- Test: for a cell that passes (a), (b) and (d) at 95% at level 0 as built, levels 0.5, 1, 1.5 and 2 points are tested in that order, stopping at the first level not withstood or not run. The result is the highest level withstood, and whether the cell withstands the headline level of 2 points: true when the highest level withstood reaches it, false when a level up to it was tested and not withstood, undefined when (e) does not apply or 2 points was not run. It is reported and is not part of passing [The statistics row's terms, fixed as] [Size and labels of the harsh].
+- A part of "worse than M0" that fires in a stressed cell reads that leg falsified (section 6).
+- Since card limits the distress claim covers card holders as well as people without a card [Scope of calibration (decided 4 Nov):].
+- The stress boundary: the pool run at high adoption under the harsh stress is declared as the boundary of the stress the pool withstands. Bridges served, the bridges the pool drew over those asked of it in W2, is stored beside every verdict at every level. Each run is shown month by month (pool cash, cash new loans may take, cash set aside for exits, money offered and the part that found no room, exits paid and filed, term principal on the book, bridges served, and write-offs of bridges and of term loans), and a cell is flagged where bridges served in years 4 and 5 falls below its level in years 1 to 3. No rule is changed because of it [The pool run at high adoption].
+
+The claim holds under three conditions: CPM's pool, P rail and issuer bear the sourced cost of what they replace; today's 1.7% card fee; and an M0 without collateral credit [The claim, registered before the changed].
+
+## 5. Statistics
+
+- Intervals: every interval check computes the two-sided t interval of the seed mean and the percentile bootstrap interval of the seed mean over 10,000 resamples of the seeds on a fixed stream, at the level read. It reads supported when both lie wholly on the clause's side of its margin, falsified when both lie wholly on the wrong side, and inconclusive otherwise; it holds only when it reads supported [Statistics: two-sided 95% t intervals with] [The statistics row's terms, fixed as].
+- Levels: each clause is read at 95% and at the arm's Bonferroni level, 0.05 over 21 cells for M1 (0.00238) and over the 14 cells above M2's declared limit (0.00357). A cell passes on its 95% readings. "Holds somewhere" is the set of level-0 cells that pass at the Bonferroni level, (d) under the cash-advance bound included. The stress legs and the seed planner read the Bonferroni level.
+- Wilson readings: a share of k of n seeds reads above one half when the lower end of its Wilson interval, with z the normal quantile of the level read, is above one half. At 30 seeds that takes 21 seeds at 95% (z = 1.96), 24 at the Bonferroni level over 21 cells (z = 3.04) and 23 over 14 (z = 2.91); at 60 seeds it takes 38, 42 and 42.
+- Region: within each distress slice, the largest set of passing cells joined edge to edge in the (r_out, a0) grid, corners not joining, ties named; five slices, with level 0 the headline. At level 0 a cell enters when it passes and is not underpowered. At a stressed level a cell enters when its level-0 cell passes, (d) under the cash-advance bound included, its highest level withstood reaches that level, and its stress leg is not underpowered. The realised entry reading's map has its own region, the lower bound.
+- The persistence-and-groups view: beside the claim's region the code stores a second reading of each cell, read by no clause. It names the first condition the cell fails, in the order declared limit, no pool, not persistent, issuer leaves, a group loses, and otherwise reads stable; its group test is clause (d)'s on 95% t lower bounds alone, with no bootstrap; it is stored as built, under the cash-advance bound, and as whether the cell is stable both ways, with a bare-majority version beside.
+- Verdict share: a cell reads Persistent when the 95% Wilson lower bound of its share of Persistent seeds is above one half. Each cell also reports its bare-majority verdict, its share of Persistent seeds with a 95% interval, and whether it is near the line.
+- Near the line: the Persistent share's 95% Wilson interval contains one half, or an interval check of (a) to (d) at 95%, (d) as built, straddles its margin on the t interval or reads differently on the two intervals.
+- Underpowered: a level-0 cell is underpowered when its own spread of the cost reading (the larger of its spreads against M0 and against S0) needs more seeds than it ran for 80% power on the $2 margin at the arm's Bonferroni level; a stress leg, when its own spread of the yearly dip (the larger against S0 and against M0) needs more seeds than it ran for a margin of one failed payment a year. An underpowered cell is reported with its interval and cannot enter the region.
+- Seed count: n = 30 [The confirmation seed count is 30]. The planner runs on the final development map and is reported: for each arm, the cost reading against M0 and against S0, its spread pooled over the level-0 cells, margin $2; and the yearly dip against S0 and against M0, its spread pooled over each stressed level's cells, margin one failed payment a year; each at the arm's Bonferroni level and 80% power, the largest count taken, at most 100. The count follows the statistics row's planner with one allowance: each reading's pooled spread s, on nu pooled degrees of freedom (the sum over its cells of seeds less one), is taken at the upper end of its one-sided interval at assurance 0.8, s x sqrt(nu / chi2_0.2(nu)), and n is the largest count at those bounds. On the final development map the planner's count is 26 and the count at the bounds 30, both set by M1's dip against M0 at 2 points (s = 1.1658 on nu = 42, bound 1.293). At M1's Bonferroni level 30 seeds give 80% power on the $2 margin where the spread is at most $2.59 ($3.77 at 95%), and on the dip's margin where its yearly spread is at most 1.298 failed payments a year.
+- Entry readings: the confirmation map runs under the quote, the decided entry rule, which every verdict reads, and under the pool's realised 12-month record, reported as the pessimistic reading with its own region [The statistics row's terms, fixed as] [Claim (d) against DeFi is reported].
+
+## 6. Persistence tests and falsifiers
+
+Persistent needs all five tests; any falsifier means Against; otherwise the run is Inconclusive [Persistent needs all five persistence tests;]. The wording of tests 2, 3 and 5 and of the unsafe falsifier's write-off clause is from the register [Persistence tests 2, 3 and 5].
+
+1. Use holds: W2 participation is at least W1's less 0.05 and at least the launch share less 0.05 [Use holds when participation in the].
+2. Lending recurs: new pool loans in at least 80% of W2 months, and lending per participant at least 80% of W1's.
+3. Owners stay: W2 net asset value is at least 80% of W1's, and at least 95% of the value of W2 exits is paid within two months. Timeliness is read on exits whose deadline falls inside the run [The pool pays its own way] (5 Nov).
+4. The pool pays its own way when it runs without outside money: the issuer holds no shares and no fund, so the test holds whenever households held pool capital in the window; the margin is reported [Persistence tests 2, 3 and 5] [The pool pays its own way] (5 Nov).
+5. Credit quality holds: the write-off rate and the arrears share each rise by at most one point.
+
+Falsifiers, each counting against CPM:
+- Collapse: a wind-down, W2 participation below half the launch share, or W2 capital below half W1's [Use holds when participation in the].
+- Credit death: six straight W2 months in which the pool serves and has cash to lend but makes no new loan [Step 1's records (built 4 Nov)].
+- Subsidy dependence: no outside money can enter the pool, so it does not fire [Persistence tests 2, 3 and 5].
+- Worse than M0, four parts, each firing only when CPM is shown worse ["Worse than M0" uses completed trade,]:
+  - completed trade: in a seed, the arm's W2 failure share by value (failed bills and wages with declined purchases) is above M0's; the part fires when this holds in at least 80% of seeds;
+  - harm to a group: the ten groups of launch-wealth quintile crossed with short or long billing cycle; in a seed a group is harmed when its median change in end wealth against M0, person by person at month 60, is below -2% of the group's median wealth at launch, or below zero where that median is not positive; the part fires when the same group is harmed in at least 80% of seeds [The falsifier "worse than M0" reads harm] (worded differently there, section 9);
+  - borrowers' credit cost: the interest borrowers pay over the principal-time they borrow, the arm less M0, paired by seed; it fires when the 95% t interval and the bootstrap interval both lie wholly above zero. Interest a person a year is stored beside and fires nothing;
+  - owners' return: their W2 return less DeFi's savings rate at the cell's r_out (plus CPI in M2); it fires when both 95% intervals lie wholly below zero ["Worse than M0": how its last two].
+
+  Where completed trade or a group fires, the seeds worse on the part that fired count as worse; where credit cost or owners' return fires, every seed does. A cell where any part fires is falsified: not Persistent, clause (a) fails, outside the region.
+- Unsafe: reserve backing below 1 in any month, read from the reserve account, or write-offs jumping more than five points [Backing: an explicit reserve account holds].
+- The issuer would leave: a "would leave" record at any reading [A sixth falsifier, the issuer would].
+
+The tests as first registered are stored and reported beside the decided use and collapse tests.
+
+## 7. Bounds and side checks
+
+- **The cash-advance bound.** Every gain is also computed with the cash-advance fees and cash-advance interest the person saves against the yardstick taken out, to first order with no feedback on behaviour, against S0 and against M0, for everyone and for every group of clause (d). Clause (d) is read on it as well (section 4), and a cell counts in the region only if it passes both as built and under the bound. It is read from the same runs, on the confirmation seeds [The cash-advance bound (decided 15 Nov).].
+- **Entry readings.** The quote and the realised record run over the whole confirmation map; every verdict reads the quote, and the realised record is the pessimistic reading with its own region. The leaving-rule reading is a side check on three cells (r_out 4.4%; a0 0.05, 0.2, 0.6; distress 0 and 2 points), run in the side-check pack on development seeds and shown between the two [A third entry reading, shown between] [Where each bound runs (decided 12].
+- **Loan losses at sourced rates.** Each pool coupon carries its class's published charge-off rate: card for bridges, consumer and business for instalments. The rate is read at the share of jobs without a wage three months earlier. Each lender group loses that rate on its average principal over the month [Under the loan-loss bound the pool]. The bound runs over the whole map on the three development seeds of the final development map, not on the confirmation seeds, and is reported beside the baseline as a bound from development seeds [Where each bound runs (decided 12].
+- **Money paid to outside lenders and intermediaries.** The efficiency claim rests on real cost alone, which reads no destination of any flow; interest and fees are transfers, shown in one table by sector. The household gain is reported three ways [Money paid to outside lenders and]:
+  - as built, outside lenders' income leaves the households; every verdict reads this case;
+  - a ledger line at a central share of 0.10 of that income returning to households as owners of the lenders (band 0.06 to 0.14), read from the runs as built with no feedback on behaviour, for means and wealth groups only and for no verdict;
+  - all of it returned, in proportion to spending, the outer bound, which also hands back lenders' staff, funding and loss costs: its own map over the whole grid on the three development seeds of the final development map, reported as a bound from development seeds [Outside lenders sit outside the population;] [Where each bound runs (decided 12].
+- **Side-check pack,** run with the final development map on the three cells, on development seeds [Side checks: one pack on the] [The pool's fixed cost is sourced]:
+  - leaving-rule noise at half and at twice;
+  - the pool's fixed cost low ($0.10) and high ($0.50) against the central $0.18 a consumer unit a year [The source audit of 13 Nov:];
+  - the three entry readings;
+  - a failure past the cap priced at $0, and five fees a month;
+  - the two bounds above, which also run over the whole map.
+- **Robustness runs** (`docs/ROBUSTNESS_PLAN.md`, section 6): the buffer review share, the joining rule, the two worlds of sellers, the launch placement and the finer distress levels of the stress boundary, each against the base on the same cells. They run on the development seeds only, are reported whatever they show, and change no rule and no clause.
+
+## 8. Reported whatever the outcome
+
+- Real cost as registered, with two read-outs: the break-even cost of one rescued payment, and real cost per dollar of purchases completed in each arm [Clause (b), real cost, is reported].
+- Owners' return less their alternative by window, with its interval; no verdict reads it [Claim (d) against DeFi is reported].
+- Every gain as built and under the cash-advance bound, and the household gain three ways (section 7) [The cash-advance bound (decided 15 Nov).] [Money paid to outside lenders and].
+- Bridges served beside every verdict, the pool's run month by month and the flag where bridges served falls below its level in years 1 to 3 (section 4) [The pool run at high adoption].
+- The pool's bridge part and term part apart: book, income and losses [Pool term lending stays in the].
+- Beside the headline, never in it [No production or growth step. The]:
+  - completed trade, as a count and as dollars from zero to face value, with the break-even surplus share;
+  - money balance-time;
+  - released buffers;
+  - MicroVelocity.
+- The credit block: interest saved against each borrower's own outside rate, who receives the coupons, failures avoided, c and theta [Every result carries a credit block].
+- c, theta and the bridge coupon across rates and through the distress year, with the loss-rate equation [A due bridge ranks first (decided].
+- M1 against U; paired gains by role and by class [The class in the claim's no-harm] [Business is covered inside the one].
+- Recovery and the lasting gap [Recovery from the distress year: a]; no reward for failure [No reward for failure: the issuer].
+- Chronic-deficit payers, reported apart [Payers in chronic deficit are flagged]. Erased failed-bill dollars by arm, and fees under five a month and with no cap [A failed bill or wage costs].
+- The finite-size figure, and the largest single pool loan as a share of capital [Population size is fixed by a].
+- The 37 declared readings of 12 Nov and the 18 readings of 14 Nov, each with the side it leans to [The readings left open in the] [The readings left by the card-limit].
+
+## 9. Declared departures from earlier registered text
+
+- **3 Nov, use and collapse tests.** Changed after results: the registered test read collapse at a0 0.8 on an artefact. The tolerances of 0.05 lean for CPM at high a0. The original tests are stored beside [Use holds when participation in the].
+- **3 Nov and 5 Nov, the pool pays its way.** On 3 Nov the self-financing ratio was replaced by the own margin, because the ratio was 1.000 at the capital limit by construction. On 5 Nov the -$2 window reading was replaced after about half of seeds fell below it [The pool pays its own way] (both dates).
+- **3 Nov, statistics.** The archived rule (80% of seeds, 90% bootstrap intervals) was replaced on 21 Oct with no recorded supersession. The Wilson rule replaces both [The claim, registered before the changed].
+- **11 Nov, clause (d).** First it was moved to the complete gain instead of wealth, at both ends of the bracket [Claim (d) reads the complete gain]. Then, the same day and after the development map, it was read against M0 at face value only, with the break-even share stored [Claim (d) against DeFi is reported].
+- **12 Nov, the DeFi arm.** The version in which 10% of people borrow any shortfall was dropped after it had been run. Real DeFi's loan covers no shortfall [The DeFi arm is real DeFi:] [The rigidity of DeFi that the].
+- **12 Nov, population 4,000** against the rule's 8,000. The rule compares 36 numbers with no allowance for multiple comparisons, and what still moves at 4,000 moves on single large loans [The population for the final map]. On 16 Nov the repeated check passed at no size by the rule as written, for the same reason, and the population stays 4,000 by the reading written before it ran [The repeated size check, read (16].
+- **12 Nov, retired seeds.** Blocks 20261201 to 20261220 and 20261301 to 20261308 were touched before the freeze (section 3).
+- **12 Nov, the loan-loss bound.** Its first pricing, in which the pool learned losses from its own record, was replaced by published-rate pricing. Its base moved from the book at the close to the month's average balance [Under the loan-loss bound the pool].
+- **15 Nov, the seed count, withdrawn.** The count of 50 seeds, a round number fixed on 15 Nov in place of the planner's count, was withdrawn on 17 Nov, before any confirmation seed was run or read, for the rule's count of 30, with its one extension to 60 fixed in advance [The confirmation seed count is 30].
+- **15 Nov, the cash-advance bound.** Added after the 14 Nov check showed holders' cash advances far above the US level. It only narrows the region: a cell must pass both as built and under the bound [The cash-advance bound (decided 15 Nov).].
+- **15 Nov, the stress boundary.** Declared after the 14 Nov check showed the pool run at a0 0.6 and 2 points; no rule was changed [The pool run at high adoption].
+- **16 Nov, the first amendment,** made after the final development map was read and before any confirmation seed was run or read.
+- **17 Nov, the second amendment,** made before any confirmation seed was run or read: the seed count by the rule, and the records and switches added for the robustness checks, which change no rule or clause.
+
+Where the register's wording and the code that evaluates the claim still differ, this plan follows the code:
+- **The harm falsifier.** The row [The falsifier "worse than M0" reads harm] names class, launch-wealth quintile or billing-cycle groups and each group's mean wealth gain. The code (`v3_harmed` in `gains.py`) reads the ten groups of launch-wealth quintile crossed with short or long billing cycle, and each group's median change in end wealth (section 6).
+- **The high fixed cost.** The row [The pool's fixed cost is sourced] gives $0.49 a consumer unit a year; the code computes $0.50, on the 2023 count of consumer units that [The source audit of 13 Nov:] adopts (section 7).
+- **The cash-advance bound under stress.** The row [The cash-advance bound (decided 15 Nov).] asks a cell to pass both as built and under the bound to count in the region. At a stressed level the code reads the bound on the cell's level-0 claim only; the stress leg's own clause (d) is read as built (section 4).
+
+## 10. Limits
+
+- No permanent default: a written-off debt stays owed. The loan-loss bound stands beside it.
+- The card contract's declared parts: a hard cap with no over-limit tolerance; 2023 line levels; a starting balance that carries no interest, is never collected and is no part of net wealth; no penalty APR or re-aging; lines held through the distress year, with line cuts a side check only [At the line. Each day a] [Card lines (decided 14 Nov). Card] [The starting balance. Each holder starts] [Minimum payment and late fee. The] [Line cuts in the distress year,].
+- Cash advances run far above the US level, mostly paying wages holders owe as employers; the excess leans toward CPM, and the cash-advance bound removes it [The cash-advance bound (decided 15 Nov).].
+- The harsh stress: no unemployment insurance; total spending fixed, so households finance the whole lost wage; the shape of the episode is declared, not matched [No unemployment insurance (decided 14 Nov;] [Size and labels of the harsh] [Spending follows relative net wealth and].
+- The stress boundary: at high adoption under the harsh stress the pool can run short of capital, with long loans funded by capital on two months' notice; a pool that only bridges is left for a later version [The pool run at high adoption] [Pool term lending stays in the].
+- The charge's edge over U still grows with the population at 4,000 people; it leans against CPM [The repeated size check, read (16].
+- Every business loan request from a firm not in arrears is granted [Business is covered inside the one].
+- Total spending is fixed; there is no production or growth [Spending follows relative net wealth and].
+- Stylised calibration, not the US economy [Scope of calibration (decided 4 Nov):].
+- Mortgages are left out [Scope: payments and the credit households].
+- Bank small-dollar loans, buy now pay later and family loans are left out [Alternatives to failing. Earned-wage access runs].
+- Failed bills are erased, so completed-trade dollars are an upper bound [A failed bill or wage costs].
+- Diversification is unmeasured [No production or growth step. The].
+- Inflation is imposed at a known 2% [Consumer prices rise 2% a year].
+- M2 is not issuable as a US payment stablecoin, and its zero-real-rate cells are a declared limit.
+- M0's credited supply interest runs out of funding after about 14 to 16 months [Controls: r_out (2, 4.4, 6%), launch].
+- The seller's discount is derived in the paper, not built; card holders route to P by habit [The seller's discount and the payer's].
+- The side checks dropped for lack of a switch, each named [Side checks: one pack on the].
+- The 37 declared readings of 12 Nov and the 18 of 14 Nov; the use test changed after results.
+
+## 11. Run protocol
+
+1. On the frozen code, the final development map runs at 4,000 people on the three development seeds, all 105 cells, with the loan-loss bound, the outer bound and the side-check pack on the same seeds.
+2. n = 30 was fixed on 17 Nov by the rule of section 5 on that map's spreads, before any confirmation seed was run or read. The planner's count and its count at the bounds on that map are reported, and the planner names the cells 30 seeds leave underpowered on the development spreads.
+3. Proof: at the freeze commit, rerun the six side-check cells on the development seeds with every switch at its default and compare every value the final development map stores for them exactly. The freeze is made only if none differs.
+4. Freeze: commit this plan, the runner's count of 30 and the code's commit together. No seed from 20261401 upward is used before then [Order of work. The 3 Nov] [Seeds for the frozen run, renewed].
+5. Confirmation: run seeds 20261401 to 20261430, every cell, under the quote and under the realised entry reading, one seed at a time, each part written when it is done. Between the parts check only that no job failed and that money is conserved; read nothing else. Join the parts into the map, every cell and the claim worked out over all 30 seeds by the runner's own functions.
+6. Read the claim once, at 30 seeds.
+7. The one extension: run the cells marked underpowered at 30 to 60 seeds (20261431 to 20261460), all such cells together, and read them once at 60.
+8. Change nothing in the engine, the plan or the reading after a confirmation seed is read. Any later analysis is labelled exploratory and uses seeds from 20261601 upward.
+
+## 12. The reviews and the source audit of 13 Nov
+
+Every number and formula in the code, 281 items, was checked against its primary source before the final development map. The contract's formulas, the statistics and the data behind the loan-loss bound were confirmed. Six numbers were corrected to what their sources say, and banks' car-loan and personal-loan rates now follow the outside rate with a measured pass-through of 0.75 and 0.63. What was kept as a proxy or a stylised figure is named in the limits [The source audit of 13 Nov:]. MicroVelocity is recorded from holding times as its authors define it, under first in first out and last in first out [Three measures recorded and read by].
+
+Before the freeze the code was reviewed four times on 13 Nov: once as a whole, which found twelve points, and once each on money and order, on measurement, and on rules against code. Every point was reproduced before it was acted on. What changed, and what was declared and left, is one register row [The reviews of 13 Nov and]. Two rules followed from them: how the last two parts of "worse than M0" are compared ["Worse than M0": how its last two], and savers reviewing entry at the users' rate, a 3 Nov rule that had never been built [Savers review entry at the users'].
+
+Each clause and each cell is stored with a three-way reading: supported, inconclusive or falsified, with the comparison or group that decided it. The claim map is drawn from those readings.
+
+## 13. Open points: settled, and still open
+
+The first draft of this plan listed eleven points the register left open. Eight are settled in the register,
+without any change to the engine:
+
+- The confirmation block. Seeds from 20261401 upward, 30 of them with one declared extension to 60; the two
+  touched blocks are retired and the paper says what happened to each [Seeds for the frozen run, renewed]
+  [The confirmation seed count is 30].
+- The statistics terms. The bootstrap check, the seed-count rule, "near the line", "underpowered" and the region
+  as an edge-joined block are defined as built, each open choice leaning against CPM. The verdict reads the
+  quote; the realised entry reading is the pessimistic reading with its own region. A cell passes on (a), (b) and (d),
+  (d) also under the cash-advance bound, and (a) also asks for the Persistent reading [The statistics row's terms,
+  fixed as] [The cash-advance bound (decided 15 Nov).].
+- Persistence tests 2, 3 and 5 and the unsafe write-off clause are now in the register as built [Persistence
+  tests 2, 3 and 5].
+- "Worse than M0" on credit cost and owners' return. Built as two readings, each firing only when CPM is shown
+  worse: borrowers' interest (a person a year, and as a rate on what is borrowed) against M0, and owners'
+  second-window return less DeFi's savings rate. The stores hold no interest or balances by person and no
+  overdraft balances, so the reading is of the arm as a whole.
+- The DeFi row now names the row it replaced; the 11 Nov row on reading clause (d) against DeFi stands.
+- Rows amended in part are read by one stated rule, with the known cases listed [How the register is read where].
+
+Decided on 12 Nov, night:
+
+1. **Clause (a), paying its own way,** is read as the 5 Nov row defines it, running without outside money. The
+   claim row's first wording, a margin strictly above zero, is stored and reported beside; the 5 Nov contract
+   sets that margin to zero by design [Clause (a) of the claim reads].
+2. **Where each bound runs.** The confirmation seeds run the map under the quote and under the realised entry
+   reading. Loan losses at sourced rates, lenders' interest returned and the side-check pack run on the three
+   development seeds of the final development map only, and are reported as bounds from development seeds
+   [Where each bound runs (decided 12].
+
+Still open, outside the freeze:
+
+3. **MicroVelocity.** Recorded for every person and year as outflow over balance-time on three definitions
+   of money, and since 13 Nov also from holding times, each person's money kept in cohorts by day of receipt,
+   under first in first out and last in first out. The identity by which the first equals the yearly average of
+   the measure as its authors define it is to be confirmed with the paper's text and its author before the paper
+   states it [Three measures recorded and read by].
+
+The other items still open at the freeze are listed in `docs/OPEN_ITEMS.md`.

@@ -1,0 +1,263 @@
+[
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:supply_rate",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xd955759d0000000000000000000000000000000000000000000000000c91eaa5ed98ae20"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:borrow_rate",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9fa83b5a0000000000000000000000000000000000000000000000000c91eaa5ed98ae20"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:base_price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e090000000000000000000000008fffffd4afb6115b954bd326cbe7b4ba576818f6"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:weth_price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e09000000000000000000000000c0053f3fbccd593758258334dfce24c2a9a673ad"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:supply_rate",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xd955759d0000000000000000000000000000000000000000000000000c87921570088115"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:borrow_rate",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9fa83b5a0000000000000000000000000000000000000000000000000c87921570088115"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:base_price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e090000000000000000000000008fffffd4afb6115b954bd326cbe7b4ba576818f6"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:weth_price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e09000000000000000000000000c0053f3fbccd593758258334dfce24c2a9a673ad"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:supply_rate",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xd955759d0000000000000000000000000000000000000000000000000d316dd8d86743a6"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:borrow_rate",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9fa83b5a0000000000000000000000000000000000000000000000000d316dd8d86743a6"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:base_price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e090000000000000000000000008fffffd4afb6115b954bd326cbe7b4ba576818f6"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:weth_price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e090000000000000000000000005f4ec3df9cbd43714fe2740f5e3616155c5b8419"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:supply_rate",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xd955759d0000000000000000000000000000000000000000000000000d30858ea4e9cb06"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:borrow_rate",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9fa83b5a0000000000000000000000000000000000000000000000000d30858ea4e9cb06"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:base_price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e090000000000000000000000008fffffd4afb6115b954bd326cbe7b4ba576818f6"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:weth_price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e090000000000000000000000005f4ec3df9cbd43714fe2740f5e3616155c5b8419"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "current:check:totalSupply()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x18160ddd"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "current:check:totalBorrow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x8285ef40"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "current:check:getUtilization()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x7eb71131"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "current:check:getReserves()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x0902f1ac"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "current:check:baseBorrowMin()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x300e6beb"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "current:block",
+  "method": "eth_getBlockByNumber",
+  "params": [
+   "0x18fffe0",
+   false
+  ]
+ }
+]

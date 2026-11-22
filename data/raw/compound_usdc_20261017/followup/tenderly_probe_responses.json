@@ -1,0 +1,10 @@
+[
+  {
+    "endpoint": "https://gateway.tenderly.co/public/mainnet",
+    "error": "Response status code does not indicate success: 429 (Too Many Requests)."
+  },
+  {
+    "endpoint": "https://mainnet.gateway.tenderly.co",
+    "error": "Response status code does not indicate success: 429 (Too Many Requests)."
+  }
+]

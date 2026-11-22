@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+.venv/
+.cache/
+.build/
+.pytest_cache/
+*.egg-info/
+# LaTeX build products
+*.aux
+*.log
+*.out
+*.toc
+*.xdv
+*.synctex.gz
+# Figures are kept as PDF; the PNG copies are for quick viewing
+paper/figures/*.png
+# The largest stores of the 30-seed maps are kept in the data archive, not in the repository (results/README.md)
+results/confirmation_quote/measures.json.gz.*
+results/confirmation_quote/failure_counts.json.gz.*
+results/confirmation_realised/measures.json.gz.*
+results/confirmation_realised/failure_counts.json.gz.*
+results/rate_cut/measures.json.gz.*
+results/rate_cut/failure_counts.json.gz.*
+# The downloaded archives of those stores (results/README.md)
+*.large.tar

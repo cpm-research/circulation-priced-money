@@ -1,0 +1,516 @@
+{
+  "market": "Compound III Ethereum USDC",
+  "chain_id": 1,
+  "proxy": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+  "implementation": "0x63e749153baf1838f63ca22c275370bd2b1ceb15",
+  "admin": "0x1ec63b5883c3481134fd50d5daebc83ecd2e8779",
+  "extension": "0xa70a0227028ad005f4fc9376a82cd1462e3aaedc",
+  "block": 26214368,
+  "block_hex": "0x18fffe0",
+  "block_hash": "0x3a282d5aceb3cc24dfaf339fabe2d89a879b64158311b4b9e7d13463b8c8158e",
+  "utc": "2026-10-17T19:28:23+00:00",
+  "block_hash_crosschecked_providers": [
+    "PublicNode",
+    "1RPC",
+    "BlockReq"
+  ],
+  "verified_source_bytecode_match": true,
+  "code_sha256": {
+    "implementation_runtime": "b942614560ef7218a52173cc501ce9198f74a558348edf957cda62a218aa20fe",
+    "proxy_runtime": "882d25cd6d729bac78ed7e63b0f05e2a476394850343864e2dab53a7ecc9812a",
+    "extension_runtime": "f85712da5faf210e75c5573ae4c77c8201af13a5aff7f48ea939115880ae7d9d",
+    "rewards_runtime": "ebde49ac2a2198330da5096707ef14512c5c88a59abe235ccfdb1a41d0e43683"
+  },
+  "units": {
+    "base": "USDC raw units 1e6",
+    "factors": "1e18",
+    "indexes": "1e15",
+    "prices": "USD 1e8",
+    "rates": "per second scaled 1e18",
+    "APR": "rate times 31536000, not APY"
+  },
+  "base_asset": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+  "base_oracle": "0x8fffffd4afb6115b954bd326cbe7b4ba576818f6",
+  "cash_usdc": "41777261.594735",
+  "supply_usdc": "381279533.505742",
+  "borrow_usdc": "347956477.378012",
+  "reserves_usdc": "8454205.467005",
+  "minimum_borrow_position_usdc": "100",
+  "target_reserves_usdc": "20000000",
+  "storefront_price_factor": "0.6",
+  "utilisation_percent": "91.2601883048311966",
+  "rates": {
+    "supply": {
+      "per_second_raw": "2304528734",
+      "apr_percent": "7.2675618155424"
+    },
+    "borrow": {
+      "per_second_raw": "2706969143",
+      "apr_percent": "8.5366978893648"
+    }
+  },
+  "raw_settings": {
+    "baseToken()": "917551056842671309452305380979543736893630245704",
+    "baseTokenPriceFeed()": "822094656259768996315824926312285769301351733494",
+    "baseScale()": "1000000",
+    "decimals()": "6",
+    "numAssets()": "13",
+    "baseBorrowMin()": "100000000",
+    "targetReserves()": "20000000000000",
+    "storeFrontPriceFactor()": "600000000000000000",
+    "getReserves()": "8454205467005",
+    "totalSupply()": "381279533505742",
+    "totalBorrow()": "347956477378012",
+    "getUtilization()": "912601883048311966",
+    "supplyKink()": "900000000000000000",
+    "supplyPerSecondInterestRateSlopeLow()": "1141552511",
+    "supplyPerSecondInterestRateSlopeHigh()": "101344495180",
+    "supplyPerSecondInterestRateBase()": "0",
+    "borrowKink()": "900000000000000000",
+    "borrowPerSecondInterestRateSlopeLow()": "880834601",
+    "borrowPerSecondInterestRateSlopeHigh()": "114155251141",
+    "borrowPerSecondInterestRateBase()": "475646879",
+    "baseTrackingSupplySpeed()": "0",
+    "baseTrackingBorrowSpeed()": "0",
+    "baseMinForRewards()": "1000000000000",
+    "trackingIndexScale()": "1000000000000000",
+    "baseAccrualScale()": "1000000",
+    "governor()": "625496822074558125566300987011552446920364603685",
+    "pauseGuardian()": "1073021371786102711066046704037845102107483570476",
+    "extensionDelegate()": "953624653678529892386649451251370777886146080476",
+    "isSupplyPaused()": "0",
+    "isTransferPaused()": "0",
+    "isWithdrawPaused()": "0",
+    "isAbsorbPaused()": "0",
+    "isBuyPaused()": "0"
+  },
+  "stored_totals_raw": [
+    "1206555799275703",
+    "1272258840227566",
+    "320465012956",
+    "1286345147069",
+    "316006251213370",
+    "273494733994507",
+    "1792264895",
+    "0"
+  ],
+  "elapsed_since_stored_accrual_seconds": 408,
+  "base_oracle_round_raw": [
+    "73786976294838206499",
+    "99985030",
+    "1792219323",
+    "1792219343",
+    "73786976294838206499"
+  ],
+  "base_price_usd": "0.9998503",
+  "collaterals": [
+    {
+      "symbol": "COMP",
+      "asset": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+      "oracle": "0x69b50ff403e995d9c4441a303438d9049dac8ccd",
+      "raw": {
+        "offset": "0",
+        "scale": "1000000000000000000",
+        "borrow_factor": "500000000000000000",
+        "liquidation_threshold_factor": "700000000000000000",
+        "liquidation_credit_factor": "750000000000000000",
+        "supply_cap": "100000000000000000000000",
+        "user_collateral": "99999999999192143544031",
+        "custody": "99999999999517877549453",
+        "protocol_inventory": "325734005422",
+        "price_1e8": "2150144000",
+        "round_data": [
+          "36893488147419116753",
+          "2150144000",
+          "1792263843",
+          "1792263863",
+          "36893488147419116753"
+        ]
+      },
+      "borrow_factor": "0.5",
+      "liquidation_threshold_factor": "0.7",
+      "liquidation_credit_factor": "0.75",
+      "supply_cap_tokens": "100000",
+      "oracle_price_usd": "21.50144"
+    },
+    {
+      "symbol": "WBTC",
+      "asset": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+      "oracle": "0xc8e4c3f58d5fc4409522503927ecea057ebba1fc",
+      "raw": {
+        "offset": "1",
+        "scale": "100000000",
+        "borrow_factor": "800000000000000000",
+        "liquidation_threshold_factor": "850000000000000000",
+        "liquidation_credit_factor": "900000000000000000",
+        "supply_cap": "1000000000000",
+        "user_collateral": "479463135253",
+        "custody": "479463135267",
+        "protocol_inventory": "14",
+        "price_1e8": "8130428624350",
+        "round_data": [
+          "36893488147419117283",
+          "8130428624350",
+          "1792261800",
+          "1792261823",
+          "36893488147419117283"
+        ]
+      },
+      "borrow_factor": "0.8",
+      "liquidation_threshold_factor": "0.85",
+      "liquidation_credit_factor": "0.9",
+      "supply_cap_tokens": "10000",
+      "oracle_price_usd": "81304.2862435"
+    },
+    {
+      "symbol": "WETH",
+      "asset": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "oracle": "0xc0053f3fbccd593758258334dfce24c2a9a673ad",
+      "raw": {
+        "offset": "2",
+        "scale": "1000000000000000000",
+        "borrow_factor": "825000000000000000",
+        "liquidation_threshold_factor": "880000000000000000",
+        "liquidation_credit_factor": "930000000000000000",
+        "supply_cap": "500000000000000000000000",
+        "user_collateral": "61855866959108393462129",
+        "custody": "61855866959110326380119",
+        "protocol_inventory": "1932917990",
+        "price_1e8": "241316400966",
+        "round_data": [
+          "36893488147419121750",
+          "241316400966",
+          "1792265196",
+          "1792265219",
+          "36893488147419121750"
+        ]
+      },
+      "borrow_factor": "0.825",
+      "liquidation_threshold_factor": "0.88",
+      "liquidation_credit_factor": "0.93",
+      "supply_cap_tokens": "500000",
+      "oracle_price_usd": "2413.16400966"
+    },
+    {
+      "symbol": "UNI",
+      "asset": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+      "oracle": "0x553303d460ee0afb37edff9be42922d8ff63220e",
+      "raw": {
+        "offset": "3",
+        "scale": "1000000000000000000",
+        "borrow_factor": "680000000000000000",
+        "liquidation_threshold_factor": "740000000000000000",
+        "liquidation_credit_factor": "830000000000000000",
+        "supply_cap": "364691000000000000000000",
+        "user_collateral": "237072597860377714695308",
+        "custody": "237072597860565828883219",
+        "protocol_inventory": "188114187911",
+        "price_1e8": "714691187",
+        "round_data": [
+          "129127208515966888114",
+          "714691187",
+          "1792265187",
+          "1792265207",
+          "129127208515966888114"
+        ]
+      },
+      "borrow_factor": "0.68",
+      "liquidation_threshold_factor": "0.74",
+      "liquidation_credit_factor": "0.83",
+      "supply_cap_tokens": "364691",
+      "oracle_price_usd": "7.14691187"
+    },
+    {
+      "symbol": "LINK",
+      "asset": "0x514910771af9ca656af840dff83e8264ecf986ca",
+      "oracle": "0x83b34662f65532e611a87ebed38063dec889d5a7",
+      "raw": {
+        "offset": "4",
+        "scale": "1000000000000000000",
+        "borrow_factor": "730000000000000000",
+        "liquidation_threshold_factor": "790000000000000000",
+        "liquidation_credit_factor": "830000000000000000",
+        "supply_cap": "585990000000000000000000",
+        "user_collateral": "481799169614661951521125",
+        "custody": "481799169655124111717632",
+        "protocol_inventory": "40462160196507",
+        "price_1e8": "1202240000",
+        "round_data": [
+          "36893488147419116201",
+          "1202240000",
+          "1792263675",
+          "1792263695",
+          "36893488147419116201"
+        ]
+      },
+      "borrow_factor": "0.73",
+      "liquidation_threshold_factor": "0.79",
+      "liquidation_credit_factor": "0.83",
+      "supply_cap_tokens": "585990",
+      "oracle_price_usd": "12.0224"
+    },
+    {
+      "symbol": "wstETH",
+      "asset": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      "oracle": "0xa2699232b341881b1ed85d91592b7c259e029acf",
+      "raw": {
+        "offset": "5",
+        "scale": "1000000000000000000",
+        "borrow_factor": "820000000000000000",
+        "liquidation_threshold_factor": "860000000000000000",
+        "liquidation_credit_factor": "910000000000000000",
+        "supply_cap": "75000000000000000000000",
+        "user_collateral": "49924293930541566860561",
+        "custody": "49924293930547070698761",
+        "protocol_inventory": "5503838200",
+        "price_1e8": "300811714659",
+        "round_data": [
+          "36893488147419121750",
+          "300811714659",
+          "1792265196",
+          "1792265219",
+          "36893488147419121750"
+        ]
+      },
+      "borrow_factor": "0.82",
+      "liquidation_threshold_factor": "0.86",
+      "liquidation_credit_factor": "0.91",
+      "supply_cap_tokens": "75000",
+      "oracle_price_usd": "3008.11714659"
+    },
+    {
+      "symbol": "cbBTC",
+      "asset": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+      "oracle": "0x0a4f4f9e84fc4f674f0d209f94d41fafe5af887d",
+      "raw": {
+        "offset": "6",
+        "scale": "100000000",
+        "borrow_factor": "800000000000000000",
+        "liquidation_threshold_factor": "850000000000000000",
+        "liquidation_credit_factor": "900000000000000000",
+        "supply_cap": "90000000000",
+        "user_collateral": "34085748079",
+        "custody": "34085748083",
+        "protocol_inventory": "4",
+        "price_1e8": "8147505459204",
+        "round_data": [
+          "18446744073709552914",
+          "8147505459204",
+          "1792249070",
+          "1792249091",
+          "18446744073709552914"
+        ]
+      },
+      "borrow_factor": "0.8",
+      "liquidation_threshold_factor": "0.85",
+      "liquidation_credit_factor": "0.9",
+      "supply_cap_tokens": "900",
+      "oracle_price_usd": "81475.05459204"
+    },
+    {
+      "symbol": "tBTC",
+      "asset": "0x18084fba666a33d37592fa2633fd49a74dd93a88",
+      "oracle": "0xaa9527bf3183a96fe6e55831c96de5cd988d3484",
+      "raw": {
+        "offset": "7",
+        "scale": "1000000000000000000",
+        "borrow_factor": "800000000000000000",
+        "liquidation_threshold_factor": "850000000000000000",
+        "liquidation_credit_factor": "900000000000000000",
+        "supply_cap": "40000000000000000000",
+        "user_collateral": "37253755674160952575",
+        "custody": "37253755707571165649",
+        "protocol_inventory": "33410213074",
+        "price_1e8": "8145417027107",
+        "round_data": [
+          "36893488147419104639",
+          "8145417027107",
+          "1792249632",
+          "1792249655",
+          "36893488147419104639"
+        ]
+      },
+      "borrow_factor": "0.8",
+      "liquidation_threshold_factor": "0.85",
+      "liquidation_credit_factor": "0.9",
+      "supply_cap_tokens": "40",
+      "oracle_price_usd": "81454.17027107"
+    },
+    {
+      "symbol": "weETH",
+      "asset": "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee",
+      "oracle": "0x4f12633d511dc3049de1ea923b7047fbed0070d2",
+      "raw": {
+        "offset": "8",
+        "scale": "1000000000000000000",
+        "borrow_factor": "750000000000000000",
+        "liquidation_threshold_factor": "800000000000000000",
+        "liquidation_credit_factor": "900000000000000000",
+        "supply_cap": "12000000000000000000000",
+        "user_collateral": "123999084587347663603",
+        "custody": "123999084588529184108",
+        "protocol_inventory": "1181520505",
+        "price_1e8": "266884845315",
+        "round_data": [
+          "36893488147419121750",
+          "266884845315",
+          "1792265196",
+          "1792265219",
+          "36893488147419121750"
+        ]
+      },
+      "borrow_factor": "0.75",
+      "liquidation_threshold_factor": "0.8",
+      "liquidation_credit_factor": "0.9",
+      "supply_cap_tokens": "12000",
+      "oracle_price_usd": "2668.84845315"
+    },
+    {
+      "symbol": "deUSD",
+      "asset": "0x15700b564ca08d9439c58ca5053166e8317aa138",
+      "oracle": "0x7badab7109afbbf48ecd8d6498caacd2630b45b9",
+      "raw": {
+        "offset": "9",
+        "scale": "1000000000000000000",
+        "borrow_factor": "0",
+        "liquidation_threshold_factor": "100000000000000",
+        "liquidation_credit_factor": "920000000000000000",
+        "supply_cap": "0",
+        "user_collateral": "53239486162533823184",
+        "custody": "53242738874126526527",
+        "protocol_inventory": "3252711592703343",
+        "price_1e8": "1",
+        "round_data": [
+          "1",
+          "1",
+          "1792265303",
+          "1792265303",
+          "1"
+        ]
+      },
+      "borrow_factor": "0",
+      "liquidation_threshold_factor": "0.0001",
+      "liquidation_credit_factor": "0.92",
+      "supply_cap_tokens": "0",
+      "oracle_price_usd": "1E-8"
+    },
+    {
+      "symbol": "sdeUSD",
+      "asset": "0x5c5b196abe0d54485975d1ec29617d42d9198326",
+      "oracle": "0x7badab7109afbbf48ecd8d6498caacd2630b45b9",
+      "raw": {
+        "offset": "10",
+        "scale": "1000000000000000000",
+        "borrow_factor": "0",
+        "liquidation_threshold_factor": "100000000000000",
+        "liquidation_credit_factor": "920000000000000000",
+        "supply_cap": "0",
+        "user_collateral": "1000001670480190599",
+        "custody": "95695316676560138595",
+        "protocol_inventory": "94695315006079947996",
+        "price_1e8": "1",
+        "round_data": [
+          "1",
+          "1",
+          "1792265303",
+          "1792265303",
+          "1"
+        ]
+      },
+      "borrow_factor": "0",
+      "liquidation_threshold_factor": "0.0001",
+      "liquidation_credit_factor": "0.92",
+      "supply_cap_tokens": "0",
+      "oracle_price_usd": "1E-8"
+    },
+    {
+      "symbol": "rsETH",
+      "asset": "0xa1290d69c65a6fe4df752f95823fae25cb99e5a7",
+      "oracle": "0xd6a48f6f687a5fef8a69834c49514b747012cf1c",
+      "raw": {
+        "offset": "11",
+        "scale": "1000000000000000000",
+        "borrow_factor": "0",
+        "liquidation_threshold_factor": "900000000000000000",
+        "liquidation_credit_factor": "950000000000000000",
+        "supply_cap": "0",
+        "user_collateral": "13580720070854901001",
+        "custody": "13580720070854901001",
+        "protocol_inventory": "0",
+        "price_1e8": "261155493078",
+        "round_data": [
+          "36893488147419121750",
+          "261155493078",
+          "1792265196",
+          "1792265219",
+          "36893488147419121750"
+        ]
+      },
+      "borrow_factor": "0",
+      "liquidation_threshold_factor": "0.9",
+      "liquidation_credit_factor": "0.95",
+      "supply_cap_tokens": "0",
+      "oracle_price_usd": "2611.55493078"
+    },
+    {
+      "symbol": "USDe",
+      "asset": "0x4c9edd5852cd905f086c759e8383e09bff1e68b3",
+      "oracle": "0xa569d910839ae8865da8f8e70fffb0cba869f961",
+      "raw": {
+        "offset": "12",
+        "scale": "1000000000000000000",
+        "borrow_factor": "0",
+        "liquidation_threshold_factor": "940000000000000000",
+        "liquidation_credit_factor": "960000000000000000",
+        "supply_cap": "0",
+        "user_collateral": "101433685478637164260",
+        "custody": "101433685478637164260",
+        "protocol_inventory": "0",
+        "price_1e8": "99957755",
+        "round_data": [
+          "36893488147419104088",
+          "99957755",
+          "1792184460",
+          "1792184483",
+          "36893488147419104088"
+        ]
+      },
+      "borrow_factor": "0",
+      "liquidation_threshold_factor": "0.94",
+      "liquidation_credit_factor": "0.96",
+      "supply_cap_tokens": "0",
+      "oracle_price_usd": "0.99957755"
+    }
+  ],
+  "rewards": {
+    "contract": "0x1b0e765f6224c21223aea2af16c1c46e38885a40",
+    "config_raw": [
+      "1096451400262405796991039590211805051831004063880",
+      "1000000000000",
+      "1"
+    ],
+    "balance_raw": "1017000000000",
+    "decimals": 18,
+    "new_supply_tracking_speed": "0",
+    "new_borrow_tracking_speed": "0",
+    "limit": "shared reward balance does not establish coverage of historical claims"
+  },
+  "snapshot_checks": [
+    "all 13 collateral custody identities exact",
+    "both rate outputs match integer curve reconstruction",
+    "cash plus timestamp-accrued borrowing minus supply equals reserves exactly",
+    "ERC20 decimals match all asset scales",
+    "all 14 oracle prices match returned round answers",
+    "five key current state getters match a second RPC provider",
+    "implementation bytecode equals fully verified Blockscout source bytecode"
+  ],
+  "sources": {
+    "rpc_current": "https://ethereum-rpc.publicnode.com",
+    "rpc_history": "https://eth-mainnet.public.blastapi.io",
+    "rpc_current_crosscheck": "https://ethereum-rpc.blockreq.com/v1/rpc/public",
+    "verified_source": "https://eth.blockscout.com/api/v2/smart-contracts/0x63e749153BaF1838f63cA22c275370BD2B1cEB15",
+    "official_roots": "https://github.com/compound-finance/comet/blob/main/deployments/mainnet/usdc/roots.json"
+  },
+  "scope": "aggregate lending-market state and rules at one block, not a census of every borrower wallet",
+  "historical_recent_implementation_matches": true
+}

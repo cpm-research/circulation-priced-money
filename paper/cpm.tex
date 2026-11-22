@@ -1,0 +1,1058 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=23mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{placeins}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm}
+\usepackage{booktabs,tabularx,longtable,array,enumitem,xcolor,hyperref,fancyhdr,titlesec}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\definecolor{ink}{HTML}{18212F}
+\definecolor{blue}{HTML}{2457A6}
+\definecolor{teal}{HTML}{147D78}
+\definecolor{muted}{HTML}{5E6674}
+\definecolor{pale}{HTML}{F4F7FA}
+\tikzset{
+  mapbox/.style={draw=muted!45,rounded corners=2pt,fill=pale,
+    text=ink,align=center,font=\small,inner sep=6pt},
+  maparrow/.style={-{Stealth[length=2mm]},line width=0.8pt},
+  maplabel/.style={font=\footnotesize,align=center,text=ink,fill=white,inner sep=2pt}
+}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=teal,urlcolor=blue,
+pdftitle={Circulation-Priced Money: a holding charge that pays for pooled liquidity},
+pdfauthor={Siddharth Totla}}
+\setlength{\parindent}{1.15em}\setlength{\parskip}{0.13em}
+\setlength{\emergencystretch}{1.5em}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.16em,topsep=0.3em}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=0.18em,topsep=0.3em}
+\renewcommand{\arraystretch}{1.16}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.55em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.1em}{0.45em}
+\titlespacing*{\subsection}{0pt}{0.8em}{0.3em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{muted}Circulation-Priced Money}
+\fancyhead[R]{\small\color{muted}Preliminary draft, November 2026}
+\fancyfoot[C]{\small\color{muted}\thepage}\renewcommand{\headrulewidth}{0.2pt}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\let\savedsection\section
+\renewcommand{\section}{\FloatBarrier\savedsection}
+% A value or statement that waits for the final map or for a check; it prints in colour so none can be missed.
+\newcommand{\pending}[1]{\textcolor{red!70!black}{[#1]}}
+% Sums over the cycle (the last two completed months) carry a hat.
+\newcommand{\cyc}[1]{\widehat{#1}}
+\input{numbers}
+\begin{document}
+\begin{center}
+\vspace*{4mm}
+{\LARGE\bfseries\color{ink}Circulation-Priced Money\par}
+\vspace{2mm}
+{\large A holding charge that pays for pooled liquidity\par}
+\vspace{3mm}
+Siddharth Totla\\
+{\small Preliminary draft \quad November 2026}
+\end{center}
+
+\begin{abstract}
+Households bridge short gaps between income and payments with card credit, at
+high cost. Decentralised finance (DeFi) offers no substitute: its loans need
+collateral worth more than the loan. We propose Circulation-Priced Money
+(CPM), a payment money whose holders pay a small holding charge, a demurrage,
+into one liquidity pool that they own. The pool lends against future income
+without collateral, and the demurrage pays the capital cost of the liquidity
+kept ready, so a bridge borrower pays only operating cost and expected loss.
+Every price in the contract follows from a break-even or free-entry
+condition. We derive the size of the demurrage, the condition under which
+pool capital holds at its target, and a threshold that replaces the
+fixed-cost spiral of residual-claim pools.
+
+An agent-based model of \NumPeople{} households calibrated to United States
+data compares CPM with banks and cards and with best-case DeFi, on the same
+people and random draws, across outside rates, launch participation and
+distress. The claim was registered and read once, on \NumSeeds{} seeds held
+back until the model was frozen. With no distress the share of payments that
+fail, by value of bills and purchases, falls from \FailBanksMean{} under banks
+and cards to \FailCpmMean{}, a cut of \FailCutBanks{}; the pool without the
+charge reaches \FailPoolMean{}. At the median cell households pay
+\OutsideCutBanks{} less to outside lenders, card networks and banks, and
+\OutsideCutDefi{} less than under best-case DeFi. The average household gains
+\GainBanksSpending{} of a year's spending over banks and cards
+(\GainBanksMedian{}) and \GainDefiSpending{} over best-case DeFi
+(\GainDefiMedian{}). Over sixty months both gains are positive in
+\CellsGainPositive{} of \CellsAll{} cells, with and without distress and under
+either rule for how savers enter the pool.
+
+The demurrage is \ChargeFrom{} to \ChargeTo{} a year, \ChargeDollars{} a
+household. It cuts the price of a bridge by \BridgeCutLow{} to
+\BridgeCutHigh{}, to \BridgePriceCpm{} a year, keeps cash standing by against
+the peak of demand, and leaves household wealth \GainPerChargeDollar{} dollars
+higher for each dollar collected than the same pool without it. Unlike the
+demurrage of Gesell, it works through the price and availability of credit
+and not the speed of spending.
+
+The registered claim, non-inferior real cost with more payments completed and
+no household group behind, holds in \RegionCellsZero{} of \CellsNoDistress{}
+cells with no distress when savers enter on the pool's published quote (the
+quote rule), and in \ReadSecondRegion{} when they enter on its realised return
+(the record rule): households still gain in every cell, but the pool does not
+hold its capital. Under a wage loss of the size of 2009 the share of payments
+that fail stays below that of banks and cards on average
+(\FailCpmStressMean{} against \FailBanksStressMean{}), owners can run on the
+pool at high launch participation, and the claim holds in \RegionCellsTwo{}
+cells under the quote rule and \ReadSecondRegionTwo{} under the record rule.
+These are the boundaries of the result.
+\end{abstract}
+\begin{quotation}\small\noindent
+\textbf{Keywords:} demurrage; holding charge; pooled liquidity; household credit; payments; decentralised
+finance; agent-based model; mechanism design.
+\end{quotation}
+
+% ====================================================================================================================
+\section{Introduction}
+\label{sec:intro}
+A household's income and payments do not arrive on the same days. Rent
+falls due before a wage is paid; a customer pays late; a job ends. The gap is
+short and usually closes by itself, but on the day it opens the household
+finds money or misses a payment. The gap is common. In the Federal
+Reserve's survey for 2025, 37 per cent of adults would not have fully covered an
+unexpected \$400 expense with cash or its equivalent, and 12
+per cent could not have paid it at all \cite{shed}. In the United States
+the credit card fills the gap, with the cash advance
+and the late fee behind it: cardholders paid \$31.3 billion in card fees in
+2024, of which \$17.0 billion were late fees \cite{cfpb}. The cost falls on
+households that are short, when they are short, and evidence is divided
+on whether high-cost short credit helps or harms them
+\cite{morse,melzer}.
+
+Stablecoins and the lending protocols built on them have made payments cheap
+and brought a money-market yield to payment balances. They have not
+supplied this credit. A protocol loan is over-collateralised: the borrower
+locks assets worth more than the loan, because the collateral's price moves
+and a pseudonymous borrower has no credit record
+\cite{aramonte,gudgeon,carapella,schar}. A household that
+locks \(x\) receives \(vx\) with \(v<1\), so the money it can pay today falls
+by \((1-v)x\). Such a loan exchanges assets. It cannot cover a
+shortfall, because a household that is short has nothing left to lock.
+
+This paper proposes and tests an arrangement that supplies the missing credit
+from the payment balances themselves. In Circulation-Priced Money (CPM) a
+reserve-backed payment money, \(P\), carries a small holding charge, an
+explicit demurrage in the sense of Gesell \cite{gesell,buiter}. The proceeds
+go into one liquidity pool, owned by the users through shares. The pool
+lends short bridges and term loans against future income, without collateral,
+and lends only money it holds. The demurrage has one job. Keeping liquidity ready
+has a capital cost: owners must earn their alternative return on the money
+out in bridges and on the cash standing by for the next one. The
+demurrage pays that cost. A bridge borrower then pays only the operating cost and
+expected loss of the loan, and the pool can afford to hold cash against
+the peak of bridging demand, not only its average.
+
+The design is mutual insurance of liquidity
+\cite{diamonddybvig,holmstrom}. Every holder pays a premium in proportion to
+its balance, and whoever is short draws a bridge at a low price. Because
+wallet balances are many times the bridges outstanding at any
+time, the premium is small: about a tenth of one per cent a year in our
+simulations.
+
+The paper makes four contributions.
+First, it states the contract equation by equation and derives each price and
+target from a break-even or free-entry condition
+(Section~\ref{sec:contract}). Given four cost inputs (what owners could earn
+elsewhere, the operating cost of lending, the pool's fixed cost and the
+issuer's custody cost), no rate or share in the contract is chosen by
+hand. Its timing conventions, the observation window and the notice period,
+are declared.
+Second, it derives what the contract implies (Section~\ref{sec:implications}):
+the size of the demurrage, who pays and who receives, why demurrage alone cannot
+change aggregate wealth at fixed quantities, what holds pool capital in place,
+and how the two known failures of residual-claim pools, the fixed-cost spiral
+and the knife-edge in capital, appear under this contract.
+Third, it compares CPM with banks and cards and with a best-case decentralised
+arrangement in an agent-based model of \NumPeople{} households calibrated to
+United States data, with voluntary participation, on common random numbers,
+over a grid of outside rates, launch participation and distress
+(Sections~\ref{sec:model} to~\ref{sec:robustness}). The claim, its tests and
+sample sizes were registered before the confirmation seeds were read.
+Fourth, it states where the result ends (Sections~\ref{sec:results}
+and~\ref{sec:limits}): at the lowest outside rate, under a wage loss of the
+size of 2009 at high launch participation, and when savers judge the pool
+by its record, not its quote.
+
+The code that produces every number in this paper accompanies it. Each equation of
+Section~\ref{sec:contract} is tied to the function that computes it and to a
+test that recomputes it from the simulation's own records
+(Appendix~\ref{app:code}).
+
+\paragraph{Scope.}
+A money with demurrage raises questions far wider than the one
+answered here: what it does to saving, investment and prices across an
+economy, how it meets monetary policy and bank funding, and how firms
+and public bodies would use it. Each could be its own study. This paper
+takes one question from that field and holds the rest fixed. Can demurrage
+pay for a pool of liquidity that the money's holders own and lend from,
+among households, and does that arrangement sustain itself beside the payment
+and credit arrangements households have today? Total spending, production and
+prices are therefore given, and the gains reported are those of better
+payments and cheaper short credit alone. The choice is deliberate. A mechanism
+that failed at this scale would not be worth studying at a larger one,
+and one that works gives the wider questions something definite to start from.
+
+\paragraph{Related work.}
+\emph{Liquidity.} Cash-management theory explains why users hold working
+balances despite an opportunity cost \cite{baumol,millerorr}. Work on credit
+lines and liquidity insurance studies the value of committed liquidity and
+why private buffers are a costly substitute for pooled provision
+\cite{diamonddybvig,holmstrom,acharya,sufi}. The pool studied here is such a
+provision, owned by its users, and inherits the known weakness of pools
+that fund illiquid assets with redeemable shares: investors who leave after
+a loss weaken the claim of those who stay \cite{chengoldstein,goldsteinbond,
+schmidt}. Section~\ref{sec:results} measures where that weakness appears.
+
+\emph{Charges on money.} A carrying charge on money, a demurrage, goes back to Gesell
+\cite{gesell} and Fisher's stamp scrip \cite{fisher,champ}, and returned
+as a way to lower nominal rates below zero \cite{goodfriend,buiter}.
+Experience with negative policy rates shows how such charges are transmitted:
+pass-through to retail balances stops where a costless substitute exists,
+and exemptions separate the marginal incentive from the average burden
+\cite{eggertsson,fuster,hongkandrac}. The strongest theoretical objection is
+the Friedman rule: when money is an input to transactions, taxing balances is
+less efficient than other instruments \cite{correiateles,cck}. The demurrage
+studied here is therefore neither a tax nor a device to speed spending. It is
+the price of one service, liquidity kept ready, and the question is when that
+service is worth its price.
+
+\emph{Complementary currencies and their circulation.} Regional currencies
+with demurrage \cite{gelleri,hayashi} and mutual-credit networks
+\cite{stodder,stodderlietaer,iosifidis,mattsson} show that money designed for
+circulation has worked in practice, and that its circulation can be studied
+on transaction records. We measure circulation with the MicroVelocity of
+Campajola, D'Errico and Tessone, which splits aggregate velocity into each
+holder's contribution \cite{campajola,decollibus}, and with the time money is
+held between receipt and spending \cite{campajola,zhang}.
+
+\emph{Method.} The operating cost of lending comes from the measured unit
+cost of financial intermediation, at the upper end of its range
+\cite{philippon}. The take-up feedback of residual pricing is related to
+adverse selection in credit markets \cite{stiglitzweiss}. The simulation
+follows data-calibrated agent-based models of payments and
+household credit \cite{galbiati,baptista,poledna}. It is described with the
+ODD protocol \cite{grimm}, and its claim, tests and sample sizes were fixed
+before the confirmation data were read, in the spirit of preregistration
+\cite{nosek}.
+
+% ====================================================================================================================
+\section{The arrangement}
+\label{sec:arrangement}
+There are two accounts: the issuer's reserve and the lending
+pool. Figure~\ref{fig:mechanism} shows how they connect.
+
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[mapbox/.append style={minimum height=13mm}]
+\node[mapbox,draw=blue!60,fill=blue!5,text width=5.1cm] (reserve) at (-3.7,3.4)
+ {\textbf{Issuer reserve}\\Assets backing \(P\), earning \(\rho\)};
+\node[mapbox,draw=teal!65,fill=teal!5,text width=5.1cm] (pool) at (3.7,3.4)
+ {\textbf{Liquidity pool}\\Cash kept ready\\Bridges and term loans};
+\node[mapbox,draw=blue!60,text width=5.1cm] (user) at (-3.7,0)
+ {\textbf{Wallets}\\Hold and spend \(P\)\\Yield \(p-c\)};
+\node[mapbox,draw=teal!65,text width=5.1cm] (borrower) at (3.7,0)
+ {\textbf{Borrowers}\\Draw funded credit\\Repay from future income};
+\draw[maparrow,blue,<->] (reserve)--node[maplabel]{Issue / redeem\\one for one}(user);
+\draw[maparrow,teal,<->] (pool)--node[maplabel]{Lend / repay at\\\(r_b\) (bridge), \(r_t\) (term)}(borrower);
+\draw[maparrow] (borrower.west)--node[maplabel]{Payments\\in \(P\)}(user.east);
+\draw[maparrow,teal,<->] (-1.15,0.66)--node[maplabel,pos=.5,above left]{Shares at\\net asset value}(1.15,2.74);
+\draw[maparrow,teal,dashed] (-0.88,0.36)--node[maplabel,pos=.5,below right]{Demurrage \(c\)\\on wallet \(P\)}(1.75,2.74);
+\end{tikzpicture}
+\caption{The reserve backs the payment money; its users own the pool. A
+wallet balance earns \(p\), the reserve return less the issuer's custody
+cost, and pays the holding charge \(c\), the demurrage, out of it to the
+pool, so it yields \(p-c\). Pool shares earn the pool's own return and pay no
+charge. The pool lends only money it holds. Wallets, owners and borrowers are
+the same households in different roles.}
+\label{fig:mechanism}
+\end{figure}
+
+\paragraph{The payment money.}
+\(P\) is issued one for one against reserve assets and redeemable. The
+reserve earns the outside rate \(\rho\). Issuance is contestable, so the
+issuer keeps only its custody cost, and an idle unit of \(P\) earns
+\(p=\rho-c_I\) before the holding charge, where \(c_I\) is that cost.
+Payments in \(P\) settle on stablecoin rails and bear only the network cost
+of a transfer, with no card-style fee. Section~\ref{sec:model} gives the cost
+of a payment and a conversion in each arrangement; the comparison with the
+decentralised arrangement does not rest on either.
+
+\paragraph{The pool.}
+A participant can move spare \(P\) into the pool and receives shares at net
+asset value. The pool holds cash and loans. It makes two kinds of loan to
+participants, both against future income and without collateral: a bridge,
+drawn when a payment falls due before a receipt and repaid on the borrower's
+next pay days, and a term loan repaid in instalments. The pool lends only
+money it holds, so every loan is funded credit and no money is created.
+Shares bear the pool's loan losses. An owner leaves by filing a redemption,
+paid after a notice period.
+
+\paragraph{What lets the pool lend without collateral.}
+A protocol asks for collateral because it knows nothing of its borrower but
+the assets locked with it. The pool is given three things a protocol lacks.
+It sees the receipts a borrower expects over the next two months and lends a
+bridge only up to what they repay. It collects a bridge that has fallen due
+from all the borrower's money. And a debt stays owed when its borrower leaves
+the network. The model adds that nobody who can pay chooses not to, and
+sets no cost on establishing who a borrower is. These rules, not the
+holding charge, separate the arrangement from decentralised finance
+on the payments that fail; the demurrage decides what the credit costs and how
+much of it is kept ready. They are stated as assumptions
+(Section~\ref{sec:model}). What tests them is the loss on the pool's loans,
+which its owners bear and its coupon prices (Section~\ref{sec:loss}), and a
+bound under which the pool loses at the published charge-off rate of each
+class of loan (Section~\ref{sec:measurement}).
+
+\paragraph{The holding charge, or demurrage.}
+Wallet balances of \(P\) pay a holding charge at rate \(c\): a demurrage, a
+charge on money for the time it is held. Pool shares do
+not. The rate is fixed and published at the start of each month from
+quantities observed in the two months before, and the proceeds go to
+the pool. A wallet balance therefore yields \(p-c\).
+
+\paragraph{The people.}
+There is no outside liquidity provider and no subsidy. The households that
+hold \(P\), those that own the pool and those that borrow
+from it are the same population, and each decides separately whether to
+accept and pay in \(P\), to invest, to borrow and to
+leave.
+
+\paragraph{The comparisons.}
+CPM is compared with four other arrangements on the same people
+(Table~\ref{tab:arms}). The first two are the alternatives a household has
+today. The third isolates the demurrage and the standby it pays for:
+the same money and the
+same pool with \(c=0\). The fourth states the contract in purchasing-power
+terms.
+
+\begin{table}[htbp]\centering\small
+\begin{tabularx}{\linewidth}{@{}lLLl@{}}
+\toprule
+Arrangement & Money people hold & When a payer is short & Code \\
+\midrule
+Banks and cards & bank money & card within its limits, cash advance, earned-wage access, else the payment fails & \texttt{S0} \\
+Best-case DeFi & bank money, or a yield-bearing stablecoin in the network & as banks and cards: its loan needs collateral
+worth more than the loan and covers no shortfall & \texttt{M0} \\
+Pool without the charge & bank money, or \(P\) in the network & the pool at the full coupon, then as banks and cards & \texttt{U} \\
+CPM & bank money, or \(P\) less the holding charge & the pool at the coupon less what the charge covers, then as banks and cards & \texttt{M1} \\
+Indexed CPM & as CPM, with \(P\) indexed to consumer prices & as CPM, the contract in real terms & \texttt{M2} \\
+\bottomrule
+\end{tabularx}
+\caption{The five arrangements and their names in the code. The decentralised
+arrangement is given every advantage it has in payments and yield, so that
+CPM is measured against it at its best.}
+\label{tab:arms}
+\end{table}
+
+% ====================================================================================================================
+\section{The contract}
+\label{sec:contract}
+The contract sets five things each month: each loan product's coupon, the
+holding charge, the price a bridge borrower pays, the pool's capital target,
+and the return quoted to an entrant. This section states each as
+the simulation computes it and gives the condition it is derived from.
+Table~\ref{tab:notation} collects the notation.
+
+\begin{table}[htbp]\centering\small
+\begin{tabularx}{\linewidth}{@{}lL@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+\(\rho\) & reserve rate, equal to the outside rate \(r_{\mathrm{out}}\) \\
+\(a\) & owners' alternative: what pool capital could earn elsewhere, \(\rho\) plus a declared spread \\
+\(p\) & what idle \(P\) earns before the charge, \(\rho-c_I\) \\
+\(o\) & the pool's operating cost per unit lent \\
+\(\phi\) & the pool's fixed cost, per person per year; \(f\) is the same cost as a rate on lending \\
+\(\ell_k\) & learned loss rate of product \(k\) (\(b\) bridge, \(t\) term) \\
+\(r_k\) & coupon of product \(k\); \(r_g\equiv r_b^{\,\mathrm{gross}}\) is the bridge coupon before the charge \\
+\(r_b\) & price a bridge borrower pays \\
+\(c,\ \kappa\) & holding charge on wallet \(P\), the demurrage rate; coverage, the share of the capital cost the charge pays \\
+\(\theta\) & demurrage's share of what finances bridging \\
+\(B,\ T,\ L\) & bridge book, term book and their sum (principal-time) \\
+\(S\) & standby: pool cash kept ready for bridging (cash-time) \\
+\(W\) & wallet \(P\) held by participants (balance-time) \\
+\(K\) & capital cost of the liquidity kept ready \\
+\(N,\ N^{*}\) & pool capital at net asset value, and its target \\
+\(q(N)\) & the return quoted to pool capital at level \(N\) \\
+\(A,\ a_{0}\) & share of people participating, and that share at launch \\
+\bottomrule
+\end{tabularx}
+\caption{Notation. Rates are stated a year and applied a month. A hat, as in
+\(\cyc B\), is a sum over the cycle, the last two completed months.}
+\label{tab:notation}
+\end{table}
+
+\subsection{Timing}
+Terms are set at the start of a month from completed observations only. The
+observation window is the cycle: the two months just closed. At launch, when
+no month of pool activity exists, the window is a launch plan built from the
+bridging need the initial participants showed the month before. The plan
+observes no cost of liquidity, so the charge is zero in the launch month and
+its bridges pay the full coupon. No term is a residual of the
+month it applies to.
+
+\subsection{The coupon}
+Each pool loan of product \(k\) accrues a coupon
+\begin{equation}
+r_g \;=\; a+o+f+\ell_b ,\qquad r_t \;=\; a+o+f+\ell_t ,
+\label{eq:coupon}
+\end{equation}
+floored at zero. The four parts are the four costs of a loan. Capital must
+earn the owners' alternative \(a\). Lending has an operating cost \(o\) per
+unit. The pool's fixed cost is spread over the lending that bore it,
+\begin{equation}
+f \;=\; \frac{\cyc\Phi}{\cyc L},
+\label{eq:fixed}
+\end{equation}
+where \(\cyc\Phi\) is the cycle's fixed cost and \(\cyc L\) the
+principal-time the pool's loans carried in it. Each product carries its
+own learned loss rate \(\ell_k\) (Section~\ref{sec:loss}). Equation
+\eqref{eq:coupon} is a zero-profit condition: coupons accrued at \(r_k\) on the
+cycle's lending pay capital its alternative, the operating and fixed cost, and
+the losses experienced so far, and nothing more. When the cycle carried no
+loans, \(f\) is the fixed cost over the cycle's lending need.
+
+\subsection{The liquidity kept ready and its cost}
+The pool serves bridges on demand, so it must hold cash against the largest
+demand it expects, not only the average. Let \(B_d\) be the bridging
+principal carried on day \(d\) of the cycle and \(C_d\) the pool cash new
+loans may take that day: pool cash less what is set aside for exits
+falling due. The peak bridging need is
+\begin{equation}
+B^{\max} \;=\; \max_{d} B_d \;+\; \text{bridging refused in the cycle},
+\label{eq:peak}
+\end{equation}
+and the standby is the cash held ready up to that peak beyond what was lent,
+\begin{equation}
+\cyc S \;=\; \sum_{d}\min\!\bigl(C_d,\ \max(B^{\max}-B_d,\,0)\bigr),
+\label{eq:standby}
+\end{equation}
+in cash-time. Standby is measured, not reserved: it is the cash
+available up to the peak, and no rule holds it back from term lending. Money
+out in bridges must earn \(a\). Cash standing by earns
+\(p\) as any idle \(P\) does, so it falls short of \(a\) by \(a-p\). The
+capital cost of the liquidity kept ready over the cycle is therefore
+\begin{equation}
+K \;=\; a\,\cyc B \;+\;(a-p)\,\cyc S .
+\label{eq:cost}
+\end{equation}
+
+\subsection{The demurrage rate and the bridge price}
+The holding charge, the demurrage rate \(c\), is the rate at which the cycle's
+wallet balances would have paid
+that cost, capped so a wallet balance never earns less than nothing:
+\begin{equation}
+c \;=\; \min\!\Bigl(\frac{K}{\cyc W},\ p\Bigr),
+\label{eq:charge}
+\end{equation}
+with \(c=0\) when the cycle shows no wallet balances and whenever the pool
+takes no charge, because it has no shares or is winding down. Coverage is the
+share of the cost the charge pays,
+\begin{equation}
+\kappa \;=\; \min\!\Bigl(1,\ \frac{c\,\cyc W}{K}\Bigr),
+\label{eq:coverage}
+\end{equation}
+which is one whenever the cap in \eqref{eq:charge} does not bind. A bridge
+drawn in the month is sealed at the coupon less the covered capital part,
+\begin{equation}
+r_b \;=\; r_g-\kappa\,a ,
+\label{eq:bridgeprice}
+\end{equation}
+so at full coverage the borrower pays \(o+f+\ell_b\). Term loans pay the full
+coupon \(r_t\). A wallet balance yields
+\begin{equation}
+y \;=\; p-c ,
+\label{eq:yield}
+\end{equation}
+to which indexed CPM adds the change in the price index. In the pool without
+the charge, \(c=\kappa=0\) and \(r_b=r_g\).
+
+\subsection{The capital target and the quote}
+The pool's capital target is the capital the cycle's lending needed, with
+bridging counted at its peak:
+\begin{equation}
+N^{*} \;=\; T^{\mathrm{need}}+B^{\max},
+\label{eq:target}
+\end{equation}
+where the term lending need \(T^{\mathrm{need}}\) is the term principal
+carried, plus term lending refused, plus the month's growth in the term book
+floored at zero, averaged over the cycle's months. In the pool without the
+charge nothing pays for standby, and the target is the average lending need,
+bridges and term loans alike, with no peak. The return quoted to
+capital at level \(N\) is the alternative on capital up to the target and the
+idle rate on the rest:
+\begin{equation}
+q(N) \;=\; \frac{a\,\min(N,N^{*})+p\,\max(N-N^{*},0)}{N},
+\qquad q(N^{*})=a .
+\label{eq:quote}
+\end{equation}
+Equation \eqref{eq:quote} is the free-entry condition with no fee margin. The
+coupons \eqref{eq:coupon} and the charge \eqref{eq:charge} pay capital exactly
+\(a\) on the liquidity kept ready, so \(N^{*}\) is the largest capital at
+which an entrant is offered its alternative.
+
+\subsection{Entry and exit}
+\label{sec:entry}
+The contract fixes how capital enters and leaves the pool. When a household
+chooses to enter or leave is behaviour and belongs to the model of
+Section~\ref{sec:model}; it is stated here because
+Proposition~\ref{prop:capital} rests on it.
+Dealing is monthly. Each month a household reviews its savings with a fixed
+probability \(\upsilon\), the rate at which members and owners review
+leaving. A
+reviewing household offers the money-market part of its spare money to the
+pool if the quote at the target, \(q(N^{*})\), is at least its own
+alternative; an owner with an exit request standing offers nothing. Offers
+are accepted in proportion up to the room, which is \(N^{*}-N\) when that is
+positive plus any exits pool cash has left unpaid. Owners review their
+holding at the same rate \(\upsilon\). A reviewing owner files to redeem all
+of it with probability
+\begin{equation}
+\Pr(\text{file}) \;=\; \frac{1}{1+e^{\,(g+h)/s}},
+\label{eq:exit}
+\end{equation}
+where \(g\) is the owner's realised return over the last twelve months less
+its alternative, times its own capital, in dollars a month; \(h\) is its cost
+of leaving, zero for an owner in the network and, for one who has left it,
+the conversion fee on the holding spread over twelve months; and \(s\) is a
+noise scale proportional to the owner's monthly spending. For an owner in the
+network the probability at exact indifference is one half. A request stands
+until it is paid or a later review no longer says leave. It is paid at
+the first dealing at least two months after it was filed, from pool cash and
+in proportion when cash is short; a dealing's new subscriptions buy the
+part pool cash leaves unpaid before they take up room.
+
+\subsection{Loss learning}
+\label{sec:loss}
+A pool loan ninety days past due is written down to zero, principal
+and accrued interest; the debt stays owed and later payments, interest
+included, are recoveries. The learned loss rate of product \(k\) is the
+pool's whole experience,
+\begin{equation}
+\ell_k \;=\; \frac{\max\bigl(\text{write-offs}_k-\text{recoveries}_k,\ 0\bigr)}
+{\text{principal-time of product }k\text{ carried up to three months before the last close}} ,
+\label{eq:loss}
+\end{equation}
+the lag being the time a missed payment takes to become a loss.
+
+% ====================================================================================================================
+\section{What the contract implies}
+\label{sec:implications}
+This section derives the properties of the contract of
+Section~\ref{sec:contract}. Each is a statement about equations
+\eqref{eq:coupon} to \eqref{eq:loss} and holds in the simulation by
+construction or as a prediction. Section~\ref{sec:results} sets the
+predictions beside their simulated values, and Section~\ref{sec:robustness}
+tests the fixed-cost threshold.
+
+\subsection{The size of the demurrage}
+\begin{proposition}[Demurrage is the alternative times bridging over balances]
+\label{prop:size}
+While the cap in \eqref{eq:charge} does not bind, coverage is one and
+\begin{equation}
+\frac{c}{a} \;=\; \frac{\cyc B}{\cyc W}+\Bigl(1-\frac{p}{a}\Bigr)\frac{\cyc S}{\cyc W}.
+\label{eq:size}
+\end{equation}
+The cap binds if and only if \(K>p\,\cyc W\).
+\end{proposition}
+\begin{proof}
+Divide \eqref{eq:cost} by \(a\,\cyc W\). If \(K\le p\,\cyc W\) then
+\(c=K/\cyc W\) and \(c\,\cyc W/K=1\); otherwise \(c=p\) and
+\(\kappa=p\,\cyc W/K<1\).
+\end{proof}
+The second term of \eqref{eq:size} is small, because \(a-p\) is only the
+owners' spread plus the issuer's custody cost. The demurrage rate is therefore close
+to \(a\,\cyc B/\cyc W\): it is small because people hold many times more
+money in wallets than the pool has out in bridges. The cap would bind only if
+bridging approached the size of wallet balances.
+
+\subsection{Who pays and who receives}
+\begin{proposition}[Incidence at full coverage]
+\label{prop:incidence}
+Let \(\kappa=1\) and let quantities over a cycle be \(\cyc B\), \(\cyc S\),
+\(\cyc W\). Then, relative to the same pool with \(c=0\) at the same
+quantities:
+(a) holders pay \(K\) in total, in proportion to their balances;
+(b) bridge borrowers pay \(a\,\cyc B\) less;
+(c) owners receive \((a-p)\,\cyc S\) more, and so earn \(a\), after costs and
+expected loss, on every unit kept ready, whether it is lent or standing by.
+The three amounts sum to zero.
+\end{proposition}
+\begin{proof}
+(a) By \eqref{eq:charge}, \(c\,\cyc W=K\). (b) By \eqref{eq:bridgeprice} the
+bridge price falls by \(a\). (c) The pool's income on liquidity kept ready is
+\((r_g-a)\cyc B\) from borrowers, \(K\) from the charge and \(p\,\cyc S\) on
+its cash, which is \(r_g\,\cyc B+a\,\cyc S\) by \eqref{eq:cost}; without the
+charge it is \(r_g\,\cyc B+p\,\cyc S\). Finally
+\(-K+a\,\cyc B+(a-p)\cyc S=0\).
+\end{proof}
+\begin{corollary}[Neutrality at fixed quantities]
+\label{cor:neutral}
+With all quantities held fixed, total household wealth under CPM equals total
+household wealth under the same pool without the charge.
+\end{corollary}
+The corollary fixes what the simulation can and cannot show. Demurrage moves
+the capital cost of bridging from households that are short to all
+holders, and makes standing by pay. It does not create wealth by itself.
+Any aggregate difference between CPM and the pool without the charge must
+come from quantities that change: the standby the target
+\eqref{eq:target} now includes, the bridges then served, and the
+payments that no longer fail.
+
+\subsection{Demurrage's share of bridging finance}
+Let \(\theta\) be the part of the cost of bridging that demurrage carries:
+the capital cost covered, over that amount plus the coupons bridge borrowers
+pay.
+\begin{proposition}[The share]
+\label{prop:theta}
+Let every bridge carried in a month have been sealed at full coverage. Then
+\(\theta=a/\bar r_g\), where \(\bar r_g\) is the gross coupon of those
+bridges at the months they were sealed, weighted by their principal-time. In
+particular \(\theta=a/r_g\) when the coupon is constant, and the ceiling of
+\(\theta\), reached when the fixed-cost rate and the bridge loss rate vanish,
+is \(a/(a+o)\).
+\end{proposition}
+\begin{proof}
+A bridge sealed in month \(m\) with principal-time \(x\) has \(a\,x\) of its
+coupon paid by the charge and pays \((r_{g,m}-a)\,x\) itself, by
+\eqref{eq:bridgeprice}. Summing over the bridges carried,
+\(\theta=a\sum x/\sum r_{g,m}x\). By \eqref{eq:coupon}, \(r_{g,m}\ge a+o\)
+with equality when \(f=\ell_b=0\).
+\end{proof}
+The share rises with the outside rate, since \(a\) does, and falls when
+losses or a thin book raise the coupon. A bridge runs to the borrower's next
+pay day, often across a month end, so the bridges carried in a month were
+sealed in more than one; the simple form \(a/r_g\) is exact only when the
+coupon has not moved between those months.
+
+\subsection{What holds pool capital in place}
+\begin{proposition}[Capital at the target]
+\label{prop:capital}
+Suppose that at each dealing the money offered exceeds the room and that
+entrants act on the quote. Then after every dealing
+\begin{equation}
+N \;=\; \max\bigl(N^{*},\ N^{-}\bigr),
+\label{eq:capital}
+\end{equation}
+where \(N^{-}\) is capital after the exits paid at that dealing. No realised
+return appears in this law of motion.
+\end{proposition}
+\begin{proof}
+By \eqref{eq:quote}, \(q(N^{*})=a\) in every month, so the entry test of
+Section~\ref{sec:entry} passes for every household whose alternative is at
+most \(a\). Offers are accepted up to \(N^{*}-N^{-}\) when that is positive
+and not at all otherwise.
+\end{proof}
+The proposition is conditional, and the condition matters. The
+quoted schedule \eqref{eq:quote} is flat at \(a\) for all capital up to the
+target, so the contract contains no return gradient that pulls capital back
+when it falls short. This is the knife-edge of a pool that pays capital
+exactly its alternative: every capital level up to the target is an
+equilibrium, and the entry rule selects the level. Capital persists at
+its target if entrants act on the published quote and the quote is right on
+average. If entrants act on the pool's realised record instead, entry closes
+whenever that record sits below \(a\), which under a zero margin is about
+half the time. We call the first the quote rule and the second the record
+rule, and Section~\ref{sec:results} reports the simulation under both.
+
+\begin{proposition}[The quote is right on average under a stationary loss rate]
+\label{prop:fair}
+Let \(R\) be the realised return on pool capital \(N\) over a period in which
+the pool carries loans \(L=B+T\) and cash \(C\), bears fixed cost \(\Phi\) and
+net losses \(\Lambda\), and collects charges \(cW\). Then
+\begin{equation}
+(R-a)\,N \;=\; \underbrace{\textstyle\sum_k \ell_k L_k-\Lambda}_{\text{loss pricing}}
+\;+\;\underbrace{fL-\Phi}_{\text{fixed-cost timing}}
+\;-\;\underbrace{(a-p)\,(C-S^{\mathrm{paid}})}_{\text{idle drag}},
+\qquad S^{\mathrm{paid}}=\frac{cW-\kappa\,a\,B}{a-p},
+\label{eq:identity}
+\end{equation}
+where \(S^{\mathrm{paid}}\) is the standby the charge paid for. If the loss
+rate is stationary, the learned rate \eqref{eq:loss} converges to it and the
+loss-pricing term has mean zero.
+\end{proposition}
+\begin{proof}
+The pool's assets are its loans, with the coupons accrued on them, and its cash,
+so \(N=L+C\). Its income is the
+coupons borrowers pay, \(\sum_k r_kL_k-\kappa aB\), the charge \(cW\), and
+\(p\,C\) on its cash; its costs are \(oL\), \(\Phi\) and \(\Lambda\).
+Substituting \eqref{eq:coupon} and subtracting \(aN=aL+aC\) leaves
+\((fL-\Phi)+(\sum_k\ell_kL_k-\Lambda)+cW-\kappa aB-(a-p)C\).
+\end{proof}
+The identity is the pool's income statement rearranged, and says where an
+owner's shortfall can come from. The fixed-cost term is a timing difference:
+\(f\) is set on the last cycle's lending and earned on this period's. The
+idle drag is the cost of cash beyond the standby. Both are small. The loss
+term is a tail: a loss larger than the pool's experience falls on those
+who own the pool on the day of the write-down, and it shrinks as the number
+of borrowers grows.
+
+\subsection{The fixed cost}
+A pool that prices loans as the residual of its costs over its lending,
+\(r=z+\Phi/L(r)\) with \(z\) the variable cost of a loan, can spiral: fewer borrowers raise the price, and a higher
+price loses borrowers. Under this contract the same fixed cost appears
+in \eqref{eq:fixed}, so the question is whether the spiral survives.
+\begin{proposition}[A threshold, not a spiral]
+\label{prop:threshold}
+Let a borrower take pool credit only if its coupon is no dearer than the
+borrower's outside rate \(r_{\mathrm{ext}}\), and let \(L_0\) be the lending
+then demanded. A coupon satisfying \eqref{eq:coupon} and \eqref{eq:fixed}
+with positive lending, \(L_0>0\), exists if and only if
+\begin{equation}
+L_0\,\bigl(r_{\mathrm{ext}}-a-o-\ell\bigr) \;\ge\; \Phi .
+\label{eq:threshold}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Demand is a step: \(L=L_0\) if \(r\le r_{\mathrm{ext}}\) and zero otherwise.
+With \(L=L_0\) the coupon is \(a+o+\ell+\Phi/L_0\), which is at most
+\(r_{\mathrm{ext}}\) exactly when \eqref{eq:threshold} holds. When the margin
+\(r_{\mathrm{ext}}-a-o-\ell\) is zero or negative no lending satisfies it.
+\end{proof}
+Below the threshold the pool does not lend, and \eqref{eq:fixed} prices the
+fixed cost on the lending need, which grows with participation. The pool
+then crosses the threshold later. The fixed cost delays formation at low
+adoption; it does not unwind a pool that has formed.
+
+\subsection{Participation}
+In the model a household outside the network joins with a probability that
+rises with the share of its contacts already in it, and a participant leaves
+on its own experience (Section~\ref{sec:model}). With contact equal to the
+participating share \(A\), base joining rate \(j_0\), contact rate \(j_1\)
+(the model's \(\xi_0\) and \(\xi_1\)) and
+realised leaving rate \(\lambda\), participation follows
+\begin{equation}
+A_{t+1} \;=\; A_t+(j_0+j_1A_t)(1-A_t)-\lambda A_t .
+\label{eq:diffusion}
+\end{equation}
+\begin{proposition}[Launch adoption is a date on one curve]
+\label{prop:diffusion}
+Let \(j_0,\lambda>0\) and let the map \eqref{eq:diffusion} be increasing in
+\(A_t\), as it is for monthly rates of the size used here. Then
+\((j_0+j_1A)(1-A)=\lambda A\) has exactly one root \(A^{*}\) in \((0,1)\),
+every path converges to it, and the path from a launch share
+\(a_0'<A^{*}\) lies between two consecutive monthly shifts of the path from
+any lower launch share \(a_0\).
+\end{proposition}
+\begin{proof}
+The left side less the right is a downward parabola in \(A\) that is positive
+at zero and negative at one, so it has one root in \((0,1)\), and
+\(A_{t+1}-A_t\) has its sign on either side. An increasing map preserves
+order and keeps a path that starts below \(A^{*}\) below it. The path from
+\(a_0\) therefore rises to \(A^{*}\) without passing it and brackets every
+share between \(a_0\) and \(A^{*}\): there is a \(\tau\) with
+\(A_\tau\le a_0'\le A_{\tau+1}\), and the path from \(a_0'\) then stays
+between that path shifted by \(\tau\) and by \(\tau+1\) months. Two launch
+shares on opposite sides of \(A^{*}\) are not bracketed in this way; every
+launch level of the grid lies below it.
+\end{proof}
+The mechanism therefore acts on participation only through the leaving rate
+\(\lambda\). A launch share is a starting date, and a comparison across launch
+shares within a fixed horizon compares earlier and later phases of the same
+growth.
+
+% ====================================================================================================================
+\input{sections/model}
+\input{sections/measurement}
+
+% ====================================================================================================================
+\input{sections/results}
+\input{sections/robustness}
+
+\input{sections/limits}
+
+% ====================================================================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+Circulation-Priced Money asks the holders of a payment money to pay a small
+demurrage, and uses it for one purpose: to pay the capital cost of liquidity
+that a pool they own keeps ready. The resulting contract
+has no free rate or share, and its prices can be checked line by line against
+the code that runs it. On \NumSeeds{} confirmation seeds, read once and as
+registered, the arrangement does what it was designed to do. The registered
+claim holds in \RegionCellsZero{} of the \CellsNoDistress{} cells with no
+distress. With no distress the share of payments that fail is
+\FailCutBanks{} below that of banks and cards, and at the median cell
+households pay \OutsideCutBanks{} less to the intermediaries outside the
+household economy. Fewer payments fail
+than under banks and cards or under best-case
+decentralised finance in \CellsFewerFailures{} of the \CellsAll{} cells of
+the grid, and every cell shows a gain over both over the sixty months, with and
+without distress. Real
+resources are saved against banks and matched to within two dollars a person
+a year against decentralised finance. Owners earn their alternative at the
+median, and the
+demurrage stays below a fifth of one per cent a year.
+
+Demurrage, the holding charge, is the smallest number in the arrangement and has one
+defined job. It costs a holder a few dollars a year. For that the price of a
+bridge to whoever is short falls by half or more, the pool keeps cash
+standing by against the peak of demand and lends more, balances revolved on
+cards fall, fewer payments fail, and household wealth is
+\GainPerChargeDollar{} dollars higher for each dollar collected than under the
+same pool without it. It does this as insurance does, by moving a
+cost from the person in trouble to everyone who holds the money. It does not
+do it by making money move faster: the speed of circulation differs by about
+one per cent with and without the charge. The pool supplies the credit; demurrage
+makes that credit cheap and keeps it available.
+
+The result has three boundaries. At the lowest outside rate the claim misses
+in two cells with no distress and holds in none under distress: there is less
+reserve return to pass on, and the pool, then the cheaper lender on long
+vehicle loans, has less cash left for bridging. Under a wage loss of the
+size of 2009 the pool, which funds long loans with capital on two months'
+notice, can suffer a run at high launch participation; in
+\GainAfterDefiBehind{} cells of
+the grid, all at the lowest outside rate, what a household earns after the
+shock then falls short of best-case decentralised finance. And pool capital
+stays near its target, within one per cent for four years and at
+\PathFirstRatioFive{} of it in the fifth, only under the quote rule, while savers enter on the
+published quote; under the record rule, when they enter on the pool's realised
+return, it has not come to rest by the end of the run. None
+of these is
+removed here; each is measured and reported. The registered claim was read
+once, on \SeedsConfirm{} seeds held back for the purpose, and that reading is
+the test of the arrangement. The side checks, bounds and robustness sets on
+development seeds are reported beside it and are not confirmed.
+
+The study is deliberately narrow. It asks what demurrage does for payments
+and short credit among households, with spending, production and prices
+given. The economy-wide questions, among them the effect on saving
+and investment, on bank funding and on monetary policy, are left to
+work that can now start from a contract with no free parameter and a
+measured account of where it holds.
+
+\section*{Code and data}
+The model, the experiment, the registered analysis plan, the test suite and
+the stored results of every map and check reported here are in the repository
+that accompanies this draft, \url{https://github.com/cpm-research/circulation-priced-money}. Every results table and every figure drawn from
+data is written from the stored results by \texttt{scripts/rebuild\_paper.py},
+which runs no simulation, and \texttt{paper/numbers\_report.txt} traces each
+number to the stored field it was read from. \texttt{paper/README.md} lists,
+for each table and figure, the function that writes it and the results it
+reads. Each equation of the contract is recomputed from a run's own records by
+a test (Appendix~\ref{app:code}), each calibrated value is listed with its
+source and checked against the code (Appendix~\ref{app:parameters}), and each
+stored file is listed with its SHA-256 hash. The monthly records of the three
+largest maps, about a gigabyte, are attached to the repository's release
+\texttt{draft-2026-11}.
+
+\appendix
+\section{The ledger and conservation}
+\label{app:ledger}
+Money in the model moves only between named accounts, and every flow has a
+payer and a receiver. Three identities follow. Each is checked on the
+simulation's own records by a test named in Table~\ref{tab:ledger}.
+
+\paragraph{Accounts.}
+A person holds bank money, \(P\), outside savings and pool shares at net asset
+value, and owes its payables, card balances and loans. The pool holds
+cash and loans; the only claims on it are its owners' shares and any
+unpaid operating bill. The issuer holds the reserve behind all
+\(P\) and nothing else. Outside lenders, card networks, the conversion
+provider, the pool's operating provider and validators sit outside the
+household economy. What households pay them leaves it, what they pay
+households enters it, and both are recorded as outside flows.
+
+\paragraph{Wealth.}
+Let \(\Delta V_m\) be the change in the sum of all people's net financial
+wealth in month \(m\), \(X_m\) the net flow from outside, \(U_m\) the
+revaluation of pool loans, recoveries less write-downs, and \(J_m\) the change
+in the real value of nominal stocks through inflation. Then
+\begin{equation}
+\Delta V_m \;=\; X_m+U_m+J_m
+\label{eq:wealth}
+\end{equation}
+in every month and every arrangement, to \(10^{-12}\) of a month's mean
+spending. The holding charge does not appear in \eqref{eq:wealth}. It is
+withheld from wallet holders' yield and credited to the pool, whose shares
+households own, so it moves wealth between people and never across the
+boundary of the household economy.
+
+\paragraph{Backing.}
+The reserve changes only when \(P\) is issued or redeemed, one for one. It
+therefore equals the \(P\) outstanding, in wallets and in the pool's
+cash, after every step. The backing of \(P\) is checked, not assumed.
+
+\paragraph{Funded credit.}
+The pool pays out only cash it holds. A loan moves existing \(P\) from the
+pool to the borrower, an exit is paid from pool cash or a new
+subscription, and a cost the pool cannot pay is its creditor's loss. No step
+creates money. Shares are issued and redeemed at net asset value.
+
+\begin{table}[htbp]\centering\small
+\begin{tabularx}{\linewidth}{@{}lL@{}}
+\toprule
+Identity & Test \\
+\midrule
+Wealth, equation \eqref{eq:wealth} & \path{test_wage_dated_budget_keeps_the_accounting_identity_in_every_arm} \\
+The charge stays among households & \path{test_eq11_charges_stay_in_the_household_economy} \\
+Backing & \path{test_reserves_follow_every_issue_and_redemption},
+\path{test_backing_holds_in_every_setup_and_is_untracked_without_an_issuer} \\
+Funded credit & \path{test_insolvent_closure_creates_no_money} \\
+\bottomrule
+\end{tabularx}
+\caption{The identities of the ledger and the tests that check them, in
+\texttt{tests/test\_economy\_abm.py} and \texttt{tests/test\_contract\_equations.py}.}
+\label{tab:ledger}
+\end{table}
+
+\section{Equations and the code that computes them}
+\label{app:code}
+Table~\ref{tab:code} ties each equation of Section~\ref{sec:contract} to the
+simulation function that computes it and to a test that recomputes it.
+Each test runs the simulation itself, records what every step read and wrote,
+and checks the equation in every month from the inputs it names. The
+runs cover CPM, the pool without the charge, indexed CPM, CPM under the
+loan-loss bound, and a run where the cap on the charge binds; a bridge and
+a term loan are forced past due so losses and recoveries occur. ``Exact''
+means equality bit for bit. ``\(10^{-12}\)'' means agreement to that relative
+tolerance, used where the test adds the same terms in another order.
+
+{\small
+\begin{longtable}{@{}p{0.20\textwidth}p{0.24\textwidth}p{0.36\textwidth}p{0.12\textwidth}@{}}
+\caption{Each equation, the function that computes it and the test that
+recomputes it. The tests are in \texttt{tests/test\_contract\_equations.py}.}
+\label{tab:code}\\
+\toprule
+Equation & Function & Test & Agreement \\
+\midrule
+\endfirsthead
+\toprule
+Equation & Function & Test & Agreement \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Coupon \eqref{eq:coupon}, fixed-cost rate \eqref{eq:fixed}
+ & \path{_cycle_terms}, \path{_fixed_rate}
+ & \path{test_eq01_coupon_is_alternative_plus_operating_plus_fixed_plus_loss}
+ & \(10^{-12}\) \\
+Peak \eqref{eq:peak}, standby \eqref{eq:standby}, capital cost \eqref{eq:cost}
+ & \path{_kept_ready}, \path{_cycle_terms}
+ & \path{test_eq02_capital_cost_of_liquidity_kept_ready}
+ & \(10^{-12}\) \\
+Holding charge \eqref{eq:charge}
+ & \path{_cycle_terms}, \path{_reserve_return}
+ & \path{test_eq03_holding_charge_is_capital_cost_over_wallet_capped_at_p}
+ & \(10^{-12}\); exact at the cap \\
+Coverage \eqref{eq:coverage}, bridge price \eqref{eq:bridgeprice}
+ & \path{_cycle_terms}; sealed in \path{_settle}
+ & \path{test_eq04_coverage_and_the_bridge_price}
+ & price exact; coverage \(10^{-12}\) \\
+Yield on \(P\) \eqref{eq:yield}
+ & \path{_cycle_terms}
+ & \path{test_eq05_p_yield}
+ & exact \\
+The charge's share \(\theta\) (Proposition~\ref{prop:theta})
+ & \path{_accrue}, \path{_close}
+ & \path{test_eq06_theta_is_the_charges_share_of_bridging_finance}
+ & exact; weighted form \(10^{-12}\) \\
+Target \eqref{eq:target}, quote \eqref{eq:quote}
+ & \path{_limit}, \path{_quote}, \path{paper_return}
+ & \path{test_eq07_capital_target_and_quote}
+ & quote exact; target \(10^{-12}\) \\
+Entry and exit \eqref{eq:exit}
+ & \path{_dealing}, \path{_reviews_entry}, \path{_exits}, \path{_leave_chance}
+ & \path{test_eq08_entry_pro_rata_to_the_target_and_exit_by_the_logistic}
+ & who files and is paid exact; amounts \(10^{-12}\) \\
+Learned loss \eqref{eq:loss}
+ & \path{_loss_rates}, \path{_write_off}
+ & \path{test_eq09_learned_loss}
+ & \(10^{-12}\) \\
+No charge in the pool without it
+ & \path{_cycle_terms}, \path{_limit}
+ & \path{test_eq10_no_charge_in_u}
+ & exact \\
+The charge stays among households (Proposition~\ref{prop:incidence})
+ & \path{_reserve_return}
+ & \path{test_eq11_charges_stay_in_the_household_economy}
+ & exact \\
+\end{longtable}
+}
+
+Two properties of the code go beyond the equations as printed. Coverage
+computed as \(c\,\cyc W/K\) with \(c=K/\cyc W\) can fall one unit in the last
+binary place below one, so the bridge price can differ from \(o+f+\ell_b\) by
+about \(10^{-19}\) a month. And in the month after launch the launch plan,
+which has no term lending, enters the two-month average of the term lending
+need.
+
+\input{sections/appendix_parameters}
+
+\begin{thebibliography}{99}\small
+% Checked against the publishers' own records on 16 November 2026: aramonte, baptista, grimm, gudgeon, poledna.
+% The other entries are carried from the October draft.
+\bibitem{acharya} V. Acharya, H. Almeida, F. Ippolito and A. Perez-Orive, ``Credit Lines as Monitored Liquidity Insurance: Theory and Evidence,'' \emph{Journal of Financial Economics} 112(3), 287--319, 2014.
+\bibitem{aramonte} S. Aramonte, S. Doerr, W. Huang and A. Schrimpf, ``DeFi Lending: Intermediation without Information?,'' \emph{BIS Bulletin} 57, 2022.
+\bibitem{axtell} R. Axtell, ``Effects of Interaction Topology and Activation Regime in Several Multi-Agent Systems,'' in \emph{Multi-Agent-Based Simulation}, Lecture Notes in Computer Science, Springer, 33--48, 2001.
+\bibitem{baptista} R. Baptista, J. D. Farmer, M. Hinterschweiger, K. Low, D. Tang and A. Uluc, \emph{Macroprudential Policy in an Agent-Based Model of the UK Housing Market}, Bank of England Staff Working Paper 619, 2016.
+\bibitem{bass} F. M. Bass, ``A New Product Growth for Model Consumer Durables,'' \emph{Management Science} 15(5), 215--227, 1969.
+\bibitem{baumol} W. Baumol, ``The Transactions Demand for Cash: An Inventory Theoretic Approach,'' \emph{Quarterly Journal of Economics} 66(4), 545--556, 1952.
+\bibitem{bech} M. L. Bech and K. Soram\"aki, ``Gridlock Resolution in Interbank Payment Systems,'' Bank of Finland Discussion Paper 9/2001, 2001.
+\bibitem{chicago} J. Benes and M. Kumhof, \emph{The Chicago Plan Revisited}, IMF Working Paper 12/202, 2012.
+\bibitem{shed} Board of Governors of the Federal Reserve System, \emph{Economic Well-Being of U.S. Households in 2025}, May 2026.
+\bibitem{buiter} W. Buiter and N. Panigirtzoglou, ``Overcoming the Zero Bound on Nominal Interest Rates with Negative Interest on Currency: Gesell's Solution,'' \emph{Economic Journal} 113(490), 723--746, 2003.
+\bibitem{campajola} C. Campajola, M. D'Errico and C. J. Tessone, ``MicroVelocity: Rethinking the Velocity of Money for Digital Currencies,'' arXiv:2201.13416, 2022.
+\bibitem{carapella} F. Carapella, E. Dumas, J. Gerszten, N. Swem and L. Wall, \emph{Decentralized Finance (DeFi): Transformative Potential and Associated Risks}, Finance and Economics Discussion Series 2022-057, Board of Governors of the Federal Reserve System, 2022.
+\bibitem{centolamacy} D. Centola and M. Macy, ``Complex Contagions and the Weakness of Long Ties,'' \emph{American Journal of Sociology} 113(3), 702--734, 2007.
+\bibitem{champ} B. Champ, ``Stamp Scrip: Money People Paid to Use,'' \emph{Economic Commentary}, Federal Reserve Bank of Cleveland, April 2008.
+\bibitem{cck} V. V. Chari, L. J. Christiano and P. J. Kehoe, ``Optimality of the Friedman Rule in Economies with Distorting Taxes,'' \emph{Journal of Monetary Economics} 37(2), 203--223, 1996.
+\bibitem{chengoldstein} Q. Chen, I. Goldstein and W. Jiang, ``Payoff Complementarities and Financial Fragility: Evidence from Mutual Fund Outflows,'' \emph{Journal of Financial Economics} 97(2), 239--262, 2010.
+\bibitem{cfpb} Consumer Financial Protection Bureau, \emph{The Consumer Credit Card Market}, report to Congress, December 2025.
+\bibitem{correiateles} I. Correia and P. Teles, ``Is the Friedman Rule Optimal When Money Is an Intermediate Good?,'' \emph{Journal of Monetary Economics} 38(2), 223--244, 1996.
+\bibitem{crouzet} N. Crouzet, A. Gupta and F. Mezzanotti, ``Shocks and Technology Adoption: Evidence from Electronic Payment Systems,'' \emph{Journal of Political Economy} 131(11), 3003--3065, 2023.
+\bibitem{decollibus} F. M. De Collibus, C. Campajola and C. J. Tessone, ``The Microvelocity of Money in Ethereum,'' \emph{EPJ Data Science} 14, 11, 2025.
+\bibitem{diamonddybvig} D. Diamond and P. Dybvig, ``Bank Runs, Deposit Insurance, and Liquidity,'' \emph{Journal of Political Economy} 91(3), 401--419, 1983.
+\bibitem{eggertsson} G. Eggertsson, R. Juelsrud, L. Summers and E. Wold, ``Negative Nominal Interest Rates and the Bank Lending Channel,'' \emph{Review of Economic Studies} 91(4), 2201--2275, 2024.
+\bibitem{eisenbergnoe} L. Eisenberg and T. H. Noe, ``Systemic Risk in Financial Systems,'' \emph{Management Science} 47(2), 236--249, 2001.
+\bibitem{elsinger} H. Elsinger, A. Lehar and M. Summer, ``Risk Assessment for Banking Systems,'' \emph{Management Science} 52(9), 1301--1314, 2006.
+\bibitem{farrell} D. Farrell, L. Relihan and M. Ward, ``Going the Distance: Big Data on Resident Access to Everyday Goods,'' JPMorgan Chase Institute, 2017.
+\bibitem{fisher} I. Fisher, \emph{Stamp Scrip}, Adelphi, New York, 1933.
+\bibitem{fuster} A. Fuster, T. Schelling and P. Towbin, ``Tiers of Joy? Reserve Tiering and Bank Behavior in a Negative-Rate Environment,'' \emph{Journal of Monetary Economics} 148, 103614, 2024.
+\bibitem{galbiati} M. Galbiati and K. Soram\"aki, ``An Agent-Based Model of Payment Systems,'' \emph{Journal of Economic Dynamics and Control} 35(6), 859--875, 2011.
+\bibitem{gelleri} C. Gelleri, ``Chiemgauer Regiomoney: Theory and Practice of a Local Currency,'' \emph{International Journal of Community Currency Research} 13, 61--75, 2009.
+\bibitem{gesell} S. Gesell, \emph{The Natural Economic Order}, 1916; English translation by P. Pye, Peter Owen, London, 1958.
+\bibitem{gillespie} D. T. Gillespie, ``Exact Stochastic Simulation of Coupled Chemical Reactions,'' \emph{Journal of Physical Chemistry} 81(25), 2340--2361, 1977.
+\bibitem{goh} K.-I. Goh, B. Kahng and D. Kim, ``Universal Behavior of Load Distribution in Scale-Free Networks,'' \emph{Physical Review Letters} 87, 278701, 2001.
+\bibitem{goldsteinbond} I. Goldstein, H. Jiang and D. T. Ng, ``Investor Flows and Fragility in Corporate Bond Funds,'' \emph{Journal of Financial Economics} 126(3), 592--613, 2017.
+\bibitem{goodfriend} M. Goodfriend, ``Overcoming the Zero Bound on Interest Rate Policy,'' \emph{Journal of Money, Credit and Banking} 32(4), 1007--1035, 2000.
+\bibitem{granovetter} M. Granovetter, ``Threshold Models of Collective Behavior,'' \emph{American Journal of Sociology} 83(6), 1420--1443, 1978.
+\bibitem{grimm} V. Grimm, S. F. Railsback, C. E. Vincenot and others, ``The ODD Protocol for Describing Agent-Based and Other Simulation Models: A Second Update to Improve Clarity, Replication, and Structural Realism,'' \emph{Journal of Artificial Societies and Social Simulation} 23(2), 7, 2020.
+\bibitem{gudgeon} L. Gudgeon, S. Werner, D. Perez and W. J. Knottenbelt, ``DeFi Protocols for Loanable Funds: Interest Rates, Liquidity and Market Efficiency,'' \emph{Proceedings of the 2nd ACM Conference on Advances in Financial Technologies}, 92--112, 2020.
+\bibitem{hayashi} K. Hayashi, ``Rethinking the Significance of Regional Currencies: The Case of the Chiemgauer,'' \emph{International Journal of Community Currency Research} 25(1), 96--106, 2021.
+\bibitem{higgins} S. Higgins, ``Financial Technology Adoption: Network Externalities of Cashless Payments in Mexico,'' \emph{American Economic Review} 114(11), 3469--3512, 2024.
+\bibitem{holmstrom} B. Holmstrom and J. Tirole, ``Private and Public Supply of Liquidity,'' \emph{Journal of Political Economy} 106(1), 1--40, 1998.
+\bibitem{hongkandrac} G. H. Hong and J. Kandrac, ``Pushed Past the Limit? How Japanese Banks Reacted to Negative Rates,'' \emph{Journal of Money, Credit and Banking} 54(4), 1027--1063, 2022.
+\bibitem{huberman} B. A. Huberman and N. S. Glance, ``Evolutionary Games and Computer Simulations,'' \emph{Proceedings of the National Academy of Sciences} 90(16), 7716--7718, 1993.
+\bibitem{iosifidis} G. Iosifidis, Y. Charette, E. M. Airoldi, G. Littera, L. Tassiulas and N. A. Christakis, ``Cyclic Motifs in the Sardex Monetary Network,'' \emph{Nature Human Behaviour} 2(11), 822--829, 2018.
+\bibitem{karsaicontagion} M. Karsai, G. I\~niguez, K. Kaski and J. Kert\'esz, ``Complex Contagion Process in Spreading of Online Innovation,'' \emph{Journal of the Royal Society Interface} 11(101), 20140694, 2014.
+\bibitem{karsaicascades} M. Karsai, G. I\~niguez, R. Kikas, K. Kaski and J. Kert\'esz, ``Local Cascades Induced Global Contagion: How Heterogeneous Thresholds, Exogenous Effects, and Unconcerned Behaviour Govern Online Adoption Spreading,'' \emph{Scientific Reports} 6, 27178, 2016.
+\bibitem{mattsson} C. E. S. Mattsson, T. Criscione and F. W. Takes, ``Circulation of a Digital Community Currency,'' \emph{Scientific Reports} 13, 5864, 2023.
+\bibitem{melzer} B. T. Melzer, ``The Real Costs of Credit Access: Evidence from the Payday Lending Market,'' \emph{Quarterly Journal of Economics} 126(1), 517--555, 2011.
+\bibitem{millerorr} M. Miller and D. Orr, ``A Model of the Demand for Money by Firms,'' \emph{Quarterly Journal of Economics} 80(3), 413--435, 1966.
+\bibitem{morse} A. Morse, ``Payday Lenders: Heroes or Villains?,'' \emph{Journal of Financial Economics} 102(1), 28--44, 2011.
+\bibitem{nosek} B. A. Nosek, C. R. Ebersole, A. C. DeHaven and D. T. Mellor, ``The Preregistration Revolution,'' \emph{Proceedings of the National Academy of Sciences} 115(11), 2600--2606, 2018.
+\bibitem{philippon} T. Philippon, ``Has the US Finance Industry Become Less Efficient? On the Theory and Measurement of Financial Intermediation,'' \emph{American Economic Review} 105(4), 1408--1438, 2015.
+\bibitem{poledna} S. Poledna, M. G. Miess, C. Hommes and K. Rabitsch, ``Economic Forecasting with an Agent-Based Model,'' \emph{European Economic Review} 151, 104306, 2023.
+\bibitem{schar} F. Sch\"ar, ``Decentralized Finance: On Blockchain- and Smart Contract-Based Financial Markets,'' \emph{Federal Reserve Bank of St. Louis Review} 103(2), 153--174, 2021.
+\bibitem{schmidt} L. Schmidt, A. Timmermann and R. Wermers, ``Runs on Money Market Mutual Funds,'' \emph{American Economic Review} 106(9), 2625--2657, 2016.
+\bibitem{stiglitzweiss} J. E. Stiglitz and A. Weiss, ``Credit Rationing in Markets with Imperfect Information,'' \emph{American Economic Review} 71(3), 393--410, 1981.
+\bibitem{stodder} J. Stodder, ``Complementary Credit Networks and Macroeconomic Stability: Switzerland's Wirtschaftsring,'' \emph{Journal of Economic Behavior \& Organization} 72(1), 79--95, 2009.
+\bibitem{stodderlietaer} J. Stodder and B. Lietaer, ``The Macro-Stability of Swiss WIR-Bank Credits: Balance, Velocity, and Leverage,'' \emph{Comparative Economic Studies} 58(4), 570--605, 2016.
+\bibitem{sufi} A. Sufi, ``Bank Lines of Credit in Corporate Finance: An Empirical Analysis,'' \emph{Review of Financial Studies} 22(3), 1057--1088, 2009.
+\bibitem{sultan} F. Sultan, J. U. Farley and D. R. Lehmann, ``A Meta-Analysis of Applications of Diffusion Models,'' \emph{Journal of Marketing Research} 27(1), 70--77, 1990.
+\bibitem{vandenbulte} C. Van den Bulte and S. Stremersch, ``Contagion and Heterogeneity in New Product Diffusion: An Empirical Test,'' ERIM Report Series Research in Management ERS-2003-077-MKT, Erasmus University Rotterdam, 2003.
+\bibitem{watts} D. J. Watts, ``A Simple Model of Global Cascades on Random Networks,'' \emph{Proceedings of the National Academy of Sciences} 99(9), 5766--5771, 2002.
+\bibitem{wattsstrogatz} D. J. Watts and S. H. Strogatz, ``Collective Dynamics of `Small-World' Networks,'' \emph{Nature} 393, 440--442, 1998.
+\bibitem{zhang} Y. Zhang, M. Chegeni and C. Tessone, ``Velocity, Holding Time and Lifespan of Cryptocurrency in Transactions,'' arXiv:2406.16587, 2024.
+\end{thebibliography}
+\end{document}

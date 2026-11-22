@@ -1,0 +1,12 @@
+[
+  {
+    "jsonrpc": "2.0",
+    "id": "borrow_balance",
+    "result": "0x374c49b4c9228061d3aa29bb78667367fbff3f6fb1fbbbce81acd98da1fcf0d2"
+  },
+  {
+    "jsonrpc": "2.0",
+    "id": "base_round",
+    "result": "0xfeaf968c92170f878bbe01f267c8c6f5faf34a9192f39d9bd2b066b6cbfd3a06"
+  }
+]

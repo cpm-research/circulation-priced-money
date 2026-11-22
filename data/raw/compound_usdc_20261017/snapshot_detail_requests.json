@@ -1,0 +1,1130 @@
+[
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:0:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd000000000000000000000000c00e94cb662c3520282e6f5717214004a7f26888"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:0:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:0:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f8000000000000000000000000c00e94cb662c3520282e6f5717214004a7f26888"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:0:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e0900000000000000000000000069b50ff403e995d9c4441a303438d9049dac8ccd"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:0:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:0:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:0:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x69b50ff403e995d9c4441a303438d9049dac8ccd",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:1:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd0000000000000000000000002260fac5e5542a773aa44fbcfedf7c193bc2c599"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:1:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:1:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f80000000000000000000000002260fac5e5542a773aa44fbcfedf7c193bc2c599"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:1:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e09000000000000000000000000c8e4c3f58d5fc4409522503927ecea057ebba1fc"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:1:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:1:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:1:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc8e4c3f58d5fc4409522503927ecea057ebba1fc",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:2:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:2:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:2:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f8000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:2:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e09000000000000000000000000c0053f3fbccd593758258334dfce24c2a9a673ad"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:2:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:2:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:2:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc0053f3fbccd593758258334dfce24c2a9a673ad",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:3:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd0000000000000000000000001f9840a85d5af5bf1d1762f925bdaddc4201f984"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:3:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:3:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f80000000000000000000000001f9840a85d5af5bf1d1762f925bdaddc4201f984"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:3:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e09000000000000000000000000553303d460ee0afb37edff9be42922d8ff63220e"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:3:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:3:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:3:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x553303d460ee0afb37edff9be42922d8ff63220e",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:4:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd000000000000000000000000514910771af9ca656af840dff83e8264ecf986ca"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:4:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x514910771af9ca656af840dff83e8264ecf986ca",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:4:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f8000000000000000000000000514910771af9ca656af840dff83e8264ecf986ca"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:4:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e0900000000000000000000000083b34662f65532e611a87ebed38063dec889d5a7"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:4:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x514910771af9ca656af840dff83e8264ecf986ca",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:4:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x514910771af9ca656af840dff83e8264ecf986ca",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:4:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x83b34662f65532e611a87ebed38063dec889d5a7",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:5:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd0000000000000000000000007f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:5:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:5:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f80000000000000000000000007f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:5:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e09000000000000000000000000a2699232b341881b1ed85d91592b7c259e029acf"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:5:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:5:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:5:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xa2699232b341881b1ed85d91592b7c259e029acf",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:6:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd000000000000000000000000cbb7c0000ab88b473b1f5afd9ef808440eed33bf"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:6:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:6:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f8000000000000000000000000cbb7c0000ab88b473b1f5afd9ef808440eed33bf"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:6:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e090000000000000000000000000a4f4f9e84fc4f674f0d209f94d41fafe5af887d"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:6:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:6:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:6:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x0a4f4f9e84fc4f674f0d209f94d41fafe5af887d",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:7:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd00000000000000000000000018084fba666a33d37592fa2633fd49a74dd93a88"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:7:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x18084fba666a33d37592fa2633fd49a74dd93a88",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:7:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f800000000000000000000000018084fba666a33d37592fa2633fd49a74dd93a88"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:7:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e09000000000000000000000000aa9527bf3183a96fe6e55831c96de5cd988d3484"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:7:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x18084fba666a33d37592fa2633fd49a74dd93a88",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:7:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x18084fba666a33d37592fa2633fd49a74dd93a88",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:7:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xaa9527bf3183a96fe6e55831c96de5cd988d3484",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:8:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd000000000000000000000000cd5fe23c85820f7b72d0926fc9b05b43e359b7ee"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:8:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:8:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f8000000000000000000000000cd5fe23c85820f7b72d0926fc9b05b43e359b7ee"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:8:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e090000000000000000000000004f12633d511dc3049de1ea923b7047fbed0070d2"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:8:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:8:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:8:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x4f12633d511dc3049de1ea923b7047fbed0070d2",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:9:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd00000000000000000000000015700b564ca08d9439c58ca5053166e8317aa138"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:9:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x15700b564ca08d9439c58ca5053166e8317aa138",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:9:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f800000000000000000000000015700b564ca08d9439c58ca5053166e8317aa138"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:9:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e090000000000000000000000007badab7109afbbf48ecd8d6498caacd2630b45b9"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:9:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x15700b564ca08d9439c58ca5053166e8317aa138",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:9:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x15700b564ca08d9439c58ca5053166e8317aa138",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:9:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x7badab7109afbbf48ecd8d6498caacd2630b45b9",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:10:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd0000000000000000000000005c5b196abe0d54485975d1ec29617d42d9198326"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:10:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x5c5b196abe0d54485975d1ec29617d42d9198326",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:10:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f80000000000000000000000005c5b196abe0d54485975d1ec29617d42d9198326"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:10:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e090000000000000000000000007badab7109afbbf48ecd8d6498caacd2630b45b9"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:10:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x5c5b196abe0d54485975d1ec29617d42d9198326",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:10:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x5c5b196abe0d54485975d1ec29617d42d9198326",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:10:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x7badab7109afbbf48ecd8d6498caacd2630b45b9",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:11:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd000000000000000000000000a1290d69c65a6fe4df752f95823fae25cb99e5a7"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:11:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xa1290d69c65a6fe4df752f95823fae25cb99e5a7",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:11:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f8000000000000000000000000a1290d69c65a6fe4df752f95823fae25cb99e5a7"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:11:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e09000000000000000000000000d6a48f6f687a5fef8a69834c49514b747012cf1c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:11:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xa1290d69c65a6fe4df752f95823fae25cb99e5a7",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:11:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xa1290d69c65a6fe4df752f95823fae25cb99e5a7",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:11:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xd6a48f6f687a5fef8a69834c49514b747012cf1c",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:12:totals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x59e017bd0000000000000000000000004c9edd5852cd905f086c759e8383e09bff1e68b3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:12:custody",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x4c9edd5852cd905f086c759e8383e09bff1e68b3",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:12:seized",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9ff567f80000000000000000000000004c9edd5852cd905f086c759e8383e09bff1e68b3"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:12:price",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x41976e09000000000000000000000000a569d910839ae8865da8f8e70fffb0cba869f961"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:12:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x4c9edd5852cd905f086c759e8383e09bff1e68b3",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:12:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0x4c9edd5852cd905f086c759e8383e09bff1e68b3",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "asset:12:oracle_round",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xa569d910839ae8865da8f8e70fffb0cba869f961",
+    "data": "0xfeaf968c"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "reward:balance",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+    "data": "0x70a082310000000000000000000000001b0e765f6224c21223aea2af16c1c46e38885a40"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "reward:decimals",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+    "data": "0x313ce567"
+   },
+   "0x18fffe0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "reward:symbol",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+    "data": "0x95d89b41"
+   },
+   "0x18fffe0"
+  ]
+ }
+]

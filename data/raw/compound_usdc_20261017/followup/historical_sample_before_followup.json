@@ -1,0 +1,63 @@
+{
+  "observations": [
+    {
+      "block": 26163968,
+      "hash": "0xe24bc6876b15cc5c095bc507734fc04109a5533863c201206e251900639826c5",
+      "utc": "2026-10-10T18:56:47+00:00",
+      "utilisation_percent": "90.2850871082647829",
+      "supply_usdc": "382716624.020392",
+      "borrow_usdc": "345536208.83278",
+      "supply_apr_percent": "4.1511383918064",
+      "borrow_apr_percent": "5.0263335811728",
+      "rate_status": "reconstructed exactly from raw curve coefficients and utilisation retrieved at this block; direct historical rate calls not retrieved"
+    },
+    {
+      "block": 26207168,
+      "hash": "0xe3516fdb3476280fb0c5d29b601c9278189b7e7a035afedb13e1d37f98b612d7",
+      "utc": "2026-10-16T19:23:23+00:00",
+      "utilisation_percent": "90.5762998454890016",
+      "supply_usdc": "384072102.217116",
+      "borrow_usdc": "347878298.927048",
+      "supply_apr_percent": "5.0818543017408",
+      "borrow_apr_percent": "6.0746994334944",
+      "rate_status": "reconstructed exactly from raw curve coefficients and utilisation retrieved at this block; direct historical rate calls not retrieved"
+    },
+    {
+      "block": 26214368,
+      "hash": "0x3a282d5aceb3cc24dfaf339fabe2d89a879b64158311b4b9e7d13463b8c8158e",
+      "utc": "2026-10-17T19:28:23+00:00",
+      "utilisation_percent": "91.2601883048311966",
+      "supply_usdc": "381279533.505742",
+      "borrow_usdc": "347956477.378012",
+      "supply_apr_percent": "7.2675618155424",
+      "borrow_apr_percent": "8.5366978893648",
+      "rate_status": "direct onchain getter and independent exact reconstruction agree"
+    }
+  ],
+  "liquidation": {
+    "transaction": "0x3306dbba82611000046953d24f873523a717d1e797ab99061bca379373418870",
+    "block": 18759911,
+    "block_hash": "0xf1b62d6e25c2c470ab45e463f9fa3ff7ddccc3d73f562bb0387159c0afc1c300",
+    "utc": "2023-12-11T02:13:47+00:00",
+    "borrower": "0x5889d3094799dcc8d22869d3ecc1d78753b1be4f",
+    "comp_seized": "3.162901",
+    "link_seized": "7000.748643887927346781",
+    "basePaidOut_usdc": "94713.288739",
+    "borrower_supply_claim_credited_usdc": "7063.987297",
+    "cash_from_buyer_usdc": "105661.329933",
+    "link_sold": "7593.120638673132946055",
+    "preexisting_link_inventory_used": "592.371994785205599274",
+    "checks": [
+      "successful receipt",
+      "receipt block hash equals queried block",
+      "BuyCollateral base amount equals actual USDC transfer",
+      "BuyCollateral collateral amount equals actual LINK transfer"
+    ],
+    "limits": [
+      "basePaidOut includes debt removed and credited supply; it is not pure principal",
+      "sale includes preexisting protocol inventory",
+      "block-level pre/post totals do not isolate this one transaction",
+      "immediate pre-transaction state and health factor were not traced"
+    ]
+  }
+}

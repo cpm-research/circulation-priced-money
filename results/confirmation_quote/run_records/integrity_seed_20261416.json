@@ -1,0 +1,40 @@
+{
+ "checks": [
+  {
+   "check": "the run exited cleanly",
+   "passed": true,
+   "detail": "exit code 0"
+  },
+  {
+   "check": "the four stores are written",
+   "passed": true,
+   "detail": "all four"
+  },
+  {
+   "check": "the stores are this part",
+   "passed": true,
+   "detail": "seed set confirmation, seeds [20261416]"
+  },
+  {
+   "check": "every job of the grid is in cells.json",
+   "passed": true,
+   "detail": "106 of 106 jobs"
+  },
+  {
+   "check": "every job is in measures.json",
+   "passed": true,
+   "detail": "106 of 106 jobs"
+  },
+  {
+   "check": "every job is in failure_counts.json",
+   "passed": true,
+   "detail": "106 of 106 jobs"
+  },
+  {
+   "check": "money is conserved",
+   "passed": true,
+   "detail": "424 arm runs against S0; the largest gap between an arm's mean gain and the sum of its split by outside flow is $1.55e-10 a person (M1 at (0.02, 0.2, 0.02, 20261416, False)), 0.00014 of its allowance"
+  }
+ ],
+ "passed": true
+}

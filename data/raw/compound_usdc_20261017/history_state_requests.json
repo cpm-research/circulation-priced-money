@@ -1,0 +1,894 @@
+[
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:block",
+  "method": "eth_getBlockByNumber",
+  "params": [
+   "0x18fe3c0",
+   false
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:totalSupply()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x18160ddd"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:totalBorrow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x8285ef40"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:getUtilization()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x7eb71131"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:getReserves()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x0902f1ac"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:totalsBasic()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xb9f0baf7"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:baseTokenPriceFeed()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xe7dad6bd"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:baseBorrowMin()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x300e6beb"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:supplyKink()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xa5b4ff79"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:supplyPerSecondInterestRateSlopeLow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x5a94b8d1"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:supplyPerSecondInterestRateSlopeHigh()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x804de71f"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:supplyPerSecondInterestRateBase()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x94920cca"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:borrowKink()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9241a561"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:borrowPerSecondInterestRateSlopeLow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x2d05670b"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:borrowPerSecondInterestRateSlopeHigh()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x2a48cf12"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:borrowPerSecondInterestRateBase()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x7914acc7"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:weth_info",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000002"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:cash",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26207168:implementation",
+  "method": "eth_getStorageAt",
+  "params": [
+   "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+   "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+   "0x18fe3c0"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:block",
+  "method": "eth_getBlockByNumber",
+  "params": [
+   "0x18f3b00",
+   false
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:totalSupply()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x18160ddd"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:totalBorrow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x8285ef40"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:getUtilization()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x7eb71131"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:getReserves()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x0902f1ac"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:totalsBasic()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xb9f0baf7"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:baseTokenPriceFeed()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xe7dad6bd"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:baseBorrowMin()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x300e6beb"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:supplyKink()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xa5b4ff79"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:supplyPerSecondInterestRateSlopeLow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x5a94b8d1"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:supplyPerSecondInterestRateSlopeHigh()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x804de71f"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:supplyPerSecondInterestRateBase()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x94920cca"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:borrowKink()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9241a561"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:borrowPerSecondInterestRateSlopeLow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x2d05670b"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:borrowPerSecondInterestRateSlopeHigh()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x2a48cf12"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:borrowPerSecondInterestRateBase()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x7914acc7"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:weth_info",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000002"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:cash",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "26163968:implementation",
+  "method": "eth_getStorageAt",
+  "params": [
+   "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+   "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+   "0x18f3b00"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:block",
+  "method": "eth_getBlockByNumber",
+  "params": [
+   "0x11e40e6",
+   false
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:totalSupply()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x18160ddd"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:totalBorrow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x8285ef40"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:getUtilization()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x7eb71131"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:getReserves()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x0902f1ac"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:totalsBasic()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xb9f0baf7"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:baseTokenPriceFeed()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xe7dad6bd"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:baseBorrowMin()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x300e6beb"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:supplyKink()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xa5b4ff79"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:supplyPerSecondInterestRateSlopeLow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x5a94b8d1"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:supplyPerSecondInterestRateSlopeHigh()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x804de71f"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:supplyPerSecondInterestRateBase()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x94920cca"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:borrowKink()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9241a561"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:borrowPerSecondInterestRateSlopeLow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x2d05670b"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:borrowPerSecondInterestRateSlopeHigh()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x2a48cf12"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:borrowPerSecondInterestRateBase()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x7914acc7"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:weth_info",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000002"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:cash",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759910:implementation",
+  "method": "eth_getStorageAt",
+  "params": [
+   "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+   "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+   "0x11e40e6"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:block",
+  "method": "eth_getBlockByNumber",
+  "params": [
+   "0x11e40e7",
+   false
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:totalSupply()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x18160ddd"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:totalBorrow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x8285ef40"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:getUtilization()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x7eb71131"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:getReserves()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x0902f1ac"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:totalsBasic()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xb9f0baf7"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:baseTokenPriceFeed()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xe7dad6bd"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:baseBorrowMin()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x300e6beb"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:supplyKink()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xa5b4ff79"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:supplyPerSecondInterestRateSlopeLow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x5a94b8d1"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:supplyPerSecondInterestRateSlopeHigh()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x804de71f"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:supplyPerSecondInterestRateBase()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x94920cca"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:borrowKink()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x9241a561"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:borrowPerSecondInterestRateSlopeLow()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x2d05670b"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:borrowPerSecondInterestRateSlopeHigh()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x2a48cf12"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:borrowPerSecondInterestRateBase()",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0x7914acc7"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:weth_info",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+    "data": "0xc8c7fe6b0000000000000000000000000000000000000000000000000000000000000002"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:cash",
+  "method": "eth_call",
+  "params": [
+   {
+    "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    "data": "0x70a08231000000000000000000000000c3d688b66703497daa19211eedff47f25384cdc3"
+   },
+   "0x11e40e7"
+  ]
+ },
+ {
+  "jsonrpc": "2.0",
+  "id": "18759911:implementation",
+  "method": "eth_getStorageAt",
+  "params": [
+   "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+   "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+   "0x11e40e7"
+  ]
+ }
+]

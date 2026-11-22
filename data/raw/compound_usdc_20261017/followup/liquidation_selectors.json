@@ -1,0 +1,17 @@
+[
+  {
+    "jsonrpc": "2.0",
+    "id": "userBasic(address)",
+    "result": "0xdc4abafd152d80b4bd551394f4fc665c5d72840b588af44af431ef2fa8befc2b"
+  },
+  {
+    "jsonrpc": "2.0",
+    "id": "userCollateral(address,address)",
+    "result": "0x2b92a07df4c605f082247c228118246ad606335f2e9918a50b6834e798abf677"
+  },
+  {
+    "jsonrpc": "2.0",
+    "id": "quoteCollateral(address,uint256)",
+    "result": "0x7ac88ed1fa27207caa37ee0e2d78306c9eacc474a211e73d6b826b2ef08fdb62"
+  }
+]
