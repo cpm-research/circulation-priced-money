@@ -1,4 +1,4 @@
-"""The registered claim's statistics in the population runner (docs/ANALYSIS_PLAN.md): hand cases on small
+"""The registered claim's statistics in the population runner (docs/ANALYSIS_PLAN.md): worked examples on small
 synthetic inputs, no population run. Each test's docstring works its numbers by hand."""
 import contextlib
 import io
@@ -19,9 +19,9 @@ def synthetic_job(rate, a0, level, seed, saving_m0=1.0, saving_s0=10.0, gain=5.0
                   failed_m0=2.0, monthly=0.01, monthly_m0=0.01, monthly_s0=0.01, owners=10.0, bound=None):
     """One job with every field the claim reads, for M1 and M2 alike (M0 and S0 beside). The seed adds a small
     spread (+/- 0.1 a seed in turn) so every interval is defined. Owners earn 10% a year in W2 by default, above
-    DeFi's savings rate at every r_out, so V4 fires only where a test lowers it (owners=3.0 is the review's case).
-    The gain under the cash-advance bound (15 Nov 2026) is ``bound`` in every group, the gain itself by default (the
-    arm saves nothing on cash advances)."""
+    DeFi's savings rate at every r_out, so V4 fires only where a test lowers it (owners=3.0 is below that rate).
+    The gain under the cash-advance bound is ``bound`` in every group, the gain itself by default (the arm saves
+    nothing on cash advances)."""
     wiggle = 0.1 * (1 if seed % 2 else -1)
     groups = lambda value: dict(**{f"gain_usd_a_year_by_{name}": [value + wiggle] * size
                                    for name, size in (("class", 4), ("quintile", 5), ("cycle", 2))},
@@ -52,7 +52,7 @@ def synthetic_job(rate, a0, level, seed, saving_m0=1.0, saving_s0=10.0, gain=5.0
 
 
 def synthetic_cell(rate, a0, level, seeds=20, persistent=20):
-    """The decided cell as ``decide`` stores it, as far as the claim reads it: seeds and each pool arm's region."""
+    """A cell as ``decide`` stores it, as far as the claim reads it: seeds and each pool arm's region."""
     interval = pop.wilson(persistent, seeds)
     region = dict(persistent_seeds=persistent, persistent_interval=interval)
     return dict(r_out=rate, a0=a0, distress=level, seeds=seeds,
@@ -96,9 +96,9 @@ class Intervals(unittest.TestCase):
                          ("supported", "supported", True))
 
     def test_wilson_seed_thresholds(self):
-        """The claim row: 15 of 20 seeds is the least whose 95% Wilson lower bound is above one half (0.531; 14 gives
-        0.481); under Bonferroni over 21 cells, z = 3.038, 17 of 20 (0.510; 16 gives 0.461). Three of three seeds
-        reads 0.438 at 95%, so the development map's three seeds can never read Persistent by the rule."""
+        """15 of 20 seeds is the least whose 95% Wilson lower bound is above one half (0.531; 14 gives 0.481); under
+        Bonferroni over 21 cells, z = 3.038, it is 17 of 20 (0.510; 16 gives 0.461). Three of three seeds read 0.438
+        at 95%, so the development map's three seeds can never read Persistent by the rule."""
         alpha = pop.bonferroni_alpha("M1", W)
         self.assertGreater(pop.wilson_bounds(15, 20)[0], 0.5)
         self.assertLess(pop.wilson_bounds(14, 20)[0], 0.5)
@@ -117,7 +117,7 @@ class Statistics(unittest.TestCase):
         self.assertAlmostEqual(pop.bonferroni_alpha("M2", W), 0.05 / 14)
 
     def test_seed_count_matches_the_statistics_row(self):
-        """The statistics row's numbers, margin $2, 80% power at a true zero: 20 seeds carry a spread of $3.03 at 95%
+        """Seeds needed at a margin of $2 and 80% power at a true zero: 20 seeds carry a spread of $3.03 at 95%
         (3.02 needs 20, 3.04 needs 21) and $2.02 under Bonferroni over 21 cells; at spreads of $4, $6 and $8 the
         Bonferroni count is 65, 141 and 246; and $4.27 at 20 seeds is the spread at which a true zero passes half the
         time (power 0.5). A zero spread needs the least, 2; an undefined one gives None."""
@@ -138,16 +138,19 @@ class Statistics(unittest.TestCase):
 
     def test_pooled_freedom(self):
         """The same cells pool 1 + 1 = 2 degrees of freedom, the one-seed cell adding none; 21 cells of 3 seeds, the
-        final development map's cells, pool 42."""
+        development map's cells, pool 42."""
         self.assertEqual(pop.pooled_freedom([[1, 3], [0, 4], [7]]), 2)
         self.assertEqual(pop.pooled_freedom([[0.0, 1.0, None, 2.0]] * 21), 42)
         self.assertEqual(pop.pooled_freedom([[1], [None]]), 0)
 
     def test_spread_bound_hand_case(self):
-        """The rule of 17 Nov 2026: s x sqrt(nu / chi2_0.2(nu)). The final development map's binding reading, 1.1658
-        over 42 degrees of freedom, has chi2_0.2(42) = 34.157, so 1.1658 x sqrt(42 / 34.157) = 1.293 at 0.8 (1.362
-        at 0.9, 1.424 at 0.95); at M1's Bonferroni level and the dip's margin of one these need 30, 33 and 36 seeds
-        against 26 at the point estimate. No spread, or no degree of freedom, has no bound."""
+        """The upper bound on a pooled spread s with nu degrees of freedom, at assurance 0.8: s x sqrt(nu /
+        chi2_0.2(nu)).
+
+        Example: the development map's binding reading, 1.1658 over 42 degrees of freedom, has chi2_0.2(42) = 34.157,
+        so 1.1658 x sqrt(42 / 34.157) = 1.293 at 0.8 (1.362 at 0.9, 1.424 at 0.95); at M1's Bonferroni level and the
+        dip's margin of one these need 30, 33 and 36 seeds against 26 at the point estimate. No spread, or no degree
+        of freedom, has no bound."""
         alpha = pop.bonferroni_alpha("M1", W)
         self.assertEqual(pop.SEED_ASSURANCE, 0.8)
         bounds = [pop.spread_bound(1.1658, 42, q) for q in (0.8, 0.9, 0.95)]
@@ -159,8 +162,8 @@ class Statistics(unittest.TestCase):
 
     def test_spread_resolved(self):
         """``seeds_needed`` read the other way, margin $2, 80% power: 20 seeds resolve a spread up to $3.03 at 95%
-        and $2.02 at the Bonferroni level over 21 cells, the statistics row's figures; 30 seeds up to $3.78 and
-        $2.597, which 30 seeds resolve and a cent more does not."""
+        and $2.02 at the Bonferroni level over 21 cells; 30 seeds up to $3.78 and $2.597, which 30 seeds resolve and
+        a cent more does not."""
         alpha = pop.bonferroni_alpha("M1", W)
         self.assertAlmostEqual(pop.spread_resolved(20, 2.0, 0.05), 3.0283, places=4)
         self.assertAlmostEqual(pop.spread_resolved(20, 2.0, alpha), 2.0226, places=4)
@@ -178,7 +181,8 @@ class Statistics(unittest.TestCase):
         self.assertEqual(pop.connected_blocks(set()), [])
 
     def test_registered_shares(self):
-        """P1 as first registered True, True, False over three seeds reads 0.667; X1 fires in one, 0.333."""
+        """The share of seeds in which each registered test holds: P1 True, True, False over three seeds reads 0.667;
+        X1 fires in one, 0.333."""
         rows = [dict(registered_tests=dict(P1=True, X1=False)), dict(registered_tests=dict(P1=True, X1=False)),
                 dict(registered_tests=dict(P1=False, X1=True))]
         self.assertEqual(pop.registered_shares(rows), dict(P1=0.667, X1=0.333))
@@ -242,11 +246,11 @@ class Clauses(unittest.TestCase):
         self.assertFalse(pop.clause_a("M1", jobs, cell, 0.05)["holds"])
 
     def test_clause_a_reads_paying_its_way_as_running_without_outside_money(self):
-        """Since 5 Nov the pool pays its own way when it runs without outside money: with break-even coupons its own
-        margin centres on zero by construction. Twenty seeds whose W2 margin and joint test are zero on average (+0.1
-        and -0.1 by seed) pass the clause; the clause as first worded, which also asks the margin's lower bound above
-        zero, does not, and both are stored. A margin of $1 passes both. A backing top-up in one seed is outside money
-        and fails both."""
+        """The pool pays its own way when it runs without outside money: with break-even coupons its own margin
+        centres on zero by construction. Twenty seeds whose W2 margin and joint test are zero on average (+0.1 and
+        -0.1 by seed) pass the clause; the stricter reading stored beside it (``holds_as_first_registered``), which
+        also asks the margin's lower bound above zero, does not. A margin of $1 passes both. A backing top-up in one
+        seed is outside money and fails both."""
         cell = synthetic_cell(0.044, 0.6, 0.0)
         zero = pop.clause_a("M1", [synthetic_job(0.044, 0.6, 0.0, s, margin=0.0) for s in SEEDS20], cell, 0.05)
         self.assertTrue(zero["holds"])
@@ -273,10 +277,9 @@ class Clauses(unittest.TestCase):
         self.assertEqual(pop.DIP_MONTHS, (25, 60))
 
     def test_the_dip_is_read_a_year(self):
-        """The distress row reads the dip per consumer unit a year against one failed payment a year. Twenty seeds
-        whose dip against S0 and against M0 is 2.4 failed payments over the 36 months (0.8 a year, a little more or
-        less by seed) are within it; at 3.6 over the 36 months (1.2 a year) they are not. Read on the 36-month sum,
-        2.4 would have failed."""
+        """The dip is read per consumer unit a year against one failed payment a year. Twenty seeds whose dip against
+        S0 and against M0 is 2.4 failed payments over the 36 months (0.8 a year, a little more or less by seed) are
+        within it; at 3.6 over the 36 months (1.2 a year) they are not. Read on the 36-month sum, 2.4 would fail."""
         def leg(monthly):
             level = [synthetic_job(0.044, 0.6, 0.01, s, monthly=0.05 + monthly + (0.001 if s % 2 else -0.001),
                                    monthly_s0=0.05, monthly_m0=0.05) for s in SEEDS20]
@@ -300,7 +303,7 @@ class Clauses(unittest.TestCase):
         out = pop.better_than_m0("M1", 0.044, jobs, W)
         self.assertFalse(out["V2"]["shown_worse"])
         self.assertAlmostEqual(out["V2"]["interest_usd_a_year"]["mean"], 0.0)
-        self.assertGreater(savings, 3.0)                    # so the review's owners at 3% are shown worse
+        self.assertGreater(savings, 3.0)                    # so owners at 3% are shown worse
         self.assertAlmostEqual(out["V4"]["mean"], 3.0 - savings, places=3)
         self.assertEqual(out["V4"]["shown_worse"], 3.0 < savings)
         self.assertAlmostEqual(pop.better_than_m0("M2", 0.044, jobs, W)["V4"]["mean"], 5.0 - savings, places=3)
@@ -349,9 +352,9 @@ class Map(unittest.TestCase):
         self.assertAlmostEqual(stats["seeds"]["readings"][0]["spread"], round(np.std([0.1, -0.1] * 10, ddof=1), 4))
 
     def test_the_stress_clause_reads_two_points_as_its_headline(self):
-        """The harsh stress (decided 14 Nov 2026): every level still runs and is tested in order, and (e) reads the
-        2% level as its headline, labelled 2009's wage loss before unemployment insurance. One cell at r_out 4.4% and
-        a0 0.05, 20 seeds, at every level. With no dip every level is withstood: highest 0.02, the headline withstood.
+        """Under the harsh stress every level runs and is tested in order, and (e) reads the 2% level as its
+        headline, labelled 2009's wage loss before unemployment insurance. One cell at r_out 4.4% and a0 0.05, 20
+        seeds, at every level. With no dip every level is withstood: highest 0.02, the headline withstood.
         With M1's failed shares 0.11 a month at 1.5% against S0's 0.01 (a dip of 3.6 over the 36 months, 1.2 a year,
         beyond one failed payment) the levels stop there: highest 0.01, the headline not withstood. With only 0.5% and
         1% run the headline cannot be read: None. A cell failing (b) at level 0 has (e) not applicable and no
@@ -379,8 +382,8 @@ class Map(unittest.TestCase):
     def test_declared_limit_and_underpowered(self):
         """M2 at r_out 2% is its declared limit: every clause not applicable, all false. A cell whose savings spread
         $30 a seed needs far more than its 20 seeds: underpowered, so it cannot enter the region though it passes.
-        M1's own cell at 2% passes (a), (b) and (d), which is what a passing cell is (the claim row; (e) is read for
-        passing cells and no stress level was run here), so it is the region."""
+        M1's own cell at 2% passes (a), (b) and (d), which is what a passing cell is ((e) is read for passing cells
+        and no stress level is run here), so it is the region."""
         cells = [synthetic_cell(0.02, 0.05, 0.0), synthetic_cell(0.044, 0.05, 0.0)]
         jobs = [synthetic_job(0.02, 0.05, 0.0, s) for s in SEEDS20]
         jobs += [synthetic_job(0.044, 0.05, 0.0, s, saving_s0=50.0) for s in SEEDS20]
@@ -397,8 +400,8 @@ class Map(unittest.TestCase):
 
 
 def decided_cell(rate, a0, level, seeds):
-    """A level's decided cell as ``decide`` stores it from the hand-case seeds of test_economy_abm (``map_seed``),
-    wrapped with the cell's own coordinates for ``claim_statistics``."""
+    """A level's cell as ``decide`` stores it from the example seeds of test_economy_abm (``map_seed``), wrapped
+    with the cell's own coordinates for ``claim_statistics``."""
     decided = pop.decide(seeds, 0.044, 0.6, 0.0, False, Economy())
     return dict(decided, r_out=rate, a0=a0, distress=level, seeds=len(seeds))
 
@@ -422,8 +425,8 @@ def credit_jobs(arm_balance, m0_balance, arm_interest=None):
 
 
 class WorseThanM0(unittest.TestCase):
-    """The row '"Worse than M0" uses completed trade, harm to any group, borrowers' credit cost and owners' realised
-    return': each of the four parts firing alone leaves the cell not Persistent, failing (a), out of the region and
+    """The falsifier "worse than M0" has four parts: completed trade, harm to any group, borrowers' credit cost and
+    owners' realised return. Each firing alone leaves the cell not Persistent, failing (a), out of the region and
     falsified, with the part named."""
 
     def assert_falsified_by(self, cell, part):
@@ -440,7 +443,7 @@ class WorseThanM0(unittest.TestCase):
 
     def test_the_reviews_reproducer_owners_return(self):
         """Owners earn 3% +/- 0.1 in W2, below DeFi's savings rate at r_out 4.4%: V4 is shown worse, so (a) fails and
-        the cell is out of the region (the review printed True, pass, True)."""
+        the cell is out of the region."""
         c = synthetic_cell(.044, .6, 0)
         p = pop.claim_statistics([c], [synthetic_job(.044, .6, 0, s, owners=3.0) for s in range(20)], W)
         self.assertEqual((c["M1"]["better_than_M0"]["V4"]["shown_worse"], c["M1"]["claim"]["a"]["status"],
@@ -474,7 +477,7 @@ class WorseThanM0(unittest.TestCase):
         self.assertEqual((more["M1"]["claim"]["reading"], more["M1"]["claim"]["in_region"]), ("supported", True))
 
     def test_trade_or_a_group_alone(self):
-        """Twenty hand-case seeds (test_economy_abm's ``map_seed``), every persistence test holding: trade worse than
+        """Twenty example seeds (test_economy_abm's ``map_seed``), every persistence test holding: trade worse than
         M0 in all of them, or one group harmed in all of them, fires X4 in ``decide``, no seed is Persistent, and the
         claim then fails (a) and reads falsified by that part."""
         from tests.test_economy_abm import map_seed
@@ -488,7 +491,7 @@ class WorseThanM0(unittest.TestCase):
             self.assert_falsified_by(cell, part)
 
     def test_decide_reads_v2_and_v4_before_the_persistent_count(self):
-        """``decide`` itself: twenty hand-case seeds, all Persistent, whose owners earn 0% +/- 0.1 in W2, below DeFi's
+        """``decide`` itself: twenty example seeds, all Persistent, whose owners earn 0% +/- 0.1 in W2, below DeFi's
         savings rate: V4 fires, so X4 fires, every seed counts worse than M0, the verdict is Against CPM, none is
         Persistent and the region reads "not persistent"; with no owner reading nothing fires and all 20 stay
         Persistent."""
@@ -509,7 +512,8 @@ class WorseThanM0(unittest.TestCase):
 
 
 class Review13Nov(unittest.TestCase):
-    """Cases from the 13 Nov review, on its own reproducers."""
+    """The seed planner on the yearly dip, clause (d) on every group, three-way readings, the clauses kept by a stress
+    leg, and the claim map."""
 
     def test_the_seed_planner_reads_the_yearly_dip(self):
         """Dips of 0.2 +/- 0.15 failed shares a month in the level's run against 0.2 in S0's and M0's, so
@@ -525,13 +529,13 @@ class Review13Nov(unittest.TestCase):
         self.assertEqual(reading["seeds"], cells[1]["M1"]["stress_leg"]["seeds_needed"])
         self.assertEqual(reading["seeds"], 56)
         self.assertEqual(stats["seeds"]["confirmation_seeds_now"], 30)
-        # Beside it (17 Nov 2026): one cell of 20 seeds has 19 degrees of freedom, and the bound needs more seeds.
+        # One cell of 20 seeds has 19 degrees of freedom, and the spread's upper bound needs more seeds.
         self.assertEqual(reading["freedom"], 19)
         self.assertAlmostEqual(reading["spread_bound"], pop.spread_bound(reading["spread"], 19), places=3)
         self.assertGreater(reading["seeds_assured"], reading["seeds"])
 
     def test_the_planner_assures_thirty_seeds_on_the_binding_reading(self):
-        """The final development map's binding reading made by hand: 21 cells of 3 seeds at 0.5 points whose yearly
+        """The development map's binding reading made by hand: 21 cells of 3 seeds at 0.5 points whose yearly
         dip against S0 and against M0 is -1.1658, 0 and +1.1658 in every cell (monthly failed shares 0.2 less, at and
         above 1.1658 / 12 against 0.2 for S0 and M0), so a pooled spread of 1.1658 on 42 degrees of freedom. At M1's
         Bonferroni level that reading needs 26 seeds and, at the bound 1.293, 30, and the planner's counts are 26
@@ -618,7 +622,7 @@ class Review13Nov(unittest.TestCase):
 
     def test_stress_legs_keep_every_clause(self):
         """At 0.5% every stress leg keeps each clause's full block (clause (b)'s two intervals, clause (a)'s
-        first-worded reading) with three-way readings, and clause (b)'s two read-outs are stored at that level."""
+        stricter reading) with three-way readings, and clause (b)'s two read-outs are stored at that level."""
         cells, jobs = Map().build()
         pop.claim_statistics(cells, jobs, W)
         stress = next(c["M1"] for c in cells if c["distress"] > 0)
@@ -633,7 +637,7 @@ class Review13Nov(unittest.TestCase):
 
     def test_the_claim_map(self):
         """The claim map reads the stored claim blocks: in the Map build, three cells are in the region at
-        level 0 and at 0.5%, the fourth falsified by (b) at level 0; the older figures are the persistence-and-groups
+        level 0 and at 0.5%, the fourth falsified by (b) at level 0; the other figures are the persistence-and-groups
         view. The figure is written from a store holding them."""
         import json
         import tempfile
@@ -657,11 +661,11 @@ class Review13Nov(unittest.TestCase):
 
 class Settings(unittest.TestCase):
     def test_seeds_and_population(self):
-        """The confirmation block runs from 20261401, at most 100 seeds (20261401 to 20261500), never run, touching no
-        retired block (20261101 to 20261120, 20261201 to 20261220, 20261301 to 20261308) and no development seed; its
-        count is 30 (decided 17 Nov 2026), so SEEDS["confirmation"] is 20261401 to 20261430, and the one declared
-        extension runs to 60 seeds, adding 20261431 to 20261460, inside the block. The sweep entry records the size
-        sweep's seeds. The runner's default population is 4,000 (decided 12 Nov)."""
+        """The confirmation block runs from 20261401, at most 100 seeds (20261401 to 20261500), touching no retired
+        block (20261101 to 20261120, 20261201 to 20261220, 20261301 to 20261308) and no development seed; its count
+        is 30, so SEEDS["confirmation"] is 20261401 to 20261430, and the one declared extension runs to 60 seeds,
+        adding 20261431 to 20261460, inside the block. The sweep entry records the size sweep's seeds. The runner's
+        default population is 4,000."""
         self.assertEqual((pop.CONFIRMATION_COUNT, pop.CONFIRMATION_EXTENSION), (30, 60))
         self.assertEqual(pop.SEEDS["confirmation"], tuple(range(20261401, 20261431)))
         extension = pop.confirmation_block(pop.CONFIRMATION_EXTENSION)[pop.CONFIRMATION_COUNT:]
@@ -677,10 +681,9 @@ class Settings(unittest.TestCase):
             self.assertEqual(pop.options().parse_args(["--seeds", "development"]).n, 4000)
 
     def test_confirmation_uses_exactly_the_frozen_count(self):
-        """n = 14 is 20261401 to 20261414 and n = 37 is 20261401 to 20261437 (below and above the old placeholder
-        20), with no simulation; any count outside 2 to 100, or not a whole number, is refused; the count of 30
-        gives 20261401 to 20261430; with no count the confirmation set is refused while the development set is given
-        as before."""
+        """n = 14 is 20261401 to 20261414 and n = 37 is 20261401 to 20261437, with no simulation; any count outside 2
+        to 100, or not a whole number, is refused; the count of 30 gives 20261401 to 20261430; with no count the
+        confirmation set is refused while the development set is still given."""
         from unittest import mock
         self.assertEqual(pop.confirmation_block(14), tuple(range(20261401, 20261415)))
         self.assertEqual(pop.confirmation_block(37), tuple(range(20261401, 20261438)))
@@ -726,9 +729,9 @@ def skewed_sample():
     return [0.0] * 23 + [10.0] * 3
 
 
-class Audit13Nov(unittest.TestCase):
-    """The 13 Nov source audit of the analysis scripts: decisions read unrounded bounds, falsified needs both
-    intervals, and the owners'-return part of worse than M0 uses both."""
+class UnroundedReadings(unittest.TestCase):
+    """Decisions read unrounded bounds, falsified needs both intervals, and the owners'-return part of worse than M0
+    uses both."""
 
     def test_the_persistent_reading_uses_the_unrounded_wilson_bound(self):
         """15 of 21 (lower bound 0.50044), 18 of 26 (0.50011), 46 of 75 (0.50017) and 51 of 84 (0.50022) are stored as
@@ -786,23 +789,24 @@ class Audit13Nov(unittest.TestCase):
 
 
 class CashAdvanceBound(unittest.TestCase):
-    """The cash-advance bound (decided 15 Nov 2026): clause (d) read a second time on the gains less the
-    cash-advance fees and interest the person saves, and a cell in the region only if it passes both."""
+    """The cash-advance bound: clause (d) read a second time on the gains less the cash-advance fees and interest the
+    person saves, and a cell in the region only if it passes both."""
 
     def read(self, bound=None, levels=(0.0, 0.005)):
-        """One cell at r_out 4.4% and a0 0.05 at each level, 20 seeds, every group gaining $5 +/- 0.1 as built and
-        ``bound`` +/- 0.1 under the bound (the gain itself when None); the cells by level and the map's readings."""
+        """One cell at r_out 4.4% and a0 0.05 at each level, 20 seeds, every group gaining $5 +/- 0.1 without the
+        bound and ``bound`` +/- 0.1 under it (the gain itself when None); the cells by level and the map's
+        readings."""
         cells = [synthetic_cell(0.044, 0.05, level) for level in levels]
         jobs = [synthetic_job(0.044, 0.05, level, s, bound=bound) for level in levels for s in SEEDS20]
         stats = pop.claim_statistics(cells, jobs, W)
         return {c["distress"]: c["M1"] for c in cells}, stats
 
     def test_a_cell_failing_under_the_bound_is_out_of_the_region(self):
-        """As built every group gains $5 +/- 0.1, (d) supported; under the bound -$3 +/- 0.1, its t and bootstrap
-        intervals wholly below -$2, so d_bound fails, falsified. The cell passes all as built and not all: out of the
-        region at level 0 and at 0.5%, though it withstands 0.5% as built; its reading is falsified, decided by d_bound
-        alone, and as built supported; holds somewhere is empty. Clauses (a) to (e) are the same blocks, number for
-        number, as with no saving on cash advances."""
+        """Without the bound every group gains $5 +/- 0.1, (d) supported; under the bound -$3 +/- 0.1, its t and
+        bootstrap intervals wholly below -$2, so d_bound fails, falsified. The cell passes ``all_as_built`` and not
+        ``all``: out of the region at level 0 and at 0.5%, though it withstands 0.5% without the bound; its reading is
+        falsified on d_bound alone, and ``reading_as_built`` supported; holds somewhere is empty. Clauses (a) to (e)
+        are the same blocks, number for number, as with no saving on cash advances."""
         cells, stats = self.read(bound=-3.0)
         claim = cells[0.0]["claim"]
         self.assertEqual((claim["d"]["status"], claim["d_bound"]["status"], claim["d_bound"]["reading"]),
@@ -839,7 +843,7 @@ class CashAdvanceBound(unittest.TestCase):
 
     def test_the_cell_takes_the_worse_reading_of_the_two(self):
         """Under the bound every group gains -$2 +/- 0.1, straddling the margin: d_bound inconclusive, so the cell
-        reads inconclusive though (d) as built is supported."""
+        reads inconclusive though (d) without the bound is supported."""
         cells, _ = self.read(bound=-2.0, levels=(0.0,))
         claim = cells[0.0]["claim"]
         self.assertEqual((claim["d"]["reading"], claim["d_bound"]["reading"], claim["reading"],
@@ -847,8 +851,8 @@ class CashAdvanceBound(unittest.TestCase):
                                                                      "supported", False))
 
     def test_a_store_without_the_bound_does_not_pass_it(self):
-        """Jobs stored before the bound hold no gains under it: every required group is undefined there (3 readings x
-        11 groups), so d_bound does not hold, while (d) as built still holds."""
+        """Jobs stored without the gains under the bound: every required group is undefined there (3 readings x 11
+        groups), so d_bound does not hold, while (d) itself still holds."""
         jobs = [synthetic_job(0.044, 0.6, 0.0, s) for s in SEEDS20]
         for job in jobs:
             for other in ("S0", "M0"):
@@ -862,9 +866,9 @@ class CashAdvanceBound(unittest.TestCase):
 
 class StressSweep(unittest.TestCase):
     def test_the_stress_sweep_is_the_catalogue_of_the_old_product(self):
-        """The stress runner's jobs and summary keys come from PySPG's catalogue in the same order as the
-        ``itertools.product`` they replaced (the last dimension fastest): 4 stresses x 2 arms x 3 seeds = 24 jobs.
-        Nothing is simulated."""
+        """The stress runner's jobs and summary keys come from PySPG's catalogue in the order of
+        ``itertools.product`` (the last dimension fastest): 4 stresses x 2 arms x 3 seeds = 24 jobs. Nothing is
+        simulated."""
         from itertools import product
         from scripts import run_economy_stress as stress
         self.assertEqual(stress.jobs(100), [(st, arm, seed, 100) for st, arm, seed

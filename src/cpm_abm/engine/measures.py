@@ -23,7 +23,7 @@ def gini(values):
 def _velocity_groups(velocity, participant):
     """The shared set-up of ``turnover`` and ``microvelocity``: the number of years, each person's group by year (a
     participant in a year is in the network in at least half of the year's months, a reading) and each person's
-    balance-time by year on the three definitions of money (the 3 Nov row): ``broad``, E, P, outside savings and pool
+    balance-time by year on the three definitions of money: ``broad``, E, P, outside savings and pool
     shares at NAV; ``e_p_savings``, E, P and savings; ``e_p``, E and P alone."""
     participant = np.asarray(participant, bool)
     years = velocity["outflow"].shape[0]
@@ -35,9 +35,9 @@ def _velocity_groups(velocity, participant):
 
 
 def turnover(velocity, participant):
-    """Each person's wallet turnover (decided 3 Nov as MicroVelocity; renamed after the 13 Nov review,
-    since it is not the paper's measure), a reading of records, used by no rule: by year after launch, on three
-    definitions of money, for participants and non-participants apart, the distribution of each person's turnover.
+    """Each person's wallet turnover, a reading of records, used by no rule (it is not the paper's MicroVelocity): by
+    year after launch, on three definitions of money, for participants and non-participants apart, the distribution
+    of each person's turnover.
 
     ``velocity`` is a run's ``velocity`` (``VELOCITY_RECORDS``, rows by year after launch), ``participant`` its
     participation flags for the months after launch. A person's turnover in a year is the rate at which it spends
@@ -51,7 +51,7 @@ def turnover(velocity, participant):
     For each group and year: ``mean``, ``median``, ``p10``, ``p90`` and ``weighted``, the balance-weighted mean, which
     is the group's total outflow over its total average balance. None where a group is empty.
 
-    Hand case: a person holding 100 all year (balance-time 1,200) that pays out 1,200 turns its money 12 times a
+    Example: a person holding 100 all year (balance-time 1,200) that pays out 1,200 turns its money 12 times a
     year; a second person holding 300 that pays out 1,200 turns it 4 times; the mean is 8 and the weighted mean is
     (1,200 + 1,200) / (100 + 300) = 6.
     """
@@ -64,8 +64,8 @@ def turnover(velocity, participant):
         kept = bt > EPS
         v, held = 12 * outflow[kept] / bt[kept], bt[kept] / 12
         return dict(people=int(kept.sum()), mean=stat(np.mean, v),
-                    weighted=stat(lambda x: (x * held).sum() / held.sum(), v), median=stat(np.median, v), p10=stat(lambda x: np.percentile(x, 10), v),
-                    p90=stat(lambda x: np.percentile(x, 90), v))
+                    weighted=stat(lambda x: (x * held).sum() / held.sum(), v), median=stat(np.median, v),
+                    p10=stat(lambda x: np.percentile(x, 10), v), p90=stat(lambda x: np.percentile(x, 90), v))
 
     def group(bt, inside):
         """``one_year`` for participants (``inside`` True) or non-participants on one definition of money, year by
@@ -77,9 +77,9 @@ def turnover(velocity, participant):
 
 
 def microvelocity(velocity, participant):
-    """MicroVelocity (Campajola, D'Errico and Tessone, arXiv 2201.13416, equations 5 to 7; decided 3 Nov, corrected
-    after the 13 Nov review), a reading of records, used by no rule: by year after launch, on three
-    definitions of money (``_velocity_groups``), for participants and non-participants apart.
+    """MicroVelocity (Campajola, D'Errico and Tessone, arXiv 2201.13416, equations 5 to 7), a reading of
+    records, used by no rule: by year after launch, on three definitions of money (``_velocity_groups``), for
+    participants and non-participants apart.
 
     In the paper a person's MicroVelocity carries its share of the total money stock: V_i = (M_i / M) x the mean of
     1 / tau over its money, and the aggregate velocity is the SUM of the V_i. Here a person's yearly contribution is
@@ -96,7 +96,7 @@ def microvelocity(velocity, participant):
     group's sum from its top tenth of persons by contribution (the largest ceil(people / 10)). None where a group is
     empty or nobody holds money on the definition; ``top_tenth_share`` None where the sum is zero.
 
-    Hand case: a person holding 100 all year (balance-time 1,200) and one holding 300 (3,600), each paying out 1,200:
+    Example: a person holding 100 all year (balance-time 1,200) and one holding 300 (3,600), each paying out 1,200:
     the total balance-time is 4,800, so each contributes 12 x 1,200 / 4,800 = 3, and the aggregate velocity is
     3 + 3 = 6, as their total outflow 2,400 over the total average balance 400.
     """
@@ -131,7 +131,7 @@ def microvelocity(velocity, participant):
 
 def holding_velocity(coinage, velocity, participant):
     """MicroVelocity from the holding time of every unit of money (Campajola, D'Errico and Tessone, arXiv 2201.13416,
-    equations 4 to 7 and their estimator; 13 Nov), a reading of records, used by no rule: by year after launch, for
+    equations 4 to 7 and their estimator), a reading of records, used by no rule: by year after launch, for
     each convention (``COIN_CONVENTIONS``) and for participants and non-participants apart (``_velocity_groups``).
 
     ``coinage`` is a run's ``coinage`` (``Coinage``'s records), ``velocity`` its ``velocity`` and ``participant`` its
@@ -148,7 +148,7 @@ def holding_velocity(coinage, velocity, participant):
     ``mean_tau``, the value-weighted mean holding time in days of money spent in the year; and ``histogram``, the value
     spent in the year by holding time (``COIN_EDGES``, the last bin 961 days and above). None where undefined.
 
-    Hand case: one person, one year, holding 100 throughout (balance-time 1,200 unit-months), which it spends and
+    Example: one person, one year, holding 100 throughout (balance-time 1,200 unit-months), which it spends and
     receives again every ten days, so 36 ten-day spells of 100 lie inside the year: each adds 100 x 10 / 10 = 100 to
     ``held``, 3,600 in all, and V = 12 x 3,600 / 1,200 = 36 turns a year, one turn per ten-day holding time;
     ``mean_tau`` is 10.
@@ -210,7 +210,7 @@ def shortfall_split(failed, own):
     day's own-shortfall amount, signed and positive knock-on amounts, the payers with each, and the bin of
     ``KNOCK_ON_BINS`` the day falls in by its payers with a knock-on failure.
 
-    Hand case: A holds nothing and owes B 10; B holds 4, owes C 10 and is owed A's 10. With full receipts A fails 10
+    Example: A holds nothing and owes B 10; B holds 4, owes C 10 and is owed A's 10. With full receipts A fails 10
     and B nothing; in the solution B receives nothing, pays 4 and fails 6. Failed 16: own shortfall 10, knock-on 6,
     one payer with a knock-on failure, so the day is in bin "1".
     """
@@ -232,7 +232,7 @@ def netting_set(candidate, b, s, paid):
     nothing changes: whoever is paid by a payer outside the set leaves it, which can make its own payees outsiders'
     payees in turn. The removal keeps every set with the three properties inside it, so what is left is the largest.
 
-    Hand case: A and B hold nothing and owe each other 10, and both pay in the solution: the set is {A, B}. If A holds
+    Example: A and B hold nothing and owe each other 10, and both pay in the solution: the set is {A, B}. If A holds
     1 it is no candidate, B is paid by A and leaves too, and the set is empty.
     """
     inside = np.asarray(candidate, bool).copy()
@@ -257,7 +257,7 @@ def netting_loss(f, inside, means, need, receipts, value, tolerance=1e-14, most=
     ``receipts`` maps everyone's shares to everyone's receipts. ``value`` is each payer's payments at full completion;
     returns the fall in completed value and the shares reached.
 
-    Hand case: A and B hold nothing and owe each other 10. Held at zero neither receives anything, so both stay at
+    Example: A and B hold nothing and owe each other 10. Held at zero neither receives anything, so both stay at
     zero and the value lost is 20.
     """
     has_need = need > 0

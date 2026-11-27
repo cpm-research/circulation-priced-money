@@ -11,6 +11,7 @@ shipped folder. It runs no simulation. Afterwards compile the paper (``cd paper 
 The folders and the labels the tables print are listed here once, so the paper's tables and this file cannot drift
 apart.
 """
+from itertools import chain
 import sys
 from pathlib import Path
 
@@ -20,7 +21,7 @@ sys.path.insert(0, str(ROOT))                      # so that ``scripts`` imports
 from scripts import paper_figures, paper_numbers, results_card   # noqa: E402  (after the path is set)
 
 RESULTS = ROOT / "results"
-# The headline map: the confirmation map under the decided entry rule (entrants read the published quote).
+# The headline map: the confirmation map under the default entry rule (entrants read the published quote).
 MAP = RESULTS / "confirmation_quote"
 # The development map. The side checks, the bounds and the robustness sets were run on its seeds and stand beside it;
 # the seed plan was read from it.
@@ -82,7 +83,7 @@ SIZES = (500, 1000, 2000, 4000, 8000)              # the population sizes of the
 
 def labelled(flag, pairs):
     """The command-line words for a list of (label, folder) pairs: flag, "label=folder", flag, ..."""
-    return [word for label, folder in pairs for word in (flag, f"{label}={RESULTS / folder}")]
+    return list(chain.from_iterable((flag, f"{label}={RESULTS / folder}") for label, folder in pairs))
 
 
 def archived(folder, name="measures.json"):
@@ -101,8 +102,8 @@ def main():
         sys.exit(f"The monthly series of {MAP.name} are not in results/: {', '.join(missing)}. They are kept in the "
                  "data archive (results/README.md); download them into that folder and run this again.")
     paper = ROOT / "paper"
-    robust = [word for group, stem, label, folder in ROBUST for word in ("--robust", group, stem, label,
-                                                                         str(RESULTS / folder))]
+    robust = list(chain.from_iterable(("--robust", group, stem, label, str(RESULTS / folder))
+                                      for group, stem, label, folder in ROBUST))
     paper_numbers.main(["--map", str(MAP), "--base", str(BASE), "--second", str(SECOND), "--cut", str(CUT),
                         "--explore-base", str(EXPLORE_BASE), *labelled("--explore", EXPLORE),
                         "--low-rates", str(LOW_RATES), "--out", str(paper),

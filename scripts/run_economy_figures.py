@@ -22,9 +22,8 @@ Usage (from the repository root)
     python -X utf8 scripts/run_economy_figures.py --output results/<name> --n 100 --arm M2
     python -X utf8 scripts/run_economy_figures.py --output results/<name> --n 100 --arm M0 --crypto-share 1
 
-N = 100 is the development size. At N = 1,000 a run is a
-population run and is made only by a deliberate decision. The output
-directory must not exist (results are never overwritten).
+N = 100 is the development size. The output directory must not exist
+(results are never overwritten).
 """
 import argparse
 import hashlib
@@ -57,44 +56,45 @@ YEAR = 1200.0             # monthly rate to %/yr
 HELD_CAPITAL_LABEL = "about 1 at the capital limit by construction"
 
 
-# The pool's fixed cost is sourced (decided 5 Nov; it replaces the core model's placeholder of 5e-5 a capita a
-# month, "unknown; swept" since 26 Oct). A lending pool's operating cost is fixed in total, so a US-scale pool's is a
+# The pool's fixed cost C_fix, sourced. A lending pool's operating cost is fixed in total, so a US-scale pool's is a
 # large lending protocol's paid service providers in 2025 over the US consumer units: central, Aave, $24.15m a year
 # (insights.aave.com dashboard, TokenLogic data; TokenLogic, Aave DAO Funding Insights, 28 Feb 2026); low, Compound,
-# $13.1m (Compound Foundation Financial Update, 21 Feb 2026); high, Sky, $67m (Sky Frontier Foundation Q4 2025 update);
-# over 134.556m consumer units, the count of the survey year the model's dollar unit comes from (BLS Consumer
-# Expenditure Survey 2023, Table A; ``economy_abm.CONSUMER_UNITS`` and ``MONTH_USD``, so one year throughout, source
-# audit of 13 Nov; the 2024 survey counts 135.76m and the 2025 survey 137.99m): $0.18, $0.10 and $0.50 a
-# consumer unit a year. Per-loan servicing stays in the coupon's operating cost o. Unit check: one model person stands
-# for one consumer unit and one unit of money is a month of mean spending, $6,440 (``economy_abm.MONTH_USD``), so C_fix,
-# a person a month, is $ a year / 134.556m / 12 / 6,440: the central $0.1795 is 2.322e-6, against the old 5e-5, which
-# is 5e-5 x 6,440 x 12 = $3.86 a consumer unit a year, 21.5 times it.
+# $13.1m (Compound Foundation Financial Update, 21 Feb 2026); high, Sky, $67m (Sky Frontier Foundation Q4 2025
+# update). The divisor is 134.556m consumer units, the count of the survey year the model's dollar unit comes from
+# (BLS Consumer Expenditure Survey 2023, Table A; ``economy_abm.CONSUMER_UNITS`` and ``MONTH_USD``; the 2024 survey
+# counts 135.76m and the 2025 survey 137.99m). That gives $0.18, $0.10 and $0.50 a consumer unit a year. Per-loan
+# servicing stays in the coupon's operating cost o.
+# Units: one model person stands for one consumer unit and one unit of money is a month of mean spending, $6,440
+# (``economy_abm.MONTH_USD``), so C_fix, a person a month, is $ a year / 134.556m / 12 / 6,440. Example: the central
+# $0.1795 is 2.322e-6. The core model's own default, 5e-5, is 5e-5 x 6,440 x 12 = $3.86 a consumer unit a year, 21.5
+# times the central value, and no runner uses it (``engine_inputs``).
 FIXED_COST_USD = dict(low=13.1e6, central=24.15e6, high=67.0e6)
 FIXED_COST_UNITS = economy_abm.CONSUMER_UNITS
 FIXED_COST = {level: usd / FIXED_COST_UNITS / 12 / economy_abm.MONTH_USD for level, usd in FIXED_COST_USD.items()}
-# Multiples of the central fixed cost (decided 18 Nov 2026), for the exploratory side check of the fixed-cost
-# spiral: the same sourced bill carried by a tenth, a hundredth and a thousandth as many consumer units.
+# Multiples of the central fixed cost, for the exploratory check of the fixed-cost spiral: the same sourced bill
+# carried by a tenth, a hundredth and a thousandth as many consumer units.
 FIXED_COST_TIMES = dict(times10=10, times100=100, times1000=1000)
 FIXED_COST.update({level: FIXED_COST["central"] * times for level, times in FIXED_COST_TIMES.items()})
 
 
 def engine_inputs(fixed_cost="central", **changes):
-    """The core model's Inputs every runner's cells run at: no provider fee (decided 5 Nov: P payments run on
-    stablecoin rails, so a P payment costs its payer one transfer's gas and nothing else; the engine reads no provider
-    fee, and the core model's alpha, its own default 0.2%, is set to zero so that nothing a run stores carries one) and
-    the sourced fixed cost C_fix at ``fixed_cost`` ("central", "low" or "high", ``FIXED_COST``; decided 5 Nov), with
-    ``changes`` (r_out as ``rho_H``) on top. The population, figures and stress runners build their inputs here."""
+    """The core model's Inputs every runner's cells run at: no provider fee and the sourced fixed cost C_fix at
+    ``fixed_cost`` (a level of ``FIXED_COST``), with ``changes`` (r_out as ``rho_H``) on top.
+
+    P payments run on stablecoin rails, so a P payment costs its payer one transfer's gas and nothing else. The engine
+    reads no provider fee, and the core model's alpha (its default is 0.2%) is set to zero so that nothing a run
+    stores carries one. The population, figures and stress runners build their inputs here."""
     return replace(Inputs(), **dict(dict(alpha=0.0, C_fix=FIXED_COST[fixed_cost]), **changes))
 
 
-# The core model's Inputs fields the engine reads (the 3 Nov review). A run stores these and no other field. The core
-# model's other defaults, among them its 3.7% inflation, 5% penalty, no card rewards and monthly shocks, are not what
-# the engine uses: its inflation and shocks are the Economy's, its failure fee and rewards its own constants. A test
-# checks the list against the engine's source.
-# Gas per payment (5 Nov) is the engine's own sourced constant, so gas_per_unit is no longer read; M0's collateral is
-# a draw of holders with full cover (``Economy.crypto_share``, the 5 Nov review), so collateral_cover is no longer read;
-# the leaving rule reads the core model's logistic noise (4 Nov); P payments run on stablecoin rails (5 Nov), so the
-# provider fee alpha is no longer read.
+# The core model's Inputs fields the engine reads. A run stores these and no other field. The core model's other
+# defaults, among them its 3.7% inflation, 5% penalty, no card rewards and monthly shocks, are not what the engine
+# uses: its inflation and shocks are the Economy's, its failure fee and rewards its own constants. A test checks the
+# list against the engine's source.
+# Three fields are absent for a reason: gas_per_unit, since gas per payment is the engine's own sourced constant;
+# collateral_cover, since M0's collateral is a draw of holders with full cover (``Economy.crypto_share``); and the
+# provider fee alpha, since P payments run on stablecoin rails. The leaving rule reads the core model's logistic
+# noise.
 ENGINE_INPUTS = ("rho_H", "r_ext", "f_card", "card_share", "housing", "buffer_yield", "o", "C_fix", "xi0",
                  "xi1", "upsilon", "noise", "supply_premium", "borrow_margin")
 # Engine constants that name things rather than set a number a run uses: payment routes, obligation and loan kinds,
@@ -109,14 +109,14 @@ def provenance(script):
     git commit.
 
     Each file is hashed with CRLF read as LF, as git stores it (``.gitattributes``: eol=lf), so a hash is the hash of
-    the file as committed (``git show <commit>:<path>``) whatever line endings the working copy has (the 3 Nov
-    review). comet.py is hashed too: M0's rates come from it and its pin. The pin's own files are named by the hash of
-    the manifest load_pin checks them against, taken on raw bytes (data/raw is stored as binary), and a change to them
-    counts as an uncommitted change.
+    the file as committed (``git show <commit>:<path>``) whatever line endings the working copy has. comet.py is
+    hashed too: M0's rates come from it and its pin. The pin's own files are named by the hash of the manifest
+    load_pin checks them against, taken on raw bytes (data/raw is stored as binary), and a change to them counts as an
+    uncommitted change.
     """
-    # The engine is a package (16 Nov 2026): every one of its modules is hashed, with the module that re-exports them.
+    # The engine is a package: every one of its modules is hashed, with the module that re-exports them.
     engine = sorted(path.relative_to(ROOT).as_posix() for path in (ROOT / "src" / "cpm_abm" / "engine").glob("*.py"))
-    # The population runner is a package too (16 Nov 2026): every module of the experiment is hashed beside it.
+    # The experiment is a package too: every one of its modules is hashed beside the script that runs it.
     experiment = sorted(path.relative_to(ROOT).as_posix()
                         for path in (ROOT / "src" / "cpm_abm" / "experiment").glob("*.py"))
     files = ("src/cpm_abm/economy_abm.py", *engine, "src/cpm_abm/core_model.py", "src/cpm_abm/comet.py",
@@ -144,14 +144,13 @@ def provenance(script):
 
 
 def engine_record(inputs):
-    """The Inputs fields the engine reads and its module-level constants (the 3 Nov review): the fields at the values
-    given, in the units Inputs declares, and the engine's own sourced and declared constants ($27 a failed payment,
-    0.75% card rewards, the conversion fee, the real cost rates and the rest), each as defined in economy_abm.py, in
-    the units its source comment gives (the record says so beside them). Numbers written inside the engine's functions
-    (the pay frequencies, the business split, the statement day, the 0.9 owners' factor of the as-built coverage
-    test, which the own margin replaced on 3 Nov) and the Comet pin's values
-    are not stored here: the source hash and the git commit fix them (provenance names the pin's block). The Economy
-    is stored beside it.
+    """The Inputs fields the engine reads and its module-level constants: the fields at the values given, in the units
+    Inputs declares, and the engine's own sourced and declared constants ($27 a failed payment, 0.75% card rewards,
+    the conversion fee, the real cost rates and the rest), each as defined in economy_abm.py, in the units its source
+    comment gives (the record says so beside them). Numbers written inside the engine's functions (the pay
+    frequencies, the business split, the statement day, the 0.9 owners' factor of the self-financing coverage test)
+    and the Comet pin's values are not stored here: the source hash and the git commit fix them (provenance names the
+    pin's block). The Economy is stored beside it.
     """
     number = lambda value: isinstance(value, (int, float, np.number, np.ndarray)) and not isinstance(value, bool)
     constants = {name: np.asarray(value).tolist() for name, value in vars(economy_abm).items()
@@ -181,10 +180,77 @@ def months_axis(run):
 # --------------------------------------------------------------------------------------------------------------------
 # The settled evaluation: windows, persistence tests, falsifiers and verdict
 # --------------------------------------------------------------------------------------------------------------------
+# The length of each evaluation window of a long run, in years: years 6 to 10 and 21 to 25 in the second run.
+WINDOW_YEARS = 5
+
+
+def settled(w):
+    """Whether the Economy ``w`` is a long run, whose windows are settled years: one with at least WINDOW_YEARS whole
+    years after launch before its stress year starts. The first run, with the stress year at months 25 to 36, is not;
+    nor is any run whose stress year starts earlier."""
+    return w.distress_start // 12 >= WINDOW_YEARS
+
+
+def run_windows(w):
+    """The evaluation windows of a run on the Economy ``w``, as slices of its monthly series (burn-in included).
+
+    A run that is not ``settled``, as the first run is not, has W1, months 13 to 36 after launch, and W2, months 37
+    to 60, whatever its length. A long run has the last WINDOW_YEARS whole years after launch before the stress year
+    starts, and the last WINDOW_YEARS whole years of the run. Example: with the stress year at months 121 to 132 and
+    300 months after launch, years 6 to 10 (months 61 to 120) and years 21 to 25 (months 241 to 300). A long run whose
+    last whole years overlap its stress year has no settled window after it and is refused."""
+    start = w.burn_in
+    if not settled(w):
+        return slice(start + 12, start + 36), slice(start + 36, start + 60)
+    length, before, last = 12 * WINDOW_YEARS, 12 * (w.distress_start // 12), 12 * (w.months // 12)
+    if last - length < w.distress_start + w.distress_length:
+        raise ValueError(f"A run of {w.months} months with its stress year from month {w.distress_start + 1} has no "
+                         f"{WINDOW_YEARS} whole years after the stress year to read")
+    return slice(start + before - length, start + before), slice(start + last - length, start + last)
+
+
 def windows(run):
-    """Evaluation windows as slices of the monthly series: W1 = months 13-36 and W2 = months 37-60 after launch."""
-    start = run["economy"].burn_in
-    return slice(start + 12, start + 36), slice(start + 36, start + 60)
+    """The run's own evaluation windows as slices of its monthly series (``run_windows``): W1 = months 13-36 and W2 =
+    months 37-60 after launch in the first run, and years 6 to 10 and years 21 to 25 in the second."""
+    return run_windows(run["economy"])
+
+
+def window_names(w):
+    """The names a run's records give its two windows, in order: "W1" and "W2" in the first run; in a long run the
+    years after launch each covers, such as "years_6_to_10" and "years_21_to_25"."""
+    if not settled(w):
+        return "W1", "W2"
+    return tuple(f"years_{(span.start - w.burn_in) // 12 + 1}_to_{(span.stop - w.burn_in) // 12}"
+                 for span in run_windows(w))
+
+
+def steady_names(w):
+    """The windows in which the claim's steady-state readings are read: W2 alone in the first run; in a long run both
+    windows, a reading holding only if it holds in both."""
+    return window_names(w) if settled(w) else ("W2",)
+
+
+def steady_windows(run):
+    """The run's steady-state windows (``steady_names``) as (name, slice) pairs: ("W2", W2) in the first run, and
+    both windows by their years in a long run."""
+    names = steady_names(run["economy"])
+    return tuple(zip(names, windows(run)[-len(names):]))
+
+
+def all_hold(values):
+    """A reading read in several windows holds only if it holds in each: False if any is False, otherwise None (not
+    evaluated) if any is None, and True if all are True."""
+    values = list(values)
+    return False if any(value is False for value in values) else None if any(value is None for value in values) \
+        else True
+
+
+def any_fires(values):
+    """A falsifier read in several windows fires if it fires in any: True if any is True, otherwise None if any is
+    None, and False if none fires."""
+    values = list(values)
+    return True if any(value is True for value in values) else None if any(value is None for value in values) \
+        else False
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -353,15 +419,15 @@ def issuer_clause(limit):
 
 
 def issuer_stay(run):
-    """The issuer's stay test (decided 30 Oct), read from the run for falsifier X6 and the report.
+    """The issuer's stay test, read from the run for falsifier X6 and the report.
 
     leaves: whether its 12-month average wallet was negative at any reading (None without a reading); first: the month
     after launch the record starts; expense: the most annual expense it could bear, 12 times its lowest reading, in $
     per person; share: that expense over the P outstanding in the same 12 months; limit: M2 at zero real rates.
-    Since the wallet carries the issuer's own cost (decided 3 Nov: 0.24% of P; it bears no rail since 5 Nov, as
-    it is not a payment operator), expense is what it could bear beyond it: costs gives that cost over the same 12
-    months and most_cost their sum, the most annual cost it could bear in all, each in $ per person and (cost_share,
-    most_cost_share) over the same P; None in a run that does not store the expenses line. As built the costs are zero.
+    The wallet carries the issuer's own cost (0.24% of P; it bears no rail, as it is not a payment operator), so
+    expense is what it could bear beyond it: costs gives that cost over the same 12 months and most_cost their sum,
+    the most annual cost it could bear in all, each in $ per person and (cost_share, most_cost_share) over the same P;
+    None in a run that does not store the expenses line. In the default the costs are zero.
     """
     a, launch = run["series"], run["economy"].burn_in
     stay = a.get("issuer_stay")
@@ -383,23 +449,22 @@ def issuer_stay(run):
                 most_cost=usd(most), most_cost_share=over(most), limit=limit)
 
 
-def own_margin(run):
-    """The pool's own margin by window (decided 3 Nov: "The pool pays its own way"), $ a consumer unit a year (one
-    person stands for one consumer unit), which persistence test 4 and falsifier 3 read.
+def own_margin(run, spans=None):
+    """The pool's own margin by window ("The pool pays its own way"), $ a consumer unit a year (one person stands
+    for one consumer unit), which persistence test 4 and falsifier 3 read.
 
-    It is read over the window's months in which households hold pool capital after dealing (decided 3 Nov; the
-    issuer, a pure custodian since 5 Nov, holds none), since a month without pool capital has no pool to pay its way; None for a window without such a month, so a test that cannot be evaluated
-    is never True. Beside it, by window and reported only: the number of those months (held_months), which the yearly
-    figures average over; and its parts on the same months. The margin is no longer re-counted at other payment sizes:
-    no rail reaches it since P payments run on stablecoin rails (decided 5 Nov). The joint issuer-and-pool test
-    is read on the same months as the margin, so a month without households' capital, whose consolidated result is the
-    issuer's alone, never counts there either and a window without one gives None:
-    a reading of the rule (4 Nov). The old self-financing ratio, collected income over owners'
-    compensation K and the pool's costs over every month of the window, is kept beside them for one map and labelled
-    HELD_CAPITAL_LABEL. Parts and the joint test are None in a run that does not store them.
+    It is read over the window's months in which households hold pool capital after dealing (the issuer is a pure
+    custodian and holds none), since a month without pool capital has no pool to pay its way; a window without such
+    a month gives None, so a test that cannot be evaluated is never True. Reported beside it, by window: the number
+    of those months (held_months), which the yearly figures average over, and its parts on the same months. The
+    margin is not re-counted at other payment sizes, as no rail reaches it: P payments run on stablecoin rails. The
+    joint issuer-and-pool test is read on the same months, so a month without households' capital, whose
+    consolidated result is the issuer's alone, never counts there either. The self-financing ratio, collected
+    income over owners' compensation K and the pool's costs over every month of the window, is kept beside them and
+    labelled HELD_CAPITAL_LABEL. Parts and the joint test are None in a run that does not store them.
     """
     a = run["series"]
-    spans = windows(run)
+    spans = windows(run) if spans is None else spans   # the run's own windows, or the two ``persistence`` reads
     held = lambda span: np.flatnonzero(a["owners_capital"][span] > EPS) + span.start
     yearly = lambda values, months: 12 * float(np.mean(values[months])) * DOLLARS if months.size else None
     by_window = lambda values, months: tuple(yearly(values, months(span)) for span in spans)
@@ -410,13 +475,13 @@ def own_margin(run):
     owed = lambda span: float(np.nansum(a["K"][span] + a["pool_costs"][span]))
     ratio = tuple(float(np.nansum(a["interest_collected"][span]) / owed(span)) if owed(span) > 0 else float("nan")
                   for span in spans)
-    # The months each window's yearly figures average over (the 4 Nov review): a window with fewer is annualised from
-    # them, so the count is stored beside it.
+    # The months each window's yearly figures average over: a window with fewer is annualised from them, so the
+    # count is stored beside it.
     months = tuple(int(held(span).size) for span in spans)
     return dict(W1=margin[0], W2=margin[1], held_months=months, parts=parts, joint=joint, held_capital_ratio=ratio)
 
 
-# The use and collapse tests' tolerances (decided 3 Nov): 0.05 of participation on use; collapse below half the
+# The use and collapse tests' tolerances: 0.05 of participation on use; collapse below half the
 # launch share or half the first window's pool capital (the half is declared).
 USE_TOLERANCE, COLLAPSE_SHARE = 0.05, 0.5
 
@@ -424,56 +489,108 @@ USE_TOLERANCE, COLLAPSE_SHARE = 0.05, 0.5
 def persistence(m1, a0):
     """The five persistence tests, the six falsifiers and the verdict on W1 and W2 (report keys P1-P5, X1-X6).
 
-    P4, the pool pays its own way, and X3, subsidy dependence, read the pool's own margin (decided 3 Nov; the runs'
-    ``Economy.self_financing`` "margin", ``own_margin``): P4 holds when the second window's margin is at least zero, and
-    X3 fires when both windows' margins are below zero, the as-built structure on the new yardstick, since dropping X3
-    would favour CPM: a reading of the rule (4 Nov). Each is None for a window without a month in
+    P4, the pool pays its own way, and X3, subsidy dependence, read the pool's own margin (``Economy.self_financing``
+    "margin", ``own_margin``): P4 holds when the second window's margin is at least zero, and X3 fires when both
+    windows' margins are below zero; dropping X3 would favour CPM. Each is None for a window without a month in
     which households hold pool capital. The detail gives the margin, the number of household-held months it averages
-    over, its parts, the joint issuer-and-pool test and the held-capital
-    ratio, labelled "about 1 at the capital limit by construction", by window. Under "coverage", as built, both read the
-    self-financing coverage: collected income over owners' compensation at 0.9 of r_out, the pool's costs and
-    write-offs, at least 0.95 (X3: below it in both).
+    over, its parts, the joint issuer-and-pool test and the held-capital ratio, labelled "about 1 at the capital
+    limit by construction", by window. Under "coverage", both read the self-financing coverage: collected income
+    over owners' compensation at 0.9 of r_out, the pool's costs and write-offs, at least 0.95 (X3: below it in
+    both).
 
-    X6, the issuer would leave (decided 30 Oct), fires when the issuer's 12-month average wallet is negative at
+    X6, the issuer would leave, fires when the issuer's 12-month average wallet is negative at
     any reading; the verdict then names the issuer, and in M2 at zero real rates the declared limit. The detail gives
     the record's first month, the most annual expense the issuer could bear beyond its own costs (its headroom), those
     costs and the most cost it could bear in all (``issuer_stay``). X5, unsafe, fires on its registered
-    backing clause (6 Oct: reserves below P owed at any month since launch, from the reserve account, decided
-    30 Oct) or on its write-off clause; the detail gives the lowest backing and the owners' backing top-ups (the
+    backing clause (reserves below P owed at any month since launch, from the reserve account) or on its
+    write-off clause; the detail gives the lowest backing and the owners' backing top-ups (the
     restoration record). A run without a reserve account leaves the backing clause untested.
 
     The starting level is the realised participation at launch (a0 is the control it is drawn from).
     Undefined quantities stay undefined: a test that cannot be evaluated is None, never True, and a
     configuration is Persistent only if every persistence test is True. The exit-payment test follows each exit request
-    from its start month (95% of the value of requests started in W2 paid within two months). Every W2
-    request counts. A request started in W2's last two months whose deadline lies beyond the run and
-    is not yet paid has no follow-up: the clause is True only if it holds even were none of those paid, False
-    if it fails even were all of them paid, and undefined (None) otherwise. With no W2 request nothing went
-    unpaid, so the clause holds.
+    from its start month (95% of the value of requests started in W2 paid within two months). In the first run, W2 ends
+    with the run and the requests of its last two months, whose deadlines lie beyond the run, are left out. In a long
+    run each request is judged against the run's real end: the pool pays a request two months
+    after it is filed (``EXIT_NOTICE_MONTHS``), so one filed in the run's last two months cannot have been paid when
+    the run ends and cannot be judged; those are left out of both sums, their value is stored
+    (exit_requests_without_follow_up_W2), and the test reads on the rest. A window that ends before the run, such as
+    years 6 to 10, leaves none out. With no request judged nothing went unpaid, so the clause holds.
+
+    In a long run every test
+ is read twice, with the second window in turn each of the
+    run's two settled windows, years 6 to 10 and years 21 to 25 (``run_windows``), and the first window always years
+    6 to 10: so a reading of one window (lending recurs in it, exits are paid in it, the pool pays its way in it) is
+    read in each, and a comparison of two (use, owners' capital and losses against the first window) reads the last
+    years against the settled years before the stress, and the first window against itself. A test holds only if it
+    holds in both readings and a falsifier fires if it fires in either (``all_hold``, ``any_fires``); each reading's
+    tests and detail are stored under its window's name (``window_names``) in ``by_window``, the detail above being the
+    second reading's, whose pairs are the two windows'.
     """
-    a = m1["series"]
     w1, w2 = windows(m1)
+    if not settled(m1["economy"]):
+        return _persistence(m1, w1, w2)
+    names = window_names(m1["economy"])
+    readings = {name: _persistence(m1, w1, span) for name, span in zip(names, (w1, w2))}
+    tests = lambda part, combine: {key: combine(reading[part][key] for reading in readings.values())
+                                   for key in readings[names[-1]][part]}
+    p, x = tests("P", all_hold), tests("X", any_fires)
+    last = readings[names[-1]]["detail"]
+    registered = {key: (all_hold if key.startswith("P") else any_fires)(
+        reading["detail"]["registered_tests"][key] for reading in readings.values()) for key in last["registered_tests"]}
+    detail = dict(last, registered_tests=registered,
+                  by_window={name: dict(P=reading["P"], X=reading["X"], verdict=reading["verdict"],
+                                        detail=reading["detail"]) for name, reading in readings.items()})
+    return dict(P=p, X=x, verdict=_verdict(p, x, issuer_stay(m1)), detail=detail)
+
+
+def _verdict(p, x, issuer):
+    """The verdict from the persistence tests ``p`` and falsifiers ``x``, naming the issuer when it would leave."""
+    falsified = any(value is True for value in x.values())
+    persistent = all(value is True for value in p.values())
+    verdict = ("Against CPM" if falsified else
+               "Persistent, no falsifier; 'better than M0' (X4) not tested" if persistent else "Inconclusive")
+    return verdict + (issuer_clause(issuer["limit"]) if issuer["leaves"] else "")
+
+
+def _persistence(m1, w1, w2):
+    """``persistence`` read on the first window ``w1`` and the second ``w2``."""
+    a = m1["series"]
     a0 = float(a["A"][m1["economy"].burn_in])
     mean = lambda key, span: float(np.nanmean(a[key][span])) if np.isfinite(a[key][span]).any() else float("nan")
     per_participant = lambda span: float(np.nansum(a["pool_pt"][span]) / max(np.nansum(a["A"][span]), 1e-12))
     owed = lambda span: float(np.nansum(a["K"][span] + a["pool_costs"][span]))
     coverage = lambda span: float(np.nansum(a["interest_collected"][span]) / owed(span)) if owed(span) > 0 else float("nan")
     loans = a["new_pool_loans"][w2]
-    # Credit death reads cash to lend, not gross pool cash (the 3 Nov review): a month counts only while the pool
-    # serves and holds cash not owed to its own creditors. Decided 4 Nov: cash to lend is read
-    # at the month's close, and any positive amount counts (the minimum meaningful pool stays open).
+    # Credit death reads cash to lend, not gross pool cash: a month counts only while the pool serves and holds cash
+    # not owed to its own creditors. Cash to lend is read at the month's close, and any positive amount counts (the
+    # minimum meaningful pool stays open).
     lendable = a["cash_to_lend"][w2] > 0
     dry = np.convolve(((loans == 0) & lendable).astype(float), np.ones(6), mode="valid") if loans.size >= 6 else np.zeros(1)
     exits = m1.get("exits")
-    censored = slice(max(w2.start, w2.stop - 2), w2.stop)   # deadlines beyond the run's last month
-    # Exits whose deadline falls after the run cannot be judged (5 Nov): timeliness is read on exits started before
-    # the censored months, so gradual exits near the end are not counted late.
-    judged = slice(w2.start, censored.start)
-    started = float(exits["started"][judged].sum()) if exits is not None else float("nan")
-    in_time = float(exits["in_time"][judged].sum()) if exits is not None else float("nan")
-    pending = 0.0
+    economy = m1["economy"]
+    long_run = settled(economy)
+    if long_run:
+        # In a long run a request is left out only when it was filed in the run's last two months, never because its
+        # deadline falls after a window's end, since the run goes on to observe it. The pool pays a request two months
+        # after it is filed, so one filed in the last two months cannot have been paid by the run's end: it is left
+        # out of both sums and its value is kept as a detail. Example: 300 months after launch, a request never paid,
+        # filed in month 119 (inside years 6 to 10, paid in month 121 at the latest), counts and is late; filed in
+        # month 299 it is left out.
+        end = economy.burn_in + economy.months
+        censored = slice(min(max(w2.start, end - 2), w2.stop), w2.stop)
+        counted = slice(w2.start, censored.start)
+    else:
+        censored = slice(max(w2.start, w2.stop - 2), w2.stop)   # deadlines beyond the run's last month
+        # Exits whose deadline falls after the run cannot be judged: timeliness is read on exits started before the
+        # censored months, so gradual exits near the end are not counted late.
+        counted = slice(w2.start, censored.start)
+    started = float(exits["started"][counted].sum()) if exits is not None else float("nan")
+    in_time = float(exits["in_time"][counted].sum()) if exits is not None else float("nan")
+    # The value left out in a long run (``counted``), stored as a detail; it enters neither sum.
+    left_out = float(exits["started"][censored].sum()) if long_run and exits is not None else 0.0
     paid = in_time / started if exits is not None and started > 0 else None
-    best = (in_time + pending) / started if exits is not None and started > 0 else None
+    best = paid
     timely = (None if exits is None else True if started <= 1e-12 else True if paid >= 0.95
               else False if best < 0.95 else None)
     defined = lambda key: np.isfinite(mean(key, w1)) and np.isfinite(mean(key, w2))
@@ -486,12 +603,11 @@ def persistence(m1, a0):
     short = None if lowest is None else bool(lowest < 1 - BACKING_TOLERANCE)
     written = worse("write_off_rate", 0.05)
     unsafe = written if short is None else (True if short or written is True else (False if written is False else None))
-    margin = own_margin(m1) if m1["economy"].self_financing == "margin" else None
+    margin = own_margin(m1, (w1, w2)) if m1["economy"].self_financing == "margin" else None
     if margin is not None:
-        # The pool's own margin (decided 3 Nov): a seed passes when its second-window margin is at least zero.
-        # The pool pays its own way when it runs without outside money (decided 5 Nov): the issuer is a pure
-        # custodian with no shares or fund, so no outside money can enter, and owners absorb the break-even margin
-        # in NAV; the test holds whenever households held pool capital in the window. The margin is reported beside.
+        # The pool pays its own way when it runs without outside money: the issuer is a pure custodian with no
+        # shares or fund, so no outside money can enter, and owners absorb the break-even margin in NAV; the test
+        # holds whenever households held pool capital in the window. The margin is reported beside.
         pays = None if margin["W2"] is None else True
         dependent = (None if margin["W1"] is None or margin["W2"] is None
                      else False)
@@ -499,12 +615,12 @@ def persistence(m1, a0):
         pays = bool(coverage(w2) >= 0.95) if np.isfinite(coverage(w2)) else None
         dependent = (bool(coverage(w1) < 0.95 and coverage(w2) < 0.95)
                      if np.isfinite(coverage(w1)) and np.isfinite(coverage(w2)) else None)
-    # Use and collapse as decided on 3 Nov, with the tests as first registered stored beside (``detail``):
-    # use holds when second-window participation is at least the first window's less 0.05 and at least the launch
+    # Use holds when second-window participation is at least the first window's less 0.05 and at least the launch
     # share less 0.05; collapse fires on a wind-down (a month in either window in which the pool holds capital and
     # has stopped serving), on second-window participation below half the launch share, or on second-window pool
-    # capital below half the first window's. The registered tests compared the second window with the launch share
-    # with no tolerance. Reading the wind-down over both windows is a reading (12 Nov), declared.
+    # capital below half the first window's. The same tests without the tolerance, comparing the second window with
+    # the launch share, are stored beside in ``detail`` (``registered_tests``). The wind-down is read over both
+    # windows.
     both_windows = slice(w1.start, w2.stop)
     wound_down = bool(np.any((np.nan_to_num(a["N"][both_windows]) > 1e-12) & (a["service"][both_windows] <= 0)))
     capital_halved = bool(defined("N") and mean("N", w1) > 0 and mean("N", w2) < 0.5 * mean("N", w1))
@@ -519,17 +635,13 @@ def persistence(m1, a0):
     x = dict(X1=bool(wound_down or mean("A", w2) < COLLAPSE_SHARE * a0 or capital_halved), X2=bool(dry.max() >= 6),
              X3=dependent, X4=None, X5=unsafe,
              X6=issuer["leaves"])
-    falsified = any(value is True for value in x.values())
-    persistent = all(value is True for value in p.values())
-    verdict = ("Against CPM" if falsified else
-               "Persistent, no falsifier; 'better than M0' (X4) not tested" if persistent else "Inconclusive")
-    verdict += issuer_clause(issuer["limit"]) if issuer["leaves"] else ""
+    verdict = _verdict(p, x, issuer)
     detail = dict(A_launch=a0, A=(mean("A", w1), mean("A", w2)), N=(mean("N", w1), mean("N", w2)),
                   registered_tests=registered, wound_down=wound_down, capital_halved=capital_halved,
                   pool_operating_share_W2=float(np.mean(a["service"][w2] > 0)),
                   pool_principal_time_per_participant=(per_participant(w1), per_participant(w2)),
                   months_with_new_pool_loans_W2=float(np.mean(loans > 0)), exit_paid_within_two_months_W2=paid,
-                  exit_requests_started_W2=started, exit_requests_without_follow_up_W2=pending,
+                  exit_requests_started_W2=started, exit_requests_without_follow_up_W2=left_out,
                   **(dict(self_financing_coverage=(coverage(w1), coverage(w2))) if margin is None else {}),
                   write_off_rate=(mean("write_off_rate", w1), mean("write_off_rate", w2)),
                   arrears_share=(mean("arrears_share", w1), mean("arrears_share", w2)),
@@ -541,7 +653,7 @@ def persistence(m1, a0):
                   backing_lowest=lowest, backing_short=short,
                   backing_topup_usd=float(np.nansum(a["backing_topup"]) * DOLLARS) if "backing_topup" in a else None)
     if margin is not None:
-        # The yardsticks (decided 3 Nov), by window, $ a consumer unit a year, beside the old ratio kept for a map.
+        # The yardsticks by window, $ a consumer unit a year, beside the self-financing ratio.
         detail.update(own_margin_usd_a_year=(margin["W1"], margin["W2"]),
                       own_margin_held_months=margin["held_months"],
                       own_margin_parts_usd_a_year=margin["parts"],
@@ -552,14 +664,13 @@ def persistence(m1, a0):
 
 def channels(m1, s0, gain):
     """Per-person gain split into the card-fee channel (card fees saved less card rewards forgone), the conversion
-    channel and the rest; both fees leave the economy (the boundary rule, 31 Oct)."""
+    channel and the rest; both fees leave the economy (the boundary rule)."""
     a, b = m1["channels"], s0["channels"]
     merchant = (b["merchant_paid"] - a["merchant_paid"]) - (b["rewards"] - a["rewards"])
     conversion = -(a["conversion_paid"] - b["conversion_paid"])
     stats = lambda values: dict(mean_usd=float(values.mean() * DOLLARS), median_usd=float(np.median(values) * DOLLARS))
     return dict(merchant_fee_channel=stats(merchant), conversion_channel=stats(conversion),
-                # Demurrage, withheld from wallet P's yield, goes to the pool, with no rebates or refunds (decided
-                # 4 and 5 Nov).
+                # Demurrage, withheld from wallet P's yield, goes to the pool, with no rebates or refunds.
                 gas_paid=stats(-a["gas_paid"]), charges_paid=stats(-a["charges"]),
                 gain_without_merchant_channel=dict(**stats(gain - merchant),
                                                    share_better_off=float((gain - merchant >= 0).mean())))
@@ -587,19 +698,20 @@ def main():
     parser.add_argument("--arm", default="M1", choices=("M0", "U", "M1", "M2"))
     parser.add_argument("--crypto-share", type=float, default=CRYPTO_SHARE,
                         help="M0's share of people holding crypto collateral, at full cover; default 0: collateral "
-                             "lending by Compound III is not run or reported (decided 12 Nov: real DeFi lends only "
+                             "lending by Compound III is not run or reported (real DeFi lends only "
                              "against collateral worth more than the loan, which is not everyday credit); the option "
                              "remains only so the existing unit tests of that code path can run")
     parser.add_argument("--leave-noise", type=float, default=1.0, choices=(0.5, 1.0, 2.0),
-                        help="the leaving rule's logistic noise as a multiple of its decided scale (4 Nov)")
+                        help="the leaving rule's logistic noise as a multiple of its registered scale")
     parser.add_argument("--r_out", type=float, default=None, help="outside safe rate a year (default: Inputs, 4.44%%)")
     args = parser.parse_args()
     output = (ROOT / args.output).resolve()
     if not output.is_relative_to(ROOT):
         raise ValueError("Output must stay in this workspace")
     output.mkdir(parents=True, exist_ok=False)
-    # No provider fee (decided 5 Nov, ``engine_inputs``) and M0's crypto collateral share, none by default
-    # (decided 12 Nov: collateral lending is not run), drawn on its own stream, so the other arms are unchanged.
+    # No provider fee (``engine_inputs``) and M0's crypto collateral share, none by default (collateral lending is
+    # not run), drawn on its own stream, so the other arms are unchanged.
+
     inputs = engine_inputs()
     economy = Economy(n=args.n, months=args.months, crypto_share=args.crypto_share, leave_noise=args.leave_noise)
     if args.r_out is not None:
@@ -617,7 +729,8 @@ def main():
     receipts = m1["receipts"][economy.burn_in:]
     income_cv = receipts.std(axis=0) / np.maximum(receipts.mean(axis=0), 1e-12)
     residual = lambda run: float(np.abs(run["series"]["wealth_change"] - run["series"]["external"]
-                                        - run["series"]["valuation"] - run["series"]["inflation"]).max())
+                                        - run["series"]["valuation"] - run["series"]["inflation"]
+                                        - run["series"]["returned"]).max())
     summary = dict(
         model="src/cpm_abm/economy_abm.py (rules in docs/DECISIONS.md)", arm=args.arm, crypto_share=args.crypto_share,
         provenance=provenance("scripts/run_economy_figures.py"), economy=asdict(economy),

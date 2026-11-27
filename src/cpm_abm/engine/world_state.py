@@ -3,10 +3,14 @@
 import numpy as np
 
 from cpm_abm.engine.constants import (BIG, BOOK_FIELDS, CASH_ADVANCE_APR, CASH_ADVANCE_FEE_FLOOR, CASH_ADVANCE_FEE_RATE,
-                                      CONVERSION_FEE, CREDIT_RECORDS, DAYS, FAILURE_COUNTS, GAS_PER_P_PAYMENT,
+                                      CONVERSION_FEE, CREDIT_RECORDS, DAYS, DFA_EQUITIES, DFA_GROUP_UPPER,
+                                      FAILURE_COUNTS, GAS_PER_P_PAYMENT,
                                       GAS_PER_PAYMENT, ISSUER_BOOKS, LOAN_LOSS_SERIES, LOSS_CARRIED, MARGIN_PARTS,
-                                      MEASURE_SERIES, TERM, USDC_CONVERSION, VELOCITY_RECORDS)
-from cpm_abm.engine.population import build_population, card_tier, income_bracket, layoff_weight, spell_law, spell_stock
+                                      MEASURE_SERIES, LOAN_YEARS, SCEPTIC_STREAM, STATEMENT_CLOSE_DAY,
+                                      STATEMENT_DATE_STREAM, STATEMENT_DUE_LAG, TERM, USDC_CONVERSION,
+                                      VELOCITY_RECORDS)
+from cpm_abm.engine.population import (build_population, card_tier, distress_calendar, income_bracket, layoff_weight,
+                                       rank_share, spell_law, spell_stock)
 from cpm_abm.engine.rates import issuer_share, m0_rates, money_market_share, outside_prices, outside_return
 from cpm_abm.engine.ledger import _empty, _overdue_of, Coinage
 from cpm_abm.engine.measures import CHAIN_SERIES
@@ -23,43 +27,41 @@ class StateMixin:
         inputs:  ``core_model.Inputs`` (contract and price parameters, shared with the core model)
         a0:      initial participation share at launch (the experiment's control a0)
         economy: ``Economy`` (population, calendar and switches)
-        arm:     "S0", "M0", "M1", "M2" or "U" (M1 with no demurrage, decided 4 Nov)
+        arm:     "S0", "M0", "M1", "M2" or "U" (M1 with no demurrage)
         """
         # --- the population and its fixed characteristics -------------------------------------------------------
         self.inputs, self.a0, self.economy, self.arm = inputs, a0, economy, arm
         self.n = n = economy.n
         self.pop = build_population(economy)
-        # The robustness switches' fixed network, thresholds and launch places (``network``), built from the seed and the
-        # population alone, so every arm shares them; with every switch off it holds nothing and draws nothing.
+        # The robustness switches' fixed network, thresholds and launch places (``network``), built from the seed and
+        # the population alone, so every arm shares them; with every switch off it holds nothing and draws nothing.
         self.network = build_network(economy, self.pop["spending"])
-        # Who holds an open card line now: the population's holders, until a charge-off closes a line (decided
-        # 14 Nov 2026). A copy, so the population's own flag, which fixes each person's class, never changes.
+        # Who holds an open card line now: the population's holders, until a charge-off closes a line. A copy, so the
+        # population's own flag, which fixes each person's class, never changes.
         self.holder, self.card_apr = self.pop["holder"].copy(), self.pop["card_apr"] / 12
         self.spending = self.pop["spending"].copy()
         if economy.card_base_all:
-            # Card-eligible share of service spending (decided 3 Nov): every non-housing bundle, 28% of spending.
-            # The same uniform draw decides, so every bundle eligible as built stays eligible. Housing bundles are not
-            # otherwise told apart, so a bundle is non-housing with probability 1 - housing on that draw:
-            # a reading of the rule (4 Nov).
+            # Card-eligible share of service spending: every non-housing bundle, 28% of spending. The same uniform draw
+            # decides, so every bundle eligible under the legacy rules stays eligible. Housing bundles are not otherwise
+            # told apart, so a bundle is non-housing with probability 1 - housing on that draw.
             self.card_share = 1 - inputs.housing
         else:
-            # As built: non-housing spending times the core's card share (18.2% of spending).
+            # Legacy rule: non-housing spending times the core's card share (18.2% of spending).
             self.card_share = (1 - inputs.housing) * inputs.card_share
-        # Outside prices (decided 3 Nov), the same in every arm: the savings deposit rate and, sealed in each loan
-        # when it is made, card APRs and new term loans' rates follow r_out (``outside_prices``). The checking yield
-        # (buffer_yield) and r_ext stay fixed, the 0.08 and 0.06% being the savings deposit series:
-        # a reading of the rule (4 Nov). term_shift (a year, by product) is read when term requests
-        # are made, so a loan's rate is fixed in the book once made; None with fixed prices (as built).
+        # Outside prices, the same in every arm: the savings deposit rate and, sealed in each loan when it is made, card
+        # APRs and new term loans' rates follow r_out (``outside_prices``). The checking yield (buffer_yield) and r_ext
+        # stay fixed, the 0.08 and 0.06% being the savings deposit series. term_shift (a year, by product) is read when
+        # term requests are made, so a loan's rate is fixed in the book once made; None with fixed prices.
         self.deposit_rate, card_shift, self.term_shift = outside_prices(inputs.rho_H, economy)
         if economy.linked_rates:
             self.card_apr = (self.pop["card_apr"] + card_shift) / 12
-        # Card limits (decided 14 Nov 2026), the same in every arm: each holder's line, closed (zero) by a
-        # charge-off and cut only under the side check, its fixed starting balance and its score tier; the cash-advance
-        # APR a month, which moves with r_out as the purchase APRs do, and the advance's fee, the greater of the floor
-        # and the rate per unit. Per card the minimum's terms since the last statement: the interest charged and the
-        # fees charged, the payments made on the card's balances, which count towards the next minimum, and the
-        # minimum left unpaid at it (past due); the day the oldest unpaid minimum fell due (BIG while current) and the
-        # month of the last late fee, which a repeat within six cycles reads.
+        # Card limits, the same in every arm: each holder's line, closed (zero) by a charge-off and cut only with the
+        # distress line cut on, its fixed starting balance and its score tier; the cash-advance APR a month, which moves
+        # with r_out as the purchase APRs do, and the advance's fee, the greater of the floor and the rate per unit. Per
+        # card the minimum's terms since the last statement: the interest charged and the fees charged, the payments
+        # made on the card's balances, which count towards the next minimum, and the minimum left unpaid at it (past
+        # due); the day the oldest unpaid minimum fell due (BIG while current) and the month of the last late fee, which
+        # a repeat within six cycles reads.
         self.card_line, self.card_start = self.pop["card_line"].copy(), self.pop["card_start"]
         self.card_tier = card_tier(self.pop["score"])
         self.cash_apr = np.full(n, CASH_ADVANCE_APR + (card_shift if economy.linked_rates else 0.0)) / 12
@@ -67,8 +69,21 @@ class StateMixin:
         self.card_interest, self.card_fees, self.card_past_due = np.zeros(n), np.zeros(n), np.zeros(n)
         self.card_paid = np.zeros(n)
         self.card_late_since, self.card_late_month = np.full(n, BIG), np.full(n, -BIG)
+        # Card statement dates (``Economy.statement_dates``): each person's closing day of the month and the day its
+        # statement is due, 21 days later. Under "common" (the default) every statement closes on day 29 and is due on
+        # day 20; under "own" each person's closing day is drawn once, uniformly over the 30 days, on a stream of its
+        # own, for every person in every arm, so all arms share it (only holders' are read). s0_unbilled and
+        # s0_statement hold the card-eligible P payments of the open and the last closed cycle, which the buffer
+        # replay's view without P defers to the due date (``_s0_deferred``); read only under "own".
+        if economy.statement_dates == "own":
+            dates = np.random.default_rng(np.random.SeedSequence([economy.seed, STATEMENT_DATE_STREAM]))
+            self.card_close = dates.integers(0, DAYS, size=n)
+        else:
+            self.card_close = np.full(n, STATEMENT_CLOSE_DAY)
+        self.card_due = (self.card_close + STATEMENT_DUE_LAG) % DAYS
+        self.s0_unbilled, self.s0_statement = np.zeros(n), np.zeros(n)
         # --- arm-specific contract terms -------------------------------------------------------------------------
-        # The pool arms: M1, M2 and U, which is M1 with no demurrage (decided 4 and 5 Nov: the same P with c = 0).
+        # The pool arms: M1, M2 and U, which is M1 with no demurrage (the same P with c = 0).
         self.pool_arm, self.demurrage = arm in ("M1", "M2", "U"), arm in ("M1", "M2")
         # M2: P is indexed to the CPI, so the contract runs in P terms at rho_H - dJ/J. M0: Comet.
         self.indexed, self.defi = arm == "M2", arm == "M0"
@@ -77,74 +92,86 @@ class StateMixin:
         # streams and the day's receipt side of the budget (``_receipt_streams``, ``_receipts_side``).
         self._day_cache = None
         self.rho_p = inputs.rho_H - self.index
-        # The issuer's share of the reserve return on P (decided 4 Nov), derived from its cost in its books
-        # (``Economy.issuer_cost``) at the contract's reserve rate (``issuer_share``); undefined outside the pool arms.
-        # Under competitive P (decided 5 Nov) the issuer keeps s_I rate = c_I of every unit of P, and wallet P and
-        # the pool's own P cash earn the rest, ``p_net`` = (1 - s_I) rate = rho_p - c_I a month (zero where rho_p is at
-        # or below c_I, the declared limit), wallet P less demurrage c.
+        # The issuer's share of the reserve return on P, derived from its cost in its books (``Economy.issuer_cost``)
+        # at the contract's reserve rate (``issuer_share``); undefined outside the pool arms. Under competitive P the
+        # issuer keeps s_I rate = c_I of every unit of P, and wallet P and the pool's own P cash earn the rest,
+        # ``p_net`` = (1 - s_I) rate = rho_p - c_I a month (zero where rho_p is at or below c_I, the declared limit),
+        # wallet P less demurrage c.
         rate = max(self.rho_p, 0.0)
         self.s_issuer = issuer_share(rate, economy.issuer_cost) if self.pool_arm else np.nan
         self.p_net = (1 - self.s_issuer) * rate if self.pool_arm else 0.0
         # The coupons on pool bridging (r_g) and pool term loans (r_term): the coupon's capital part, owners'
-        # alternative (the reserve rate and the owners' spread, 3 Nov), plus o, before any loss is learned or any fixed
-        # cost priced (r_fix, 5 Nov); r_b is the rate a bridge drawn this month is sealed at, r_g less demurrage's
-        # coverage of the capital part (4 Nov).
+        # alternative (the reserve rate and the owners' spread), plus o, before any loss is learned or any fixed
+        # cost priced (r_fix); r_b is the rate a bridge drawn this month is sealed at, r_g less demurrage's
+        # coverage of the capital part.
         self.r_g = self.r_term = self.r_b = max(rate + economy.owner_spread + inputs.o, 0.0)
         # The coupon on pool term loans for business products: r_term but for the class's priced loss under the
-        # loan-loss bound (decided 12 Nov, ``_priced_loss``), so equal to r_term without the bound.
+        # loan-loss bound (``_priced_loss``), so equal to r_term without the bound.
         self.r_term_business = self.r_term
         self.r_fix = 0.0
-        # Loss learning by product, bridging then term (decided 29 Oct): losses net of recoveries over the
+        # Loss learning by product, bridging then term: losses net of recoveries over the
         # principal-time carried at least LOSS_LAG_MONTHS ago, so every unit counted has had time to show its loss.
         # exposure holds each completed month's principal-time by product.
         self.loss_net, self.exposure = np.zeros(2), np.zeros((0, 2))
         # Reported only: term-loan write-offs (by the loan's year of life when it first missed a payment) and exposure
         # (by its year of life), per month, so a run shows when defaults come. this_month dates a loan's age.
         self.loan_age, self.this_month = dict(written_off=[], exposure=[]), 0
-        # Reported only (owners' return by loan year, decided 4 Nov): per month, the pool's loans by product
+        # Reported only (owners' return by loan year): per month, the pool's loans by product
         # (bridging, then term) and by loan year, their income to owners and their carried principal-time; and the
         # month's pool-wide cost, the fixed cost, which the reading spreads over the loan years (the coupon's part that
-        # pays it, 5 Nov, is in the loans' income).
+        # pays it is in the loans' income).
         self.vintage = dict(income=[], exposure=[], shared=[])
+        # The record's loan years: one band for every year of the run after launch, never fewer
+        # than LOAN_YEARS, so a run of 60 months or less keeps its five bands, the last taking any later year.
+        self.vintage_years = max(LOAN_YEARS, -(-economy.months // 12))
         # Job loss: each wage contract is a job, indexed by its payer, that pays nothing on days spell_start <= t <
         # spell_end. layoff_rate is each job's monthly layoff probability per unit of the monthly rate (normal job loss
         # and the distress control's extra rate): its earner's bracket weight over the average job's. spell_out marks a
-        # job whose spell came from a distress year's extra layoff (decided 14 Nov 2026: the harsh stress), whose
+        # job whose spell came from a distress year's extra layoff (the harsh stress), whose
         # wage leaves the household economy for the whole spell; the month-0 stock and normal job loss are never marked.
         self.spell_start, self.spell_end = np.zeros(n, int), np.zeros(n, int)
         self.spell_out = np.zeros(n, bool)
         weight = layoff_weight()[income_bracket(self.pop["spending"])[self.pop["wage_to"]]]
         self.layoff_rate = weight / weight.mean()
         if economy.job_loss > 0:
-            # Normal job loss starts from its steady stock at month 0 (decided 3 Nov), drawn on a stream of its own,
+            # Normal job loss starts from its steady stock at month 0, drawn on a stream of its own,
             # the same in every arm and at every distress level (``spell_stock``). Without it no job starts in a spell.
             stock = np.random.default_rng(np.random.SeedSequence([economy.seed, 23]))
             self.spell_start, self.spell_end = spell_stock(stock, economy.job_loss * self.layoff_rate,
                                                            *spell_law(economy))
         # p_yield is what a unit of P (USDC in M0) earns its holder a month, in nominal terms: in the pool arms the
         # published y_P plus M2's indexation (``_cycle_terms`` resets it each month, net of that month's demurrage); in
-        # M0 the savings rate, the bill less the Sky spread in the "reserve" mode (decided 5 Nov), the Comet supply
+        # M0 the savings rate, the bill less the Sky spread in the "reserve" mode, the Comet supply
         # rate otherwise; 0 in S0. comet_borrow is M0's secured borrowing rate: in the "reserve" mode Comet's borrow
-        # rate moving with r_out (decided 5 Nov, ``m0_rates``); otherwise that supply rate plus the pin's margin.
+        # rate moving with r_out (``m0_rates``); otherwise that supply rate plus the pin's margin.
         # comet_supply is Comet's own supply rate in the "reserve" mode, which no rule there reads (USDC earns the
         # savings rate), kept as a record. cover is each person's share of an uncovered need Comet lends against: 1 for
         # M0's crypto collateral holders (``Economy.crypto_share``), 0 for everyone else and in every other arm.
         reserve = self.defi and economy.comet == "reserve"
         savings, borrow, self.comet_supply = m0_rates(inputs.rho_H, economy.m0_rates)
+        if economy.usdc_yield == "none":
+            # Real DeFi (``Economy.usdc_yield``, read only in the "reserve" mode): the stablecoin
+            # pays its holder nothing, so its savings rate is zero and the issuer keeps the whole reserve return on it
+            # (``issuer_keeps`` below is then rho_H); Comet's borrow rate is untouched.
+            savings = 0.0
         supply = savings if reserve else inputs.rho_H + inputs.supply_premium
         self.p_yield = self.index + self.p_net if self.pool_arm else (supply if self.defi else 0.0)
         self.comet_borrow = borrow if reserve else supply + inputs.borrow_margin
         self.cover = (self.pop["crypto"] & self.defi).astype(float)
         # What the issuer keeps a month on each unit of a household's P or USDC, for the spreads households pay
         # (``_accrue``, a record): its custody s_I rate in the pool arms (the demurrage c goes to the pool, inside the
-        # household economy), the Sky spread in M0's "reserve" mode, otherwise the whole reserve return, as built.
+        # household economy), the Sky spread in M0's "reserve" mode (the whole reserve return under usdc_yield
+        # "none"), otherwise the whole reserve return.
         self.issuer_keeps = (self.rho_p - self.p_net if self.pool_arm
                              else inputs.rho_H - supply if reserve else inputs.rho_H - self.index)
-        # The conversion fee between dollars and P, or USDC in M0, which converts at no fee (decided 5 Nov).
+        # The conversion fee between dollars and P, or USDC in M0, which converts at no fee.
         self.conversion = USDC_CONVERSION if self.defi else CONVERSION_FEE
-        # The gas a completed payment costs its payer (decided 5 Nov): two transfers for USDC, one for P.
+        # The gas a completed payment costs its payer: two transfers for USDC, one for P.
         self.gas = GAS_PER_PAYMENT if self.defi else GAS_PER_P_PAYMENT
         self.total = economy.burn_in + economy.months
+        # The first month ``run`` runs: 0 for a new world, launch for a state at launch (``launch_state``), so a run
+        # resumed from it runs the months after launch alone.
+        self.resume_at = 0
         # --- household accounts (one entry per person) -------------------------------------------------------------
         # cash: E (bank money); pcash: P (or USDC in M0); savings: one-month outside deposits (own outside rate);
         # shares: pool shares, valued at nav_ps; receivable/payable: invoices not yet settled; card balances;
@@ -154,26 +181,25 @@ class StateMixin:
         self.savings, self.shares, self.od_pending = zeros(), zeros(), zeros()
         self.receivable, self.payable = zeros(), zeros()
         self.card_unbilled, self.card_statement = zeros(), zeros()
-        # Earned-wage access (decided 3 Nov), per job (indexed by its payer): accrued, the wages earned and not yet
-        # due; ewa_owed, what the job's earner owes on advances against them, fee included. Reported only (3 Nov):
+        # Earned-wage access, per job (indexed by its payer): accrued, the wages earned and not yet
+        # due; ewa_owed, what the job's earner owes on advances against them, fee included. Reported only:
         # each person's spending over the burn-in and its chronic-deficit flag at launch (``_chronic``).
         self.accrued, self.ewa_owed = zeros(), zeros()
         self.burn_spent, self.chronic = zeros(), np.zeros(n, bool)
         self.durable = dict(owner=np.zeros(0, int), value=zeros()[:0], step=zeros()[:0], left=np.zeros(0, int))
         # sector holds outside lenders' interest until the close, under the recirculation stress only.
         self.nav_ps, self.pool_cash, self.sector = 1.0, 0.0, dict(lenders=0.0)
-        # Costs the pool has incurred but could not yet pay: an unpaid operating payable, as in the October 2026
-        # draft's ledger appendix.
+        # Costs the pool has incurred but could not yet pay: an unpaid operating payable.
         self.pool_payable = 0.0
         # Exit test: each owner's open exit request (start month, start NAV, shares still to pay), and per start month
         # the value requested and the value paid within two months.
         self.exit_start, self.exit_nav, self.exit_left = np.full(n, -1), zeros(), zeros()
         # The dealing's executed exits that pool cash left unpaid, by owner at this NAV, and who wants out, which the
-        # dealing's offers buy first (decided 5 Nov: subscriptions meet redemptions, as in an open-ended fund).
+        # dealing's offers buy first (subscriptions meet redemptions, as in an open-ended fund).
         self.exit_unpaid, self.exit_want = zeros(), np.zeros(n, bool)
         # Who was paid any part of its holding at this dealing's exits; it offers nothing at the same dealing.
         self.exit_paid_out = np.zeros(n, bool)
-        # The money offered to the pool at the last dealing that found no room (decided 12 Nov: new subscriptions
+        # The money offered to the pool at the last dealing that found no room (new subscriptions
         # pay leaving owners first), which ``_cash_for_loans`` counts on to pay the next dealing's due exits; zero
         # before the first dealing after launch, so until then every exit falling due is set aside.
         self.unused_offers = 0.0
@@ -181,7 +207,7 @@ class StateMixin:
             np.zeros(economy.burn_in + economy.months)
         # --- participation, buffers and the record tables -----------------------------------------------------------
         # part: who holds and accepts P; exp_hist and p_hist: the last 12 monthly experiences and average P balances
-        # while in P (the leaving rule and its threshold, 3 Nov); arrears: arrears flag; buffer: the cash buffer chosen
+        # while in P (the leaving rule and its threshold); arrears: arrears flag; buffer: the cash buffer chosen
         # at dealing; ob: open payment obligations; req: term credit requests; book: every loan (BOOK_FIELDS).
         self.part = np.zeros(n, bool)
         self.exp_hist = np.zeros((0, n))
@@ -198,68 +224,85 @@ class StateMixin:
         # numbers): an arm and its S0 pair differ only through CPM.
         self.adopt_rng = np.random.default_rng(np.random.SeedSequence([economy.seed, 7]))
         self.start_draw = self.adopt_rng.random(n)
-        # The leaving rule's logistic draws (decided 4 Nov) come from a stream of their own, one a person a month in
+        # The leaving rule's logistic draws come from a stream of their own, one a person a month in
         # every arm, so no earlier draw moves and every arm sees the same numbers.
         self.leave_rng = np.random.default_rng(np.random.SeedSequence([economy.seed, 29]))
-        # Owners leave by the users' rule (decided 5 Nov) on a stream of their own: each month, in every arm, a
+        # Owners leave by the users' rule on a stream of their own: each month, in every arm, a
         # review draw and a leaving draw a person, so no other stream moves and every arm sees the same numbers.
         self.owner_rng = np.random.default_rng(np.random.SeedSequence([economy.seed, 31]))
         self.owner_draws = np.ones(n), np.ones(n)   # each month's draws (``month``); before any, nobody reviews
-        # Savers review entry at the users' rate (decided 13 Nov) on a stream of their own: each month, in every
+        # Savers review entry at the users' rate on a stream of their own: each month, in every
         # arm and the burn-in, one entry-review draw a person, so no other stream moves and every arm sees the same
         # numbers. A person offers its money-market part to the pool only in a month its draw is below upsilon.
         self.entry_rng = np.random.default_rng(np.random.SeedSequence([economy.seed, 41]))
         self.entry_draw = np.ones(n)                # each month's draws (``month``); before any, nobody reviews
+        # The side studies, each read only when its setting is on. Record-readers
+        # (``sceptical_share``): one draw a person for the run on a stream of its own, in every arm, a record-reader
+        # below the share. Whether the last dealing left an executed exit unpaid, which owners react to at the next
+        # (``owners_follow``): False before any dealing. The months inside a distress year (``distress_calendar``),
+        # the same in every arm.
+        share = economy.sceptical_share
+        self.record_reader = None if share is None else (
+            np.random.default_rng(np.random.SeedSequence([economy.seed, SCEPTIC_STREAM])).random(n) < share)
+        self.exit_left_unpaid = False
+        # The deposit part of spare money each person kept as its own cash at the last dealing (``_dealing``), which
+        # a durable leaves alone under ``Economy.durable_savings`` "kept": nothing before any dealing.
+        self.kept_savings = np.zeros(n)
+        self.distressed = distress_calendar(economy)
         # --- pool status --------------------------------------------------------------------------------------------
         # ready: readiness (reported only); asking: the pool takes requests (launched, not winding); service: it has
-        # owners and can pay and lend; winding: every owner wants out, until the last share is paid out (5 Nov: free
+        # owners and can pay and lend; winding: every owner wants out, until the last share is paid out (free
         # entry applies in every month, so the pool is then open again).
-        # The month's terms (``_cycle_terms``, decided 4 and 5 Nov): Q, the capital limit N*; R_hat, the quote at
+        # The month's terms (``_cycle_terms``): Q, the capital limit N*; R_hat, the quote at
         # it; need and margin, the capital target and the margin F a month that set both; c, demurrage a month on
         # wallet P balance-time; coverage, the share of the capital cost of the liquidity kept available that demurrage
         # pays; s_monopoly, the most a monopoly issuer could take (a bound, recorded only). Demurrage pays for liquidity
-        # kept available (decided 5 Nov): peak, the last cycle's peak bridging need; standby, its standby cash-time
+        # kept available: peak, the last cycle's peak bridging need; standby, its standby cash-time
         # a month (pool cash held ready up to that peak beyond what was lent), both records. window holds one entry a
         # month since launch, the launch plan first; the terms read the last two, the last cycle.
         self.ready = self.service = self.asking = self.winding = False
         self.c, self.R_hat, self.Q, self.window = 0.0, np.nan, 0.0, []
         # The pool's carried term principal at the last launched close, after CPI, from which each month's window
-        # entry reads the growth of the term book (decided 12 Nov); None before the launch month's close.
+        # entry reads the growth of the term book; None before the launch month's close.
         self.term_book = None
         self.need = self.margin = self.coverage = self.peak = self.standby = 0.0
         self.s_monopoly = np.nan
-        # The issuer is a pure custodian (decided 5 Nov), outside the household economy, with no pool shares: its
+        # The issuer is a pure custodian, outside the household economy, with no pool shares: its
         # complete wallet per person in every month since launch (the stay test) and whether that test has recorded
         # "issuer would leave".
         self.issuer_leaves = False
         self.issuer_wallets = []
-        # The reserve account (decided 30 Oct): the T-bills behind P. It moves wherever P is issued or redeemed,
+        # The reserve account: the T-bills behind P. It moves wherever P is issued or redeemed,
         # so each month it can be checked against P owed (people's P and the pool's cash).
         self.reserves = 0.0
-        # Crossings between E and P (reported only, decided 3 Nov): each person's moves in the current step, net, E
+        # Crossings between E and P (reported only): each person's moves in the current step, net, E
         # into P less P into E, as routine crossings (row 0, free) and conversions (row 1, paying the fee).
         self.crossed = np.zeros((2, n))
-        # Reported only (decided 3 Nov): each household's pool capital after dealing; no rule reads it. Households
-        # alone own the pool (decided 5 Nov).
+        # Reported only: each household's pool capital after dealing; no rule reads it. Households
+        # alone own the pool.
         self.owners_held = zeros()
-        # Reported only (decided 4 Nov: the 90% household test reads capital net of queued exits): households'
+        # Reported only (the 90% household test reads capital net of queued exits): households'
         # capital in exit requests filed and still unpaid after dealing (``_queued``).
         self.owners_queued = 0.0
         # Monthly flows with the outside and write-off valuation: terms of the conservation identity.
         # self.last holds completed observations from the previous month: what the rules are allowed to read (the
         # pool's terms read the last two months from ``window``). Nothing reads the current month before it is
-        # complete. p_low is each person's lowest P balance in the month (idle P's measure, a record since 5 Nov: no
-        # rule charges it). avg_payment is the value
-        # of each person's payments that could fail per payment carrying the failure fee (the fee's unit price), to
-        # begin with a month's spending over its service bills and one wage payment. ewa_room is each person's
-        # earned-wage room on each day (3 Nov), which the buffer replay reads, and card_room each holder's room on its
-        # cash line on each day, gross of the month's own advances still owed (14 Nov 2026), which it reads too.
+        # complete. p_low is each person's lowest P balance in the month (idle P's measure, a record: no
+        # rule charges it). avg_payment is the value of each person's payments that could fail per payment carrying the
+        # failure fee (the fee's unit price), to begin with a month's spending over its service bills and one wage
+        # payment. ewa_room is each person's earned-wage room on each day, which the buffer replay reads, and card_room
+        # each holder's room on its cash line on each day, gross of the month's own advances still owed, which it reads
+        # too.
         self.external = self.valuation = 0.0
         self.last = dict(flows=np.zeros((n, DAYS)), flows_s0=np.zeros((n, DAYS)), monthly=zeros(), p_low=zeros(),
                          card_internal=zeros(), bridge_path=np.zeros((n, DAYS)), admitted=zeros(), p_share=zeros(),
                          receipts=zeros(), wages_paid=zeros(), ewa_room=np.zeros((n, DAYS)),
                          card_room=np.zeros((n, DAYS)),
                          avg_payment=self.pop["spending"] / ((1 - self.card_share) * economy.bundles + 1))
+        # Two months of receipts (``Economy.receipts_window`` 2): each person's receipts other
+        # than wages in the completed month before last month, kept at each close under it once two months have
+        # closed; None by default and until then, so the budget reads last month's alone (``_receipt_streams``).
+        self.other_before = None
         # Monthly aggregate records (one value per month, per capita where it is an amount). See ``_close``.
         self.series = {key: [] for key in (
             "A", "failure_share", "wage_arrears", "slow_days", "most_sweeps", "ready", "service", "N", "Q", "p_yield",
@@ -268,7 +311,7 @@ class StateMixin:
             "term_pool", "term_outside",
             "c", "idle", "charges", "theta", "R", "R_hat", "r_g", "r_term",
             "issuer",
-            # Demurrage and competitive P (decided 4 and 5 Nov), per capita where money: the issuer's derived share
+            # Demurrage and competitive P, per capita where money: the issuer's derived share
             # of the reserve return and, as a bound, the most a monopoly issuer could take, the reserve return the
             # pool's own P cash earns and the issuer's custody take, the yield on wallet P before demurrage, the
             # coverage of the bridging capital cost, the rate a bridge drawn this month is sealed at (r_b), the coupon
@@ -277,14 +320,14 @@ class StateMixin:
             # value.
             "s_issuer", "s_monopoly", "float_pool", "float_issuer", "wallet_yield", "coverage", "r_b", "covered",
             "bridge_capital_cost", "quote", "buffers", "pool_idle", "precautionary", "bridges", "failures",
-            # Demurrage pays for liquidity kept available (decided 5 Nov), records only, per capita: the capital
+            # Demurrage pays for liquidity kept available, records only, per capita: the capital
             # target N* starts from, the peak bridging need and the standby cash-time a month the terms read, and the
             # standby's capital cost a month, owners' alternative less what idle cash earns on it.
             "target", "bridge_peak", "standby", "standby_cost",
-            # Records only, per capita, for the runner's shortfall covered in every arm alike (5 Nov): card statements
+            # Records only, per capita, for the runner's shortfall covered in every arm alike: card statements
             # left to revolve on the card, and M0's collateralised Comet bridging.
             "revolved", "comet_bridging",
-            # The gas payers paid validators on P and USDC payments (decided 5 Nov), per capita.
+            # The gas payers paid validators on P and USDC payments, per capita.
             "gas",
             "merchant_fees", "conversion_fees",
             "gini", "mean_wealth", "external", "valuation", "wealth_change", "card_debt", "overdraft", "fee_debt",
@@ -296,93 +339,118 @@ class StateMixin:
             "exp_liquidity", "exp_term",
             "exp_merchant", "exp_charges", "exp_gas", "exp_conversion", "out_interest", "penalties",
             "savings_income", "pool_pt", "inflation", "exp_yield", "laid_off", "laid_off_last_day", "wages_withheld",
-            # The harsh stress (decided 14 Nov 2026), records only: the wages of extra layoffs owed to the outside,
+            # The harsh stress, records only: the wages of extra layoffs owed to the outside,
             # per capita, the part of them not paid on its first due date, the failure share of hit workers (the
             # earners of a job with a day in a spell that month) and of everyone else, and hit workers' failed shares
             # a person.
             "wages_out", "wages_out_late", "failure_share_hit", "failure_share_rest", "fail_shares_hit",
+            # The edge and the slowdown, per capita, zero by default: the money the conserved edge
+            # returned to households, the extra layoffs' wages their payers kept under "kept", and the purchases
+            # dropped in a distress month (a count).
+            "returned", "wages_kept", "purchases_dropped",
             "fee_refused",
             "fee_refused_n", "rewards", "pool_operating", "liquid_low",
             # The settlement's records of failure passed along and of dependence on netting (``CHAIN_SERIES``).
             *CHAIN_SERIES,
-            # The boundary rule's reports (decided 31 Oct and 1 Nov): payments by rail (count and value), pool
+            # The boundary rule's reports: payments by rail (count and value), pool
             # bridges to payers without a card, principal-time of outside card and term credit and of pool bridges to
             # card holders and pool term loans, balance-time of money (E and P), E, P, savings and pool shares, and
             # the spreads banks and issuers keep on households' money and savings.
             "card_payments", "card_value", "p_payments", "p_value", "nocard_bridges", "pt_card", "pt_term",
             "pt_pool_card", "pt_pool_term", "money_bt", "e_bt", "p_bt", "savings_bt", "shares_bt", "deposit_spread",
             "issuer_spread",
-            # Reported (3 Nov): principal-time of pool bridges to payers without a card that paid card-eligible
-            # purchases (new lending), and (14 Nov 2026) of the part of pool bridges to card holders that replaced
+            # Reported: principal-time of pool bridges to payers without a card that paid card-eligible
+            # purchases (new lending), and of the part of pool bridges to card holders that replaced
             # card credit.
             "pt_pool_nocard_card", "pt_pool_card_credit",
-            # The failure counts (3 Nov), a person a month (``FAILURE_COUNTS``).
+            # The failure counts, a person a month (``FAILURE_COUNTS``).
             *FAILURE_COUNTS,
-            # Reported (decided 3 Nov): households' capital, the income credited to it in all and net of issuer
+            # Reported: households' capital, the income credited to it in all and net of issuer
             # money, R net of issuer money, and crossings between E and P.
             "owners_capital", "owners_income", "owners_income_net", "R_net",
             "crossings", "crossed", "conversions", "converted",
-            # Reported (the 3 Nov review): the mean buffer chosen at dealing by people without a card and by card
+            # Reported: the mean buffer chosen at dealing by people without a card and by card
             # holders.
             "buffer_nocard", "buffer_card",
-            # Earned-wage access (3 Nov), per capita: payer-days with an advance, advances and their fees, and what is
+            # Earned-wage access, per capita: payer-days with an advance, advances and their fees, and what is
             # owed on advances at the close.
             "ewa_uses", "ewa_value", "ewa_fees", "ewa_owed",
-            # Reported (3 Nov, for the S0 check): holders' card bridging of their bills and wages, per capita, since
-            # card limits (14 Nov 2026) their cash advances.
+            # Reported (for the S0 check): holders' card bridging of their bills and wages, per capita, and their cash
+            # advances.
             "card_bridging",
-            # Card limits (decided 14 Nov 2026), records only, per capita where money: the cash-advance fees and
+            # Card limits, records only, per capita where money: the cash-advance fees and
             # late fees charged, the card balances charged off and the lines closed by it (a count), the card-eligible
             # purchases past a holder's room that went the cash route, and the share of people behind on a minimum.
             "advance_fees", "late_fees", "charged_off", "lines_closed", "card_spilled", "card_delinquent",
-            # The yardsticks (decided 3 and 4 Nov), per capita, records only (NaN outside the pool arms): the
+            # The yardsticks, per capita, records only (NaN outside the pool arms): the
             # pool's own margin and its parts (``MARGIN_PARTS``), the joint issuer-and-pool test, households' capital
             # in exit requests still unpaid after dealing, and the principal part of payments on written-off pool
             # loans.
             "own_margin", *("margin_" + key for key in MARGIN_PARTS), "joint", "owners_queued", "recovered_principal",
-            # The term purchases among P payments (the 4 Nov review), count and value, per capita.
+            # The term purchases among P payments, count and value, per capita.
             "p_term_payments", "p_term_value",
             # Records only, read by no rule: completed purchases as a count a person a month, beside their value
-            # (3 Nov: service and shock purchases at the share completed, and durables settled), and the largest
+            # (service and shock purchases at the share completed, and durables settled), and the largest
             # single pool loan outstanding and the largest pool debt of one borrower, each as a share of pool capital
-            # at the close (12 Nov), NaN with no pool capital.
+            # at the close, NaN with no pool capital.
             *MEASURE_SERIES,
-            # The pool run under the harsh stress (decided 15 Nov 2026), records only, per capita: the money offered
+            # The pool run under the harsh stress, records only, per capita: the money offered
             # to the pool at the month's dealing and the part that found no room, the pool cash set aside for exits at
             # the close (cash not owed to creditors less the cash new loans may take), and the month's write-offs of
             # pool bridges and of pool term loans, which add up to written_off.
-            "offers", "offers_unused", "exit_set_aside", "written_off_bridge", "written_off_term")}
+            "offers", "offers_unused", "exit_set_aside", "written_off_bridge", "written_off_term",
+            # The payout and the edge, records only, per capita: what the pool owes its operating
+            # provider at the close, the inflation part of the month's payout (zero with the edge open), and the
+            # month's net outflow across the edge split into what was booked when a debt to the outside was created
+            # and the rest, booked as cash moved, which add up to minus ``external``.
+            "pool_payable", "payout_inflation", "edge_accrued", "edge_paid", "edge_cleared", "card_unbilled",
+            # The stock owed across the edge and not yet paid at the close, the pool's payable included,
+            # which the payout reads under ``Economy.payout`` "paid"; and the part of the payout kept from households
+            # under ``Economy.edge_returned``, zero by default.
+            "edge_owed", "edge_kept",
+            # The most the pool owed its operating provider on any day of the month, per capita.
+            "pool_payable_most",
+            # The days of the month whose settlement was held under ``Economy.settle_cycle`` "hold", a
+            # count, zero by default.
+            "settle_held")}
         if economy.loan_losses == "sourced":
-            # The loan-loss bound's records (decided 12 Nov), kept only under it, so a run without it is as built:
+            # The loan-loss bound's records, kept only under it, so a run without it is unchanged:
             # the principal discharged, and the coupon on pool term loans for business products (r_term is the
             # consumer class's under the bound).
             self.series.update({key: [] for key in (*LOAN_LOSS_SERIES, LOSS_CARRIED, "r_term_business")})
-        # The bound's amount not yet discharged by class and lender group (13 Nov review): what the
+        if economy.standby == "reserved":
+            # Reserved standby's record, kept only under it, so a run without it is unchanged:
+            # the month's mean cash held back from term loans for bridges, per capita.
+            self.series["standby_held"] = []
+        if economy.experience_rewards:
+            # The experience part of the card rewards participants give up, kept only with it on.
+            self.series["exp_rewards"] = []
+        # The bound's amount not yet discharged by class and lender group: what the
         # loans on the book at a close could not absorb, carried to the next month's amount (``_loan_losses``).
         self.loss_carried = np.zeros((3, 2))
         # Person-level paths: net wealth after each month, participation, pool ownership, pool borrowing, receipts,
-        # and (reported, decided 31 Oct) the failure fees each person paid and its new failed payments, a re-queued
-        # wage not counted again, and the failure counts by person and month (3 Nov, ``FAILURE_COUNTS``).
+        # and (reported) the failure fees each person paid and its new failed payments, a re-queued
+        # wage not counted again, and the failure counts by person and month (``FAILURE_COUNTS``).
         self.wealth_path = np.zeros((self.total + 1, n))
         self.status = np.zeros((self.total, n), bool)
         self.owner_path = np.zeros((self.total, n), bool)
         self.borrow_path = np.zeros((self.total, n), bool)
         self.receipts_path = np.zeros((self.total, n))
         self.fee_path, self.failed_path = np.zeros((self.total, n)), np.zeros((self.total, n))
-        # Purchases by person and month (decided 11 Nov: claim (d) reads the wealth change plus purchases received),
+        # Purchases by person and month (claim (d) reads the wealth change plus purchases received),
         # records only, no rule reads them: as buyer, the service and shock purchases completed (amount times the
         # completed share) and lost (amount times the share not completed), and the price of each durable bought that
         # settled; as seller, the face value of the service and shock purchases completed to it, before any merchant
         # fee, plus the price of each durable it sold. Wages are in none of them. Each month the sum over people of
         # completed and durables equals the sum of sales.
         self.purchase_path = {key: np.zeros((self.total, n)) for key in ("completed", "durables", "lost", "sales")}
-        # MicroVelocity (3 Nov), records only, no rule reads them: each person's sums over each year after launch (row
+        # MicroVelocity, records only, no rule reads them: each person's sums over each year after launch (row
         # k holds launch months 12k to 12k + 11, the last row any part year), ``VELOCITY_RECORDS``. Its turnover in a
         # year on a definition of money is 12 x outflow / its own balance-time, in turns a year: a person holding 100
         # all year (balance-time 1,200 unit-months) that pays out 1,200 turns its money 12 times a year
-        # (``turnover``); its MicroVelocity divides by everyone's balance-time instead (``microvelocity``, 13 Nov).
+        # (``turnover``); its MicroVelocity divides by everyone's balance-time instead (``microvelocity``).
         self.velocity_path = {key: np.zeros((-(-economy.months // 12), n)) for key in VELOCITY_RECORDS}
-        # MicroVelocity as its authors define it (13 Nov), records only, no rule reads them: the age of each person's
+        # MicroVelocity as its authors define it, records only, no rule reads them: the age of each person's
         # money (E, P and outside savings) by convention (``Coinage``). Each step's receipts (``coin_flow`` row 0),
         # removals that are not spending (row 1: pool shares bought, conversion fees not in the outflow), CPI's pro
         # rata loss of value (row 2) and the outflow are handed to it once a day (``_coin_day``); ``coin_open`` is the
@@ -393,29 +461,36 @@ class StateMixin:
         self.coin_flow, self.coin_mark = np.zeros((3, n)), zeros()
         self.coin_open, self.coin_gap = self.cash + self.pcash + self.savings, zeros()
         self.coin_residual = np.zeros(self.total)
-        # Credit by person and month (decided 11 Nov), records only, no rule reads them: who borrowed what from
+        # Credit by person and month, records only, no rule reads them: who borrowed what from
         # whom, what was refused or cancelled, the interest accrued by lender, and wages paid late (``CREDIT_RECORDS``).
         self.credit_path = {key: np.zeros((self.total, n)) for key in CREDIT_RECORDS}
         self.failure_path = {key: np.zeros((self.total, n)) for key in FAILURE_COUNTS}
-        # Reported (decided 3 Nov): each household's pool capital after dealing (with R, each owner's own realised
+        # Reported: each household's pool capital after dealing (with R, each owner's own realised
         # return, ``own_returns``) and its routine crossings between E and P, per month.
         self.owned_path, self.cross_path = np.zeros((self.total, n)), np.zeros((self.total, n))
-        # What each owner's exit reads (``_own_return``, decided 3 Nov), kept apart from the records above so that
+        # What each owner's exit reads (``_own_return``), kept apart from the records above so that
         # they stay records: each household's pool capital after dealing, and each month's R, never a loss beyond the
         # holding, NaN with no pool.
         self.held_path, self.r_owners = np.zeros((self.total, n)), np.full(self.total, np.nan)
-        # Reported (the 3 Nov review): each person's buffer chosen at dealing, per month.
+        # Reported: each person's buffer chosen at dealing, per month.
         self.buffer_path = np.zeros((self.total, n))
-        # Earned-wage access (3 Nov): each person's payer-days with an advance, advances and their fees, per month.
+        # Earned-wage access: each person's payer-days with an advance, advances and their fees, per month.
         self.ewa_path = {key: np.zeros((self.total, n)) for key in ("uses", "value", "fees")}
         # What each person paid intermediaries outside the household economy each month, net of card rewards
-        # (decided 31 Oct: the transfer report by payer): outside interest, failure fees, card fees as a seller,
-        # conversion fees, gas on P and USDC payments (5 Nov), the spreads banks and issuers keep on its money and
-        # savings and (3 Nov) earned-wage fees.
+        # (the transfer report by payer): outside interest, failure fees, card fees as a seller,
+        # conversion fees, gas on P and USDC payments, the spreads banks and issuers keep on its money and
+        # savings and earned-wage fees.
         self.transfer_path = np.zeros((self.total, n))
+        # What each person received from the month's payout under the conserved edge, per month,
+        # a record only; a negative amount was collected. Zero with the edge open. Each month sums to ``returned``.
+        self.payout_path = np.zeros((self.total, n))
+        # The two parts of the stock owed across the edge the engine does not otherwise carry apart (``_edge_owed``):
+        # the card's fees and interest not yet paid, by holder (``_card_edge``), and the
+        # earned-wage fees still owed with their advances, by job; and the stock in all with the pool's operating
+        # payable at the last close, which the payout reads under ``Economy.payout`` "paid"; records otherwise.
+        self.card_edge_owed, self.ewa_fee_owed, self.edge_mark = np.zeros(n), np.zeros(n), 0.0
         # Cumulative per-person fee and charge flows, used to split each person's gain into channels. The charge is
-        # demurrage on each holder's wallet P balance-time, withheld from its yield and paid to the pool (decided
-        # 5 Nov).
+        # demurrage on each holder's wallet P balance-time, withheld from its yield and paid to the pool.
         self.channels = {key: zeros() for key in ("merchant_paid", "rewards", "conversion_paid", "gas_paid",
                                                    "recirc_lenders", "charges")}
         self.payment_log = {}
@@ -426,8 +501,18 @@ class StateMixin:
         # Each person's money market share of outside savings, and the rate their outside savings earn this month:
         # the blended outside rate, or rho_H when the deposit part stays in cash (where idle money sits, ``_dealing``).
         self.mm_share = money_market_share(self.wealth_path[0] + self.pop["illiquid"], economy.n12)
+        # Ownership of the firms beyond the edge, under the conserved edge only, fixed for the
+        # run: each DFA wealth group, ranked as the outside return ranks it at the opening, holds its share of
+        # households' equities (``DFA_EQUITIES``), equal within the group. With no one in a group (fewer than 100
+        # people leave the top 1% empty) the shares are scaled to sum to 1. None with the edge open.
+        self.owners_weight = None
+        if economy.edge == "conserved":
+            rank = rank_share(self.wealth_path[0] + self.pop["illiquid"])
+            group = np.searchsorted(DFA_GROUP_UPPER, rank, side="left")
+            weight = (DFA_EQUITIES / DFA_EQUITIES.sum())[group] / np.bincount(group, minlength=4)[group]
+            self.owners_weight = weight / weight.sum()
         self.saving_rate = self.r_out.copy()
-        # One savings rule for every vehicle (decided 1 Nov): only the money-market part of savings can go to the
+        # One savings rule for every vehicle: only the money-market part of savings can go to the
         # pool, so the alternative it is compared with, joining and leaving, is that part's own return, rho_H.
         self.pool_alternative = np.full(n, inputs.rho_H)
 
@@ -438,13 +523,13 @@ class StateMixin:
         Assets: E and P cash, outside savings, pool shares at NAV, invoices
         receivable. Liabilities: invoices payable, card balances, every loan
         (principal and accrued interest), pending overdraft and earned-wage
-        advances owed (3 Nov). Durables bought on term credit are consumption
+        advances owed. Durables bought on term credit are consumption
         here; they only enter the spending rule.
         """
         bk = self.book
         debt = np.bincount(bk["borrower"], weights=bk["principal"] + bk["interest"], minlength=self.n) + self.od_pending
         if self.economy.earned_wage_share > 0:
-            # What each earner owes on advances against its jobs' wages, fee included (3 Nov).
+            # What each earner owes on advances against its jobs' wages, fee included.
             debt = debt + np.bincount(self.pop["wage_to"], weights=self.ewa_owed, minlength=self.n)
         return (self.cash + self.pcash + self.savings + self.shares * self.nav_ps + self.receivable - self.payable
                 - self.card_unbilled - self.card_statement - debt)
@@ -473,14 +558,10 @@ class StateMixin:
         principal instalments over ``months`` starting the month after ``m0``
         with simple interest on the declining balance. ``m0`` is the month a
         term loan, a pool bridge or a cash advance is made; a bridge's is read
-        only by the loan-year record (4 Nov), an advance's only by the
-        replays' record of the card room (14 Nov 2026). ``card_part`` is the
-        share of a pool bridge the real part counts as card credit (3 Nov;
-        holders' bridges too, 14 Nov 2026), read only by the real part's
-        records (``BOOK_FIELDS``). ``cover`` is the cut a month in a
-        pool bridge's coupon that demurrage pays (4 Nov), read only by theta.
-        ``business`` marks a term loan for a business product (decided
-        12 Nov), read only by the loan-loss bound's class.
+        only by the loan-year record, an advance's only by the replays' record of the card room. ``card_part`` is the
+        share of a pool bridge the real part counts as card credit (holders' bridges too), read only by the real part's
+        records (``BOOK_FIELDS``). ``cover`` is the cut a month in a pool bridge's coupon that demurrage pays, read only
+        by theta. ``business`` marks a term loan for a business product, read only by the loan-loss bound's class.
         """
         size = borrower.size
         if size == 0:
@@ -523,8 +604,10 @@ class StateMixin:
 
         Simple interest for the days held at r_b, the rate a bridge drawn this
         month is sealed at (the coupon less demurrage's coverage of its capital
-        part, decided 4 Nov). In M2 principal and
+        part). In M2 principal and
         coupon are P, whose E value rises by the index at every monthly CPI mark
-        crossed (``_deflate`` runs at each month's close); elsewhere the index is 0.
+        crossed (``_deflate`` runs at each month's close); elsewhere the index is 0, the factor is exactly 1 and is
+        not computed.
         """
-        return (1 + self.r_b * (dates - t) / DAYS) * (1 + self.index) ** (dates // DAYS - t // DAYS)
+        simple = 1 + self.r_b * (dates - t) / DAYS
+        return simple * (1 + self.index) ** (dates // DAYS - t // DAYS) if self.index else simple

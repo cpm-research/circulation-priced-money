@@ -5,6 +5,8 @@ equal-length arrays, with the helpers that append to, filter, merge and read the
 within an owner's budget or a payer's day; and Coinage, the age of every unit of each person's money for
 MicroVelocity, a record only.
 """
+from functools import reduce
+
 import numpy as np
 
 from cpm_abm.engine.constants import DAYS, TERM
@@ -26,10 +28,10 @@ def allocate(owner, cost, keys, budget):
     return paid
 
 
-# Whole items are counted in the order that returns fewest, smallest first (decided 4 Nov). It is the lower bound
+# Whole items are counted in the order that returns fewest, smallest first. It is the lower bound
 # on returned items, and the model's day has no chronological order.
 def in_order(payer, cost):
-    """Each payment's running total within its payer's day, smallest first (the whole-item count, decided 3 Nov).
+    """Each payment's running total within its payer's day, smallest first (the whole-item count).
 
     A bank paying whole payments returns those whose running total exceeds the money the payer has for them. Paying
     smallest first pays the most payments any order could, so the count is the fewest returned whatever the order.
@@ -80,6 +82,12 @@ def _merge_sorted(records, new, key="settle"):
     return out
 
 
+def _is_kind(kind, kinds):
+    """Whether each loan's ``kind`` is one of ``kinds``: the values of ``np.isin(kind, kinds)``, at a fraction of its
+    cost on the book's few kinds (a speed device)."""
+    return reduce(np.logical_or, [kind == one for one in kinds])
+
+
 def _overdue_of(f):
     """Term records' scheduled but unpaid amount (arrears) from book fields ``f`` (whole fields or gathered rows):
     overdue principal plus due interest (``_World._overdue``)."""
@@ -94,7 +102,7 @@ _DUE_SOON_FIELDS = ("kind", "due", "pool", "principal", "rate", "interest", "ins
 
 
 # ====================================================================================================================
-# Holding times of money (MicroVelocity as its authors define it, 13 Nov), a record only
+# Holding times of money (MicroVelocity as its authors define it), a record only
 # ====================================================================================================================
 # The bin edges of the holding-time histogram, in days: [1, 2), [2, 4), ..., [481, 961) and 961 and above.
 COIN_EDGES = np.array([1, 2, 4, 8, 15, 31, 61, 121, 241, 481, 961], float)
@@ -103,7 +111,8 @@ COIN_CONVENTIONS = ("fifo", "lifo")
 # Days kept as one cohort each; older money is kept in one cohort per calendar month of receipt.
 COIN_RECENT = 90
 # Cohorts a day's spending is taken from in the second tier, and three times as many in the third, after the edge
-# cohort alone and before every cohort (``Coinage._consume``): a speed device that leaves the result unchanged.
+# cohort alone and before every cohort (``Coinage._consume``): a speed device that leaves the result unchanged to
+# rounding.
 COIN_WINDOW = 12
 # The ledger's records, each with the convention as first axis and the year after launch as second (``Coinage``).
 COINAGE_RECORDS = ("held", "spent", "inverse", "spent_tau", "histogram")
@@ -142,7 +151,7 @@ class Coinage:
     value spent in the year, ``inverse``, the sum of w / tau over it, ``spent_tau``, the sum of w x tau, and
     ``histogram``, the value spent in the year by holding time (``COIN_EDGES``). Spending before launch is in none.
 
-    Hand case: 100 received on day 0 and spent on day 10, launch day 0: tau = 10, the spell is days 1 to 10, all in
+    Example: 100 received on day 0 and spent on day 10, launch day 0: tau = 10, the spell is days 1 to 10, all in
     year 0, so ``held`` adds 100 x 10 / 10 = 100, ``spent`` 100, ``inverse`` 10 and ``spent_tau`` 1,000, in the bin
     [8, 15). Received 100 on day 0 and 100 on day 20, then 100 spent on day 30: tau 30 under first in first out (the
     day 0 units) and 10 under last in first out (the day 20 units).
@@ -235,7 +244,9 @@ class Coinage:
         For speed the cumulative sum runs over a few cohorts from each line's ``edge`` (all cohorts before it in the
         convention's order are empty): first the edge cohort alone, then ``COIN_WINDOW`` cohorts for the lines whose
         edge cohort holds less than the day's outflow, then three times as many, then every cohort for the lines whose
-        windows hold less. The result is the same as over every cohort (checked in the tests)."""
+        windows hold less. The result is the same as over every cohort to rounding, not bit for bit (checked in the
+        tests): a window admits a line by the sum of its cohorts and spends by their running total, which can differ
+        in the last place."""
         last = self._last_month()
         size = last + 1 + self.recent
         day = dict(lines=np.concatenate([rows, rows + self.n]), lifo=np.repeat([False, True], rows.size),

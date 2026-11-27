@@ -17,7 +17,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
-from cpm_abm.catalogue import finite_catalogue  # noqa: E402  (the pinned, audited PySPG iterator)
+from cpm_abm.catalogue import finite_catalogue  # noqa: E402  (the pinned PySPG iterator)
 from cpm_abm.economy_abm import Economy, simulate  # noqa: E402
 from run_economy_figures import DOLLARS, engine_inputs, provenance, persistence, windows  # noqa: E402
 
@@ -31,8 +31,7 @@ def run(args):
     """One (stress, arm, seed): the arm and its S0 pair, gains, participation, failures, charge, issuer, verdict."""
     stress, arm, seed, n = args
     economy = replace(Economy(n=n, seed=seed), **STRESSES[stress])
-    # No provider fee (decided 5 Nov: P payments run on stablecoin rails), as in every runner that builds cell
-    # inputs.
+    # No provider fee (P payments run on stablecoin rails), as in every runner that builds cell inputs.
     inputs = engine_inputs()
     m, s0 = simulate(inputs, 0.6, economy, arm), simulate(inputs, 0.6, economy, "S0")
     end = economy.burn_in + economy.months
@@ -63,14 +62,14 @@ def summarise(rows, stress, arm):
 
 def jobs(n):
     """Every (stress, arm, seed, n) job, a PySPG catalogue (``finite_catalogue``) over the stresses, arms and seeds, the
-    last advancing fastest. Hand case: the first three are the baseline M1 run at each seed in turn; 4 x 2 x 3 = 24."""
+    last advancing fastest. Example: the first three are the baseline M1 run at each seed in turn; 4 x 2 x 3 = 24."""
     sweep = finite_catalogue(dict(stress=list(STRESSES), arm=list(ARMS), seed=list(SEEDS)))
     return [(p["stress"], p["arm"], p["seed"], n) for p in sweep]
 
 
 def summary_keys():
     """The summary's (arm, stress) pairs, a PySPG catalogue over the arms and stresses, the stress advancing fastest.
-    Hand case: M1 with each of the four stresses, then M2 with each."""
+    Example: M1 with each of the four stresses, then M2 with each."""
     return [(p["arm"], p["stress"]) for p in finite_catalogue(dict(arm=list(ARMS), stress=list(STRESSES)))]
 
 

@@ -23,3 +23,7 @@ results/rate_cut/measures.json.gz.*
 results/rate_cut/failure_counts.json.gz.*
 # The downloaded archives of those stores (results/README.md)
 *.large.tar
+# A run on a server (run.sh): its own Python and logs, the maps it runs, and what it packs to send back
+.server/
+runs/
+send_back/

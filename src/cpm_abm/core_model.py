@@ -1,4 +1,4 @@
-"""Core CPM model in the notation of the October 2026 draft of the paper: adoption plus circular-flow liquidity.
+"""Core CPM model in the notation of the paper: adoption plus circular-flow liquidity.
 
 The module holds the inputs the population model shares (``Inputs``, ``REVIEW_RATE``) and the earlier analytical
 core model: one representative 30-day pay cycle for each arm, with adoption as a share that moves month by month.
@@ -8,15 +8,14 @@ set out below.
 Participation spreads socially and is kept or abandoned on
 experience; nobody joins on a computed gain. The overall benefit is
 emergent: payments fail when a payer's liquidity need exceeds its buffer and
-outside credit is unavailable (the October 2026 draft's removed population-test environment:
-precautionary buffers, limited outside credit, idiosyncratic shocks). A
+outside credit is unavailable (precautionary buffers, limited outside credit, idiosyncratic shocks). A
 failed payment is missing income for its recipient, so failures propagate.
 Fee savings are transfers (they recirculate) and are excluded unless switched on.
 Amounts are per agent per month in units of monthly payments (y = 1); fields
 marked "declared" are modelling choices.
 
 Arms, each against S0 in the same economy with the same adoption rules:
-M1 nominal CPM (the October 2026 draft's contract), U the uncharged control (M1 with no holding
+M1 nominal CPM (the paper's contract), U the uncharged control (M1 with no holding
 charge or rebate), M2 purchasing-power CPM (P indexed to J, contract in P
 terms) and M0 actual DeFi (pinned Compound III USDC market, no CPM).
 Participants in the pool arms decide whether to keep their precautionary
@@ -31,8 +30,7 @@ SWEEPS = 60  # fixed-point iterations for the completion rate
 ARMS = ("M0", "M1", "U", "M2")
 # Experience review rate, a Poisson intensity a month: the monthly speed of technology adjustment k = 0.166 (standard
 # error 0.032; Crouzet, Gupta and Mezzanotti, Journal of Political Economy 131(11), 2023, Table 4). The models draw a
-# review once a month, so the chance of at least one review in a month is 1 - exp(-0.166) = 0.1530 (``Inputs.upsilon``;
-# source audit, 13 Nov 2026; until then 0.166 was read as the monthly chance).
+# review once a month, so the chance of at least one review in a month is 1 - exp(-0.166) = 0.1530 (``Inputs.upsilon``).
 REVIEW_RATE = 0.166
 
 
@@ -68,7 +66,7 @@ class Inputs:
     xi1: float = 0.38 / 12       # joining: imitation per month (same source)
     upsilon: float = float(-np.expm1(-REVIEW_RATE))  # monthly chance of a review, 0.1530 (``REVIEW_RATE``)
     noise: float = 1e-4          # spread of experienced outcomes, months of payments (declared)
-    pool_cash_return: bool = False  # PROPOSED lever, not in the October 2026 draft: the pool, not the issuer, earns the reserve return on its idle cash
+    pool_cash_return: bool = False  # proposed lever, not in the paper: the pool, not the issuer, earns the reserve return on its idle cash
     arm: str = "M1"              # one of ARMS
     inflation: float = 0.037 / 12  # dJ/J for M2: BLS CPI-U, 12 months to September 2026
     supply_premium: float = 0.0  # M0 supply rate above rho_H; 0 = risk-adjusted. Pinned block: 0.0277/12 (7.27% vs 4.5%)
@@ -128,12 +126,12 @@ def _solve_phi(state, shape):
 def _pool(inputs, rho, A, keep):
     """M1, U or M2 with participants' buffers released into the pool (keep=False) or held as idle P.
 
-    This closed form is the 20 October 2026 paper's contract, superseded by the assumption register (the 3 to 5 Nov
-    contract the economy runs); nothing in the engine (``economy_abm``) calls it. It is kept for the core model's own
+    This closed form is the paper's analytical contract, which the economy does not run (its contract is the one in
+    the assumption register); nothing in the engine (``economy_abm``) calls it. It is kept for the core model's own
     tests (tests/test_core_model.py) only.
 
     The contract runs in P terms: in M2 the comparable return is rho_H - dJ/J
-    and every nominal amount adds back dJ/J (the October 2026 draft's real-share and loan-cost
+    and every nominal amount adds back dJ/J (the paper's real-share and loan-cost
     equations).
     """
     f = _frame(inputs, rho, A)
@@ -180,7 +178,7 @@ def _pool(inputs, rho, A, keep):
     working = np.minimum(f["float_p"], (1 + inputs.alpha) * internal)
     liquid = share * (f["float_p"] + (inputs.buffer if keep else 0.0))
     c_ins = np.divide(np.maximum(rho_p, 0.0) * P_bar, liquid, out=np.zeros(phi.shape), where=liquid > 0)
-    # Payment-use bound (the October 2026 draft): only payers with a positive margin M_i are included; with none
+    # Payment-use bound (the paper): only payers with a positive margin M_i are included; with none
     # included the bound is +inf and c = c_ins (a payer with M_i <= 0 "does not set the rate for everyone else").
     c_ir = np.divide(margin, working, out=np.full(phi.shape, np.inf), where=(working > 0) & (margin > 0))
     c = np.where(s["ready"] & charged, np.minimum(c_ins, c_ir), 0.0)
@@ -192,7 +190,7 @@ def _pool(inputs, rho, A, keep):
     outside_e = inputs.penalty * s["u_e"] + inputs.r_ext * inputs.term * inputs.access * gap_e
     outside_p = inputs.penalty * s["u_p"] + inputs.r_ext * inputs.term * (1 - s["sigma"]) * inputs.access * s["gap_p"]
     per_head = np.divide(s["N"], share, out=np.zeros(phi.shape), where=share > 0)
-    # A buffer earns its yield only on the part not spent on needs for `term` months (a review correction).
+    # A buffer earns its yield only on the part not spent on needs for `term` months.
     used_e = s["base_e"] + f["shock_mean"] - gap_e
     used_p = s["need_p"] - s["gap_p"]
     held = (pi * (inputs.buffer - inputs.term * used_p) - f["idle"] * inputs.buffer if keep else
@@ -284,7 +282,7 @@ def evaluate(inputs, rho, A):
 
 
 def gains(inputs, rho, A):
-    """Each position's monthly gain over S0, the channels, and the system total (the October 2026 draft's
+    """Each position's monthly gain over S0, the channels, and the system total (the paper's
     neutrality result).
 
     The participant gain splits into: outside interest and penalties avoided,
@@ -299,7 +297,7 @@ def gains(inputs, rho, A):
     share = np.atleast_1d(np.asarray(A, float))[None, :]
     wallet0, outside0 = zero["wallet_e"][:, :1], zero["outside_e"][:, :1]
     out["parts"]["outside"] = outside0 - out["outside_p"]
-    # S0's buffer forgoes its yield while spent on needs (the same review correction); that saving belongs to the
+    # S0's buffer forgoes its yield while spent on needs (the same rule); that saving belongs to the
     # buffer channel.
     out["parts"]["buffer"] = out["parts"]["buffer"] + zero["buffer_use_e"][:, :1]
     gain_p, gain_e = out["wallet_p"] - wallet0, out["wallet_e"] - wallet0
@@ -338,7 +336,7 @@ def adopt(inputs, rho, A0, months, dt=0.05, grid=401):
         """Overflow-safe logistic weight."""
         return 0.5 * (1.0 + np.tanh(x / 2.0))
 
-    # The integration is in continuous time, so it reads the review intensity, not the monthly chance (13 Nov 2026).
+    # The integration is in continuous time, so it reads the review intensity, not the monthly chance.
     review = -np.log1p(-inputs.upsilon)
     path = [state.copy()]
     for step in range(months * per_month):

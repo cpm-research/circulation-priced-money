@@ -6,8 +6,9 @@ Nothing in the model was changed because of this file.
 
 ## 1. The model's stress control in the same units
 
-The control adds 0 to 2 points to the monthly chance that a job loses its wage, for 12 months (months 25 to 36),
-on top of the normal 0.55% a month. Spell lengths keep their normal law (median 11.5 weeks, mean 24.8 weeks).
+The control adds 0 to 2 points to the monthly chance that a job loses its wage, for 12 months (months 25 to 36
+after launch in the first run, on which the shares below were measured; months 121 to 132 in the second run), on
+top of the normal 0.55% a month. Spell lengths keep their normal law (median 11.5 weeks, mean 24.8 weeks).
 Measured share of jobs without a wage (S0, r_out 4.4%, a0 0.2, three development seeds, 11 Nov map; the job-loss
 path is the same in every arm):
 

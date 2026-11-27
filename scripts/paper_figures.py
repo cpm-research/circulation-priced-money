@@ -20,8 +20,9 @@ import math
 import re
 import textwrap
 from statistics import NormalDist
-from itertools import product
+from itertools import chain, product
 from pathlib import Path
+import sys
 
 import matplotlib as mpl
 
@@ -33,6 +34,9 @@ from matplotlib.collections import LineCollection      # noqa: E402
 from matplotlib.colors import ListedColormap           # noqa: E402
 from matplotlib.lines import Line2D                    # noqa: E402
 from matplotlib.patches import Patch                   # noqa: E402
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))   # so that ``scripts`` imports as a package
+from scripts.paper_numbers import defi_named, second_run_store   # noqa: E402  (after the path is set)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Fixed choices: colours, names, lines and thresholds
@@ -165,7 +169,8 @@ class Result:
         self.rates, self.launches, self.levels = map(sorted, map(set, list(zip(*self.cells)) or [(), (), ()]))
         self.n = dig(self.summary, ["economy", "n"])
         # The holding-time histogram's bin edges in days (the last bin open above its edge), as the first job stores.
-        self.edges = next((job["edges"] for jobs in self.monthly.values() for job in jobs if job.get("edges")), None)
+        self.edges = next((job["edges"] for job in chain.from_iterable(self.monthly.values()) if job.get("edges")),
+                          None)
 
     def mean(self, path, r, a, d):
         """The seed mean summary.json stores at ``path`` in cell (r, a, d); NaN where not stored."""
@@ -347,8 +352,8 @@ def gain_path(yard, end, bound=False):
 
 
 def gain_panel(ax, res, r, yard, miss):
-    """One panel: the complete gain bracket as built (a band from zero to face value) and under the cash-advance
-    bound (a lighter band with dashed edges), with the margin as a thin line."""
+    """One panel: the complete gain bracket without the bound (a band from zero to face value) and under the
+    cash-advance bound (a lighter band with dashed edges), with the margin as a thin line."""
     x = np.array(res.launches)
     for bound, alpha, ls in ((False, 0.45, "-"), (True, 0.15, "--")):
         zero, face = (res.curve(gain_path(yard, end, bound), r, 0.0) for end in ("zero", "face"))
@@ -370,7 +375,7 @@ def fig_gains(res, out):
         gain_panel(ax, res, r, yard, miss)
         launch_axis(ax, res, label=ax in axes[-1])
     [tag(ax, f"Outside rate {pct(r)}") for ax, r in zip(axes[0], res.rates)]
-    names = {"S0": "banks and cards", "M0": "best-case DeFi"}
+    names = {"S0": "banks and cards", "M0": defi_named("best-case DeFi", res.summary)}
     [ax.set_ylabel(f"Gain over {names[y]}\n(\\$ a person a year)") for ax, y in zip(axes[:, 0], yards)]
     fig.tight_layout(h_pad=0.8, w_pad=0.6)
     col = ARM_COL[CPM]
@@ -499,10 +504,10 @@ REGION_KINDS = ((3, "passes as built and under the bound", "o", ARM_COL[CPM], AR
 
 
 def region_code(res, slices, bound_era, r, a, d):
-    """One cell's reading of the whole claim, (a), (b) and (d), for CPM: 3 passes as built and under the bound,
-    2 as built only, 1 as built with the bound not stored, 0 does not pass, -1 not stored. From the cell's own
-    claim block where it has one, else from claim_statistics.regions (whose 'passing' list follows the map's own
-    'all': as built only on a map before the bound, as built and under the bound after it).
+    """One cell's reading of the whole claim, (a), (b) and (d), for CPM: 3 passes without the bound and under it,
+    2 without the bound only, 1 without the bound with the bound not stored, 0 does not pass, -1 not stored. From
+    the cell's own claim block where it has one, else from claim_statistics.regions (whose 'passing' list follows
+    the map's own 'all': without the bound on a map that stores none, without and under it on a map that does).
 
     With ``res.reading`` "majority" the cell is read on a majority of its seeds instead (the runner's stored
     ``verdict_majority`` and ``verdict_majority_bound``, "stable" or the reason it is not). That is the reading
@@ -625,7 +630,8 @@ def lattice(ax, rates, launches, levels, marked):
     for z in range(nz):
         [ax.plot([0, nx - 1], [y, y], [z, z], color="#dcdcdc", lw=0.4, zorder=1) for y in range(ny)]
         [ax.plot([x, x], [0, ny - 1], [z, z], color="#dcdcdc", lw=0.4, zorder=1) for x in range(nx)]
-    [ax.plot([x, x], [y, y], [0, nz - 1], color="#ececec", lw=0.4, zorder=0) for x in (0, nx - 1) for y in (0, ny - 1)]
+    [ax.plot([x, x], [y, y], [0, nz - 1], color="#ececec", lw=0.4, zorder=0)
+     for x, y in product((0, nx - 1), (0, ny - 1))]
     for axis in (ax.xaxis, ax.yaxis, ax.zaxis):
         axis.pane.set_visible(False)
         axis.line.set_color("#888888")
@@ -655,10 +661,11 @@ def fig_grid(res, cut, out):
     for summary, cells, extra in reversed(maps):       # the map last, so a rate both ran is read on the map
         owner.update({r: (summary, cells, extra) for r, _, _ in cells})
     rates = sorted(owner)
-    launches = sorted({a for _, cells, _ in maps for _, a, _ in cells})
-    levels = sorted({d for _, cells, _ in maps for _, _, d in cells})
+    every = list(chain.from_iterable(cells for _, cells, _ in maps))
+    launches = sorted({a for _, a, _ in every})
+    levels = sorted({d for _, _, d in every})
     marked = {r for r in rates if owner[r][2]}
-    places = [(i, j, k) for k in range(len(levels)) for i in range(len(rates)) for j in range(len(launches))]
+    places = [(i, j, k) for k, i, j in product(range(len(levels)), range(len(rates)), range(len(launches)))]
     cell = lambda i, j, k: owner[rates[i]][1].get((rates[i], launches[j], levels[k]))
     x, y, z = (np.array([p[n] for p in places], float) for n in (1, 0, 2))
 
@@ -713,7 +720,8 @@ def fig_grid(res, cut, out):
         ax.scatter(x[below], y[below], z[below], s=size, depthshade=False, facecolor="white", edgecolor=INK,
                    linewidths=0.9, zorder=4)
     for (left, bottom), text in zip(boxes, ("(a) The registered claim", "(b) Payments that fail",
-                                            "(c) Gain over banks and cards", "(d) Gain over best-case DeFi")):
+                                            "(c) Gain over banks and cards",
+                                            defi_named("(d) Gain over best-case DeFi", res.summary))):
         fig.text(left + 0.012, 0.955, text, fontsize=8.5, color=INK, va="bottom")
     handles = [Line2D([], [], ls="", marker=m, ms=4.5, mfc=f, mec=e, mew=0.9, label=t) for k, t, m, f, e in GRID_KINDS
                if (codes == k).any()]
@@ -957,21 +965,20 @@ def fig_robust_paths(robust, out):
     rows = max(map(len, columns.values()))
     fig, axes = plt.subplots(rows, len(groups), figsize=(WIDTH, 1.7 * rows + 0.6), sharex=True, sharey=True,
                              squeeze=False)
-    launches = sorted({a for _, _, res in robust if res is not None for a in res.launches})
+    launches = sorted(set(chain.from_iterable(res.launches for _, _, res in robust if res is not None)))
     shades = plt.cm.Greens(np.linspace(0.35, 0.95, max(len(launches), 1)))   # light for low launch, dark for high
-    for j, g in enumerate(groups):
-        for i in range(rows):
-            ax = axes[i, j]
-            if i >= len(columns[g]):
-                ax.set_axis_off()
-                continue
-            _, label, res = columns[g][i]
-            paths_panel(ax, res, label, shades, miss)
-            ax.set_ylim(0, 1)
-            ax.set_xticks([0, 12, 24, 36, 48, 60])
-            if i == len(columns[g]) - 1:
-                ax.set_xlabel("Months since launch")
-                ax.xaxis.set_tick_params(labelbottom=True)
+    for (j, g), i in product(enumerate(groups), range(rows)):
+        ax = axes[i, j]
+        if i >= len(columns[g]):
+            ax.set_axis_off()
+            continue
+        _, label, res = columns[g][i]
+        paths_panel(ax, res, label, shades, miss)
+        ax.set_ylim(0, 1)
+        ax.set_xticks([0, 12, 24, 36, 48, 60])
+        if i == len(columns[g]) - 1:
+            ax.set_xlabel("Months since launch")
+            ax.xaxis.set_tick_params(labelbottom=True)
     [ax.set_ylabel("Participation") for ax in axes[:, 0]]
     fig.tight_layout(h_pad=0.5, w_pad=0.8)
     for j, g in enumerate(groups):
@@ -987,7 +994,7 @@ def fig_robust_paths(robust, out):
 
 
 def hand_boundary(theta, j0, months=END):
-    """The plan's hand case (section 5.2): in a well-mixed population with no leaving, below a common threshold
+    """The plan's worked example (section 5.2): in a well-mixed population with no leaving, below a common threshold
     theta only innovation works, so participation reaches theta from a launch a0 in ln((1 - a0) / (1 - theta)) / j0
     months; it does so within ``months`` from a launch of at least 1 - (1 - theta) exp(months j0) (0 if lower)."""
     return max(0.0, 1 - (1 - theta) * np.exp(months * j0))
@@ -995,7 +1002,7 @@ def hand_boundary(theta, j0, months=END):
 
 def fig_threshold_map(base, thresholds, out):
     """Participation at month 60 less the launch share, CPM, seed means, by launch share (columns) and common
-    threshold (rows: none, the base, then each threshold), with the hand case's boundary marked in each threshold
+    threshold (rows: none, the base, then each threshold), with the example's boundary marked in each threshold
     row. ``thresholds`` lists (theta, Result or None)."""
     miss = Missing("fig_threshold_map")
     rows = [("no threshold", None, base)] + [(f"{theta:g}", theta, res) for theta, res in thresholds]
@@ -1181,7 +1188,9 @@ def fig_size_check(sizes, out):
     sizes = sorted(sizes, key=lambda res: res.n)
     # The (outside rate, launch) cells any size ran with no distress.
     cells = sorted({k[:2] for k in set().union(*[res.cells for res in sizes]) if k[2] == 0.0})
-    rows = [("S0", "Gain over banks\nand cards (\\$ a year)"), ("M0", "Gain over best-case\nDeFi (\\$ a year)"),
+    rows = [("S0", "Gain over banks\nand cards (\\$ a year)"),
+            ("M0", "Gain over DeFi (stablecoin\npayments) (\\$ a year)" if second_run_store(sizes[0].summary)
+             else "Gain over best-case\nDeFi (\\$ a year)"),
             ("U", "Gain over the pool\nwithout the charge (\\$ a year)"),
             (None, f"Seeds with a pool run\nat {HEADLINE * 100:g} points")]
     fig, axes = plt.subplots(len(rows), len(cells), figsize=(WIDTH, 6.6), sharex=True, sharey="row", squeeze=False)
@@ -1318,19 +1327,27 @@ def fig_sources(res, out):
     fig, axes = plt.subplots(2, len(res.rates), figsize=(WIDTH, 4.5), sharex=True, sharey="row")
     axes = np.atleast_2d(axes)
     spots = np.arange(len(res.launches))
-    for col, r in enumerate(res.rates):
+
+    def stacked(ax, values):
+        """One panel's bars: each part of the gain stacked on the parts before it, a positive part upwards from the
+        positive parts' top and a negative one downwards from the negative parts' bottom."""
+        up, down = np.zeros(spots.size), np.zeros(spots.size)
+        for (_, _, colour), level in zip(SOURCE_PARTS, values):
+            base = np.where(level >= 0, up, down)
+            ax.bar(spots, level, bottom=base, width=0.72, color=colour, edgecolor="white", linewidth=0.5, zorder=2)
+            up, down = up + np.where(level >= 0, level, 0.0), down + np.where(level < 0, level, 0.0)
+
+    def rate_column(col, r):
+        """The two panels of one outside rate, the gain's parts in dollars and as shares of the gain; none where a
+        part is not stored."""
         parts = np.array([[sum(number(dig(res.cells.get((r, a, 0.0)), [CPM, "split", name])) for name in names)
                            * 12 / months for a in res.launches] for _, names, _ in SOURCE_PARTS])
         if not miss.check(parts, f"summary.json cells[r_out {r:g}].{CPM}.split"):
-            continue
+            return
         total = parts.sum(axis=0)
         for row, values in enumerate((parts, 100 * parts / total)):
             ax = axes[row, col]
-            up, down = np.zeros(spots.size), np.zeros(spots.size)
-            for (_, _, colour), level in zip(SOURCE_PARTS, values):
-                base = np.where(level >= 0, up, down)
-                ax.bar(spots, level, bottom=base, width=0.72, color=colour, edgecolor="white", linewidth=0.5, zorder=2)
-                up, down = up + np.where(level >= 0, level, 0.0), down + np.where(level < 0, level, 0.0)
+            stacked(ax, values)
             ax.plot(spots, total if row == 0 else np.full(spots.size, 100.0), ls="", marker="o", ms=3.2, color=INK,
                     zorder=4)
             ax.axhline(0, color="#888888", lw=0.6, zorder=1)
@@ -1339,6 +1356,9 @@ def fig_sources(res, out):
         axes[1, col].set_xticks(spots)
         axes[1, col].set_xticklabels([f"{a * 100:g}" for a in res.launches])
         axes[1, col].set_xlabel("Launch participation (%)")
+
+    for col, r in enumerate(res.rates):
+        rate_column(col, r)
     axes[0, 0].set_ylabel("\\$ a person a year")
     axes[1, 0].set_ylabel("Share of the gain (%)")
     handles = [Patch(facecolor=colour, edgecolor="white", label=text) for text, _, colour in SOURCE_PARTS]
@@ -1376,26 +1396,29 @@ def fig_path(res, second, out, r=0.044):
 
     ratio = lambda b: np.divide(b["N"], b["Q"], out=np.full(b["N"].shape, np.nan), where=b["Q"] > 0)
     served = lambda b: b["bridges_drawn_over_wanted"]
-    for col, d in enumerate(levels):
-        for row, read in enumerate((ratio, served)):
-            ax = axes[row, col]
-            for one, (_, line, strength) in zip(maps, RULES):
-                block = paths(one, d, read)
-                if not miss.check(block, f"measures.json monthly N, Q and bridges_drawn_over_wanted, {one.folder.name}"):
-                    continue
-                month = np.arange(1, block.shape[1] + 1)
-                ax.fill_between(month, np.nanmin(block, axis=0), np.nanmax(block, axis=0), color=ARM_COL[CPM],
-                                alpha=0.16 * strength, lw=0, zorder=1)
-                ax.plot(month, np.nanmedian(block, axis=0), ls=line, color=ARM_COL[CPM], lw=1.6, zorder=3)
-            if d > 0:
-                ax.axvspan(24.5, 36.5, color="#000000", alpha=0.06, lw=0, zorder=0)
-            if row == 0:
-                ax.axhline(1.0, color="#888888", lw=0.6, zorder=1)
-                tag(ax, "No distress" if d == 0 else f"{d * 100:g} points of distress, months 25 to 36 shaded")
-            else:
-                ax.set_xlabel("Months after launch")
-            ax.set_xlim(1, 60)
-            ax.set_xticks(range(12, 61, 12))
+    def bands(ax, d, read):
+        """One panel's band and median line for each entry rule's map, at distress ``d``, of the reading ``read``."""
+        for one, (_, line, strength) in zip(maps, RULES):
+            block = paths(one, d, read)
+            if not miss.check(block, f"measures.json monthly N, Q and bridges_drawn_over_wanted, {one.folder.name}"):
+                continue
+            month = np.arange(1, block.shape[1] + 1)
+            ax.fill_between(month, np.nanmin(block, axis=0), np.nanmax(block, axis=0), color=ARM_COL[CPM],
+                            alpha=0.16 * strength, lw=0, zorder=1)
+            ax.plot(month, np.nanmedian(block, axis=0), ls=line, color=ARM_COL[CPM], lw=1.6, zorder=3)
+
+    for (col, d), (row, read) in product(enumerate(levels), enumerate((ratio, served))):
+        ax = axes[row, col]
+        bands(ax, d, read)
+        if d > 0:
+            ax.axvspan(24.5, 36.5, color="#000000", alpha=0.06, lw=0, zorder=0)
+        if row == 0:
+            ax.axhline(1.0, color="#888888", lw=0.6, zorder=1)
+            tag(ax, "No distress" if d == 0 else f"{d * 100:g} points of distress, months 25 to 36 shaded")
+        else:
+            ax.set_xlabel("Months after launch")
+        ax.set_xlim(1, 60)
+        ax.set_xticks(range(12, 61, 12))
     axes[0, 0].set_ylabel("Capital over its target")
     axes[1, 0].set_ylabel("Bridges served")
     handles = [Line2D([], [], color=ARM_COL[CPM], ls=line, lw=1.6, label=text) for (text, line, _), _ in zip(RULES, maps)]
@@ -1421,18 +1444,22 @@ def fig_charge_gain(res, second, out):
     path = ["arms", CPM, "against", "U", "gain_usd_a_year"]
     fig, axes = plt.subplots(len(maps), 1, figsize=(WIDTH, 2.25 * len(maps) + 0.55), sharex=True, squeeze=False)
     width = 0.84
+
+    def intervals(ax, one):
+        """One map's intervals: at each distress level, one for each cell run, by outside rate and then launch."""
+        cells = list(product(one.rates, one.launches))
+        for (k, d), (j, (r, a)) in product(enumerate(one.levels), enumerate(cells)):
+            values = one.seeds(path, r, a, d)
+            if not miss.check(values, f"cells.json jobs[].{'.'.join(path)}, {one.folder.name}"):
+                continue
+            mean, half = t_interval(values)
+            x = k + (j + 0.5) / len(cells) * width - width / 2
+            colour = RATE_COL.get(r, SOFT)
+            ax.plot([x, x], [mean - half, mean + half], color=colour, lw=0.9, zorder=2)
+            ax.plot([x], [mean], ls="", marker="o", ms=2.3, color=colour, zorder=3)
+
     for ax, (text, one) in zip(axes[:, 0], maps):
-        cells = [(r, a) for r in one.rates for a in one.launches]
-        for k, d in enumerate(one.levels):
-            for j, (r, a) in enumerate(cells):
-                values = one.seeds(path, r, a, d)
-                if not miss.check(values, f"cells.json jobs[].{'.'.join(path)}, {one.folder.name}"):
-                    continue
-                mean, half = t_interval(values)
-                x = k + (j + 0.5) / len(cells) * width - width / 2
-                colour = RATE_COL.get(r, SOFT)
-                ax.plot([x, x], [mean - half, mean + half], color=colour, lw=0.9, zorder=2)
-                ax.plot([x], [mean], ls="", marker="o", ms=2.3, color=colour, zorder=3)
+        intervals(ax, one)
         ax.axhline(0, color=INK, lw=0.7, zorder=1)
         ax.set_ylabel("\\$ a person a year")
         ax.grid(axis="x", visible=False)
@@ -1475,7 +1502,9 @@ def fig_low_rates(res, cut, out):
     thick line their median. Hollow markers are the rate cut."""
     miss = Missing("fig_low_rates")
     maps = [res] + ([] if cut is None else [cut])
-    owner = {r: one for one in reversed(maps) for r in one.rates}
+    owner = {}
+    for one in reversed(maps):                         # the map last, so a rate both ran is read on it
+        owner.update(dict.fromkeys(one.rates, one))
     rates = sorted(owner)
     x = np.array(rates) * 100
     hollow = np.array([owner[r] is not res for r in rates])
@@ -1497,7 +1526,8 @@ def fig_low_rates(res, cut, out):
     axes[0].axhspan(-10, 0, color=ARM_COL[CPM], alpha=0.08, lw=0, zorder=0)
     axes[0].axhline(0, color=INK, lw=0.7, zorder=1)
     for (text, (kind, tier), line), colour in zip(CROSSING_LOANS, (ARM_COL[CPM], SOFT)):
-        listed = {round(float(row["r_out"]), 6): row for one in maps for row in dig(one.summary, ["outside_rates"]) or []}
+        stored = chain.from_iterable(dig(one.summary, ["outside_rates"]) or [] for one in maps)
+        listed = {round(float(row["r_out"]), 6): row for row in stored}
         values = np.array([100 * number(dig(listed.get(round(r, 6)), ["vehicle", kind, tier])) for r in rates])
         if miss.check(values, "summary.json outside_rates[].vehicle"):
             marked(axes[0], coupon - values, colour, line, label=text)
@@ -1603,6 +1633,8 @@ def main(argv=None):
     args.out.mkdir(parents=True, exist_ok=True)
     res = Result(args.map)
     res.reading = args.reading                           # read by the region figure only
+    # M0's name in the legends: DeFi (stablecoin payments) for a map of the second run, its first-run name otherwise.
+    ARM_LAB["M0"] = defi_named("Best-case DeFi", res.summary)
     print(f"map {args.map}: {len(res.cells)} cells, {sum(map(len, res.jobs.values()))} seed runs, {res.n} people")
     [print(f"side {name} ({folder}): read by no figure in this set") for name, folder in args.side]
     [f(res, args.out) for f in (fig_failed_payments, fig_gains, fig_charge, fig_region, fig_stress_boundary,

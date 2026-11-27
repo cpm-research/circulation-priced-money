@@ -2,162 +2,105 @@
 
 What is covered
 ---------------
-* Calibration: the population (wealth, spending, billing, cards), starting
-  cushions from the Fed survey with the rest illiquid, outside returns by
-  wealth group, the monthly obligations (wages, services) and card ownership
-  by bracket.
-* Accounting: the conservation identity in every arm (S0, M0, M1, M2, U),
-  receivables equal open obligations, overdrafts are booked as debt,
-  write-offs keep the legal debt while the loss is valuation, and the
-  reserve account matches P owed (backing).
-* Mechanics: priority payment, dual-balance conversion, instalments, fee
-  routing (a card holder short of money puts card purchases on the card),
-  the 12-month window of the leaving rule, CPI with indexed P (M2),
-  Comet in M0, loss learning by product, the issuer as a pure custodian
-  with no shares and no fund (5 Nov), its 12-month stay test, owners leaving
-  by the users' rule on a stream of their own and paid from pool cash after
-  the notice, the wind-down, same-day
-  savings (in settlement, the statement, instalments and the buffer replay),
-  the flat failure fee on bills and wages (at most one a day, in settlement,
-  the pool's limit and the replay), common random numbers across arms, and
-  pool coverage lowering failures.
-* One savings rule (1 Nov): only the money-market part of spare money goes
-  to the pool, while its quote reaches the saver's own outside rate (r_out
-  plus the owners' spread, 4 Nov). Owners file to exit by the logistic
-  leaving rule on each owner's own realised return (decided 5 Nov). Runs
-  that check the pool's own mechanics use a test device whose savers
-  compare the pool with their mixed return, so a pool forms.
-* Competitive P and pool entry by the rule first set out on 4 Nov
-  (decided 4 and 5 Nov; now section (Entry and exit) of
-  paper/cpm.tex): the issuer keeps its derived break-even custody, c_I of every
-  unit of P; demurrage c is the last cycle's capital cost of bridging over
-  its wallet P balance-time, at most rho_p - c_I, so coverage is 1 unless c
-  is bounded; wallet P is paid y_P = rho_p - c_I - c on its balance-time,
-  demurrage goes to the pool and the pool's own cash earns rho_p - c_I;
-  P's published yield is what the deposit rule and the replay read;
-  coverage seals a bridge at the coupon less the capital part demurrage
-  pays; demurrage pays for the liquidity kept available, the standby at the
-  alternative less what idle cash earns, so owners earn their alternative
-  on a steady cycle and N* starts from the peak bridging need (5 Nov);
-  demurrage that just pays the cut leaves the margin at zero and the
-  pool cash's return is pool income; capital settles at N*, the capital
-  target, since F = 0 with no fees (5 Nov), where the quote is owners'
-  alternative, and a pool whose last share is paid out reopens by free
-  entry in a later dealing (5 Nov), with the launch plan pricing the
-  fixed cost on its lending need and no demurrage; U is the same P with c = 0
-  on the same draws; and a small run with no provider fee forms a pool at
-  its limit with every record kept and wealth exact in every arm.
-* P payments on stablecoin rails (5 Nov): a P payment costs its payer one
-  transfer's gas, with or without a pool, half a USDC payment's two legs;
-  no provider fee exists anywhere and the engine reads none; the issuer has
-  no fee or rail line; the coupon carries the pool's fixed cost at
-  break-even, and the pool's own margin is zero at break-even in a steady
-  cycle.
-* M0 as the strongest real DeFi (5 Nov): USDC earns the bill less the Sky
-  Savings Rate's spread under it, verified on chain, and Comet's rates move
-  with r_out one for one from their observed October medians (the fitted
-  lines a sensitivity); a USDC payment pays two legs of Base gas whatever
-  its value; USDC converts at no fee. The pool's fixed cost is sourced and
-  the runners read its level.
-* The boundary rule (31 Oct, 1 Nov): card, conversion and pool costs leave
-  the economy, card rewards come back, outside lenders' interest returns
-  only under the stress, and the real part, transfers and cash check read
-  their hand cases.
-* The population map: the distress reading (a quarter of the dip, three
-  months running, looked for after the dip), the reward-for-failure share,
-  the share of seeds Persistent (a seed where a falsifier fires is not, nor
-  one worse than M0 where the cell is systematically worse) and its Wilson
-  interval, the full cross on fresh seeds, and one short distress job read
-  end to end, every job running S0, M0, U, M1 and M2.
-* The region reading and its figures (5 Nov): a pool arm's cell is stable
-  when its pool forms and persists by the Wilson rule, the issuer stays and
-  every group's mean gain against S0 and M0, read in full (5 Nov), is at
-  least -$2 a person a year, each part read on its hand case, with the
-  bare-majority reading beside; liquidity and demurrage by window read
-  their hand cases; and the region figures draw from a tiny synthetic store
-  as PNG and PDF, skip what a store cannot support and never overwrite.
-* The records (the 3 Nov review): a run stores the Inputs fields and
-  constants the engine reads, the Economy without the fields each job sets,
-  the share of bridges wanted the pool drew under its own name, and cash to
-  lend, which credit death reads; provenance hashes each source as
-  committed and names the Comet pin; the map defaults to 12 workers on one
-  BLAS thread each, can
-  select cells of the grid (Step 2 is 6 jobs and 30 runs) and writes its
-  four stores, read back with their labels, notes and selection; and the
-  new records change no outcome.
-* The failure counts (3 Nov): failed bills and wages in fee units, unpaid
-  shares and whole items (the fewest a bank paying smallest first returns),
-  declined card-eligible purchases apart, the pool's bridges in their place,
-  the fee reproduced from the counts, the monthly cap read from their spread,
-  and the counting changes no outcome.
-* The wage-loss path and paired differences (3 Nov): jobs without a wage as
-  the month's average and on its last day, stored for every arm with the
-  wages their payers kept, and each seed's paired differences against S0
-  and M0 a year after launch, by harm group, quintile, billing cycle and
-  class (card holding x income source, 4 Nov), with the gain by the arm's
-  own W2 role beside; neither changes an outcome.
-* Reports (3 Nov): owners' realised return from the pool's books (each
-  owner's own since buying, over at most 12 months), the issuer's share of
-  pool capital and crossings between E and P (at most one a person a step
-  in each kind, net), with the runner's reads and stored monthly series;
-  net of issuer money, owners lose at most their whole holding; none of
-  them changes an outcome. Owners' return by loan year (4 Nov): the pool's
-  loans by product and the year after launch they were made, their income
-  to owners (coupons less the operating cost, write-offs, recoveries) and
+* Calibration: the population (wealth, spending, billing, cards), starting cushions from the Fed survey with the
+  rest illiquid, outside returns by wealth group, the monthly obligations (wages, services) and card ownership by
+  bracket.
+* Accounting: the conservation identity in every arm (S0, M0, M1, M2, U), receivables equal open obligations,
+  overdrafts are booked as debt, write-offs keep the legal debt while the loss is valuation, and the reserve account
+  matches P owed (backing).
+* Mechanics: priority payment, dual-balance conversion, instalments, fee routing (a card holder short of money puts
+  card purchases on the card), the 12-month window of the leaving rule, CPI with indexed P (M2), Comet in M0, loss
+  learning by product, the issuer as a pure custodian with no shares and no fund, its 12-month stay test, owners
+  leaving by the users' rule on a stream of their own and paid from pool cash after the notice, the wind-down,
+  same-day savings (in settlement, the statement, instalments and the buffer replay), the flat failure fee on bills
+  and wages (at most one a day, in settlement, the pool's limit and the replay), common random numbers across arms,
+  and pool coverage lowering failures.
+* One savings rule: only the money-market part of spare money goes to the pool, while its quote reaches the saver's
+  own outside rate (r_out plus the owners' spread). Owners file to exit by the logistic leaving rule on each owner's
+  own realised return. Runs that check the pool's own mechanics use a test device whose savers compare the pool with
+  their mixed return, so a pool forms.
+* Competitive P and pool entry (section (Entry and exit) of paper/cpm.tex): the issuer keeps its derived break-even
+  custody, c_I of every unit of P; the holding charge (demurrage) c is the last cycle's capital cost of bridging over
+  its wallet P balance-time, at most rho_p - c_I, so coverage is 1 unless c is bounded; wallet P is paid
+  y_P = rho_p - c_I - c on its balance-time, demurrage goes to the pool and the pool's own cash earns rho_p - c_I;
+  P's published yield is what the deposit rule and the replay read; coverage seals a bridge at the coupon less the
+  capital part demurrage pays; demurrage pays for the liquidity kept available, the standby at the alternative less
+  what idle cash earns, so owners earn their alternative on a steady cycle and N* starts from the peak bridging
+  need; demurrage that just pays the cut leaves the margin at zero and the pool cash's return is pool income;
+  capital settles at N*, the capital target, since F = 0 with no fees, where the quote is owners' alternative, and a
+  pool whose last share is paid out reopens by free entry in a later dealing, with the launch plan pricing the fixed
+  cost on its lending need and no demurrage; U is the same P with c = 0 on the same draws; and a small run with no
+  provider fee forms a pool at its limit with every record kept and wealth exact in every arm.
+* P payments on stablecoin rails: a P payment costs its payer one transfer's gas, with or without a pool, half a
+  USDC payment's two legs; no provider fee exists anywhere and the engine reads none; the issuer has no fee or rail
+  line; the coupon carries the pool's fixed cost at break-even, and the pool's own margin is zero at break-even in a
+  steady cycle.
+* M0 as the strongest real DeFi: USDC earns the bill less the Sky Savings Rate's spread under it, read on chain, and
+  Comet's rates move with r_out one for one from their observed October medians (the fitted lines a sensitivity); a
+  USDC payment pays two legs of Base gas whatever its value; USDC converts at no fee. The pool's fixed cost is
+  sourced and the runners read its level.
+* The boundary rule: card, conversion and pool costs leave the economy, card rewards come back, outside lenders'
+  interest returns only under the stress, and the real part, transfers and cash check match their worked examples.
+* The population map: the distress reading (a quarter of the dip, three months running, looked for after the dip),
+  the reward-for-failure share, the share of seeds Persistent (a seed where a falsifier fires is not, nor one worse
+  than M0 where the cell is systematically worse) and its Wilson interval, the full cross on fresh seeds, and one
+  short distress job read end to end, every job running S0, M0, U, M1 and M2.
+* The region reading and its figures: a pool arm's cell is stable when its pool forms and persists by the Wilson
+  rule, the issuer stays and every group's mean gain against S0 and M0, read in full, is at least -$2 a person a
+  year, each part on its worked example, with the bare-majority reading beside; liquidity and demurrage by window
+  match their worked examples; and the region figures draw from a tiny synthetic store as PNG and PDF, skip what a
+  store cannot support and never overwrite.
+* The records: a run stores the Inputs fields and constants the engine reads, the Economy without the fields each
+  job sets, the share of bridges wanted the pool drew under its own name, and cash to lend, which credit death
+  reads; provenance hashes each source as committed and names the Comet pin; the map defaults to 12 workers on one
+  BLAS thread each, can select cells of the grid (Step 2 is 6 jobs and 30 runs) and writes its four stores, read
+  back with their labels, notes and selection; and the records change no outcome.
+* The failure counts: failed bills and wages in fee units, unpaid shares and whole items (the fewest a bank paying
+  smallest first returns), declined card-eligible purchases apart, the pool's bridges in their place, the fee
+  reproduced from the counts, the monthly cap read from their spread, and the counting changes no outcome.
+* The wage-loss path and paired differences: jobs without a wage as the month's average and on its last day, stored
+  for every arm with the wages their payers kept, and each seed's paired differences against S0 and M0 a year after
+  launch, by harm group, quintile, billing cycle and class (card holding x income source), with the gain by the
+  arm's own W2 role beside; neither changes an outcome.
+* Reports: owners' realised return from the pool's books (each owner's own since buying, over at most 12 months),
+  the issuer's share of pool capital and crossings between E and P (at most one a person a step in each kind, net),
+  with the runner's reads and stored monthly series; net of issuer money, owners lose at most their whole holding;
+  none of them changes an outcome. Owners' return by loan year: the pool's loans by product and the year after
+  launch they were made, their income to owners (coupons less the operating cost, write-offs, recoveries) and
   principal-time, adding up to the books R reads; it changes no outcome.
-* The buffers people choose (the 3 Nov review): each person's buffer as the
-  dealing chose it, by month, and its means by card holding, stored for
-  every arm and by person for S0 on the development seeds; it changes no
-  outcome.
-* Each record that changes no outcome is checked against a run with it
-  silenced on every other record of the run, including in a forced run with
-  distress whose owners ask to exit and whose pool takes demurrage.
-* The household economy and failure cost (3 and 4 Nov): the replay counts
-  a re-queued wage once; wages settle on their jobs' BLS
-  pay dates; at most two fees a payer a model month (three until the S0
-  check, 4 Nov), the cap binding at whatever it is set to, the buffer replay
-  pricing failures past them at $27 and the experience replays at $0, the
-  pool's limit counting the capped fee; fee debt is interest-free and repaid
-  first; and the real failure line counts unpaid and bridged shares.
-  Earned-wage access applies only to wages earned and still unpaid, on a
-  job not in a spell, up to half of them, and is repaid first from that
-  wage, on time or late; the three places that compare the pool with the
-  advance (the loan-cost comparison, the pool's same-day limit and the
-  replays) read their hand cases; holders are drawn among earners on their
-  own stream; and wealth accounting stays exact with access in every arm.
-  Payers in chronic deficit are flagged at launch, the same in every arm,
-  and the flag changes no outcome. Every non-housing bundle is card-eligible
-  (28% of spending); outside prices follow r_out from their October 2026
-  levels (each product's hand value at r_out 2, 4.4 and 6%, existing loans
-  keeping their sealed rates, the 0.06% deposit floor); normal job loss at
-  0.55% a month gives a 1.9% stock, spells are identical before the
-  distress year across arms and levels, and completed spells match the BLS
-  statistics of spells in progress. Holders' card bridging is recorded, the
-  S0 check runs S0 alone, and the run record stores the outside prices and
-  the distress labels.
-* The yardsticks' shared helpers (3 and 4 Nov): the capital limit N*
-  switches on the real reserve rate and the return on capital reads its
-  hand cases; a late wage paid in P pays gas on the share it completes; the
-  issuer's books carry its 0.24% of P in its wallet, fund refill and stay
-  test, per $1 of P as the hand case gives; and the report adds those costs
-  to the most it could bear.
-* The yardsticks' records and readings (3 and 4 Nov): the pool's own margin
-  and its parts read their hand cases (zero at break-even), a
-  written-off bridge repaid in full nets to its interest and its principal
-  is credited in the old ratio, which is 1.000 at the capital limit without
-  the 0.9; the joint issuer-and-pool test reads its hand case and equals its
-  bottom-up form every month of forced runs; queued exits and the 90%
-  household reading on both bases, persistence test 4 and falsifier 3 on
-  household-held months read their hand cases; M2's gains are read in
-  full, with no issuer transfer line; and the transfers report and gain
-  split carry the gas paid to validators.
-* Credit by person and month (11 Nov), records only: non-negative, summing
-  to the loan book's new instalment principal by lender and to the bridging
-  and outside-interest series, no pool credit in S0, and the runner's
-  report by class.
+* The buffers people choose: each person's buffer as the dealing chose it, by month, and its means by card holding,
+  stored for every arm and by person for S0 on the development seeds; it changes no outcome.
+* Each record that changes no outcome is checked against a run with it silenced on every other record of the run,
+  including in a forced run with distress whose owners ask to exit and whose pool takes demurrage.
+* The household economy and failure cost: the replay counts a re-queued wage once; wages settle on their jobs' BLS
+  pay dates; at most two fees a payer a model month, the cap binding at whatever it is set to, the buffer replay
+  pricing failures past them at $27 and the experience replays at $0, the pool's limit counting the capped fee; fee
+  debt is interest-free and repaid first; and the real failure line counts unpaid and bridged shares. Earned-wage
+  access applies only to wages earned and still unpaid, on a job not in a spell, up to half of them, and is repaid
+  first from that wage, on time or late; the three places that compare the pool with the advance (the loan-cost
+  comparison, the pool's same-day limit and the replays) match their worked examples; holders are drawn among
+  earners on their own stream; and wealth accounting stays exact with access in every arm. Payers in chronic deficit
+  are flagged at launch, the same in every arm, and the flag changes no outcome. Every non-housing bundle is
+  card-eligible (28% of spending); outside prices follow r_out from their October 2026 levels (each product's value
+  at r_out 2, 4.4 and 6%, existing loans keeping their sealed rates, the 0.06% deposit floor); normal job loss at
+  0.55% a month gives a 1.9% stock, spells are identical before the distress year across arms and levels, and
+  completed spells match the BLS statistics of spells in progress. Holders' card bridging is recorded, the S0 check
+  runs S0 alone, and the run record stores the outside prices and the distress labels.
+* The yardsticks' shared helpers: the capital limit N* switches on the real reserve rate and the return on capital
+  matches its worked examples; a late wage paid in P pays gas on the share it completes; the issuer's books carry
+  its 0.24% of P in its wallet, fund refill and stay test, per $1 of P as the worked example gives; and the report
+  adds those costs to the most it could bear.
+* The yardsticks' records and readings: the pool's own margin and its parts match their worked examples (zero at
+  break-even), a written-off bridge repaid in full nets to its interest and its principal is credited in the old
+  ratio, which is 1.000 at the capital limit without the 0.9; the joint issuer-and-pool test matches its worked
+  example and equals its bottom-up form every month of forced runs; queued exits and the 90% household reading on
+  both bases, persistence test 4 and falsifier 3 on household-held months match their worked examples; M2's gains
+  are read in full, with no issuer transfer line; and the transfers report and gain split carry the gas paid to
+  validators.
+* Credit by person and month, records only: non-negative, summing to the loan book's new instalment principal by
+  lender and to the bridging and outside-interest series, no pool credit in S0, and the runner's report by class.
 
-Run with ``python -X utf8 -m unittest tests.test_economy_abm`` with ``src`` on
-the path (see the README).
+Run with ``python -X utf8 -m unittest tests.test_economy_abm`` with ``src`` on the path (see the README).
 """
 import contextlib
 from dataclasses import replace
@@ -206,7 +149,7 @@ TINY = Economy(n=80, months=6, burn_in=3)
 
 
 class SweepCapTests(unittest.TestCase):
-    """The settlement sweep cap (decided 14 Nov 2026): raised to 20,000, with days needing more than 500 counted."""
+    """The settlement sweep cap is 20,000 a day, and days needing more than 500 sweeps are counted."""
 
     def test_the_cap_is_twenty_thousand_and_slow_days_are_recorded(self):
         from cpm_abm.economy_abm import SLOW_SWEEPS
@@ -230,12 +173,12 @@ def tiny_world(arm="S0", economy=TINY):
 
 
 def controlled_world(arm="M1", cost=None):
-    """A ten-person world after one quiet month, emptied to a controlled state (the review fixture)."""
+    """A ten-person world after one quiet month, emptied to a controlled state."""
     inputs = Inputs() if cost is None else replace(Inputs(), C_fix=cost)
     w = _World(inputs, 0.6, Economy(n=10, burn_in=10, months=1, inflation=0.0), arm)
     w.month(0)
     zero = lambda name: getattr(w, name).__setitem__(slice(None), 0.0)
-    # Earned-wage accruals and advances owed (3 Nov) are new accounts, emptied like the others.
+    # Earned-wage accruals and advances owed are emptied with the other accounts.
     list(map(zero, ("cash", "pcash", "savings", "shares", "card_statement", "card_unbilled", "od_pending",
                     "receivable", "payable", "buffer", "accrued", "ewa_owed")))
     w.book = {key: value[:0] for key, value in w.book.items()}
@@ -244,13 +187,12 @@ def controlled_world(arm="M1", cost=None):
     w.holder[:], w.part[:] = False, False
     w.sector = dict.fromkeys(w.sector, 0.0)
     w.acc["rewards"][:] = 0.0   # the quiet month's rewards were paid at its close
-    w.acc["fee_units"][:] = 0.0   # a new account (3 Nov), emptied like the others: a stale count would cap the fees
-    # Normal job loss (3 Nov) may leave a job in a spell after the quiet month (its month-0 stock or a layoff in it);
-    # a controlled state has none, so every job pays unless a test lays it off.
+    w.acc["fee_units"][:] = 0.0   # a count left from the quiet month would cap the fees
+    # Normal job loss may leave a job in a spell after the quiet month (its month-0 stock or a layoff in it); a
+    # controlled state has none, so every job pays unless a test lays it off.
     w.spell_start[:], w.spell_end[:] = 0, 0
-    # Card limits (14 Nov 2026) are new accounts too, emptied like the others: every line is open-ended here, with no
-    # starting balance and nothing owed on the card, so a test that makes someone a holder meets a limit only where it
-    # sets one.
+    # The card accounts are emptied too: every line is open-ended, with no starting balance and nothing owed on the
+    # card, so a test that makes someone a holder meets a limit only where it sets one.
     w.card_line[:], w.card_start = 1e6, np.zeros(10)
     w.card_interest[:], w.card_fees[:], w.card_past_due[:], w.card_paid[:] = 0.0, 0.0, 0.0, 0.0
     w.card_late_since[:], w.card_late_month[:] = BIG, -BIG
@@ -262,9 +204,9 @@ def controlled_world(arm="M1", cost=None):
 
 
 def entering(w):
-    """Every saver reviews entry at every dealing (decided 13 Nov: savers review entry at the users' rate, 0.166 a
-    month): entry-review draws of zero, so a dealing test called directly reads the entry rule itself, with the hand
-    numbers it had when every saver offered. A run's monthly draws replace them."""
+    """Make every saver review entry at every dealing: entry-review draws of zero, so a dealing test called directly
+    reads the entry rule itself, with every saver offering. In a run savers review entry at the users' rate, 0.166 a
+    month, and the run's monthly draws replace these."""
     w.entry_draw = np.zeros(w.n)
 
 
@@ -285,9 +227,9 @@ def funded_pool(w, capital=10.0):
 
 def entry(**fields):
     """One closed month's ``window`` entry for the pool's terms, every field zero but those given: the lending need and
-    its term part, the margin, the fixed cost and the lent principal-time, demurrage's parts and, by day (decided
-    5 Nov: demurrage pays for liquidity kept available), the carried bridging principal, the bridging refused and the
-    pool cash held ready."""
+    its term part, the margin, the fixed cost and the lent principal-time, demurrage's parts and, by day (demurrage
+    pays for liquidity kept available), the carried bridging principal, the bridging refused and the pool cash held
+    ready."""
     base = dict(need=0.0, margin=0.0, fixed=0.0, lent=0.0, revenue=0.0, covered=0.0, capital_cost=0.0, wallet=0.0,
                 float_pool=0.0, charges=0.0, need_term=0.0, bridging=np.zeros(DAYS), refused_bridging=0.0,
                 ready=np.zeros(DAYS))
@@ -295,29 +237,28 @@ def entry(**fields):
 
 
 def closed(w, month, rate):
-    """Stand in for month ``month``'s close in a dealing test: the two records the owner exit rule reads (decided
-    3 Nov), each household's capital after dealing and the month's R net of issuer money."""
+    """Stand in for month ``month``'s close in a dealing test: the two records the owner exit rule reads, each
+    household's capital after dealing and the month's R net of issuer money."""
     w.held_path[month], w.r_owners[month] = w.shares * w.nav_ps, rate
 
 
 def earning(w, rate):
-    """Every month's records as the owner exit rule reads them (decided 3 Nov): each household's holding now and R
-    ``rate``, so every owner's own realised return is ``rate`` whenever it bought."""
+    """Every month's records as the owner exit rule reads them: each household's holding now and R ``rate``, so every
+    owner's own realised return is ``rate`` whenever it bought."""
     w.held_path[:], w.r_owners[:] = w.shares * w.nav_ps, rate
 
 
 def reviewing(w, noise=0.0):
-    """Every owner reviews at every dealing and leaves on its draw (decided 5 Nov: owners leave by the users' rule):
-    review and leaving draws of zero, and the rule's noise at ``noise`` times its decided scale, so with none (the
-    default) an owner files exactly when its realised gap in dollars falls short of minus its leaving cost, the rule's
-    limit without noise."""
+    """Make every owner review at every dealing and leave on its draw (owners leave by the users' rule): review and
+    leaving draws of zero, and the rule's noise at ``noise`` times its scale. With none (the default) an owner files
+    exactly when its realised gap in dollars falls short of minus its leaving cost, the rule's limit without noise."""
     w.owner_draws = np.zeros(w.n), np.zeros(w.n)
     w.economy = replace(w.economy, leave_noise=noise)
 
 
 class PooledWorld(_World):
-    """Test device for the pool's mechanics: savers compare the pool with their own mixed return, the comparison the
-    1 Nov savings rule replaced, so a pool forms in a small run; the money-market split still applies."""
+    """Test device for the pool's mechanics: savers compare the pool with their own mixed return, not with their own
+    outside rate as the savings rule has it, so a pool forms in a small run; the money-market split still applies."""
 
     def _cycle_terms(self, month):
         super()._cycle_terms(month)
@@ -331,8 +272,7 @@ def pooled(inputs, a0, economy, arm):
 
 class EnteringWorld(PooledWorld):
     """The test device with every saver reviewing entry every month, for runs whose inputs set upsilon, the review rate
-    entry shares with participation (decided 13 Nov), to zero: a draw of zero is not below zero, so the review
-    itself is forced."""
+    entry shares with participation, to zero: a draw of zero is not below zero, so the review itself is forced."""
 
     def _reviews_entry(self):
         return np.ones(self.n, bool)
@@ -341,10 +281,10 @@ class EnteringWorld(PooledWorld):
 class ForcedRun(PooledWorld):
     """A partial run in the test device: for three months the pool's quote and every owner's own realised return are
     held below most owners' own rate, and every owner reviews and leaves where the users' rule gives it better than
-    even odds (decided 5 Nov: owners leave by the users' rule), so owners ask to exit and the pool pays them from
-    its cash after the notice, the rest waiting for cash (decided 5 Nov: the issuer is a pure custodian). Small
-    runs never see such exits on their own, so the run is forced. Own rates include the owners' spread (4 Nov), so
-    both are set at their 30th percentile, which keeps the lowest group of owners in."""
+    even odds, so owners ask to exit and the pool pays them from its cash after the notice, the rest waiting for cash
+    (the issuer is a pure custodian and buys no shares). Small runs never see such exits on their own, so the run is
+    forced. Own rates include the owners' spread, so both are set at their 30th percentile, which keeps the lowest
+    group of owners in."""
 
     def _forced(self, month):
         owned = self.shares > EPS
@@ -369,7 +309,7 @@ class ForcedRun(PooledWorld):
 FORCED = Economy(n=100, burn_in=3, months=16)
 FORCED_DISTRESS = replace(FORCED, distress=0.02, distress_start=2, distress_length=6)
 FORCED_LONG, FORCED_DISTRESS_LONG = replace(FORCED, months=24), replace(FORCED_DISTRESS, months=24)
-# Every series the real part reads (``real_part``), for its hand cases.
+# Every series the real part reads (``real_part``), for its worked examples.
 REAL_SERIES = ("pt_card", "pt_pool_card", "pt_pool_nocard_card", "pt_pool_card_credit", "pt_term", "pt_pool_term",
                "penalties", "nocard_bridges", "fail_shares", "fail_items", "bridged_shares", "bridged_items",
                "bridged_card", "card_payments", "card_value", "p_payments", "p_value", "gas", "money_bt", "savings_bt",
@@ -398,19 +338,19 @@ def map_jobs():
 
 
 def map_seed(seed, letter="P", worse_trade=False, harmed=(), formed=True, gains=None, m0=None):
-    """One seed of a map cell for the reading's hand cases: every report zero, the pool arms reading A (Against: the
-    issuer would leave), P (Persistent) or I (Inconclusive: P4 fails), worse than M0 on trade and harmed in the given
-    groups when asked. For the region reading (5 Nov): whether the pool formed and the gains against S0 by class,
-    quintile and cycle, read in full (decided 5 Nov), each a dict of lists, zero where not given; against M0 the
-    same, unless ``m0`` gives the gains against M0."""
+    """One seed of a map cell for the reading's worked examples: every report zero, the pool arms reading A (Against:
+    the issuer would leave), P (Persistent) or I (Inconclusive: P4 fails), worse than M0 on trade and harmed in the
+    given groups when asked. For the region reading: whether the pool formed and the gains against S0 by class,
+    quintile and cycle, read in full, each a dict of lists, zero where not given; against M0 the same, unless ``m0``
+    gives the gains against M0."""
     from scripts.run_economy_population import REAL_LINES
     zero = lambda *keys: dict.fromkeys(keys, 0.0)
     money = lambda: zero("launch_usd", "end_usd", "lowest_usd")
     windows = lambda *keys: {key: [0.0, 0.0] for key in keys}
     wealth = lambda given: dict({f"gain_usd_a_year_by_{name}": (given or {}).get(name, [0.0] * size)
                                  for name, size in (("class", 4), ("quintile", 5), ("cycle", 2))}, gain_usd_a_year=0.0)
-    # The complete gain (11 Nov) equals the wealth gain at both ends here: no seller's sales differ.
-    # Under the cash-advance bound (15 Nov 2026) the same: no arm differs in cash advances.
+    # The complete gain equals the wealth gain at both ends here: no seller's sales differ. The gain under the
+    # cash-advance bound is the same too: no arm differs in cash advances.
     end = lambda given: dict(wealth(given), bound=wealth(given))
     by = lambda given: dict(wealth(given), bound=wealth(given), complete_gain=dict(face=end(given), zero=end(given)))
     against = dict(S0=by(gains), M0=by(m0) if m0 is not None else by(gains))
@@ -422,7 +362,7 @@ def map_seed(seed, letter="P", worse_trade=False, harmed=(), formed=True, gains=
                   crossings=dict(routine=zero("a_year", "a_participant_year", "usd_a_year"),
                                  conversions=zero("a_year", "usd_a_year")),
                   liquidity=windows("precautionary_usd", "shortfall_covered_usd_a_year", "failed_usd_a_year"),
-                  # Credit and purchases by class (11 Nov), zero in every class.
+                  # Credit and purchases by class, zero in every class.
                   by_class={key: [0.0] * 4 for key in ("class_sizes", *CREDIT_RECORDS, "completed", "lost", "durables",
                                                        "sales")},
                   against=against)
@@ -433,13 +373,13 @@ def map_seed(seed, letter="P", worse_trade=False, harmed=(), formed=True, gains=
                                 by_loan_year_own=dict.fromkeys(("all", "bridge", "term"), [None] * LOAN_YEARS),
                                 shared_unallocated_usd=0.0),
                     owners_excess=dict(alternative_pct=0.0, W1=None, W2=None),
-                    # The yardsticks (3 Nov): the own margin and joint test by window, and the 90% reading.
+                    # The yardsticks: the own margin and joint test by window, and the 90% reading.
                     own_margin_usd_a_year=[0.0, 0.0], own_margin_held_months=[12, 12], joint_usd_a_year=[0.0, 0.0],
                     pays_its_way_W2=letter != "I",
                     issuer_never_leaves=letter != "A",
                     households=dict(households_hold_90_W2=True, households_hold_90_W2_all_capital=True,
                                     p_routes_W2=True, counts=True),
-                    # The contract and demurrage (5 Nov).
+                    # The contract and demurrage.
                     pool_formed=formed, demurrage=dict(windows("float_pool_usd_a_year", "charges_usd_a_year"),
                                                        s_issuer=0.0545))
     tests = dict(P=dict(P1=True, P2=True, P3=True, P4=letter != "I", P5=True),
@@ -456,9 +396,9 @@ def map_seed(seed, letter="P", worse_trade=False, harmed=(), formed=True, gains=
 
 
 def synthetic_store(folder, arms=("U", "M1", "M2"), levels=(0.0, 0.02), months=24):
-    """A tiny map store written by hand as the population runner writes one (5 Nov): two r_out, two a0 and the given
-    distress levels, S0, M0 and the given pool arms, each pool arm's region reading cycling through the readings (M2's
-    at r_out 2% its declared limit), and two seeds' monthly paths at the baseline r_out and a0."""
+    """A tiny map store written by hand as the population runner writes one: two r_out, two a0 and the given distress
+    levels, S0, M0 and the given pool arms, each pool arm's region reading cycling through the readings (M2's at r_out
+    2% its declared limit), and two seeds' monthly paths at the baseline r_out and a0."""
     from scripts.run_economy_population import VERDICTS
     rates, a0s = (0.02, 0.044), (0.3, 0.6)
     readings = [name for name in VERDICTS if name != "declared limit"]
@@ -512,9 +452,10 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertFalse(np.any(pop["wage_to"] == np.arange(1000)))
 
     def test_starting_cushions_follow_the_fed_survey_where_it_is_lower(self):
-        """Hand case (Fed survey 2025): 18% start under $100, 30% under $500 and half under $2,000, where the old
-        calibration left nobody under $2,042; above the 62nd percentile the old level stays. The rest is illiquid
-        wealth, so total wealth, spending and the DFA ranks are as before (decided 30 Oct)."""
+        """Starting liquid cushions follow the Fed survey (2025) where it is below the wealth calibration: 18% start
+        under $100, 30% under $500 and half under $2,000, while nobody's total wealth is under $2,042; above the 62nd
+        percentile all wealth is liquid. The rest is illiquid wealth, so total wealth, spending and the DFA ranks do
+        not depend on the cushions."""
         pop = build_population(Economy(n=1000))
         dollars = pop["wealth"] * MONTH_USD
         total = (pop["wealth"] + pop["illiquid"]) * MONTH_USD
@@ -538,8 +479,9 @@ class EconomyAbmTests(unittest.TestCase):
         np.testing.assert_allclose(outside_return(np.ones(5), rho, n12=False), rho)
 
     def test_obligations_follow_wages_services_and_billing(self):
-        """32 service bundles of 41.7% of spending, one wage contract of 58.3%; each bill settled on the payee's billing
-        date and each wage on its job's pay date (3 Nov; as built, wages too on the payee's billing date)."""
+        """32 service bundles of 41.7% of spending and one wage contract of 58.3%; each bill settles on the payee's
+        billing date and each wage on its job's pay date (under the legacy rules, wages too on the payee's billing
+        date)."""
         world = tiny_world()
         world.acc = dict(shocks=0.0, volume=0.0)
         world._obligations(0)
@@ -577,8 +519,9 @@ class EconomyAbmTests(unittest.TestCase):
                                                               minlength=TINY.n), atol=1e-12)
 
     def test_fee_routing_settles_only_card_eligible_purchases_in_p(self):
-        """Routing (decided 21 Oct): wages and free transfers between participants stay on E; card purchases use P.
-        P payments need a pool with owners, so the run is the test device whose pool forms."""
+        """Fee routing: wages and free transfers between participants stay on E and card purchases use P; routing "all"
+        settles more payments in P. P payments need a pool with owners, so the run is the test device whose pool
+        forms."""
         run = pooled(Inputs(), 1.0, replace(TINY, n=60), "M1")
         log = run["payments"][TINY.burn_in]
         world = _World(Inputs(), 1.0, replace(TINY, n=60), "M1")
@@ -588,32 +531,33 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertGreater(int((settled_h3[3] == 2).sum()), int((log[3] == 2).sum()))
 
     def test_leaving_experience_averages_the_last_twelve_months_in_p(self):
-        """Decided 21 Oct: exit reads the mean monthly experience over the last 12 months in P."""
+        """Exit reads the mean monthly experience over the last 12 months in P."""
         economy = replace(TINY, months=16, h4_months=12)
         world = _World(Inputs(), 0.6, economy, "M1")
         world.run()
         self.assertEqual(world.exp_hist.shape[0], 12)
         stayed = world.status[-1] & world.part
         np.testing.assert_array_equal(np.isfinite(world.exp_hist[-1]), stayed)
-        # The threshold's balance (3 Nov) is kept over the same months in P: each month's wallet P balance-time.
+        # The threshold's balance is kept over the same months in P: each month's wallet P balance-time.
         self.assertEqual(world.p_hist.shape, world.exp_hist.shape)
         np.testing.assert_array_equal(np.isfinite(world.p_hist), np.isfinite(world.exp_hist))
 
     def test_the_leaving_rule_reads_its_hand_cases(self):
-        """Hand cases of the leaving rule (decided 21 Oct; the threshold, 3 Nov; the noise, 4 Nov), at the
-        mean spending of $6,440 a month: a participant whose 12-month average P balance is $3,220 has a threshold of one
-        conversion of it spread over the 12 months. The conversion fee is 0.05% + $0.22 / $142 = 0.2049% (the 1 cent
-        fraud adjustment included, 13 Nov 2026), so 0.0020493 x $3,220 = $6.599, $0.5499 a month; the noise scale is
-        1e-4 of its own monthly spending, $0.644. A reviewer with a 12-month average experience e leaves with
-        probability logistic((-e - 0.5499) / 0.644). At zero gain: 0.5499 / 0.644 = 0.8539, exp(0.8539) = 2.3487,
-        1 / 3.3487 = 0.299; the review share upsilon is 1 - exp(-0.166) = 0.15295 (13 Nov 2026), so a participant
-        leaves at 0.15295 x 0.2986 = 4.6% a month. At a gain of $0.5: 1.0499 / 0.644 = 1.6303, 1 / (1 + 5.1052) =
-        0.164; $1: 1.5499 / 0.644 = 2.4067, 1 / (1 + 11.097) = 0.083; $2: 2.5499 / 0.644 = 3.9595, 1 / (1 + 52.43) =
-        0.019. At an experience exactly minus the threshold half the reviewers leave. Half the noise: 0.5499 / 0.322 =
-        1.7077, 1 / (1 + 5.5164) = 0.153 at zero gain; twice: 0.5499 / 1.288 = 0.4269, 1 / (1 + 1.5325) = 0.395.
-        Without noise (``leave_noise`` 0) a reviewer leaves exactly when its experience is below minus the
-        threshold, the rule as first built. A participant not reviewing, and a non-participant, never leaves. In M0
-        USDC converts at no fee, so the threshold is zero and a reviewer at zero gain leaves with one half."""
+        """The leaving rule: a reviewer with a 12-month average experience e leaves with probability
+        logistic((-e - threshold) / noise scale), the threshold one conversion of its 12-month average P balance spread
+        over the 12 months and the noise scale 1e-4 of its own monthly spending.
+
+        Example, at the mean spending of $6,440 a month and an average P balance of $3,220: the conversion fee is
+        0.05% + $0.22 / $142 = 0.2049% (the 1 cent fraud adjustment included), so the threshold is 0.0020493 x $3,220 =
+        $6.599, $0.5499 a month, and the noise scale is $0.644. At zero gain: 0.5499 / 0.644 = 0.8539, exp(0.8539) =
+        2.3487, 1 / 3.3487 = 0.299; the review share upsilon is 1 - exp(-0.166) = 0.15295, so a participant leaves at
+        0.15295 x 0.2986 = 4.6% a month. At a gain of $0.5: 1.0499 / 0.644 = 1.6303, 1 / (1 + 5.1052) = 0.164; $1:
+        1.5499 / 0.644 = 2.4067, 1 / (1 + 11.097) = 0.083; $2: 2.5499 / 0.644 = 3.9595, 1 / (1 + 52.43) = 0.019. At an
+        experience exactly minus the threshold half the reviewers leave. Half the noise: 0.5499 / 0.322 = 1.7077,
+        1 / (1 + 5.5164) = 0.153 at zero gain; twice: 0.5499 / 1.288 = 0.4269, 1 / (1 + 1.5325) = 0.395. Without noise
+        (``leave_noise`` 0) a reviewer leaves exactly when its experience is below minus the threshold. A participant
+        not reviewing, and a non-participant, never leaves. In M0 USDC converts at no fee, so the threshold is zero
+        and a reviewer at zero gain leaves with one half."""
         def leaves(experience, draw, arm="M1", noise=1.0, reviewing=True, joined=True, balance=3220.0):
             w = controlled_world(arm)
             w.economy = replace(w.economy, leave_noise=noise)
@@ -648,9 +592,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertFalse(leaves(0.0, 0.5 + 1e-9, arm="M0"))
 
     def test_the_leaving_draws_have_a_stream_of_their_own(self):
-        """The leaving rule's draws (decided 4 Nov) come one a person a month from a stream of their own, the same
-        in every arm, so no earlier draw moves: the joining and review draws after it are those of the stream they
-        always came from."""
+        """The leaving rule's draws come one a person a month from a stream of their own, the same in every arm, so
+        taking them moves no other draw: the joining and review draws still come from the adoption stream in its own
+        order."""
         economy = replace(TINY, months=3)
         draws = {arm: _World(Inputs(), 0.6, economy, arm).leave_rng.random(economy.n)
                  for arm in ("M0", "U", "M1", "M2")}
@@ -665,12 +609,12 @@ class EconomyAbmTests(unittest.TestCase):
         np.testing.assert_array_equal(w.adopt_rng.random(economy.n), adopt.random(economy.n))
 
     def test_holding_a_buffer_in_p_costs_the_money_market_part_alone(self):
-        """The buffer replay's holding cost (the 5 Nov review): the deposit part of spare money stays in P (or USDC)
-        while it pays at least the deposit rate, so the deposit part of a buffer held in P forgoes P's own yield, not
-        the deposit rate, and a participant's cost of holding a buffer all in P is mm_share x (rho_H - y_P), never
-        negative. As first built it was the person's mixed return less y_P, below zero for most people (a mixed return
-        of about 0.9% against y_P of about 4.1%), which kept nearly all liquid money as buffer. A non-participant's
-        checking pays below deposits, so its cost stays its mixed return less checking. In M1, U and M0 alike."""
+        """The buffer replay's holding cost: the deposit part of spare money stays in P (or USDC) while it pays at least
+        the deposit rate, so the deposit part of a buffer held in P forgoes P's own yield, not the deposit rate, and a
+        participant's cost of holding a buffer all in P is mm_share x (rho_H - y_P), never negative. The person's mixed
+        return less y_P would be below zero for most people (a mixed return of about 0.9% against y_P of about 4.1%)
+        and would keep nearly all liquid money as buffer. A non-participant's checking pays below deposits, so its
+        cost is its mixed return less checking. In M1, U and M0 alike."""
         from unittest import mock
         from cpm_abm import economy_abm
         from cpm_abm.engine import world_dealing   # where _dealing looks choose_buffer up
@@ -686,14 +630,16 @@ class EconomyAbmTests(unittest.TestCase):
             expected = np.where(w.part, w.mm_share * (w.inputs.rho_H - w.p_yield), w.r_out - w.inputs.buffer_yield)
             np.testing.assert_allclose(hold, expected, rtol=1e-12, atol=1e-18, err_msg=arm)
             self.assertTrue(np.all(hold >= 0.0), arm)
-            self.assertTrue(np.any((w.r_out - w.p_yield)[w.part] < 0.0), arm)      # the cost as first built
+            self.assertTrue(np.any((w.r_out - w.p_yield)[w.part] < 0.0), arm)      # the mixed return less y_P
 
     def test_experience_credits_p_yield_on_the_deposit_part_above_the_deposit_rate(self):
-        """Experience's yield (the 5 Nov review): the deposit part of spare money kept in P would earn the deposit rate
-        were the person to leave, so experience credits P's yield on it less the deposit rate, on at most the month's
-        P balance-time; the rest of the balance earns its full yield. Hand case (monthly units): a participant with 1
-        of wallet P balance-time and 0.004 of yield, of which 0.4 is the deposit part kept, is credited
-        0.004 - 0.4 x the deposit rate; with 2 of deposit part kept (more than its balance), 0.004 - 1 x it."""
+        """Experience's yield: the deposit part of spare money kept in P would earn the deposit rate were the person to
+        leave, so experience credits P's yield on it less the deposit rate, on at most the month's P balance-time; the
+        rest of the balance earns its full yield.
+
+        Example (monthly units): a participant with 1 of wallet P balance-time and 0.004 of yield, of which 0.4 is the
+        deposit part kept, is credited 0.004 - 0.4 x the deposit rate; with 2 of deposit part kept (more than its
+        balance), 0.004 - 1 x it."""
         def credited(kept):
             w = controlled_world("M1")
             w.part[0] = True
@@ -707,8 +653,8 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(got, 0.004 - 1.0 * rate, places=15)
 
     def test_joining_and_leaving_m0_are_conversions_whatever_the_fee(self):
-        """Crossings (reported only, the 5 Nov review): joining, leaving and P redeemed for a non-participant convert
-        whatever the fee, so USDC's free conversion in M0 is counted as conversions, not routine crossings, as in M1."""
+        """Crossings (reported only): joining, leaving and P redeemed for a non-participant convert whatever the fee, so
+        USDC's free conversion in M0 is counted as conversions, not routine crossings, as in M1."""
         for arm in ("M0", "M1"):
             w = controlled_world(arm)
             w.cash[:2] = 1.0
@@ -728,15 +674,17 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertAlmostEqual(float(w.crossed[1][5]), -0.5, places=15)
 
     def test_the_monopoly_bound_is_the_largest_issuer_share_the_quote_still_reaches(self):
-        """Hand case (decided 4 Nov: what a monopoly issuer could take is reported as a bound, recorded only; one
-        model month standing for the year, the reserve rate 4.4%): over the last cycle wallet P held $1,000 of
-        balance-time, bridging cost $30 of capital, which demurrage took in full, and the fee margin F without that
-        demurrage was A = -$10. An issuer keeping a share s of the reserve return leaves wallet P (1 - s) 44, so
-        demurrage takes min(30, (1 - s) 44) and F(s) = -10 + min(30, (1 - s) 44) reaches zero, where the quote reaches
-        owners' alternative, up to s = 1 - 10 / 44 = 77.3%. With A at zero any share up to 1 leaves it there; where
-        even all of the bridging cost cannot (A = -$40) the bound is undefined; in U, with no demurrage, A below zero
-        is undefined too. A small run whose pool forms (100 people, no provider fee, 5 Nov) records it, wherever it
-        is defined, between 0 and 1, and M0, with no pool, never."""
+        """What a monopoly issuer could take, a bound that is recorded only: the largest share s of the reserve return
+        it could keep with the quote still reaching owners' alternative.
+
+        Example (one model month standing for the year, the reserve rate 4.4%): over the last cycle wallet P held
+        $1,000 of balance-time, bridging cost $30 of capital, which demurrage took in full, and the fee margin F
+        without that demurrage was A = -$10. An issuer keeping a share s of the reserve return leaves wallet P
+        (1 - s) 44, so demurrage takes min(30, (1 - s) 44) and F(s) = -10 + min(30, (1 - s) 44) reaches zero, where the
+        quote reaches owners' alternative, up to s = 1 - 10 / 44 = 77.3%. With A at zero any share up to 1 leaves it
+        there; where even all of the bridging cost cannot (A = -$40) the bound is undefined; in U, with no demurrage, A
+        below zero is undefined too. A small run whose pool forms (100 people, no provider fee) records it, wherever
+        it is defined, between 0 and 1, and M0, with no pool, never."""
         def bound(rest, arm="M1"):
             w = controlled_world(arm)
             w.rho_p = 0.044
@@ -778,10 +726,10 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(float(np.nanmax(series["issuer"][after])), 0.0)
         self.assertGreater(float(np.nanmean(series["exp_yield"][after])), 0.0)
 
-    # ---- Regressions for the fixes from the 21 Oct review ---------------------------------------------------------
+    # ---- Closure, funding and lending limits ----------------------------------------------------------------------
     def test_insolvent_closure_creates_no_money(self):
         """Pool costs are paid only from pool cash; an unpaid payable at closure is the creditor's loss, not new money.
-        The emptied pool is open again (decided 5 Nov: free entry applies in every month)."""
+        The emptied pool is open again, since free entry applies in every month."""
         w = controlled_world(cost=0.2)
         w.pool_cash, w.shares[1], w.nav_ps, w.capital = 1.0, 1.0, 1.0, 1.0
         w.had_owners = w.service = w.launched = True
@@ -815,8 +763,8 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(float(w.book["principal"].sum()), 0.0)
 
     def test_gas_comes_from_owned_funds(self):
-        """A payer that cannot fund a P payment's gas (the October 2026 draft's fee lock, decided 5 Nov: gas, not a
-        fee) does not get a pool loan for it; it pays by card."""
+        """A payer that cannot fund a P payment's gas from its own money does not get a pool loan for it; it pays by
+        card."""
         w = controlled_world()
         funded_pool(w)
         w.holder[0], w.card_apr[0], w.r_g = True, 0.01, 0.005
@@ -840,9 +788,11 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertTrue(np.all(w.book["due"][~pool] > 30 + 60))   # outside maturity is not cut to the pool horizon
 
     def test_covering_budget_reserves_term_interest(self):
-        """Hand case ($, monthly rates): a $20,000 term loan at 6% a year paying $400 of principal a month puts $800 of
-        principal and $200 of interest ahead of a new bridge in the next two months; interest already accrued counts
-        too, and a loan with one instalment left carries one month of interest (decided 30 Oct)."""
+        """The covering budget puts term principal and interest due in the next two months ahead of a new bridge.
+
+        Example ($, monthly rates): a $20,000 term loan at 6% a year paying $400 of principal a month puts $800 of
+        principal and $200 of interest ahead; interest already accrued counts too, and a loan with one instalment left
+        carries one month of interest."""
         w = controlled_world()
         w._add_loans(np.array([0]), False, TERM, np.array([20000.0]), 0.06 / 12, 0.06 / 12, BIG, np.array([50]), 0)
         owed = lambda: float(w._c1_budget(60)[2][0])
@@ -864,10 +814,12 @@ class EconomyAbmTests(unittest.TestCase):
         return w
 
     def test_a_bridge_falls_due_on_the_wage_pay_date(self):
-        """Hand case ($, decided 12 Nov): a person on the daily billing cycle whose only receipt is a monthly wage
-        of $3,755. The old rule budgeted $125.17 a day, so a $300 bridge drawn on day 10 fell due on day 13, before the
-        wage arrived; the budget now expects the wage on its job's pay date, day 25, and the bridge falls due then. The
-        receipts expected in the two-month horizon are unchanged: two monthly wages, as sixty days of $125.17."""
+        """The covering budget expects a wage on its job's pay dates, so a bridge falls due when the wage arrives.
+
+        Example ($): a person on the daily billing cycle whose only receipt is a monthly wage of $3,755 on day 25. A
+        $300 bridge drawn on day 10 falls due on day 25; spreading the wage over the billing dates, $125.17 a day,
+        would put it on day 13, before the wage arrives. The receipts expected in the two-month horizon are two
+        monthly wages, the same as sixty days of $125.17."""
         w = self.wage_only_world(cycle=1, phase=0, pay_days=30, pay_phase=25)
         draw = np.array([300.0 / MONTH_USD])
         self.assertEqual(w._due_c1(np.array([0]), draw, 10).tolist(), [25])
@@ -877,10 +829,11 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual((float(owed[0]), int(last[0])), (0.0, 70))    # the last own billing date in the horizon
 
     def test_a_bridge_falls_due_on_the_first_weekly_pay_date_that_covers_it(self):
-        """Hand case ($, decided 12 Nov), the reverse: a person on the monthly billing cycle (next billing date day
-        39) paid $3,755 a month weekly, $876.17 a week on days 16, 23 and 30. The old rule expected the whole $3,755 on
-        day 39; a $2,000 bridge drawn on day 10 now falls due on day 30, the first pay date whose cumulative wage,
-        $2,628.50, covers it ($1,752.33 on day 23 does not), and a $500 bridge on day 16."""
+        """A bridge falls due on the first pay date whose cumulative wage covers it, not on the next billing date.
+
+        Example ($): a person on the monthly billing cycle (next billing date day 39) paid $3,755 a month weekly,
+        $876.17 a week on days 16, 23 and 30. A $2,000 bridge drawn on day 10 falls due on day 30, the first pay date
+        whose cumulative wage, $2,628.50, covers it ($1,752.33 on day 23 does not), and a $500 bridge on day 16."""
         w = self.wage_only_world(cycle=30, phase=9, pay_days=7, pay_phase=2)
         due = lambda dollars, rate=None: w._due_c1(np.array([0]), np.array([dollars / MONTH_USD]), 10, rate).tolist()
         self.assertEqual((due(2000.0), due(500.0)), ([30], [16]))
@@ -903,8 +856,8 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertGreater(int(days[covered.argmax()]), t + 60)
 
     def test_wage_dated_budget_keeps_the_accounting_identity_in_every_arm(self):
-        """With bridges dated by the wage-dated budget (decided 12 Nov) and shocks on, the conservation identity
-        holds every month in every arm, and each job's recorded wages are part of its recipient's receipts."""
+        """With bridges dated by the wage-dated budget and shocks on, the conservation identity holds every month in
+        every arm, and each job's recorded wages are part of its recipient's receipts."""
         economy = replace(TINY, n=60, burn_in=2, months=4, shocks=True)
         for arm in ("S0", "M0", "M1", "M2", "U"):
             w = _World(Inputs(), 0.6, economy, arm)
@@ -916,9 +869,11 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertTrue(np.all(incoming <= w.last["receipts"] + 1e-12))
 
     def test_same_day_requests_share_the_debt_limit(self):
-        """Hand case (spending $6,440 a month, debt service $1,800): a vehicle loan adding $450 and a personal loan adding
-        $700 a month pass the 43% limit alone but reach 46% together; in arrival order the vehicle loan goes ahead and
-        the personal purchase is cancelled (decided 30 Oct)."""
+        """Term requests on the same day share the debt-service limit, in arrival order.
+
+        Example (spending $6,440 a month, debt service $1,800): a vehicle loan adding $450 and a personal loan adding
+        $700 a month pass the 43% limit alone but reach 46% together; the vehicle loan goes ahead and the personal
+        purchase is cancelled."""
         def bought(products):
             w = controlled_world()
             w.spending[0] = 1.0
@@ -933,9 +888,11 @@ class EconomyAbmTests(unittest.TestCase):
         np.testing.assert_allclose(bought([0, 1]), [450.0])
         np.testing.assert_allclose(bought([1]), [700.0])           # the personal loan alone passes
 
-    # ---- The minimum S0 counterfactual (decided 30 Oct) --------------------------------------------------------
+    # ---- The minimum S0 counterfactual ----------------------------------------------------------------------------
     def test_illiquid_wealth_sets_spending_but_never_pays_a_bill(self):
-        """Hand case: a person with $64,400 of illiquid wealth and no money cannot pay a $100 bill, which fails with the
+        """Illiquid wealth sets a person's spending but never pays a bill.
+
+        Example: a person with $64,400 of illiquid wealth and no money cannot pay a $100 bill, which fails with the
         flat $27 fee as fee debt, yet at the close it spends the most in the economy."""
         w = controlled_world("S0")
         w.pop["illiquid"][:] = 0.0
@@ -950,9 +907,11 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertGreater(float(w.spending[0]), 7.0)              # 10 units against a floor of 0.02 for the rest
 
     def test_savings_pay_a_bill_the_same_day(self):
-        """Hand case: $3,000 saved and no spare cash meet a $500 bill on day 10. Savings pay it that day: the seller is
-        paid, nothing is borrowed or fails, and the day's own cash flow shows the $500 payment, not the transfer. The
-        draw gives up the month's interest on $500, as savings earn on the month-end balance."""
+        """Savings pay a bill on the day it falls due.
+
+        Example: $3,000 saved and no spare cash meet a $500 bill on day 10. The seller is paid, nothing is borrowed or
+        fails, and the day's cash flow shows the $500 payment, not the transfer. The draw gives up the month's
+        interest on $500, as savings earn on the month-end balance."""
         w = controlled_world("S0")
         w.savings[0] = 3000 / MONTH_USD
         one_invoice(w, 500 / MONTH_USD, at=DAYS + 10, card=False)
@@ -984,7 +943,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertLess(float(w._overdue(np.array([0]))[0]), EPS)
 
     def test_buffer_replay_draws_savings_before_credit_or_failure(self):
-        """Hand case: half a unit spent on day 10 and received back on day 20, from no buffer. Savings above the buffer
+        """The buffer replay draws savings before credit or failure.
+
+        Example: half a unit spent on day 10 and received back on day 20, from no buffer. Savings above the buffer
         pay it for the month's interest on what was drawn; a shortfall beyond them needs credit or fails. A second dip
         after the receipts is paid from them, since the first draw stays out of savings until dealing."""
         flows = np.zeros((1, DAYS))
@@ -998,7 +959,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(cost(1.0), 0.003 * 0.5, places=15)
 
     def test_same_day_savings_let_a_buffer_stop_short_of_the_dip(self):
-        """Hand case: a dip of 0.3 months from day 10 to day 20 without a card. Without same-day savings the person
+        """Same-day savings let a buffer stop short of the dip.
+
+        Example: a dip of 0.3 months from day 10 to day 20 without a card. Without same-day savings the person
         keeps half a month (a quarter would leave 0.05 to fail); with them a quarter month, drawing the rest. Money it
         will offer to the pool cannot be drawn, so a person investing in the pool keeps half a month."""
         flows = np.zeros((1, DAYS))
@@ -1011,12 +974,13 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(pick(draw_rate=one(0.003), drawable=one(0.0)), 0.5)
 
     def test_the_failure_fee_falls_on_bills_and_wages_at_most_once_a_day(self):
-        """Hand case (decided 30 Oct): without a card or savings, $60 against one $100 bill pays 60% of it, so 0.4
-        of a payment fails and the fee is $10.80, booked as fee debt (3 Nov; as built, outside debt). Against bills of
-        $50 and $100 it pays 40% of each: 1.2 payments fail, capped at one fee, $27. A failed card-eligible purchase
-        is declined without a fee and its unpaid part is lost. The month's average payment, $75, prices the fee at 36%
-        a unit in next month's buffer choice, and the month's record (31 Oct review) holds the $27 fee and the $90
-        that failed."""
+        """The failure fee falls on bills and wages at most once a day.
+
+        Example: without a card or savings, $60 against one $100 bill pays 60% of it, so 0.4 of a payment fails and
+        the fee is $10.80, booked as fee debt. Against bills of $50 and $100 it pays 40% of each: 1.2 payments fail,
+        capped at one fee, $27. A failed card-eligible purchase is declined without a fee and its unpaid part is
+        lost. The month's average payment, $75, prices the fee at 36% a unit in next month's buffer choice, and the
+        month's record holds the $27 fee and the $90 that failed."""
         def settle(amounts, card=False):
             w = controlled_world("S0")
             w.cash[0] = 60 / MONTH_USD
@@ -1044,14 +1008,16 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(float(w.cash[1]), 60 / MONTH_USD, places=15)
 
     def test_pool_limit_counts_a_fee_capped_at_one_a_day(self):
-        """Hand case ($): a payer without a card owes three $100 bills with nothing to pay them. Whatever the pool does
+        """The pool's lending limit counts a fee capped at one a day.
+
+        Example ($): a payer without a card owes three $100 bills with nothing to pay them. Whatever the pool does
         not lend fails, and its fee is capped at one. With $250 of receipts in two months the pool lends until those
         receipts exactly repay the loan and a fee below the cap; with $200, until they repay the loan and one full fee.
-        The function's own cases: the cap lets the pool lend more than an uncapped fee would; a fee debt the receipts
+        The limit function: the cap lets the pool lend more than an uncapped fee would; a fee debt the receipts
         cannot cover stops all lending; a $20 bill, whose fee costs more than the loan, is lent in full or not at
-        all. Under the monthly cap (3 Nov; two a month, decided 4 Nov) the limit counts the capped fee exactly: with
-        1.5 fees already charged this month, the day's cap is half a fee, so with $200 of receipts the pool lends until
-        they repay the loan and $13.50."""
+        all. Under the monthly cap of two fees the limit counts the capped fee exactly: with 1.5 fees already
+        charged this month, the day's cap is half a fee, so with $200 of receipts the pool lends until they repay
+        the loan and $13.50."""
         def lend(receipts, units=0.0):
             w = controlled_world()
             funded_pool(w)
@@ -1059,22 +1025,22 @@ class EconomyAbmTests(unittest.TestCase):
             w.r_g = w.r_b = 0.005
             w.pop["cycles"][:], w.pop["phases"][:] = 30, 0
             w.last["receipts"][:] = receipts / MONTH_USD
-            # Changed 12 Nov: the budget now expects wages on their jobs' pay dates, and the quiet month's wages would
-            # add receipts to the hand case. Its receipts are none of them wages, so the budget is as before.
+            # The budget expects wages on their jobs' pay dates; the quiet month's wages would add receipts to the
+            # example, whose receipts are none of them wages.
             w.last["wages_paid"][:] = 0.0
             w.ob = dict(buyer=np.zeros(3, int), seller=np.arange(1, 4), amount=np.full(3, 100.0 / MONTH_USD),
                         settle=np.full(3, 30), card=np.zeros(3, bool), kind=np.full(3, SERVICE))
             w.receivable[1:4] = w.ob["amount"]
             w.payable[0] = w.ob["amount"].sum()
             _, spare, _, last = w._c1_budget(30)
-            factor, grow = w._pool_factor(30, last[0]), 1.0   # fee debt bears no interest (3 Nov)
+            factor, grow = w._pool_factor(30, last[0]), 1.0   # fee debt bears no interest
             list(map(lambda key: w.acc[key].__setitem__(slice(None), 0.0), FAILURE_COUNTS))
             w._settle(1, 30)
             draw = float(w.book["principal"][w.book["pool"]].sum())
             fee = float(w.book["principal"][w.book["kind"] == FEE_DEBT].sum())
             self.assertAlmostEqual(draw * factor + fee * grow, float(spare[0]), places=14)
-            # The failure counts (3 Nov): each bill is failed or bridged in shares, and in whole bills the draw pays
-            # the ones it covers in full, smallest first.
+            # Failure counts: each bill is failed or bridged in shares, and in whole bills the draw pays the ones it
+            # covers in full, smallest first.
             counts = {key: float(w.acc[key][0]) for key in FAILURE_COUNTS}
             self.assertAlmostEqual(counts["fail_shares"] + counts["bridged_shares"], 3.0, places=12)
             self.assertEqual(counts["fail_items"] + counts["bridged_items"], 3.0)
@@ -1126,18 +1092,20 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(float(w.acc["failed_new"][3]), 0.5, places=15)
 
     def test_pool_lends_a_small_bill_whose_fee_would_cost_more(self):
-        """Hand case: failing a $20 bill costs $27, more than the pool's coupon on it. Without a card the pool lends the
+        """The pool lends a small bill whose failure fee would cost more than the loan.
+
+        Example: failing a $20 bill costs $27, more than the pool's coupon on it. Without a card the pool lends the
         $20 when two months of receipts ($40) repay the fee on all of it, and otherwise ($24) nothing, however capacity
-        might ration it, as for a card holder; the bill then fails with its fee. The $24 case is recorded as a refusal
-        (31 Oct review): the loan alone, $20.20 with its coupon, would have been repaid."""
+        might ration it, as for a card holder; the bill then fails with its fee. The $24 case is recorded as a
+        refusal: the loan alone, $20.20 with its coupon, would have been repaid."""
         for receipts, pool_lends in ((20.0, True), (12.0, False)):
             w = controlled_world()
             funded_pool(w)
             w.r_g = w.r_b = 0.005
             w.pop["cycles"][:], w.pop["phases"][:] = 30, 0
             w.last["receipts"][:] = receipts / MONTH_USD
-            # Changed 12 Nov: the budget now expects wages on their jobs' pay dates, and the quiet month's wages would
-            # add receipts to the hand case. Its receipts are none of them wages, so the budget is as before.
+            # The budget expects wages on their jobs' pay dates; the quiet month's wages would add receipts to the
+            # example, whose receipts are none of them wages.
             w.last["wages_paid"][:] = 0.0
             w.acc["fee_refused"] = w.acc["fee_refused_n"] = 0.0
             list(map(lambda key: w.acc[key].__setitem__(slice(None), 0.0), FAILURE_COUNTS))
@@ -1148,17 +1116,19 @@ class EconomyAbmTests(unittest.TestCase):
             np.testing.assert_allclose(fees, [] if pool_lends else [FAIL_FEE], rtol=1e-12)
             self.assertAlmostEqual(w.acc["fee_refused"], 0.0 if pool_lends else 20 / MONTH_USD, places=15)
             self.assertEqual(w.acc["fee_refused_n"], 0.0 if pool_lends else 1.0)
-            # The failure counts (3 Nov): the bill lent is one bridged in place of failing; refused, one failed.
+            # Failure counts: the bill lent is one bridged in place of failing; refused, one failed.
             self.assertAlmostEqual(float(w.acc["bridged_shares"][0]), float(pool_lends), places=12)
             items = tuple(float(w.acc[key][0]) for key in ("bridged_items", "fail_items"))
             self.assertEqual(items, (1.0, 0.0) if pool_lends else (0.0, 1.0))
 
-    # ---- The boundary rule and its real cost shares (decided 31 Oct and 1 Nov) --------------------------------
+    # ---- The boundary rule and its real cost shares -------------------------------------------------------------
     def test_card_conversion_and_pool_costs_leave_and_card_rewards_come_back(self):
-        """Hand cases (31 Oct). A $1 card purchase: the seller keeps 98.3 cents, the 1.7-cent fee leaves, and the
-        buyer's 0.75 cents of rewards come in at the close. A leaver's conversion fee leaves. A pool cost of 0.1 with
-        0.04 of cash leaves in full when incurred, 0.06 owed to the provider, and paying that later moves no wealth.
-        Outside lenders' interest comes back by spending only under the recirculation stress."""
+        """Card fees, conversion fees and pool costs leave the economy; card rewards come back.
+
+        Example: on a $1 card purchase the seller keeps 98.3 cents, the 1.7-cent fee leaves, and the buyer's 0.75
+        cents of rewards come in at the close. A leaver's conversion fee leaves. A pool cost of 0.1 with 0.04 of cash
+        leaves in full when incurred, 0.06 owed to the provider, and paying that later moves no wealth. Outside
+        lenders' interest comes back by spending only under the recirculation stress."""
         inputs = Inputs()
         w = controlled_world("S0")
         w.holder[0] = True
@@ -1207,13 +1177,15 @@ class EconomyAbmTests(unittest.TestCase):
         return dict(arm=arm, series=series)
 
     def test_real_part_prices_the_hand_cases_at_the_same_rates(self):
-        """Hand cases (decided 1 Nov), one person over a year. A $10,000 loan uses $250 of real resources from the
-        outside lender or the pool; one failed bill $2, as does the pool bridge in its place; $10,000 of card purchases
-        in 70 payments of $142 cost $24.86 on the card rails (processing $4.86, fraud $11, network $9) and $0.12 in P,
-        one transfer's gas on Base a payment, $0.00169 (decided 5 Nov: P payments run on stablecoin rails, with no
-        card-style processing, fraud or network charge), so CPM saves $24.74; $1,000 held a year costs $2.40 as E or
-        as P. The pool's priced 2% ($200) is set against its sourced $252. The failed bill is one unpaid share and the
-        bridge one bridged share (the real failure line's unit, 3 Nov), with its fee unit and payer-day as built."""
+        """The real part prices the same events at the same rates in every arm.
+
+        Example, one person over a year: a $10,000 loan uses $250 of real resources from the outside lender or the
+        pool; one failed bill $2, as does the pool bridge in its place; $10,000 of card purchases in 70 payments of
+        $142 cost $24.86 on the card rails (processing $4.86, fraud $11, network $9) and $0.12 in P, one transfer's
+        gas on Base a payment, $0.00169 (P payments run on stablecoin rails, with no card-style processing, fraud or
+        network charge), so CPM saves $24.74; $1,000 held a year costs $2.40 as E or as P. The pool's priced 2%
+        ($200) is set against its sourced $252. The failed bill is one unpaid share and the bridge one bridged share,
+        the unit of the real failure line."""
         from scripts.run_economy_population import real_part
         w = Economy(n=1, burn_in=1, months=12)
         keys = REAL_SERIES
@@ -1230,20 +1202,22 @@ class EconomyAbmTests(unittest.TestCase):
                          (250.0, 2.0, 0.12, 2.4))
         self.assertEqual((s0["total"], m1["total"]), (279.26, 254.52))
         self.assertEqual((m1["pool_priced_usd"], m1["pool_sourced_usd"]), (200.0, 252.0))
-        # Earned-wage access (3 Nov): the CFPB's 27 advances a user a year cost the declared $54, in the total; with no
-        # access the line is zero.
+        # Earned-wage access: the CFPB's 27 advances a user a year cost the declared $54, in the total; with no access
+        # the line is zero.
         ewa = real_part(self.year_of("S0", dict(ewa_uses=27.0), keys), w)
         self.assertEqual((ewa["earned_wage"], ewa["total"]), (54.0, 54.0))
         self.assertEqual(real_part(self.year_of("S0", dict(ewa_uses=27.0), keys), legacy(w))["earned_wage"], 0.0)
 
     def test_transfers_split_what_households_pay_into_real_cost_and_margin(self):
-        """Hand cases (31 Oct and 1 Nov), one person over a year: $900 of interest on a $10,000 outside loan is $250 of
-        real cost and a $650 margin; a $27 failure fee is $2 and $25; $170 of card fees less $75 of rewards on $10,000
-        of card purchases is $24.86 and $70.14; the issuer's $33 on $1,000 of P is $2.40 and $30.60. A conversion fee
-        has no sourced real cost, so no margin is claimed for it. Earned-wage access (3 Nov): the CFPB's 27 advances and
-        $68.88 of fees a user a year are $54 of real cost at the declared $2 a use and a $14.88 margin; with no access
-        there is no such row. Card limits (14 Nov 2026: the card's fees are new records, so the keys add them): $10 of
-        cash-advance fees and $30 of late fees go to the outside lenders too, $940 paid against the same $250."""
+        """What households pay splits into real cost and margin.
+
+        Example, one person over a year: $900 of interest on a $10,000 outside loan is $250 of real cost and a $650
+        margin; a $27 failure fee is $2 and $25; $170 of card fees less $75 of rewards on $10,000 of card purchases
+        is $24.86 and $70.14; the issuer's $33 on $1,000 of P is $2.40 and $30.60. A conversion fee has no sourced
+        real cost, so no margin is claimed for it. Earned-wage access: the CFPB's 27 advances and $68.88 of fees a
+        user a year are $54 of real cost at the declared $2 a use and a $14.88 margin; with no access there is no
+        such row. With card limits, $10 of cash-advance fees and $30 of late fees go to the outside lenders too, $940
+        paid against the same $250."""
         from scripts.run_economy_population import transfers
         w = Economy(n=1, burn_in=1, months=12)
         keys = ("out_interest", "pt_card", "pt_term", "penalties", "merchant_fees", "rewards", "card_payments",
@@ -1280,13 +1254,15 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(cash["poorer_half"], dict(launch_usd=450.0, end_usd=300.0, lowest_usd=250.0))
 
     def test_each_job_keeps_its_paired_differences_a_year(self):
-        """Hand cases (3 Nov), ten people over two years after launch. S0 has two failed payments ($4 of real
+        """Each job keeps its paired differences a year.
+
+        Example: ten people over two years after launch. S0 has two failed payments ($4 of real
         resources), M0 one ($2) and M1 none, so M1 saves $2 a year against S0 and $1 against M0. M1 ends $200 above S0
         for each person on a short billing cycle and $100 below for each on a long one, and M0 ends $40 above S0 for
         everyone: against S0, M1 gains $100 and -$50 a year by cycle and $25 in every quintile and on average, with
         half worse off; against M0, $80 and -$70, and $5 on average. Nobody holds a card or business income, so the
         first class holds everyone; two years hold no W2, so every role but never participant is empty. People 0 and 2,
-        on short cycles, are flagged as payers in chronic deficit (3 Nov): against S0 they gain $100 a year and the
+        on short cycles, are flagged as payers in chronic deficit: against S0 they gain $100 a year and the
         others $6.25."""
         from scripts.run_economy_population import REAL_LINES, differences
         w = Economy(n=10, burn_in=1, months=24)
@@ -1311,9 +1287,9 @@ class EconomyAbmTests(unittest.TestCase):
         np.testing.assert_array_equal(to_s0["gain_usd_a_year_by_class"], [25.0, np.nan, np.nan, np.nan])
         np.testing.assert_array_equal(list(to_s0["gain_usd_a_year_by_role"].values()), [np.nan, np.nan, np.nan, 25.0])
         self.assertEqual(to_s0["gain_usd_a_year_by_chronic"], [6.25, 100.0])
-        # The gains are read in full (decided 5 Nov: M2's indexation is the holder's own yield), with no line
-        # netting issuer transfers out.
-        # Beside the wealth measure, the complete gain (11 Nov), its parts and the difference in sales by group.
+        # The gains are read in full (M2's indexation is the holder's own yield), with no line netting issuer
+        # transfers out. Beside the wealth measure sit the complete gain, its parts and the difference in sales by
+        # group.
         self.assertEqual(set(to_s0), {"real_saving_usd_a_year", "gain_usd_a_year", "worse_off",
                                       "gain_usd_a_year_by_group", "gain_usd_a_year_by_quintile",
                                       "gain_usd_a_year_by_cycle", "gain_usd_a_year_by_class",
@@ -1321,17 +1297,17 @@ class EconomyAbmTests(unittest.TestCase):
                                       "complete_gain_parts_usd_a_year", "sales_usd_a_year",
                                       *(f"sales_usd_a_year_by_{name}"
                                         for name in ("group", "quintile", "cycle", "class", "chronic")),
-                                      # The cash-advance bound and the stored read-outs (15 Nov 2026).
+                                      # The cash-advance bound and the stored read-outs.
                                       "bound", "advance_saving_usd_a_year", "advance_saving_usd_a_year_by_quintile",
                                       "advance_saving_usd_a_year_by_class", "dispersion", "gain_usd_a_year_at_month"})
 
     @classmethod
     def paired_run(cls, arm, w, cycles, holder, business, volumes=None, roles=None, chronic=None, purchases=None,
                    credit=None):
-        """One arm's run for the paired differences' hand cases: the real part's volumes in the first month after
+        """One arm's run for the paired differences' examples: the real part's volumes in the first month after
         launch, the population's billing cycles, card holding and income source, person-by-month participation,
         ownership and borrowing (``roles``, nobody by default), the chronic-deficit flags (nobody by default), the
-        person-by-month purchase records (11 Nov; none by default) and credit records (none by default)."""
+        person-by-month purchase records (none by default) and credit records (none by default)."""
         keys = REAL_SERIES
         none = np.zeros((w.burn_in + w.months, cycles.size), bool)
         flags = dict(dict.fromkeys(("participant", "owner", "borrower"), none), **(roles or {}))
@@ -1344,7 +1320,9 @@ class EconomyAbmTests(unittest.TestCase):
                     purchases=dict(bought, **(purchases or {})), credit=dict(owed, **(credit or {})), **flags)
 
     def test_paired_gains_are_split_by_class_and_reported_by_role(self):
-        """Hand cases (decided 4 Nov), eight people over five years after launch, gaining -$10, $20, $30, $40, -$30,
+        """Paired gains are split by class and reported by role.
+
+        Example: eight people over five years after launch, gaining -$10, $20, $30, $40, -$30,
         $0, $10 and $60 a year against S0. The class is card holding x income source, fixed at the population draw and
         labelled 2 * card holder + business income: people 0 and 4 hold no card and earn wages (-$20 a class mean), 1
         and 5 no card and business income ($10), 2 and 6 a card and wages ($20), 3 and 7 a card and business income
@@ -1381,9 +1359,11 @@ class EconomyAbmTests(unittest.TestCase):
             np.testing.assert_array_equal(runs[0]["population"][key], runs[1]["population"][key])
             self.assertEqual(runs[0]["population"][key].dtype, bool)
 
-    # ---- The distress reading and the population map (decided 31 Oct) -------------------------------------------
+    # ---- The distress reading and the population map -------------------------------------------------------------
     def test_recovery_reads_a_quarter_of_the_dip_for_three_months(self):
-        """Hand cases (31 Oct), gaps against the same seed's run without distress over 60 months. Failures peak at 1
+        """Recovery is the first month the gap stays within a quarter of its peak for three months.
+
+        Example: gaps against the same seed's run without distress over 60 months. Failures peak at 1
         point in month 36 and halve every two months: recovered in month 40, four months after the distress year.
         Participation peaks at 5 points and settles at a lasting 1-point loss: recovered in month 40, with a lasting gap
         of about 1 point. A wallet that wobbles by 0.3 after a -2 peak is within a quarter at once. A gap that stays
@@ -1403,10 +1383,12 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(recovery(np.zeros(60), w)["months_to_recover"], 0)
 
     def test_recovery_is_looked_for_only_after_the_largest_gap(self):
-        """Hand cases (the 31 Oct review). A wave after the distress year: the gap is 0.1 in the distress year and
-        0.02 for three months after it, then 0.5 from month 45 with its largest, 1.0, in month 50. Staying at 0.5 it has
-        not recovered; falling to 0.1 from month 51 it recovers 15 months after the distress year. A gap still growing
-        in month 60 has not recovered. Before the fix each read as recovered after one month."""
+        """Recovery is looked for only after the largest gap.
+
+        Example, a wave after the distress year: the gap is 0.1 in the distress year and 0.02 for three months after
+        it, then 0.5 from month 45 with its largest, 1.0, in month 50. Staying at 0.5 it has not recovered; falling
+        to 0.1 from month 51 it recovers 15 months after the distress year. A gap still growing in month 60 has not
+        recovered."""
         from scripts.run_economy_population import recovery
         w = Economy()
         months = np.arange(1, 61)
@@ -1429,11 +1411,12 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertIsNone(wilson(0, 0))
 
     def test_share_persistent_counts_only_seeds_whose_own_verdict_is_persistent(self):
-        """Hand cases (the 31 Oct review), three seeds in which every persistence test holds unless noted. Seeds read
-        A (Against: the issuer would leave), P (Persistent) or I (Inconclusive: P4 fails). PPP is Persistent with no
-        falsifier, 3 of 3. APP is Persistent by majority and says a falsifier fired in 1 of 3 seeds: 2 of 3 Persistent
-        (3 of 3 before the fix, with "no falsifier"). AAP is Against, 1 of 3 (3 of 3 before). API has no majority:
-        Inconclusive, 1 of 3 (Persistent, 2 of 3, before)."""
+        """The share persistent counts only seeds whose own verdict is persistent.
+
+        Example: three seeds in which every persistence test holds unless noted. Seeds read A (Against: the issuer
+        would leave), P (Persistent) or I (Inconclusive: P4 fails). PPP is Persistent with no falsifier, 3 of 3. APP
+        is Persistent by majority and says a falsifier fired in 1 of 3 seeds: 2 of 3 Persistent. AAP is Against, 1
+        of 3. API has no majority: Inconclusive, 1 of 3."""
         from scripts.run_economy_population import decide
         cases = (("PPP", "Persistent, no falsifier (", 1.0, [0.438, 1.0]),
                  ("APP", "Persistent, a falsifier in 1 of 3 seeds (", 0.667, [0.208, 0.939]),
@@ -1447,10 +1430,12 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertEqual(cell["worse_than_M0_seeds"], 0)
 
     def test_share_persistent_counts_a_seed_worse_than_m0_where_the_cell_is(self):
-        """Hand cases, five seeds in which every persistence test holds (the 3 Nov review). Trade worse than M0 in 4 of
-        5 seeds is systematic (80%): Against, with 1 of 5 seeds Persistent (5 of 5 before the fix). In 3 of 5 it is
-        not, and all 5 stay Persistent. One group harmed in 4 seeds and another in the fifth only: Against, and the
-        fifth seed, harmed only in a group the cell does not find harmed, stays Persistent."""
+        """The share persistent counts a seed worse than M0 where the cell is.
+
+        Example: five seeds in which every persistence test holds. Trade worse than M0 in 4 of 5 seeds is systematic
+        (80%): Against, with 1 of 5 seeds Persistent. In 3 of 5 it is not, and all 5 stay Persistent. One group
+        harmed in 4 seeds and another in the fifth only: Against, and the fifth seed, harmed only in a group the cell
+        does not find harmed, stays Persistent."""
         from scripts.run_economy_population import decide
         cell = lambda seeds: decide(seeds, 0.044, 0.6, 0.0, False, Economy())["M1"]
         trade = cell([map_seed(seed, worse_trade=seed < 4) for seed in range(5)])
@@ -1497,9 +1482,8 @@ class EconomyAbmTests(unittest.TestCase):
         """The confirmation map: 105 cells, each on the frozen n fresh seeds none of which is a development seed, plus
         the baseline with lenders' interest recirculated; with n = 14, 1,484 jobs of five runs each (S0, M0, U, M1 and
         M2), 7,420 runs, and with n = 37, 3,922 jobs, 19,610 runs (no seed simulated). The seeds are the first n of a
-        block never run, from 20261401 (at most 100, the 13 Nov review); the blocks 20261101 to 20261120 (the 3 Nov
-        seeds row), 20261201 to 20261220 and 20261301 to 20261308 are retired. The count
-        is 30 (17 Nov 2026), so SEEDS["confirmation"] is 20261401 to 20261430."""
+        block never run, from 20261401 (at most 100); the blocks 20261101 to 20261120, 20261201 to 20261220 and 20261301
+        to 20261308 are retired. The count is 30, so SEEDS["confirmation"] is 20261401 to 20261430."""
         from scripts.run_economy_population import CONFIRMATION_RESERVED, SEEDS, runs_in, seeds_for, tasks_for
         self.assertEqual(SEEDS["confirmation"], tuple(range(20261401, 20261431)))
         block = set(CONFIRMATION_RESERVED)
@@ -1508,7 +1492,7 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertFalse(block & set(range(20261201, 20261221)))
         self.assertEqual(SEEDS["development"], (20261021, 20261022, 20261023))
         self.assertFalse(block & set(SEEDS["development"]))
-        # The sweep set (12 Nov) shares no seed with either, so exploring sizes reads no confirmation seed.
+        # The sweep set shares no seed with either, so exploring sizes reads no confirmation seed.
         self.assertEqual(SEEDS["sweep"], tuple(range(20261301, 20261309)))
         self.assertFalse(set(SEEDS["sweep"]) & (block | set(SEEDS["development"])))
         for n in (14, 37):
@@ -1519,9 +1503,11 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertEqual(sum(map(runs_in, tasks)), 5 * (105 + 1) * n)
 
     def test_a_run_can_select_cells_of_the_grid(self):
-        """Step 2 of the 3 Nov round, r_out 4.4% and a0 0.6 at distress 0 and 2% on the development seeds, is 6 jobs
-        and 30 runs (S0, M0, U, M1 and M2 in each), the recirculation set left out. By default a run selects the full
-        grid, 1,590 runs on the development seeds, and a value outside the grid is refused (the 3 Nov review)."""
+        """A run can select cells of the grid.
+
+        Example: r_out 4.4% and a0 0.6 at distress 0 and 2% on the development seeds is 6 jobs and 30 runs (S0, M0,
+        U, M1 and M2 in each), the recirculation set left out. By default a run selects the full grid, 1,590 runs on
+        the development seeds, and a value outside the grid is refused."""
         from scripts.run_economy_population import GRID, SEEDS, options, runs_in, selected, tasks_for
         step2 = options().parse_args(["--seeds", "development", "--r_out", "0.044", "--a0", "0.6",
                                       "--distress", "0.02", "0"])
@@ -1565,11 +1551,11 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertIn("stablecoin_issuer", cell["M0"]["transfers"])
         self.assertEqual(set(cell["S0_cash"]), {"everyone", "poorer_half"})
         self.assertEqual(len(cell["M1"]["transfers_usd_a_year_by_quintile"]), 5)
-        self.assertIn("bridges_drawn_over_wanted", cell["M2"])   # named for what it holds (the 3 Nov review)
-        # "coverage" is now demurrage's coverage of the bridging capital cost (decided 4 Nov), the engine's record,
-        # not the old self-financing ratio; the share of bridges wanted the pool drew keeps its own name.
+        self.assertIn("bridges_drawn_over_wanted", cell["M2"])   # named for what it holds
+        # "coverage" is demurrage's coverage of the bridging capital cost, the engine's record; the share of bridges
+        # wanted that the pool drew has its own name.
         self.assertIn("coverage", cell["M2"])
-        # The 5 Nov records: participation in years 2 and 3, the contract's limit and rates, demurrage by window,
+        # Records: participation in years 2 and 3, the contract's limit and rates, demurrage by window,
         # liquidity in every arm and S0, the paired differences' seed means, and each pool arm's region reading.
         from scripts.run_economy_population import VERDICTS
         for arm in ("U", "M1", "M2"):
@@ -1580,9 +1566,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertIn("liquidity", cell["M0"])
         self.assertEqual(set(cell["S0_liquidity"]), set(jobs[0]["S0"]["liquidity"]))
         self.assertIsInstance(cell["M2"]["worse_than_M0_seeds"], int)
-        # The issuer's room (the 4 Nov review): its headroom beyond its own costs, those costs and the most cost it
-        # could bear in all, in each pool arm's row and the cell, under names that say so; and the household-held
-        # months each window's margin averages over, beside it.
+        # The issuer's room: its headroom beyond its own costs, those costs and the most cost it could bear in all,
+        # in each pool arm's row and the cell, under names that say so; and the household-held months each window's
+        # margin averages over, beside it.
         room = lambda unit: {f"issuer_{key}_{unit}" for key in ("headroom", "costs", "most_cost")}
         for arm in ("U", "M1", "M2"):
             row = jobs[1]["arms"][arm]
@@ -1594,25 +1580,25 @@ class EconomyAbmTests(unittest.TestCase):
                                        row["issuer_headroom_usd_a_year"] + row["issuer_costs_usd_a_year"], places=9)
             self.assertEqual(len(row["own_margin_held_months"]), 2)
             self.assertEqual(cell[arm]["own_margin_held_months_W2_by_seed"], [row["own_margin_held_months"][1]])
-        # The failure counts (3 Nov), every arm's monthly series, and on a development seed by person and month.
+        # The failure counts: every arm's monthly series, and on a development seed by person and month.
         failures = jobs[1]["failure_counts"]
         self.assertEqual(set(failures), {"S0", "M0", "U", "M1", "M2"})
         self.assertEqual(len(failures["M2"]["monthly"]["fail_items"]), 12)
         self.assertTrue(all("payer_months" in failures[arm] for arm in failures))
-        # The wage-loss path (3 Nov), every arm's, on the same spells.
+        # The wage-loss path, every arm's, on the same spells.
         stored = jobs[1]["measures"]
         for arm in ("S0", "M0", "U", "M1", "M2"):
             self.assertTrue(set(WAGE_LOSS) <= set(stored[arm]))
             self.assertEqual(len(stored[arm]["wages_withheld"]), 12)
         for name in ("jobs_without_wage", "jobs_without_wage_last_day"):
             self.assertEqual(stored["S0"][name], stored["M1"][name])
-        # Each seed's paired differences (3 Nov), a year after launch: the template runs 12 months, so they match the
-        # row's 60-month fields read over its 12.
+        # Each seed's paired differences a year after launch: the template runs 12 months, so they match the row's
+        # 60-month fields read over its 12.
         rows, s0 = jobs[0]["arms"], jobs[0]["S0"]
         people = build_population(replace(template, seed=20261021))
         size = np.bincount(2 * people["holder"] + people["business"], minlength=4)
         self.assertEqual(set(rows["M0"]["against"]), {"S0"})
-        # M1 is read against U too, what demurrage adds (decided 4 Nov).
+        # M1 is read against U too, which shows what demurrage adds.
         self.assertEqual({arm: set(rows[arm]["against"]) for arm in ("U", "M1", "M2")},
                          dict(U={"S0", "M0"}, M1={"S0", "M0", "U"}, M2={"S0", "M0"}))
         for arm in ("U", "M1", "M2"):
@@ -1626,17 +1612,17 @@ class EconomyAbmTests(unittest.TestCase):
                                    rows["M0"]["real_part"]["total"] - rows[arm]["real_part"]["total"], places=6)
             self.assertAlmostEqual(to["S0"]["worse_off"], 1 - rows[arm]["better_off"], delta=0.0006)
             self.assertEqual(len(to["M0"]["gain_usd_a_year_by_group"]), 10)
-            # The four classes (decided 4 Nov) weighted by their size give the mean gain; the W2 roles beside them.
+            # The four classes weighted by their size give the mean gain; the W2 roles beside them.
             means = np.array(to["S0"]["gain_usd_a_year_by_class"], float)
             self.assertAlmostEqual(float(np.nansum(means * size)) / 40, to["S0"]["gain_usd_a_year"], delta=0.01)
             self.assertEqual(list(to["M0"]["gain_usd_a_year_by_role"]),
                              ["investor", "borrower", "daily_user", "never_participant"])
             self.assertEqual({key: len(value) for key, value in rows[arm]["owners"]["by_loan_year"].items()},
                              dict.fromkeys(("all", "bridge", "term"), LOAN_YEARS))
-        # The pool series (3 Nov): each arm's monthly series, owners in the pool arms, crossings in every CPM arm and
-        # the mean buffers by card holding in every arm; 12 months hold no W2, so its reads are undefined.
-        # The harsh stress's read-outs (14 Nov 2026) are stored in every arm, with mean wealth (15 Nov 2026), and the
-        # pool run's read-outs (15 Nov 2026) in the pool arms; the settlement's records in every arm.
+        # The pool series: each arm's monthly series, owners in the pool arms, crossings in every CPM arm and the mean
+        # buffers by card holding in every arm; 12 months hold no W2, so its reads are undefined. The harsh stress's
+        # read-outs are stored in every arm, with mean wealth, and the pool run's read-outs in the pool arms; the
+        # settlement's records in every arm.
         from scripts.run_economy_population import (BUFFERS, CONTRACT, CROSSINGS, MONTHLY, OWNERS, POOL_RUN, STRESS,
                                                     WEALTH)
         self.assertEqual(len(jobs[0]["monthly"]["M2"]["owners_capital"]), 12)
@@ -1653,7 +1639,7 @@ class EconomyAbmTests(unittest.TestCase):
                                          "written_off_bridge", "written_off_term"})
         self.assertFalse(set(POOL_RUN) & set(STRESS))   # stored once: written_off and P_bar are with the stress
         self.assertEqual(len(jobs[0]["monthly"]["S0"]["buffer_nocard"]), 12)
-        # S0's buffers by person and month after launch on a development seed (the 3 Nov review), and no other arm's.
+        # S0's buffers by person and month after launch on a development seed, and no other arm's.
         stored = np.array(failures["S0"]["buffers"])
         self.assertEqual(stored.shape, (12, 40))
         holder = build_population(replace(template, seed=20261021, distress=0.02))["holder"]
@@ -1667,16 +1653,17 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertIn("W2", cell["M2"]["owners"]["net_pct"])
         self.assertIsNone(cell["M2"]["owners"]["net_pct"]["W2"])
         self.assertEqual(set(cell["M2"]["owners"]["by_loan_year"]), {"all", "bridge", "term"})
-        # The issuer is a pure custodian (decided 5 Nov): no support fund or issuer-held share is reported.
+        # The issuer is a pure custodian: no support fund or issuer-held share is reported.
         self.assertFalse({"support_months", "support_usd", "issuer_held_share_W2"} & set(cell["M2"]))
         json.dumps(dict(jobs=jobs, cell=cell))                     # the map's files can be written
 
     def test_a_selection_of_cells_writes_the_four_stores(self):
-        """Step 2's selection of cells, decided and written as a run writes it, on the two short jobs (one seed): the
-        four stores read back with the record of the selection and the Economy without the fields each job sets, the
-        wage-loss and monthly keys, the failure counts' labels for every stored part and key, its note and fee,
+        """A selection of cells writes the four stores as a run writes them, on the two short jobs (one seed).
+
+        The four stores read back with the record of the selection and the Economy without the fields each job sets,
+        the wage-loss and monthly keys, the failure counts' labels for every stored part and key, its note and fee,
         cells.json's note on the paired differences and none of the per-job series or counts, and summary.json's notes
-        on the region reading and liquidity with the readings in order (the 3 Nov review; 5 Nov)."""
+        on the region reading and liquidity with the readings in order."""
         from scripts.run_economy_population import (AGAINST_NOTE, FAILURE_LABELS, FAILURE_NOTE, LIQUIDITY_NOTE,
                                                     MONTHLY, MONTHLY_NOTE, REGION_NOTE, REPORT_NOTES, VERDICTS,
                                                     WAGE_LOSS, decide_cells, run_record, runs_in, selected,
@@ -1726,7 +1713,7 @@ class EconomyAbmTests(unittest.TestCase):
                     self.assertEqual({re.sub(r"_\d+$", "_k", key) for key in values}, set(FAILURE_LABELS[part]),
                                      (arm, part))
         self.assertEqual(kept["against_note"], AGAINST_NOTE)
-        # The arm rows' earned-wage and chronic-deficit reports (3 Nov) are stored with their notes.
+        # The arm rows' earned-wage and chronic-deficit reports are stored with their notes.
         self.assertEqual(kept["report_notes"], REPORT_NOTES)
         self.assertTrue(all(set(REPORT_NOTES) <= set(row) for row in kept["jobs"][0]["arms"].values()))
         self.assertTrue(set(REPORT_NOTES) <= set(kept["jobs"][0]["S0"]))
@@ -1735,18 +1722,20 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(len(summary["cells"]), 2)
         self.assertIsNone(summary["baseline_lender_interest_recirculated"])
 
-    # ---- The region reading and its figures (5 Nov) ------------------------------------------------------------------
+    # ---- The region reading and its figures -----------------------------------------------------------------------
     def test_the_region_reading_reads_its_hand_cases(self):
-        """Hand cases of the region reading (5 Nov), on seeds whose reports are zero unless noted. Twenty Persistent
-        seeds whose pool formed read stable (Wilson lower bound 0.839); three read not persistent on the decided rule
-        (0.438), stable on a bare majority. A class at -$2.00 a person a year in every seed is at the margin and stable,
-        at -$2.01 a group loses; the gains are read in full (decided 5 Nov: M2's indexation is the holder's own
-        yield), so there is one basis and no reading "passes on issuer transfers". Claim (d) reads each group's 95% t
-        lower bound against S0 and against M0 (the 5 Nov review): a quintile at -$3 against M0 alone loses; a class at
+        """The region reading classifies a cell as stable, not persistent, a group loses, issuer leaves and so on.
+
+        Examples, on seeds whose reports are zero unless noted. Twenty Persistent seeds whose pool formed read stable
+        (Wilson lower bound 0.839); three read not persistent on the persistence rule (0.438), stable on a bare
+        majority. A class at -$2.00 a person a year in every seed is at the margin and stable, at -$2.01 a group
+        loses; the gains are read in full (M2's indexation is the holder's own yield), so there is one basis and no
+        reading "passes on issuer transfers". Claim (d) reads each group's 95% t lower bound against S0 and against
+        M0: a quintile at -$3 against M0 alone loses; a class at
         $0 and -$3.5 in alternate seeds has a mean of -$1.75 but a bound of -$2.59 and loses; a group defined in one
         seed only has no bound and loses. One seed of twenty whose issuer would leave keeps the cell persistent (19 of
         20, 0.764) and reads issuer leaves. No pool formed reads no pool. M2 at r_out 2% is its declared limit. A
-        group's t lower bound reads its hand value, and a group empty in every seed is no group."""
+        group's t lower bound reads its worked value, and a group empty in every seed is no group."""
         from scipy.stats import t as student
         from scripts.run_economy_population import VERDICTS, decide
         self.assertNotIn("passes on issuer transfers", VERDICTS)
@@ -1798,7 +1787,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual((got["groups"]["S0"]["class"]["mean"][1], got["verdict"]), (None, "stable"))
 
     def test_the_complete_gain_reads_its_hand_cases(self):
-        """The complete gain (decided 11 Nov), arm A against arm B. (i) A $100 purchase by a person without a card
+        """The complete gain of arm A against arm B.
+
+        Examples: (i) A $100 purchase by a person without a card
         fails in B and completes in A, nothing else differs: on wealth the buyer is -100 and the seller +100; at face
         the buyer is 0 and the seller +100; at zero both are 0. (ii) A $500 durable is bought on term credit in A and
         cancelled in B, $20 of interest paid by the end: on wealth the buyer is -520 and the seller +500; at face the
@@ -1835,7 +1826,7 @@ class EconomyAbmTests(unittest.TestCase):
                          dict(wealth=0.0, purchases_completed=50.0, durables=0.0, sales=50.0, purchases_lost=-50.0))
 
     def test_purchase_records_balance_on_a_tiny_world(self):
-        """The purchase records (11 Nov) on a tiny world with shocks, in S0, M0 and M1: every month the sum over people
+        """The purchase records on a tiny world with shocks, in S0, M0 and M1: every month the sum over people
         of purchases completed and durables bought equals the sum of sales, since each completed purchase is one
         buyer's and one seller's; and each person's service and shock purchases completed and lost add up to those due
         to it as buyer that month."""
@@ -1866,7 +1857,7 @@ class EconomyAbmTests(unittest.TestCase):
             np.testing.assert_allclose(bought["completed"] + bought["lost"], world.due, rtol=1e-12, atol=1e-12)
 
     def test_credit_records_match_the_book_on_a_tiny_world(self):
-        """The credit records (11 Nov) on a tiny world in M1, a pool formed: every record is non-negative; each month the
+        """The credit records on a tiny world in M1, a pool formed: every record is non-negative; each month the
         instalment principal lent by each lender, summed over people, equals what the loan book was given that month;
         the pool's bridges equal the bridges series and the card's bridging the card_bridging and revolved series;
         interest on card and other outside loans equals the out_interest series; and a payer with no new failed payment
@@ -1908,7 +1899,7 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertEqual(float(np.abs(s0[key]).sum()), 0.0, key)
 
     def test_the_runner_reports_credit_by_class(self):
-        """The runner's credit and purchases by class (11 Nov), in S0 and a pool arm: four entries for every record, in
+        """The runner's credit and purchases by class, in S0 and a pool arm: four entries for every record, in
         the order of the classes, and class sizes that add up to the population."""
         from scripts.run_economy_population import CLASSES, by_class
         for arm in ("S0", "M1"):
@@ -1918,16 +1909,17 @@ class EconomyAbmTests(unittest.TestCase):
                 self.assertEqual(len(report[key]), len(CLASSES), key)
 
     def test_the_region_reads_claim_d_on_the_complete_gain(self):
-        """Claim (d) on the complete gain (decided 11 Nov), on twenty seeds alike, so each bound is its mean. A
-        class at $0 on wealth, +$1 at face and -$3 at zero fails at zero: a group loses, the face end alone passes, and
-        the gain at share s, -3 + 4 s, reaches -$2 at s = 0.25, the break-even share on bounds and on means against both;
-        the wealth measure passes. A class at -$3 on wealth and $0 at both ends is stable at break-even 0, the wealth
-        measure failing beside it. A class at -$3 at face and $0 at zero loses with no break-even share, the zero end
-        alone passing.
+        """The region reads claim (d) on the complete gain.
 
-        The clause (decided 11 Nov, second round) asks S0 at both ends and M0 at face. The same class at $0 at both
-        ends against S0 and at +$1 at face and -$3 at zero against M0 is stable, M0's break-even share 0.25 and S0's 0.
-        At $0 against M0 and the S0 reading above, it loses on S0's zero end. At -$3 at face and $0 at zero against M0
+        Example, on twenty seeds alike, so each bound is its mean. A class at $0 on wealth, +$1 at face and -$3 at
+        zero fails at zero: a group loses, the face end alone passes, and the gain at share s, -3 + 4 s, reaches -$2
+        at s = 0.25, the break-even share on bounds and on means against both; the wealth measure passes. A class at
+        -$3 on wealth and $0 at both ends is stable at break-even 0, the wealth measure failing beside it. A class at
+        -$3 at face and $0 at zero loses with no break-even share, the zero end alone passing.
+
+        The clause asks S0 at both ends and M0 at face. The same class at $0 at both ends against S0 and at +$1 at
+        face and -$3 at zero against M0 is stable, M0's break-even share 0.25 and S0's 0. At $0
+        against M0 and the S0 reading above, it loses on S0's zero end. At -$3 at face and $0 at zero against M0
         alone, it loses with M0's break-even share None. With M0's class alternating seed by seed between 0 and +2 at
         face, its bound is below the mean, so the break-even share on bounds exceeds the one on means."""
         import copy
@@ -1982,7 +1974,7 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual((got["verdict"], yard(got, "M0")), ("stable", (True, False, 0.29, 0.25)))
 
     def test_owners_excess_reads_its_hand_case(self):
-        """Owners' net return less their alternative (11 Nov), reported only: capital 1 and net income 0.004 every
+        """Owners' net return less their alternative, reported only: capital 1 and net income 0.004 every
         month is 4.8% a year; at a reserve rate of 0.3% a month and the owners' spread of 0.25 point the alternative is
         3.85%, so the excess is 0.95 in both windows, None where no capital is held. Across seeds 1, 2 and 3 the mean
         is 2 with a 95% t interval of 2 -/+ t(0.975, 2) / sqrt(3); one seed has no interval."""
@@ -2000,13 +1992,13 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(t_interval([1.5, None]), dict(mean=1.5, lower_95=None, upper_95=None, seeds=1))
 
     def test_liquidity_and_demurrage_read_their_hand_cases(self):
-        """Liquidity and demurrage by window (5 Nov) on constant series, in months of mean spending a person: money
+        """Liquidity and demurrage by window on constant series, in months of mean spending a person: money
         held 0.1 ($644, buffers 0.06, idle P 0.03, the pool's idle cash 0.01); a month's pool bridges 0.01, card
         bridging 0.005, revolved statements 0.002 and earned-wage advances 0.001, $1,391.04 of shortfall covered a
         year, so 0.463 of money held per dollar of it; failures 0.003 a month, $231.84 a year, and half an unpaid
-        share a month, 6 a year. The issuer's derived share is its first defined value, the monopoly bound (a record,
-        4 Nov) its W2 mean, and the yield on wallet P, the pool cash's return, the issuer's custody and demurrage are
-        flows a year. A run that ends before a window has none there."""
+        share a month, 6 a year. The issuer's derived share is its first defined value, the monopoly bound (a
+        record) its W2 mean, and the yield on wallet P, the pool cash's return, the issuer's custody and demurrage
+        are flows a year. A run that ends before a window has none there."""
         from scripts.run_economy_population import demurrage, liquidity
         months = 60
         economy = Economy(n=1, burn_in=0, months=months)
@@ -2029,13 +2021,13 @@ class EconomyAbmTests(unittest.TestCase):
         got = demurrage(dict(series=series, economy=economy), economy)
         self.assertEqual((got["s_issuer"], got["charges_usd_a_year"], got["wallet_yield_usd_a_year"]),
                          (0.0545, [77.28, 77.28], [77.28, 77.28]))
-        self.assertEqual(got["s_monopoly_W2"], 0.8)                  # the monopoly bound, a record (4 Nov)
+        self.assertEqual(got["s_monopoly_W2"], 0.8)                  # the monopoly bound, a record
         short = replace(economy, months=12)
         cut = {key: value[:12] for key, value in series.items()}
         self.assertEqual(liquidity(dict(series=cut, economy=short), short)["precautionary_usd"], [None, None])
 
     def test_the_region_figures_draw_from_a_tiny_store(self):
-        """The region figures (5 Nov) from a tiny synthetic store: every figure as PNG and PDF, the bare-majority
+        """The region figures from a tiny synthetic store: every figure as PNG and PDF, the bare-majority
         region figures under their own names beside, a figure already there never overwritten, and a store without
         U, without monthly paths or without distress skipping what it cannot support with a printed note."""
         from scripts.run_region_figures import draw
@@ -2064,10 +2056,10 @@ class EconomyAbmTests(unittest.TestCase):
                 self.assertIn(skipped, printed.getvalue())
 
     def test_receipts_repay_the_coupon_and_debts_ranked_ahead(self):
-        """A loan the receipts cannot repay with its coupon goes to the card; one they can is repaid by its date. Since
-        card limits (14 Nov 2026) a holder's bill goes to the card as a cash advance, priced here at the card's 1% a
-        month with no fee, as the hand case had the card (changed: at the cash APR and its fee the card's cost would
-        decide the case instead of the coupon)."""
+        """A loan the receipts cannot repay with its coupon goes to the card; one they can is repaid by its date.
+
+        With card limits a holder's bill goes to the card as a cash advance, priced here at the card's 1% a month
+        with no fee; at the cash APR and its fee the card's cost would decide the case instead of the coupon."""
         for receipts, pool_lends in ((1.0, False), (1.05, True)):
             w = controlled_world("M2")
             w.economy = replace(w.economy, inflation=0.02 / 12)
@@ -2140,11 +2132,12 @@ class EconomyAbmTests(unittest.TestCase):
         return w, float((w.book["principal"] + w.book["interest"])[bridge].sum())
 
     def test_a_due_bridge_is_collected_from_all_money(self):
-        """Hand case (decided 12 Nov): buffer 500, a 300 bridge due today, 400 of money after the day's payments,
-        all below the buffer. The old rule repaid only from money above the buffer, so nothing was repaid and the
-        borrower was in arrears tomorrow; now 300 is collected, 100 is left and it is not in arrears. With only 200,
-        all 200 is collected, 100 stays past due and it is in arrears tomorrow. The same for a card bridge (S0) and a
-        pool bridge (M1)."""
+        """A bridge that is due is collected from all of the borrower's money, not only the part above the buffer.
+
+        Example: buffer 500, a 300 bridge due today, 400 of money after the day's payments, all below the buffer.
+        300 is collected, 100 is left and the borrower is not in arrears tomorrow. With only 200, all 200 is
+        collected, 100 stays past due and the borrower is in arrears tomorrow. The same holds for a card bridge (S0)
+        and a pool bridge (M1)."""
         for arm in ("S0", "M1"):
             w, left = self._due_bridge_day(arm, 400.0)
             self.assertAlmostEqual(left, 0.0, places=9, msg=arm)
@@ -2166,8 +2159,9 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertFalse(bool(w.arrears[0]), arm)
 
     def test_a_due_bridge_ranks_ahead_of_overdue_wages(self):
-        """A bridge that has reached its due date is collected before overdue wages, as an instalment falling due is
-        (decided 12 Nov). Buffer 500, money 700, an overdue wage of 250 and a 300 bridge due today: the bridge
+        """A bridge that has reached its due date is collected before overdue wages, as an instalment falling due is.
+
+        Example: buffer 500, money 700, an overdue wage of 250 and a 300 bridge due today: the bridge
         takes 300, which leaves 400, nothing above the buffer, so the wage stays overdue in full."""
         for arm in ("S0", "M1"):
             w, left = self._due_bridge_day(arm, 700.0, late_wage=250.0)
@@ -2213,10 +2207,11 @@ class EconomyAbmTests(unittest.TestCase):
         return w, float(w._overdue(every).sum()), float((w.book["principal"] + w.book["interest"])[left].sum())
 
     def test_a_missed_instalment_is_collected_from_all_money(self):
-        """Hand case (decided 12 Nov): buffer 500, 400 of money, all below the buffer, and an instalment of 100
-        missed a month ago. Before, a missed instalment had only the money above the buffer after its due day, so
-        nothing was paid and the borrower stayed in arrears; now the 100 is collected, 300 is left, the loan is
-        current again and the borrower is not in arrears. The same for an outside loan (S0) and a pool loan (M1)."""
+        """A missed instalment is collected from all of the borrower's money, not only the part above the buffer.
+
+        Example: buffer 500, 400 of money, all below the buffer, and an instalment of 100 missed a month ago. The 100
+        is collected, 300 is left, the loan is current again and the borrower is not in arrears. The same holds for
+        an outside loan (S0) and a pool loan (M1)."""
         for arm in ("S0", "M1"):
             w, overdue, _ = self._missed_instalment_day(arm, 400.0)
             self.assertAlmostEqual(overdue, 0.0, places=9, msg=arm)
@@ -2227,7 +2222,9 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertTrue(bool((w.book["since"][term] == BIG).all()), arm)   # no longer counted towards a write-off
 
     def test_a_missed_instalment_ranks_ahead_of_a_due_bridge(self):
-        """Hand case (decided 12 Nov, "build B"): buffer 500, 250 of money, a missed instalment of 100 and a 200
+        """A missed instalment ranks ahead of a due bridge.
+
+        Example: buffer 500, 250 of money, a missed instalment of 100 and a 200
         bridge due today. The instalment is paid in full first, the bridge gets the 150 left and 50 of it stays past
         due, so the shortfall sits on the bridge, not on the instalment loan."""
         for arm in ("S0", "M1"):
@@ -2238,10 +2235,11 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertTrue(bool(w.arrears[0]), arm)
 
     def test_the_dealing_collects_a_bridge_already_due_before_a_dearer_current_one(self):
-        """From the 13 Nov review: at the dealing of month 1 (day 30) a borrower with savings of 1 owes a bridge
-        of 1 due on day 29 at 1% and a dearer bridge of 1 due on day 45 at 2%. What was due before today is collected
-        first (decided 12 Nov), so the due bridge is paid and the current one is not: principal [0, 1]. Before
-        the fix the dearer current bridge took the money and the due one stayed past due."""
+        """The dealing collects a bridge already due before a dearer current one.
+
+        Example: at the dealing of month 1 (day 30) a borrower with savings of 1 owes a bridge of 1 due on day 29 at
+        1% and a dearer bridge of 1 due on day 45 at 2%. What was due before today is collected first, so the due
+        bridge is paid and the current one is not: principal [0, 1]."""
         w = controlled_world("S0")
         w.savings[0] = 1.0
         for due, rate in [(29, 0.01), (45, 0.02)]:
@@ -2252,7 +2250,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(float(w.book["principal"][1]), 1.0, places=12)
 
     def test_the_dealing_collects_a_due_bridge_before_overdue_wages(self):
-        """Hand case: at the dealing of month 1 a payer holds savings of 300, owes an overdue wage of 250 and a bridge
+        """The dealing collects a due bridge before overdue wages.
+
+        Example: at the dealing of month 1 a payer holds savings of 300, owes an overdue wage of 250 and a bridge
         of 300 due on day 29, no interest: money for one. What is due ranks first, so the bridge is paid in full and
         the wage stays overdue at 250. A bridge falling due on the dealing day itself (day 30) is left for that day's
         end: nothing is collected for it at the dealing."""
@@ -2269,7 +2269,7 @@ class EconomyAbmTests(unittest.TestCase):
             if paid:
                 self.assertAlmostEqual(bridge, 0.0, places=9)
                 self.assertAlmostEqual(wage, 250.0, places=9)
-            else:   # as built for current debts: the wage first, then the bridge from what is left
+            else:   # current debts: the wage first, then the bridge from what is left
                 self.assertAlmostEqual(wage, 0.0, places=9)
                 self.assertAlmostEqual(bridge, 250.0, places=9)
 
@@ -2287,8 +2287,8 @@ class EconomyAbmTests(unittest.TestCase):
     def test_a_cycling_bridge_request_is_deferred_for_the_day(self):
         """Reserve 30 for an exit, leaving 100 to lend. Alice needs 100 and owes Ben 10. Ben needs 70 if she pays in
         full. He qualifies at his limit of 72, but his entry cuts Alice's draw and makes his shortfall exceed 72.
-        Defer Ben's bridge, clear Alice's payments, and fund Ben's remaining 70 by card, since card limits (14 Nov 2026)
-        as a cash advance, here at the card's rate of zero and no fee (changed: the fee would be a row of its own)."""
+        Defer Ben's bridge, clear Alice's payments, and fund Ben's remaining 70 by card: with card limits it is a cash
+        advance, here at the card's rate of zero and no fee."""
         w = controlled_world("U")
         funded_pool(w, 130.0)
         w.reserves = 130.0
@@ -2336,7 +2336,7 @@ class EconomyAbmTests(unittest.TestCase):
     def test_p_funded_saving_pays_its_conversion_from_the_same_money(self):
         """Under routine conversion, P converted into E savings buys spare / (1 + fee) and borrows nothing (all of it
         money-market money with no pool to take it: P's deposit part would stay in P, which pays more than deposits
-        under competitive P, 5 Nov)."""
+        under competitive P)."""
         w = controlled_world()
         w.economy = replace(w.economy, routine_conversion=True)
         w.part[:], w.pcash[:], w.R_hat, w.Q, w.mm_share[:] = True, 1.0, 0.0, 0.0, 1.0
@@ -2347,13 +2347,13 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(float(w.book["principal"].sum()), 0.0)
 
     def test_gas_leaves_the_economy_and_funds_no_same_day_delivery(self):
-        """A P payment's gas goes to validators outside the economy (decided 5 Nov: P payments run on stablecoin
-        rails), so, unlike the provider fee it replaced, none of it reaches pool cash to be lent the same day. The
-        payment is in P because every payment between participants is (routing "all") and it is not card-eligible, so
-        it cannot go on the card. Its payer holds 0.002 of P, which pays the gas, and owes the unit: a pool holding
-        0.998 lends 0.998 and the card bridges the gas, and a pool holding the gas more lends it all. Since card limits
-        (14 Nov 2026) the card bridges it as a cash advance, here at the card's rate and no fee, so the fee is no row
-        of its own (changed: the hand case is the gas)."""
+        """A P payment's gas goes to validators outside the economy and funds no same-day delivery.
+
+        P payments run on stablecoin rails, so none of the gas reaches pool cash to be lent the same day. The payment
+        is in P because every payment between participants is (routing "all") and it is not card-eligible, so it
+        cannot go on the card. Its payer holds 0.002 of P, which pays the gas, and owes the unit: a pool holding
+        0.998 lends 0.998 and the card bridges the gas, and a pool holding the gas more lends it all. With card
+        limits the card bridges it as a cash advance, here at the card's rate and no fee."""
         def lent(capital):
             w = controlled_world()
             w.economy = replace(w.economy, routing="all")
@@ -2387,9 +2387,9 @@ class EconomyAbmTests(unittest.TestCase):
 
     def test_exit_request_lapses_when_the_owners_own_return_recovers(self):
         """A request waits two months; if the owner no longer wants out by then, nothing is paid or wound down. The
-        owner reads its own realised return (decided 3 Nov): nothing in its first month, below its 0.1% a month
-        plus the owners' spread, then 1.5% a month over its two months once the second earns 3%, and at that review
-        its draw no longer says leave (5 Nov)."""
+        owner reads its own realised return: nothing in its first month, below its 0.1% a month plus the owners'
+        spread, then 1.5% a month over its two months once the second earns 3%, and at that review its draw no
+        longer says leave."""
         w = self.owned_pool(0.0)
         w.R_hat = 0.0
         closed(w, 0, 0.0)
@@ -2403,11 +2403,11 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(float(w.shares[0]), 1.0)
 
     def test_executed_full_exit_winds_down_until_paid(self):
-        """Wind-down applies once every owner's exit is executed (the issuer holds no shares, decided 5 Nov); a
-        later better quote does not stop it while shares remain to be paid."""
+        """Wind-down applies once every owner's exit is executed (the issuer holds no shares); a later
+        better quote does not stop it while shares remain to be paid."""
         w = self.owned_pool(0.0)
         w.R_hat = 0.0
-        earning(w, 0.0)                      # the owner's own return, below its own rate (decided 3 Nov)
+        earning(w, 0.0)                      # the owner's own return, below its own rate
         list(map(w._dealing, (1, 2)))
         self.assertFalse(w.winding)          # requested, not yet executed
         w._dealing(3)                        # two months on, still worse: executed
@@ -2432,9 +2432,11 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertLess(nav_at_execution, 2.0)   # it is the post-loss NAV, not the NAV when the request was filed
 
     def test_exits_are_paid_from_pool_cash_after_the_notice_and_the_rest_waits(self):
-        """Hand case ($; decided 5 Nov: the issuer is a pure custodian, so owners' exits are paid from pool cash
-        after the two-month notice and no fund buys them): an owner asks to take out $1,000 of a $2,900 pool holding
-        $550 of cash. Two months on the pool pays $550 and $450 waits; $200 of later cash pays $200, and $300 more pays
+        """Exits are paid from pool cash after the notice and the rest waits.
+
+        The issuer is a pure custodian, so owners' exits are paid from pool cash after the two-month notice and no
+        fund buys them. Example ($): an owner asks to take out $1,000 of a $2,900 pool holding $550 of cash. Two
+        months on the pool pays $550 and $450 waits; $200 of later cash pays $200, and $300 more pays
         the last $250, so the pool ends at $1,900 with $50 of cash, and it never winds down, since the other owner
         stays."""
         w = self.owned_pool(550.0, loan=False)
@@ -2460,8 +2462,10 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertFalse(any(hasattr(w, name) for name in ("fund", "fund_shares", "issuer_shares", "issuer_support")))
 
     def test_due_exits_rank_ahead_of_new_loans_and_offers_buy_them_first(self):
-        """Hand case ($; decided 5 Nov: exits are paid from pool cash after the two-month notice, and due exits rank
-        ahead of new bridges and term loans). During an owner's notice the pool sets aside cash for it: with $500 of
+        """Due exits rank ahead of new loans, and offers buy them first.
+
+        Exits are paid from pool cash after the two-month notice, and due exits rank ahead of new bridges and term
+        loans. Example ($): during an owner's notice the pool sets aside cash for it: with $500 of
         pool cash and a $300 request filed in month 1, due at the dealing of month 3, new loans in month 2 may take
         only $200; a request filed in month 2, due in month 4, is not yet set aside. At the dealing, money offered to
         the pool first buys the due exits pool cash left unpaid, at NAV, as subscriptions meet redemptions in an
@@ -2469,9 +2473,9 @@ class EconomyAbmTests(unittest.TestCase):
         $550, a saver's offer buys the other $450, and only the rest, $550, takes room up to N*, so the owner is paid
         in full within its notice, capital is $2,900 again and the pool holds $550 of cash. No backstop is used.
 
-        Changed 12 Nov (new subscriptions pay leaving owners first): the set-aside is now only the due exits beyond
-        the last dealing's unused offers; this world has had no dealing, so its unused offers are zero and the whole
-        $300 is set aside, as before. The rule with offers is pinned in the test below."""
+        The set-aside is only the due exits beyond the last dealing's unused offers; this world has had no dealing,
+        so its unused offers are zero and the whole $300 is set aside. The rule with offers is pinned in the test
+        below."""
         w = self.owned_pool(500.0, loan=False)
         self.assertEqual(w.unused_offers, 0.0)
         w.shares[0], w.shares[3] = 300.0, 1000.0
@@ -2502,11 +2506,12 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertFalse(w.winding)
 
     def test_cash_for_loans_sets_aside_only_the_due_exits_unused_offers_would_not_cover(self):
-        """Hand case ($; decided 12 Nov: new subscriptions pay leaving owners first): pool cash $100 with nothing
-        payable and $60 of exits falling due at the next dealing. With $500 of the last dealing's offers unused, they
-        cover the exits and nothing is set aside: cash for loans is $100 (it was $40). With $20 unused, $40 is set
-        aside and cash for loans is $60. With none unused, all $60 is set aside and cash for loans is $40, as before.
-        Exits themselves are still paid from all $100."""
+        """Cash for loans sets aside only the due exits that the last dealing's unused offers would not cover.
+
+        New subscriptions pay leaving owners first. Example ($): pool cash $100 with nothing payable and $60 of exits
+        falling due at the next dealing. With $500 of the last dealing's offers unused, they cover the exits and
+        nothing is set aside: cash for loans is $100. With $20 unused, $40 is set aside and cash for loans is $60.
+        With none unused, all $60 is set aside and cash for loans is $40. Exits themselves are paid from all $100."""
         w = self.owned_pool(100.0, loan=False)
         w.shares[0], w.shares[3] = 60.0, 1000.0
         w.this_month = 2
@@ -2518,10 +2523,12 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertAlmostEqual(w._lendable(), 100.0, places=12)
 
     def test_an_exit_falling_due_is_paid_by_offers_when_pool_cash_is_zero(self):
-        """New subscriptions pay leaving owners first (decided 12 Nov). An owner files to take out $1,000 of a
-        $2,900 pool at N* $2,900, and a saver with $50,000 of P offers at every dealing at a quote above its own rate.
-        The pool is full, so the offer finds no room and is recorded unused; with it, the $1,000 falling due is not set
-        aside: $1,000 of repayments in the month before the exit is all cash for loans (it was none), and lent. At the
+        """An exit falling due is paid by offers when pool cash is zero: new subscriptions pay leaving owners first.
+
+        Example: an owner files to take out $1,000 of a $2,900 pool at N* $2,900, and a saver with $50,000 of P
+        offers at every dealing at a quote above its own rate. The pool is full, so the offer finds no room and is
+        recorded unused; with it, the $1,000 falling due is not set aside: $1,000 of repayments in the month before
+        the exit is all cash for loans, and lent. At the
         dealing pool cash is zero, so the exit is paid by the saver's accepted offer, in full and within its notice;
         capital is $2,900 again and the pool holds no cash."""
         w = self.owned_pool(0.0, loan=False)
@@ -2552,10 +2559,12 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertFalse(w.winding)
 
     def test_only_a_saver_reviewing_entry_offers_to_the_pool(self):
-        """Hand case (decided 13 Nov: savers review entry at the users' rate, upsilon 0.153 a month): two savers
-        with $100 of P each, all of it money-market money, at a quote above their own rate and room to spare. The one
-        whose entry-review draw is 0.1 reviews and buys shares with its spare money; the one whose draw is 0.5 does not
-        review, so its spare money goes to outside savings and the 10 shares it already holds stay."""
+        """Only a saver reviewing entry offers to the pool.
+
+        Savers review entry at the users' rate, upsilon 0.153 a month. Example: two savers with $100 of P each, all of
+        it money-market money, at a quote above their own rate and room to spare. The one whose entry-review draw is
+        0.1 reviews and buys shares with its spare money; the one whose draw is 0.5 does not review, so
+        its spare money goes to outside savings and the 10 shares it already holds stay."""
         w = self.owned_pool(0.0, loan=False)
         w.part[[4, 5]], w.pcash[[4, 5]], w.mm_share[[4, 5]] = True, 100.0, 1.0
         w.shares[5] = 10.0
@@ -2573,9 +2582,10 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertGreater(float(w.savings[5]), 0.0)
 
     def test_entry_review_draws_are_one_a_person_a_month_on_their_own_stream(self):
-        """The entry-review draws (decided 13 Nov) are one a person a month, burn-in included, on a stream seeded
-        [seed, 41], the same in every arm, so arms stay paired; over 5,040 draws the share reviewing is upsilon,
-        1 - exp(-0.166) = 0.15295 (13 Nov 2026), within sampling error (four standard errors,
+        """The entry-review draws are one a person a month, burn-in included, on their own stream.
+
+        The stream is seeded [seed, 41] and is the same in every arm, so arms stay paired. Over 5,040 draws the share
+        reviewing is upsilon, 1 - exp(-0.166) = 0.15295, within sampling error (four standard errors,
         4 x sqrt(0.15295 x 0.84705 / 5040) = 4 x 0.005070 = 0.0203)."""
         economy = Economy(n=10, burn_in=10, months=1, inflation=0.0)
         expected = np.random.default_rng(np.random.SeedSequence([economy.seed, 41])).random(10)
@@ -2592,8 +2602,10 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertLess(abs(share - w.inputs.upsilon), 4 * np.sqrt(0.15295 * 0.84705 / 5040))
 
     def test_an_owner_with_a_standing_exit_request_buys_no_shares(self):
-        """Hand case (the register row "An owner files to exit, for its whole holding, at a review from one month after
-        buying"): an owner files to take out its 10 shares at NAV 1. At the next dealing the quote is above its own
+        """An owner with a standing exit request buys no shares.
+
+        An owner files to exit for its whole holding, at a review from one month after buying. Example: an owner
+        files to take out its 10 shares at NAV 1. At the next dealing the quote is above its own
         rate and it has $5 of P to spare, but its request stands, so it buys none and the $5 goes to outside savings.
         At execution it is paid 10, its whole holding at filing, from pool cash, and holds nothing."""
         w = self.owned_pool(1000.0, loan=False)
@@ -2617,13 +2629,15 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(int(w.exit_start[0]), -1)
 
     def test_no_exit_request_is_opened_without_a_filing(self):
-        """The review's second case: the dealing's offers pay the executed exits pool cash left unpaid, and the
-        bookkeeping of those payments opened a request for an owner who wanted out, had just been paid its request in
-        full and still held shares, though it had filed none. Hand case ($, NAV 1): owner 0 holds 15 shares with a
-        standing request for 5 (as an owner buying after filing could leave it before the 13 Nov rule), owner 1 a
-        request for its 10, owner 2 stays with 100, and the pool holds $15 of cash. At execution the cash pays 60% of
-        the $25 due: owner 0 is paid 9 (its request for 5 done), owner 1 is paid 6. A saver's $2 buys the unpaid exits
-        pro rata. Owner 0 has no request open after the dealing and bought nothing back; owner 1's request stands."""
+        """No exit request is opened without a filing.
+
+        The dealing's offers pay the executed exits that pool cash left unpaid, and the bookkeeping of those payments
+        must not open a request for an owner who wanted out, had just been paid its request in full and still held
+        shares, though it had filed none. Example ($, NAV 1): owner 0 holds 15 shares with a standing request for 5,
+        owner 1 a request for its 10, owner 2 stays with 100, and the pool holds $15 of cash. At execution the cash
+        pays 60% of the $25 due: owner 0 is paid 9 (its request for 5 done), owner 1 is paid
+        6. A saver's $2 buys the unpaid exits pro rata. Owner 0 has no request open after the dealing and bought
+        nothing back; owner 1's request stands."""
         w = self.owned_pool(15.0, loan=False)
         w.shares[:3] = 15.0, 10.0, 100.0
         w.pool_alternative[2] = -1.0
@@ -2644,8 +2658,8 @@ class EconomyAbmTests(unittest.TestCase):
 
     def test_wind_down_pays_every_owner_pro_rata_from_cash(self):
         """Once every owner's exit is executing the pool winds down and pays them all pro rata from its cash: two
-        owners of 1 each ask out and the pool holds 0.5 of cash, so each is paid 0.25 (decided 5 Nov: no stake or
-        fund is paid beside them)."""
+        owners of 1 each ask out and the pool holds 0.5 of cash, so each is paid 0.25 (no stake or fund is paid
+        beside them)."""
         w = self.owned_pool(0.5, loan=False)
         w.shares[2] = 1.0
         w.R_hat = 0.0
@@ -2658,14 +2672,16 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(float(w.acc["exit_paid"]), 0.5, places=12)
 
     def test_owners_read_their_own_return_since_buying_in_a_partial_run(self):
-        """Hand case ($, the 3 Nov owner exit rule and its partial run, with owners leaving by the users' rule without
-        noise, 5 Nov): two participants hold $1,000 each from the first month and the pool holds $550 of cash. Every
-        month earns owners' own rate a, except that the third writes off $17 on its $2,000 of capital. A third
-        participant buys $755 after it. At the next dealing the first two read a - 17 / 6,000 over their three months
-        and file; the third has no month behind it, so no reading, and a month later reads a and stays. Two months on
-        the first two still read below a (the write-off is inside their 12 months): the pool pays $550 from cash and
-        $1,450 waits, so the pool runs on at $2,205; once the $1,450 is paid it runs on at $755. Under one comparator
-        for every owner all three would have filed and the pool would have wound down (the 5 Nov review)."""
+        """Owners read their own return since buying in a partial run.
+
+        Owners leave by the users' rule without noise. Example ($): two participants hold $1,000 each from the first
+        month and the pool holds $550 of cash. Every month earns owners' own rate a, except that the third writes off
+        $17 on its $2,000 of capital. A third participant buys $755 after it. At the next dealing the first two read
+        a - 17 / 6,000 over their three months and file; the third has no month behind it, so no reading, and a month
+        later reads a and stays. Two months on the first two still read below a (the write-off is inside their 12
+        months): the pool pays $550 from cash and $1,450 waits, so the pool runs on at $2,205; once the $1,450 is
+        paid it runs on at $755. Under one comparator for every owner all three would have filed and the pool would
+        have wound down."""
         w = self.owned_pool(550.0, loan=False)
         w.part[[0, 1, 3]] = True
         w.shares[:2] = 1000.0
@@ -2699,16 +2715,19 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertFalse(w.winding)
 
     def test_owners_leave_by_the_users_rule(self):
-        """Hand case (decided 5 Nov: owners leave by the users' rule; $ a month): two owners of $1,000 whose own
-        realised return is 0.01 point a month below their own rate, a gap of -$0.10 a month, each spending a month of
-        mean spending, so the noise scale is 1e-4 of $6,440, $0.644. The participant's leaving cost is nothing (its
-        payout is credited in P), so it leaves with probability logistic(0.10 / 0.644) = 0.5387 when it reviews; the
-        owner paid in E bears one conversion of its $1,000 at 0.05% + $0.22 / $142 = 0.20493% (13 Nov 2026), $2.0493,
-        spread over 12 months, $0.17077, so logistic((0.10 - 0.17077) / 0.644) = 1 / (1 + exp(0.10989)) = 1 / (1 +
-        1.11616) = 0.4726. 1 - exp(-0.166) = 15.295% of owners review a month (13 Nov 2026): a review draw of 0.152
-        reviews and 0.154 does not, and a reviewer files when its leaving draw is below its probability. In M2 the return is in P
-        terms and CPI is added, so the same gap gives the same probabilities. Without noise the rule is a step at the
-        threshold: 0.01 point below files the participant alone and 0.02 point below files both."""
+        """Owners leave the pool by the users' leaving rule: a reviewing owner files to exit with the logistic
+        probability of its own return's shortfall less its leaving cost.
+
+        Example ($ a month): two owners of $1,000 whose own realised return is 0.01 point a month below their own
+        rate, a gap of -$0.10 a month, each spending the mean $6,440 a month, so the noise scale is 1e-4 of $6,440,
+        $0.644. The participant's payout is credited in P and costs nothing to take, so it leaves with probability
+        logistic(0.10 / 0.644) = 0.5387 when it reviews. The owner paid in E bears one conversion of its $1,000 at
+        0.05% + $0.22 / $142 = 0.20493%, $2.0493, spread over 12 months, $0.17077, so its probability is
+        logistic((0.10 - 0.17077) / 0.644) = 1 / (1 + exp(0.10989)) = 1 / (1 + 1.11616) = 0.4726. A share
+        1 - exp(-0.166) = 15.295% of owners review a month: a review draw of 0.152 reviews and 0.154 does not, and a
+        reviewer files when its leaving draw is below its probability. In M2 the return is in P terms and CPI is
+        added, so the same gap gives the same probabilities. Without noise the rule is a step at the threshold: 0.01
+        point below files the participant alone and 0.02 point below files both."""
         def world(shortfall, arm="M1", index=0.0, noise=1.0):
             w = controlled_world(arm)
             w.economy = replace(w.economy, leave_noise=noise)
@@ -2743,8 +2762,8 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertTrue(np.isnan(controlled_world()._own_gap(1)).all())     # no holding, no reading
 
     def test_the_owners_draws_have_a_stream_of_their_own(self):
-        """Owners leave by the users' rule on a stream of their own (decided 5 Nov): each month every arm draws a
-        review and a leaving number a person from it, the same in every arm, and no other stream moves: S0's records
+        """The owners' leaving rule draws from a random stream of its own: each month every arm draws a review number
+        and a leaving number for each person from it, the same in every arm, and no other stream moves. S0's records
         are the same whatever the owners' stream holds, and a pool arm's draws are the stream's own."""
         economy = replace(TINY, n=40, months=4)
         draws = {}
@@ -2769,9 +2788,11 @@ class EconomyAbmTests(unittest.TestCase):
         self.assert_same_outcome(simulate(Inputs(), 0.6, economy, "S0"), Other(Inputs(), 0.6, economy, "S0").run(), ())
 
     def test_room_is_the_limit_less_every_share(self):
-        """Hand cases ($, capacity $2,900, a household offering more than the room): an empty pool takes $2,900 and
-        nothing comes back next month; with $855 already held it takes $2,045 (decided 5 Nov: the issuer holds no
-        stake and no fund, so nothing else counts against capacity)."""
+        """The room for new capital is capacity less every share held: the issuer holds no stake and no fund, so
+        nothing else counts against capacity.
+
+        Example ($, capacity $2,900, a household offering more than the room): an empty pool takes $2,900 and nothing
+        comes back next month; with $855 already held it takes $2,045."""
         def dealt(households=0.0, months=(1,)):
             w = controlled_world()
             w.part[0], w.pcash[0], w.mm_share[:] = True, 5000.0, 1.0      # all of it money-market money
@@ -2794,9 +2815,10 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(capital(w), 2900.0, places=9)
 
     def test_capital_above_the_limit_stays(self):
-        """Hand case ($; the 3 Nov quote row and the 5 Nov free-entry row, the 5 Nov review): N* falls to $2,500 while
-        capital is $2,900 and no owner files. Nobody is returned capital pro rata: the household keeps its $2,900, and
-        no saver enters. The 30 Oct capacity return paid $400 back."""
+        """Capital already above a fallen capacity N* stays: nobody is returned capital pro rata and no saver enters.
+
+        Example ($): N* falls to $2,500 while capital is $2,900 and no owner files. The household keeps its $2,900
+        and the pool keeps its $400 of cash."""
         w = controlled_world()
         w.pool_alternative[:] = -1.0                                     # every owner stays and every saver offers
         w.shares[1] = 2900.0
@@ -2810,9 +2832,8 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(w.pool_cash, 400.0)
 
     def test_capital_after_dealing_never_exceeds_capacity(self):
-        """A regression from review: entry never takes capital after dealing (every share at NAV) above capacity; under
-        the old room it sat at capacity / 0.95. Capital already above a fallen N* stays (the 5 Nov review), so a dealing
-        ends at most at the larger of N* and the capital it began with."""
+        """Entry never takes capital after dealing (every share at NAV) above capacity N*. Capital already above a
+        fallen N* stays, so a dealing ends at most at the larger of N* and the capital it began with."""
         class Dealt(_World):
             def _dealing(self, month):
                 before = self._all_shares() * self.nav_ps
@@ -2828,10 +2849,10 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertTrue(np.all(capital <= bound * (1 + 1e-12)))
 
     def test_the_issuer_holds_no_pool_shares_and_households_own_all_capital(self):
-        """The issuer is a pure custodian (decided 5 Nov): it holds no pool shares and no support fund, so in every
-        pool arm of a run whose pool forms households' capital is all pool capital every month, no stake or fund line
-        or series is kept, wealth accounting stays exact, and the issuer's wallet, its custody less its cost, is never
-        negative beyond rounding, so the stay test never reads "would leave" (the test device, whose pool forms)."""
+        """The issuer is a pure custodian: it holds no pool shares and no support fund. In every pool arm of a run
+        whose pool forms (the test device), households' capital is all pool capital every month, no stake or fund
+        line or series is kept, wealth accounting stays exact, and the issuer's wallet, its custody less its cost, is
+        never negative beyond rounding, so the stay test never reads "would leave"."""
         for arm in ("U", "M1", "M2"):
             world = PooledWorld(Inputs(), 0.6, replace(TINY, n=100, months=12), arm)
             series = world.run()["series"]
@@ -2848,12 +2869,14 @@ class EconomyAbmTests(unittest.TestCase):
                                         "expense_holding"))
 
     def test_issuer_books_reproduce_the_hand_case(self):
-        """The custodian's books (decided 5 Nov: the issuer is a pure custodian; $ a person a year, one model month
-        standing for the year): on $1,350 of P at r_out 4.4% with its 0.24% of P, the custodian line is $59.40, it pays
-        out rho_p - c_I, 4.16%, $56.16, and its expenses are $3.24, so its wallet is zero and nothing is paid out. In M2
-        at 4.4% indexation is $27.00 and it pays out 2.16%, $29.16: zero again. In a wind-down month the $200 of the
-        pool's own cash earns it its 4.16%, $8.32, the payout. In M2 at r_out 2%, a zero real rate, it pays nothing out
-        and its wallet is minus its cost, -$3.24, which its owners add (M2's declared limit)."""
+        """The books of the issuer, a pure custodian that keeps its cost c_I and pays out the rest of the reserve yield.
+
+        Example ($ a person a year, one model month standing for the year): on $1,350 of P at r_out 4.4% with a cost
+        of 0.24% of P, the custodian line is $59.40, it pays out rho_p - c_I, 4.16%, $56.16, and its expenses are
+        $3.24, so its wallet is zero and nothing is paid out. In M2 at 4.4% indexation is $27.00 and it pays out
+        2.16%, $29.16: zero again. In a wind-down month the $200 of the pool's own cash earns it its 4.16%, $8.32,
+        the payout. In M2 at r_out 2%, a zero real rate, it pays nothing out and its wallet is minus its cost,
+        -$3.24, which its owners add (a declared limit of M2)."""
         def books(index=0.0, rate=0.044, paid=None):
             w = controlled_world("M2" if index else "M1")
             w.economy = replace(w.economy, issuer_cost=0.0024)
@@ -2871,8 +2894,8 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(set(books()), set(ISSUER_BOOKS))
 
     def test_issuer_books_reconcile_every_month(self):
-        """The lines add up to the wallet, which its owners take out or put in; the issuer's net reserve income is its
-        custodian, indexer and float lines (the test device, whose pool forms)."""
+        """The issuer's lines add up to its wallet, which its owners take out or put in, and its net reserve income is
+        its custodian, indexer and float lines (the test device, whose pool forms)."""
         for arm in ("M1", "M2"):
             series = pooled(Inputs(), 0.6, replace(TINY, n=100, months=12), arm)["series"]
             get = lambda key: series["issuer_" + key]
@@ -2883,11 +2906,11 @@ class EconomyAbmTests(unittest.TestCase):
             np.testing.assert_allclose(get("payout") - get("owners_in"), get("wallet"), atol=1e-15)
 
     def test_a_forced_run_pays_exits_from_pool_cash_with_the_books_closed(self):
-        """A partial run (the owners' own return held below most owners' own rate for three months, every owner
-        reviewing, in the test device whose owners compare the pool with their mixed returns) makes owners ask to exit,
-        and the pool pays them from its cash alone (decided 5 Nov: the issuer is a pure custodian and buys no
-        exits): what it pays never exceeds what was requested, the households hold all pool capital, and wealth
-        accounting, backing and the issuer's books close every month."""
+        """A partial run on the pool is paid from the pool's cash alone: the issuer, a pure custodian, buys no exits.
+        The owners' own return is held below most owners' own rate for three months with every owner reviewing (the
+        test device, whose owners compare the pool with their mixed returns), so owners ask to exit. What the pool
+        pays never exceeds what was requested, the households hold all pool capital, and wealth accounting, backing
+        and the issuer's books close every month."""
         for arm in ("M1", "M2"):
             series = ForcedRun(Inputs(), 0.6, FORCED_LONG, arm).run()["series"]
             self.assertGreater(float(series["exit_requested"].sum()), 0.0, arm)
@@ -2902,10 +2925,11 @@ class EconomyAbmTests(unittest.TestCase):
                                        atol=1e-15)
 
     def test_reserves_follow_every_issue_and_redemption(self):
-        """Hand cases: a joiner's conversion issues P against reserves (the fee leaves to the conversion provider), P
-        paid to a non-participant is redeemed, a leaver redeems the rest, an exit paid in P from pool cash moves no
-        reserves (the issuer, a pure custodian since 5 Nov, buys no shares), and CPI deflates M1's reserves with its P;
-        reserves equal P owed after every step (decided 30 Oct)."""
+        """Reserves equal P owed after every issue and redemption.
+
+        Example: a joiner's conversion issues P against reserves (the fee leaves to the conversion provider), P paid
+        to a non-participant is redeemed, a leaver redeems the rest, an exit paid in P from pool cash moves no
+        reserves (the issuer, a pure custodian, buys no shares), and CPI deflates M1's reserves with its P."""
         w = controlled_world()
         owed = lambda: float(w.pcash.sum() + w.pool_cash)
         w.cash[0] = 100.0 * (1 + CONVERSION_FEE)
@@ -2941,8 +2965,10 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertTrue(np.isnan(simulate(Inputs(), 0.6, tiny, arm)["series"]["backing"]).all())
 
     def test_owners_keep_backing_at_one_below_zero_real_rates(self):
-        """Hand case: in M2 at r_out 1%, reserves earn -1% real, so the issuer's owners put in the shortfall each month
-        (the backing top-up), and backing stays at 1; at r_out 4.4% there is nothing to put in."""
+        """Below a zero real rate the issuer's owners keep backing at 1.
+
+        Example: in M2 at r_out 1%, reserves earn -1% real, so the owners put in the shortfall each month (the
+        backing top-up) and backing stays at 1; at r_out 4.4% there is nothing to put in."""
         tiny = Economy(n=100, burn_in=3, months=14)
         for rate, short in ((0.01, True), (0.044, False)):
             series = simulate(replace(Inputs(), rho_H=rate / 12), 0.6, tiny, "M2")["series"]
@@ -2953,9 +2979,9 @@ class EconomyAbmTests(unittest.TestCase):
             np.testing.assert_allclose(backing[np.isfinite(backing)], 1.0, atol=1e-9)
 
     def test_backing_below_one_makes_the_run_unsafe(self):
-        """X5 (registered 6 Oct, computed since 30 Oct): reserves below P owed in any month since launch make the run
-        Against; with full backing the write-off clause decides; without a reserve account the backing clause stays
-        untested. The report gives the lowest backing and the owners' backing top-ups."""
+        """X5: reserves below P owed in any month since launch make the run Against. With full backing the write-off
+        clause decides, and without a reserve account the backing clause stays untested. The report gives the lowest
+        backing and the owners' backing top-ups."""
         from scripts.run_economy_figures import DOLLARS, persistence
         months = 60
         series = {key: np.ones(months) for key in ("A", "N", "service", "pool_pt", "new_pool_loans", "pool_cash",
@@ -2978,10 +3004,12 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertIsNone(persistence(run, 0.6)["detail"]["backing_short"])
 
     def test_stay_test_averages_the_last_twelve_months(self):
-        """Hand cases ($ a person a month, a wallet of $49.12 a year): a 10% one-month fall in a $145 stake leaves the
-        12-month average at about $2.88 (two months would average -$3.16); only a one-month loss above a year's wallet
-        records 'issuer would leave'; zero counts as staying; there is no reading before the 12th month; and the
-        record stays once made."""
+        """The stay test reads the issuer's average wallet over the last 12 months.
+
+        Example ($ a person a month, a wallet of $49.12 a year): a one-month loss of $14.50, 10% of $145, leaves the
+        12-month average at about $2.88 (a two-month average would read -$3.16). Only a one-month loss above a year's
+        wallet records 'issuer would leave', zero counts as staying, there is no reading before the 12th month, and
+        the record stays once made."""
         normal = 49.12 / 12
 
         def run(wallets):
@@ -2999,10 +3027,12 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertTrue(leaves)
 
     def test_at_zero_real_rates_the_custodian_cannot_cover_its_cost(self):
-        """Hand case ($ a person a year, one model month standing for the year): in M2 at r_out = inflation, reserve
-        income and indexation cancel and the custodian pays nothing out, so with no cost its wallet is zero and it
-        stays, while with its 0.24% of the $1,350 of P (decided 3 Nov) its wallet is -$3.24 and it records "issuer
-        would leave": M2's declared limit, since the issuer is a pure custodian with no stake to earn (5 Nov)."""
+        """At a zero real rate M2's custodian cannot cover its cost: the issuer is a pure custodian with no stake to
+        earn, a declared limit of M2.
+
+        Example ($ a person a year, one model month standing for the year): in M2 at r_out = inflation, reserve
+        income and indexation cancel and the custodian pays nothing out. With no cost its wallet is zero and it
+        stays; with its cost of 0.24% of the $1,350 of P its wallet is -$3.24 and it records "issuer would leave"."""
         def leaves(cost=0.0):
             w = controlled_world("M2")
             w.economy = replace(w.economy, issuer_cost=cost)
@@ -3017,9 +3047,9 @@ class EconomyAbmTests(unittest.TestCase):
 
     def test_stay_test_reads_every_month_since_launch(self):
         """From the 12th month after launch the reading is the average complete wallet of the last 12 months, every
-        month counted, with or without a pool (review found months went unrecorded); before then, and in S0, it is
-        undefined. The issuer is a pure custodian (decided 5 Nov): its wallet is never negative beyond rounding, so
-        the record never reads "would leave" at r_out 4.4%."""
+        month counted, with or without a pool; before then, and in S0, it is undefined. The issuer is a pure
+        custodian whose wallet is never negative beyond rounding, so the record never reads "would leave" at r_out
+        4.4%."""
         economy = replace(TINY, n=100, months=14)
         launch = economy.burn_in
         for arm in ("M1", "M2"):
@@ -3035,9 +3065,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertTrue(np.isnan(simulate(Inputs(), 0.0, economy, "S0")["series"]["issuer_stay"]).all())
 
     def test_issuer_who_would_leave_makes_the_run_against(self):
-        """X6 (decided 30 Oct): a negative 12-month reading makes the run Against and names the issuer, with M2's
-        declared limit at zero real rates; the report gives the record's first month and the most annual expense the
-        issuer could bear (12 times its lowest reading, per person and over the P outstanding)."""
+        """X6: a negative 12-month reading makes the run Against and names the issuer, with M2's declared limit at
+        zero real rates. The report gives the record's first month and the most annual expense the issuer could bear
+        (12 times its lowest reading, per person and over the P outstanding)."""
         from scripts.run_economy_figures import DOLLARS, persistence
         months = 60
         series = {key: np.ones(months) for key in ("A", "N", "service", "pool_pt", "new_pool_loans", "pool_cash",
@@ -3074,8 +3104,8 @@ class EconomyAbmTests(unittest.TestCase):
 
     def test_m2_compares_dated_repayments_with_indexation(self):
         """Over a month that crosses a CPI mark, an M2 draw costs (1 + r_g)(1 + index); a near tie goes to the card.
-        Since card limits (14 Nov 2026) a holder's bill is compared with a cash advance, priced here at the hand case's
-        APR with no fee (changed: at the cash APR and its fee the pool would win both)."""
+        A card holder's bill is compared with a cash advance, priced here at the example's APR with no fee (at the
+        cash APR and its fee the pool would win both cases)."""
         for apr, pool_lends in ((0.00667, False), (0.0068, True)):
             w = controlled_world("M2")
             w.economy = replace(w.economy, inflation=0.02 / 12)
@@ -3087,8 +3117,8 @@ class EconomyAbmTests(unittest.TestCase):
             w.r_b = w.r_g   # no demurrage coverage here: a bridge is sealed at the coupon
             w.pop["cycles"][:], w.pop["phases"][:] = 30, 0
             w.last["receipts"][:] = 1.0
-            # Changed 12 Nov: the budget now expects wages on their jobs' pay dates, so the quiet month's wages would
-            # date the draw before the CPI mark. The receipts here are none of them wages, due on day 60 as before.
+            # The budget expects wages on their jobs' pay dates, so wages in the quiet month would date the draw
+            # before the CPI mark. None of the receipts here are wages, so they are due on day 60.
             w.last["wages_paid"][:] = 0.0
             one_invoice(w, card=False)
             w._settle(1, 30)
@@ -3105,8 +3135,8 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertEqual(float(w.exit_started[36]), kept)
 
     def test_unfollowed_requests_are_not_certified(self):
-        """A W2 request due after the run is not judged (decided 5 Nov: timeliness reads exits whose deadline falls
-        inside the run); a decided failure inside the run still fails."""
+        """A W2 request due after the run is not judged: timeliness reads exits whose deadline falls inside the run.
+        A request that fails inside the run still fails the clause."""
         from scripts.run_economy_figures import persistence
         series = {key: np.ones(60) for key in ("A", "N", "service", "pool_pt", "new_pool_loans", "pool_cash",
                                               "cash_to_lend", "interest_collected", "own_margin",
@@ -3117,13 +3147,14 @@ class EconomyAbmTests(unittest.TestCase):
         exits["started"][58] = 1.0
         report = dict(series=series, economy=Economy(n=2, burn_in=0, months=60), exits=exits)
         self.assertIs(persistence(report, 0.6)["P"]["P3"], True)
-        exits["started"][40] = 99.0                      # a decided failure outweighs any censored outcome
+        exits["started"][40] = 99.0                      # a failure inside the run outweighs any censored outcome
         self.assertFalse(persistence(report, 0.6)["P"]["P3"])
         exits["in_time"][40] = 99.0                      # paid in time: 99% passes whatever the censored request does
         self.assertTrue(persistence(report, 0.6)["P"]["P3"])
 
     def test_m0_savings_earn_the_own_rate_plus_the_premium(self):
-        """Core M0 savings part = (supply - control rate) x savings: with premium 0, M0 savings earn exactly S0's rate."""
+        """M0's savings part is (supply - control rate) x savings: with a premium of 0, M0 savings earn exactly S0's
+        rate."""
         worlds = list(map(controlled_world, ("S0", "M0")))
         worlds[1].part[:] = True
         list(map(lambda w: w.savings.__setitem__(slice(None), 1.0), worlds))
@@ -3143,18 +3174,19 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertGreater(w.comet_borrow * 365 / DAYS, 0.0149)        # borrow base rate 1.5%/yr (365 days)
 
     def test_m0_rates_move_with_r_out_from_their_observed_october_levels(self):
-        """M0 is the strongest real DeFi (decided 5 Nov) and its rates move with the outside rate as observed:
-        one for one from their October 2026 levels, on the model's common basis, a nominal annual rate credited
-        monthly (the 5 Nov review). The 4.05% bill (TB3MS) is a 91-day discount yield: as an effective annual yield
-        credited monthly it is 4.135%. On chain the SSR was a 3.60% APY to 7 Oct 16:58:47 UTC and 3.80% after, credited
-        monthly 3.542% and 3.735%, a time-weighted October mean of 3.694%, so the spread is 0.441 point: USDC earns
-        3.999% at r_out 4.44%, 1.559% at 2% and nothing at 0.2%. Comet USDC on Ethereum borrowed at an October median of
-        5.31% and supplied at 4.40%, each a per-second rate times Comet's 365-day year: credited monthly, 5.3218% and
+        """M0 is the strongest real DeFi, and its rates move with the outside rate one for one from their observed
+        October 2026 levels, on the model's common basis, a nominal annual rate credited monthly.
+
+        The 4.05% bill (TB3MS) is a 91-day discount yield: as an effective annual yield credited monthly it is
+        4.135%. On chain the SSR was a 3.60% APY to 7 October 2026 16:58:47 UTC and 3.80% after, credited monthly
+        3.542% and 3.735%, a time-weighted October mean of 3.694%, so the spread is 0.441 point: USDC earns 3.999% at
+        r_out 4.44%, 1.559% at 2% and nothing at 0.2%. Comet USDC on Ethereum borrowed at an October median of 5.31%
+        and supplied at 4.40%, each a per-second rate times Comet's 365-day year: credited monthly, 5.3218% and
         4.4081%, so 1.1872 and 0.2736 points over the bill on the same basis, and Comet borrows at 5.6272% at r_out
-        4.44%, 3.1872% at 2% and 7.1872% at 6% (supplying at 4.7136%, 2.2736% and 6.2736%), every rate floored at zero.
-        The fitted sensitivity reads the lag-3 OLS lines, savings capped at r_out: at 2%, 4.4% and 6%, savings 0.73%,
-        4.4% and 6%, borrow 1.88%, 5.72% and 8.28%, supply 0.88%, 4.48% and 6.88%. The pinned and fixed modes keep their
-        rates, and an unknown mode is refused."""
+        4.44%, 3.1872% at 2% and 7.1872% at 6% (supplying at 4.7136%, 2.2736% and 6.2736%), every rate floored at
+        zero. The fitted sensitivity reads the lag-3 OLS lines, savings capped at r_out: at 2%, 4.4% and 6%, savings
+        0.73%, 4.4% and 6%, borrow 1.88%, 5.72% and 8.28%, supply 0.88%, 4.48% and 6.88%. The pinned and fixed modes
+        keep their rates, and an unknown mode is refused."""
         self.assertEqual(Economy().comet, "reserve")
         self.assertAlmostEqual(BILL_MONTHLY, 12 * ((1 - BILL_ANCHOR * 91 / 360) ** (-365 / 91 / 12) - 1), places=15)
         self.assertAlmostEqual(BILL_MONTHLY, 0.041345, places=6)
@@ -3202,11 +3234,11 @@ class EconomyAbmTests(unittest.TestCase):
             Economy(m0_rates="fited")
 
     def test_m0_crypto_collateral_is_a_draw_of_holders_at_full_cover(self):
-        """M0's crypto collateral (decided 5 Nov; the 5 Nov review): a share of people drawn once on a stream of its
-        own hold it and borrow from Comet at full cover, nobody else does, and no other arm reads it. At 10% (SHED 2025,
-        passed explicitly) 100 of 1,000 people hold it; the engine's and the runners' default is nobody (decided
-        12 Nov: collateral lending by Compound III is not run or reported; the option remains for these tests). Every
-        other population draw is the same whatever the share, and a 5% share's holders are among the 10% share's."""
+        """M0's crypto collateral: a share of people drawn once on a stream of its own hold it and borrow from Comet
+        at full cover, nobody else does, and no other arm reads it. At 10% (SHED 2025, passed explicitly) 100 of
+        1,000 people hold it. The default is nobody: collateral lending by Compound III is not run or reported, and
+        the option remains for these tests. Every other population draw is the same whatever the share, and a 5%
+        share's holders are among the 10% share's."""
         self.assertEqual((CRYPTO_SHARE, Economy().crypto_share), (0.0, 0.0))
         draw = lambda share: build_population(Economy(n=1000, crypto_share=share))
         none, tenth, twentieth = draw(0.0), draw(0.1), draw(0.05)
@@ -3223,12 +3255,11 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertFalse(_World(Inputs(), 0.6, economy, arm).cover.any(), arm)
 
     def test_the_dealing_replay_prices_m0_comet_credit_for_collateral_holders(self):
-        """With M0's crypto collateral holders (set here; none by default since 12 Nov), the dealing's buffer replay
-        prices their shortfalls as the settlement and the experience replay meet them: a collateral holder using USDC
-        borrows from Comet at full cover, at Comet's rate, r_out plus 1.1872 points (5 Nov), and neither fails nor
-        draws an advance, where a
-        participant without collateral or card fails; a collateral holder that does not use USDC cannot reach Comet.
-        It leans against CPM; no other arm has collateral, so no other arm's replay changes."""
+        """With M0's crypto collateral holders (set here; none by default), the dealing's buffer replay prices their
+        shortfalls as the settlement and the experience replay meet them. A collateral holder using USDC borrows from
+        Comet at full cover, at Comet's rate, r_out plus 1.1872 points, and neither fails nor draws an advance, where
+        a participant without collateral or card fails; a collateral holder that does not use USDC cannot reach
+        Comet. The rule leans against CPM. No other arm has collateral, so no other arm's replay changes."""
         from unittest import mock
         w = controlled_world("M0")
         w.part[:2] = True
@@ -3250,9 +3281,10 @@ class EconomyAbmTests(unittest.TestCase):
 
     def test_m0_pays_two_legs_of_base_gas_a_payment_whatever_its_value(self):
         """A USDC payment between two M0 participants pays the gas of its two legs on Base, $0.00169 each (growthepie,
-        October 2026 mean), $0.00338 a payment whatever its value (5 Nov; as built, gas in proportion to value): a
-        $64.40 and a $6,440 card-eligible purchase each cost their payer exactly that, which leaves for the validators,
-        outside the economy, and the payees receive the full amounts."""
+        October 2026 mean), $0.00338 a payment whatever its value.
+
+        Example: a $64.40 and a $6,440 card-eligible purchase each cost their payer exactly that, which leaves for
+        the validators, outside the economy, and the payees receive the full amounts."""
         w = controlled_world("M0")
         w.part[:], w.holder[:2] = True, True
         w.pcash[0], w.pcash[2] = 2.0, 2.0
@@ -3269,9 +3301,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(w.external, -2 * GAS_PER_PAYMENT, places=15)
 
     def test_usdc_converts_at_no_fee_while_p_pays_the_debit_cap(self):
-        """USDC converts to and from dollars at no fee (Coinbase, since 13 Aug 2025; decided 5 Nov), so an M0
-        joiner's whole working balance becomes USDC and a leaver's whole USDC comes back, and the leaving rule's one
-        conversion is nothing; P keeps the debit-cap conversion fee."""
+        """USDC converts to and from dollars at no fee (Coinbase, since 13 Aug 2025), so an M0 joiner's whole working
+        balance becomes USDC, a leaver's whole USDC comes back, and the leaving rule's one conversion costs nothing.
+        P keeps the debit-cap conversion fee."""
         self.assertEqual(USDC_CONVERSION, 0.0)
         for arm, fee in (("M0", 0.0), ("M1", CONVERSION_FEE)):
             w = controlled_world(arm)
@@ -3297,22 +3329,24 @@ class EconomyAbmTests(unittest.TestCase):
 
 
     def test_demurrage_is_the_bridging_capital_cost_over_wallet_p_and_p_pays_the_rest(self):
-        """Hand cases (decided 5 Nov; the last cycle's two months stand for the hand case's year, the reserve rate
-        4.4%, c_I 0.24% and no owners' spread, so owners' alternative is 4.4%): the cycle carried $1,500 of bridging
+        """The holding charge (demurrage) is the bridging capital cost over wallet P, and P pays the rest of its yield.
+
+        Example (the last cycle's two months stand for the example's year; the reserve rate is 4.4%, c_I 0.24% and
+        there is no owners' spread, so owners' alternative is 4.4%): the cycle carried $1,500 of bridging
         principal-time, a capital cost of $66, on $10,000 of wallet P balance-time. Demurrage is c = 66 / 10,000 =
         0.66%, published at the start of the month; P pays y_P = 4.4 - 0.24 - 0.66 = 3.50%; coverage is 1, so a bridge
         drawn this month is sealed at the coupon less its whole capital part, while term loans keep the coupon. A $600
         capital cost would need 6%, held at rho_p - c_I = 4.16%, so P pays 0 and coverage is 416 / 600. With no
         bridging, or no wallet P, c and coverage are zero and P pays 4.16%; U is the same P with c = 0; a pool winding
-        down and one without shares charge nothing, so no month publishes a c the pool will not take (the
-        5 Nov review). In M2 at 2% inflation the real rate is 2.4%, c_I a tenth of it, so y_P = 2.4 - 0.24 - 0.66 =
-        1.50% real and 3.50% with indexation, as in M1; at a zero real rate (the declared limit) P pays its indexation
-        alone and demurrage covers nothing.
+        down and one without shares charge nothing, so no month publishes a c the pool will not take. In M2 at 2%
+        inflation the real rate is 2.4%, c_I a tenth of it, so y_P = 2.4 - 0.24 - 0.66 = 1.50% real and 3.50% with
+        indexation, as in M1; at a zero real rate (the declared limit) P pays its indexation alone and demurrage
+        covers nothing.
 
-        Demurrage pays for liquidity kept available (decided 5 Nov): with the cycle's bridging carried at $1,500
-        for the first half of each month and none for the second (so its $1,500 of principal-time) and $2,000 of pool
-        cash held ready, the peak bridging need is $1,500 and the standby is $1,500 held for half of each month, $1,500
-        of cash-time over the cycle, whose capital cost is the alternative less what idle cash earns, 4.4 - 4.16 = 0.24
+        Demurrage also pays for liquidity kept available. With the cycle's bridging carried at $1,500 for the first
+        half of each month and none for the second (so its $1,500 of principal-time) and $2,000 of pool cash held
+        ready, the peak bridging need is $1,500 and the standby is $1,500 held for half of each month, $1,500 of
+        cash-time over the cycle, whose capital cost is the alternative less what idle cash earns, 4.4 - 4.16 = 0.24
         point, $3.60: c rises by exactly that over the wallet, 3.60 / 10,000, to 0.696%, and coverage stays 1. With
         $500 held ready the standby is $500 for half of each month, $500 of cash-time, and c rises by $1.20 over the
         wallet. U, with no demurrage, takes none of it."""
@@ -3371,10 +3405,10 @@ class EconomyAbmTests(unittest.TestCase):
     def test_deposit_part_of_spare_money_stays_in_cash_only_when_it_pays_more(self):
         """Where idle money sits: the money market part is saved at rho_H; the deposit part stays as cash only if the
         cash pays at least what deposits pay (ties stay), else it is saved at the deposit rate, so the savings earn
-        their own mix's rate. Under competitive P (decided 5 Nov) the rule reads P's published yield, y_P net of
-        demurrage (plus M2's indexation): the world's own at r_out 4.44% is 4.20% before demurrage, and 4.10% after a
-        0.1-point demurrage still beats the 0.41% deposit rate, so the deposit part stays in P; P paying nothing (the
-        declared limit's real yield) or bank money does not."""
+        their own mix's rate. For P the rule reads its published yield, y_P net of demurrage (plus M2's indexation):
+        the world's own at r_out 4.44% is 4.20% before demurrage, and 4.10% after a 0.1-point demurrage still beats
+        the 0.41% deposit rate, so the deposit part stays in P; P paying nothing (the declared limit's real yield) or
+        bank money does not."""
         def place(arm, p_yield=None):
             w = controlled_world(arm)
             w.part[0] = arm != "S0"
@@ -3385,7 +3419,7 @@ class EconomyAbmTests(unittest.TestCase):
             w.last["flows"][:], w.last["flows_s0"][:] = 0.0, 0.0
             w._dealing(1)                                   # no pool yet, no flows: no buffer, the whole 10 is spare
             return w.pcash[0] + w.cash[0], w.savings[0], w.saving_rate[0]
-        # The deposit rate follows r_out (3 Nov): 0.41% a year at r_out 4.44% (0.38% as built).
+        # The deposit rate follows r_out: 0.41% a year at r_out 4.44%.
         deposit = controlled_world().deposit_rate
         self.assertAlmostEqual(controlled_world("M1").p_yield * 12, 0.0444 - 0.0024, places=15)
         for arm, p_yield in (("M1", None), ("M1", (0.0444 - 0.0024 - 0.001) / 12), ("M1", deposit),
@@ -3401,12 +3435,14 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertAlmostEqual(rate, 0.2 * Inputs().rho_H + 0.8 * deposit, places=15)
 
     def test_only_the_money_market_part_goes_to_the_pool_when_it_beats_r_out(self):
-        """Hand case (decided 1 Nov): a household outside P with $1,000 spare, 16.72% of its savings in money-market
-        funds (the 50th to 90th percentiles). Its own outside rate is r_out 4.44% plus the owners' 0.25 point, 4.69%
-        (decided 4 Nov, the rule as first set out that day; now section (Entry and exit) of paper/cpm.tex). With the
-        pool quoting 4.8, its $167 money-market part buys shares (less the conversion fee) and its $833 deposit part is
-        saved at the deposit rate; holding a buffer forgoes the mix with that part at 4.8%. At 4.6%, below its own rate,
-        nothing goes to the pool, and all $1,000 is saved at the mix's rate."""
+        """Only the money-market part of spare money buys pool shares, and only when the pool's quote beats the
+        household's own outside rate (paper/cpm.tex, section "Entry and exit").
+
+        Example: a household outside P with $1,000 spare, 16.72% of its savings in money-market funds (the 50th to
+        90th percentiles). Its own outside rate is r_out 4.44% plus the owners' 0.25 point, 4.69%. With the pool
+        quoting 4.8%, its $167 money-market part buys shares (less the conversion fee) and its $833 deposit part is
+        saved at the deposit rate; holding a buffer forgoes the mix with that part at 4.8%. At 4.6%, below its own
+        rate, nothing goes to the pool, and all $1,000 is saved at the mix's rate."""
         rho, share, spare = Inputs().rho_H, 0.1672, 1000 / MONTH_USD
         for quote, bought in ((0.048 / 12, True), (0.046 / 12, False)):
             w = controlled_world()
@@ -3417,17 +3453,19 @@ class EconomyAbmTests(unittest.TestCase):
             mobile = share * spare
             self.assertAlmostEqual(float(w.shares[0]), mobile / (1 + CONVERSION_FEE) if bought else 0.0, places=15)
             self.assertAlmostEqual(float(w.savings[0]), spare - mobile if bought else spare, places=15)
-            # The deposit rate follows r_out (3 Nov): 0.41% a year at r_out 4.44% (0.38% as built).
+            # The deposit rate follows r_out: 0.41% a year at r_out 4.44%.
             self.assertAlmostEqual(float(w.saving_rate[0]),
                                    w.deposit_rate if bought else share * rho + (1 - share) * w.deposit_rate, places=15)
             self.assertAlmostEqual(float(w.acc["alternative"][0]),
                                    float(w.r_out[0]) + (share * (quote - rho) if bought else 0.0), places=15)
 
     def test_the_pool_track_record_is_its_capital_weighted_realised_return(self):
-        """Hand case of the track record entry reads under the sensitivity ``entry_reads`` "realised" (decided
-        11 Nov: the entry check): monthly returns of 0.004 and 0.002 on pool capital of 100 and 300 after their
-        dealings give (0.4 + 0.6) / 400 = 0.0025. A month without capital or without a finite return does not count, so
-        a pool with no such month has no track record (NaN)."""
+        """The pool's track record, which entry reads under ``entry_reads`` "realised", is its capital-weighted
+        realised return.
+
+        Example: monthly returns of 0.004 and 0.002 on pool capital of 100 and 300 after their dealings give
+        (0.4 + 0.6) / 400 = 0.0025. A month without capital or without a finite return does not count, so a pool with
+        no such month has no track record (NaN)."""
         w = controlled_world()
         self.assertTrue(np.isnan(w._track_record(3)))                        # no month with capital
         w.held_path[0, :2] = 50.0                                            # 100 across two owners
@@ -3441,9 +3479,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertTrue(np.isnan(w._track_record(0)))                        # the first dealing reads nothing
 
     def test_entry_reading_the_track_record_reads_the_quote_at_launch(self):
-        """Under the sensitivity ``entry_reads`` "realised" (11 Nov) the launch dealing has no track record, so entry
-        reads the quote, as the decided rule does: in the test device whose pool forms, capital forms at launch and
-        every record through the launch dealing is the decided rule's bit for bit."""
+        """Under ``entry_reads`` "realised" the launch dealing has no track record, so entry reads the quote, as the
+        default rule does: in the test device whose pool forms, capital forms at launch and every record through the
+        launch dealing is the default rule's bit for bit."""
         economy = replace(TINY, n=60, months=1)
         runs = {reads: PooledWorld(Inputs(), 1.0, replace(economy, entry_reads=reads), "M1")
                 for reads in ("quote", "realised")}
@@ -3456,10 +3494,11 @@ class EconomyAbmTests(unittest.TestCase):
             replace(economy, entry_reads="track")
 
     def test_entry_reading_a_poor_track_record_accepts_no_offer(self):
-        """The 1 Nov hand case with the pool quoting 4.8% a year, above the household's own 4.69%: under the decided
-        rule its money-market part buys shares. Under the sensitivity ``entry_reads`` "realised" (11 Nov) the same
-        state with a track record of 3% a year (last month's return on $100 of other owners' capital) buys none, and a
-        track record of 4.8% buys as the quote does."""
+        """Under ``entry_reads`` "realised" a saver offers nothing to a pool whose track record is below its own rate.
+
+        Example: the pool quotes 4.8% a year, above the household's own 4.69%, so under the default rule its
+        money-market part buys shares. Under "realised" the same state with a track record of 3% a year (last month's
+        return on $100 of other owners' capital) buys none, and a track record of 4.8% buys as the quote does."""
         share, spare = 0.1672, 1000 / MONTH_USD
         for reads, record, bought in (("quote", 0.03 / 12, True), ("realised", 0.03 / 12, False),
                                       ("realised", 0.048 / 12, True)):
@@ -3475,13 +3514,14 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertAlmostEqual(float(w.savings[0]), spare - mobile if bought else spare, places=15)
 
     def test_entry_by_the_leaving_rule_disperses_the_track_record_reading(self):
-        """The third entry reading (decided 12 Nov), ``entry_reads`` "leaving_rule": each saver reads the track
-        record with the leaving rule's own dispersion. The hand case above, $167.20 of money-market money at hand and
-        a track record of 3% a year against the household's own 4.69%: a gap of -$0.2355 a month, so with the rule's
-        scale (1e-4 of its monthly spending) it offers with probability logistic(gap / scale), and it buys exactly
-        when the month's draw on the reading's own stream is at least the leaving rule's probability at that gap.
-        With no noise it never buys at 3% and always at 4.8%, the "realised" reading; and a run with no noise is that
-        reading's bit for bit."""
+        """Under ``entry_reads`` "leaving_rule" each saver reads the track record with the leaving rule's own
+        dispersion.
+
+        Example: $167.20 of money-market money at hand and a track record of 3% a year against the household's own
+        4.69% give a gap of -$0.2355 a month. With the rule's scale (1e-4 of its monthly spending) the saver offers
+        with probability logistic(gap / scale), and it buys exactly when the month's draw on the reading's own stream
+        is at least the leaving rule's probability at that gap. With no noise it never buys at 3% and always at 4.8%,
+        the "realised" reading, and a run with no noise is that reading's bit for bit."""
         from cpm_abm.economy_abm import logistic
         share, spare = 0.1672, 1000 / MONTH_USD
 
@@ -3521,15 +3561,16 @@ class EconomyAbmTests(unittest.TestCase):
         np.testing.assert_array_equal(runs[1].wealth_path, runs[0].wealth_path)
 
     def test_with_no_noise_the_leaving_rule_reading_equals_realised_entry_at_the_tie(self):
-        """From the 13 Nov review: an own alternative of 0.004 a month and a track record of 0.004 - RATE_TIE.
-        Realised entry compares record >= alternative - RATE_TIE, which holds; the dollar gap (record - alternative +
-        RATE_TIE) x money at hand is negative by rounding, so reading its sign at no noise refused the offer. With no
-        noise the leaving-rule reading now uses the realised comparison itself, so both buy."""
+        """With no noise the leaving-rule reading uses the realised comparison itself, so the two agree at a tie.
+
+        Example: an own alternative of 0.004 a month and a track record of 0.004 - RATE_TIE. Realised entry compares
+        record >= alternative - RATE_TIE, which holds. The dollar gap (record - alternative + RATE_TIE) x money at
+        hand is negative by rounding, so reading its sign would refuse the offer; both readings buy."""
         from cpm_abm.economy_abm import RATE_TIE
         alternative = 0.004
         record = alternative - RATE_TIE
         self.assertTrue(record >= alternative - RATE_TIE)
-        self.assertFalse(record - alternative + RATE_TIE >= 0)     # the rounding the old reading took the sign of
+        self.assertFalse(record - alternative + RATE_TIE >= 0)     # the rounding a sign test would read
         share, spare = 0.1672, 1000 / MONTH_USD
         bought = {}
         for reads in ("realised", "leaving_rule"):
@@ -3547,15 +3588,15 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(bought["leaving_rule"], bought["realised"])
 
     def test_owners_exit_when_their_own_return_falls_below_rho_h_and_the_spread(self):
-        """An owner whose own mix earns about 1% files to exit when its own realised return is 3.9% a year against
-        rho_H 4.44% plus the owners' 0.25 point, which it would not have done before 1 Nov; a month at 5.7% brings its
-        return since buying to 4.8%, so it no longer wants out and its request lapses (decided 3 Nov: each owner
-        reads its own realised return; 4 Nov: against its own outside rate). The quote no longer moves an exit: it is
-        6% throughout."""
+        """Each owner reads its own realised return against its own outside rate, rho_H plus the owners' spread.
+
+        Example: an owner whose own mix earns about 1% files to exit when its own realised return is 3.9% a year
+        against rho_H 4.44% plus the owners' 0.25 point. A month at 5.7% brings its return since buying to 4.8%, so
+        it no longer wants out and its request lapses. The quote does not move an exit: it is 6% throughout."""
         w = controlled_world()
-        reviewing(w)                                                 # it reviews each month, without noise (5 Nov)
+        reviewing(w)                                                 # it reviews each month, without noise
         w.shares[0], w.nav_ps, w.pool_cash, w.Q, w.had_owners, w.launched = 1.0, 1.0, 0.0, 10.0, True, True
-        w.r_out[:] = 0.0105 / 12                                     # the 50th to 90th mix, no longer the comparison
+        w.r_out[:] = 0.0105 / 12                                     # the 50th to 90th mix, which is not the comparison
         w.R_hat = 0.06 / 12
         closed(w, 0, 0.039 / 12)
         w._dealing(1)
@@ -3567,15 +3608,15 @@ class EconomyAbmTests(unittest.TestCase):
 
 
     def test_demurrage_coverage_and_p_yield_follow_the_last_cycle_every_month(self):
-        """Every month's demurrage, coverage, bridging rate and P's yield are the hand formulas on the records of the
-        last two months, the cycle the terms read (the launch plan observes no bridging or wallet P): c the cycle's
-        capital cost of the liquidity kept available, bridging and the standby (decided 5 Nov), over its wallet P
-        balance-time, at most rho_p - c_I; coverage c times that wallet over the cost; r_b the coupon less coverage
-        times owners' alternative; P's yield rho_p - c_I - c plus M2's indexation; and the demurrage taken is c on the
-        month's wallet P while the pool has shares. At the default rates c is far below its bound, so coverage is 1
-        whenever the cycle bridged. Where the issuer's cost of P is within half a percent of the reserve rate the bound
-        binds: P pays nothing and covers only part of the cost. Wealth accounting and backing stay exact (the test
-        device, whose pool forms)."""
+        """Every month's demurrage, coverage, bridging rate and P's yield follow their formulas on the records of the
+        last two months, the cycle the terms read (the launch plan observes no bridging or wallet P). c is the cycle's
+        capital cost of the liquidity kept available, bridging and the standby, over its wallet P balance-time, at
+        most rho_p - c_I; coverage is c times that wallet over the cost; r_b is the coupon less coverage times owners'
+        alternative; P's yield is rho_p - c_I - c plus M2's indexation; and the demurrage taken is c on the month's
+        wallet P while the pool has shares. At the default rates c is far below its bound, so coverage is 1 whenever
+        the cycle bridged. Where the issuer's cost of P is within half a percent of the reserve rate the bound binds:
+        P pays nothing and covers only part of the cost. Wealth accounting and backing stay exact (the test device,
+        whose pool forms)."""
         economy = replace(TINY, n=100, months=12)
         rho = {"M1": Inputs().rho_H, "M2": Inputs().rho_H - economy.inflation}
         for arm, bound in (("M1", False), ("M2", False), ("M1", True), ("M2", True)):
@@ -3588,10 +3629,10 @@ class EconomyAbmTests(unittest.TestCase):
             cost, wallet = map(cycle, ("bridge_capital_cost", "p_bt"))
             cost = cost + 2 * series["standby_cost"][launch + 1:]          # the standby's, a month over two months
             c = np.minimum(np.divide(cost, wallet, out=np.zeros(cost.size), where=wallet > 0), world.p_net)
-            # c is published only while the pool takes demurrage (the 5 Nov review). Where the bound binds, the pool's
-            # first months earn less than owners' own rates, every owner files (decided 3 Nov: each reads its own
-            # realised return) and the pool winds down. Coverage is published with the terms, from the c published
-            # then, so the month whose dealing begins the wind-down keeps it on record although its c is not taken.
+            # c is published only while the pool takes demurrage. Where the bound binds, the pool's first months earn
+            # less than owners' own rates, every owner files (each reads its own realised return) and the pool winds
+            # down. Coverage is published with the terms, from the c published then, so the month whose dealing
+            # begins the wind-down keeps it on record although its c is not taken.
             published = np.where(series["service"][launch:-1] > 0, c, 0.0)
             c = np.where(series["service"][launch + 1:] > 0, c, 0.0)
             np.testing.assert_allclose(series["c"][launch + 1:], c, rtol=1e-9, atol=1e-18)
@@ -3633,7 +3674,7 @@ class EconomyAbmTests(unittest.TestCase):
         w.loss_net = np.array([0.01, 0.10])
         w.exposure = np.array([[1.0, 2.0], [9.0, 9.0], [9.0, 9.0], [9.0, 9.0]])
         w._cycle_terms(4)
-        base = w.rho_p + w.economy.owner_spread + w.inputs.o   # owners' alternative and o (3 Nov, built 4 Nov)
+        base = w.rho_p + w.economy.owner_spread + w.inputs.o   # owners' alternative and o
         self.assertAlmostEqual(w.r_g, base + 0.01, places=15)
         self.assertAlmostEqual(w.r_term, base + 0.05, places=15)
         w.exposure = np.vstack([w.exposure, [0.0, 0.0]])
@@ -3667,11 +3708,13 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(w.acc["recovered"], 0.2)
 
     def test_pool_loans_are_recorded_by_product_and_loan_year(self):
-        """Hand case (decided 4 Nov) in a world launched at month 10: a pool bridge of 0.5 made in month 12 (loan
-        year 1) at 1% a month, a term loan of 2.0 made in month 23 (loan year 2) at 0.5% and one of 1.0 made in month
-        80, counted in the last band. A day's accrual credits each its coupon less the operating cost o it carries,
-        with its principal-time; written off, the bridge takes its principal and interest from its band and accrues
-        nothing more, and a payment of 0.2 on it comes back as recovery. The record adds up to the books R reads."""
+        """Pool loans are recorded by product and by the loan year in which they were made.
+
+        Example, in a world launched at month 10: a pool bridge of 0.5 made in month 12 (loan year 1) at 1% a month,
+        a term loan of 2.0 made in month 23 (loan year 2) at 0.5% and one of 1.0 made in month 80, counted in the
+        last band. A day's accrual credits each its coupon less the operating cost o it carries, with its
+        principal-time; written off, the bridge takes its principal and interest from its band and accrues nothing
+        more, and a payment of 0.2 on it comes back as recovery. The record adds up to the books R reads."""
         w = controlled_world()
         o, size = w.inputs.o, (2, LOAN_YEARS)
         w.acc.update(vintage_income=np.zeros(size), vintage_exposure=np.zeros(size))
@@ -3704,8 +3747,8 @@ class EconomyAbmTests(unittest.TestCase):
 
     def test_short_card_holder_puts_the_purchase_on_the_card(self):
         """A card holder whose own money cannot pay a card purchase from a participant uses the card, free until the
-        statement, and borrows nothing; one whose P can pay it pays in P with one transfer's gas, which goes to
-        validators outside the economy (decided 5 Nov: no provider fee and no rail)."""
+        statement, and borrows nothing. One whose P can pay it pays in P with one transfer's gas, which goes to
+        validators outside the economy: a P payment carries no provider fee and no rail charge."""
         inputs = Inputs()
         for owned, on_card in ((0.5, True), (1.002, False)):
             w = controlled_world()
@@ -3747,13 +3790,14 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertNotIn("Persistent", verdict["verdict"])
 
     def test_use_and_collapse_follow_the_decided_tolerances(self):
-        """Hand cases for the use and collapse tests (decided 3 Nov), with the registered ones beside.
-        Windows are months 13-36 and 37-60; participation is given as launch, first window, second window.
-        0.80, 0.79, 0.77: use holds (0.77 is within 0.05 of both) and nothing collapses, where the registered tests
-        read no use and a collapse (0.77 is below 0.80). 0.60, 0.47, 0.45: use fails (below 0.55), no collapse
-        (not below 0.30). 0.60, 0.30, 0.20: use fails and collapse fires (below half the launch share). Pool
-        capital at 0.4 of the first window's: collapse. A second-window month with capital and no service, a
-        wind-down: collapse."""
+        """The use and collapse tests and their tolerances, with the registered tests reported beside them.
+
+        Example: windows are months 13-36 and 37-60, and participation is given as launch, first window, second
+        window. 0.80, 0.79, 0.77: use holds (0.77 is within 0.05 of both) and nothing collapses, where the registered
+        tests read no use and a collapse (0.77 is below 0.80). 0.60, 0.47, 0.45: use fails (below 0.55), no collapse
+        (not below 0.30). 0.60, 0.30, 0.20: use fails and collapse fires (below half the launch share). Pool capital
+        at 0.4 of the first window's: collapse. A second-window month with capital and no service, a wind-down:
+        collapse."""
         from scripts.run_economy_figures import persistence
 
         def read(launch, first, second, capital=1.0, serving=True):
@@ -3825,11 +3869,13 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(int(world.book["ndue"][0]), 1)
 
     def test_interest_on_a_late_final_instalment_falls_due(self):
-        """Hand case (the 13 Nov review): a one-month loan of 1 at 1% a month, billed on days 0, 30, 60. Its only, and
-        so final, instalment falls due on day 30 with 0.01 of interest, and the borrower has nothing. The next month
-        accrues 0.01 more; once the last instalment has fallen due all accrued interest is due, so on day 60, with
-        money, the borrower pays 1.02 and the book is clean: no principal, no interest, nothing overdue. Before, the
-        second month's interest never fell due and the loan stayed on the book for good."""
+        """Once a loan's last instalment has fallen due, all its accrued interest is due, so a loan repaid late
+        leaves the book.
+
+        Example: a one-month loan of 1 at 1% a month, billed on days 0, 30, 60. Its only, and so final, instalment
+        falls due on day 30 with 0.01 of interest, and the borrower has nothing. The next month accrues 0.01 more,
+        due as well, so on day 60, with money, the borrower pays 1.02 and the book is clean: no principal, no
+        interest, nothing overdue."""
         w = controlled_world("S0")
         w.pop["cycles"][1], w.pop["phases"][1] = 30, 0
         w._add_loans(np.array([1]), False, TERM, np.array([1.0]), 0.01, 0.01, BIG, np.array([1]), 0)
@@ -3848,10 +3894,12 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(float(w.cash[1]), 0.98, places=12)
 
     def test_real_cost_principal_time_counts_written_off_pool_loans_still_owed(self):
-        """Records only (the 13 Nov review): a written-off pool bridge of 3 to a card holder and a written-off pool
-        term loan of 2 are still owed, so a day adds 3 / DAYS to the real part's ``pt_pool_card`` and 2 / DAYS to
-        ``pt_pool_term``, as outside loans are counted while owed; the loss-learning exposure, coupons and the
-        operating cost, which rules read, count only carried loans and stay zero."""
+        """The real part's principal-time counts written-off pool loans while they are still owed (records only).
+
+        Example: a written-off pool bridge of 3 to a card holder and a written-off pool term loan of 2 are still
+        owed, so a day adds 3 / DAYS to ``pt_pool_card`` and 2 / DAYS to ``pt_pool_term``, as outside loans are
+        counted while owed. The loss-learning exposure, coupons and the operating cost, which rules read, count only
+        carried loans and stay zero."""
         w = controlled_world("M1")
         w.holder[1] = True
         w._add_loans(np.array([1]), True, BRIDGE, np.array([3.0]), 0.005, 0.02, 90)
@@ -3892,12 +3940,11 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(float(world.book["principal"][0]), 0.4)
 
     def test_layoff_weights_and_spells_follow_their_sources(self):
-        """Stock statistics match (3 Nov, rewriting the test that pinned a completed mean of 24.8 weeks): layoff risk
-        falls with income (BLS by education through Census brackets), and the completed spell law's spells in progress,
-        whose elapsed length has density S(a) / E[L], have the BLS median of 11.5 weeks (80.5 days) and mean of 24.8
-        weeks (173.6 days), integrated here apart from the closed forms the law is solved with; its completed median is
-        about 61 days and its mean about 109, and 50.9% of spells outlast 60 days (59.4% as built, where the BLS figures
-        were read as completed lengths)."""
+        """Stock statistics match: layoff risk falls with income (BLS by education through Census brackets), and the
+        completed spell law's spells in progress, whose elapsed length has density S(a) / E[L], have the BLS median
+        of 11.5 weeks (80.5 days) and mean of 24.8 weeks (173.6 days), integrated here apart from the closed forms
+        the law is solved with. Its completed median is about 61 days and its mean about 109, and 50.9% of spells
+        outlast 60 days (59.4% if the BLS figures were read as completed lengths)."""
         from scipy.integrate import quad
         from scipy.stats import norm
         weight = layoff_weight()
@@ -3931,7 +3978,9 @@ class EconomyAbmTests(unittest.TestCase):
                                places=12)
 
     def test_jobs_without_wage_are_read_on_average_and_on_the_last_day(self):
-        """Hand case (3 Nov), 80 jobs in a 30-day month: one in a spell all month, one whose spell ends on day 20 and
+        """Jobs without a wage are read as a monthly average and on the month's last day.
+
+        Example: 80 jobs in a 30-day month: one in a spell all month, one whose spell ends on day 20 and
         one whose spell starts on day 25 and runs on. The month's average share of job-days in a spell is 55 of 2,400;
         on the month's last day 2 jobs of 80 pay no wage, the one whose spell ended not among them."""
         world = tiny_world()
@@ -3942,8 +3991,8 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(world.acc["laid_off_last_day"], 2 / TINY.n, places=12)
 
     def test_spells_are_identical_before_the_distress_year_across_arms_and_levels(self):
-        """Spells are identical before month 25 across arms and distress levels (3 Nov, rewriting the test that spells
-        start only in the distress year): with normal job loss (raised to 5% a month so a small run shows spells), S0
+        """Spells are identical before month 25 across arms and distress levels: with normal job loss (5% a month
+        here so a small run shows spells), S0
         and M1 without distress and at 0.5 have the same jobs without a wage, on average and on the last day, in every
         month before the distress year, and runs that end before it end with the same spells. Spells start before the
         distress year and can run past it; within a level both arms see the very same spells; and the distress months
@@ -3975,10 +4024,11 @@ class EconomyAbmTests(unittest.TestCase):
 
     def test_the_map_stores_the_wage_loss_path_for_every_arm(self):
         """Every arm's stored series carry the share of job-days on a job in a spell, the share of jobs in a spell on
-        the month's last day, the wages their payers kept and (since the harsh stress, 14 Nov 2026) the wages of extra
-        layoffs sent outside, month by month after launch, exactly as the run records them; the spells are the same in
-        every arm, and the distress measures are stored as before. Hand case: the window starts at launch and a missing
-        value reads as zero."""
+        the month's last day, the wages their payers kept and (under the harsh stress) the wages of extra layoffs
+        sent outside, month by month after launch, exactly as the run records them; the spells are the same in every
+        arm.
+
+        Example: the window starts at launch and a missing value reads as zero."""
         from scripts.run_economy_population import APPLIES, MEASURES, WAGE_LOSS, measures
         series = dict(failure_share=np.array([0.0, 0.1, np.nan]), laid_off=np.array([0.0, 0.02, 0.05]),
                       laid_off_last_day=np.array([0.0, 0.03, 0.04]), wages_withheld=np.array([0.0, 0.01, 0.02]),
@@ -3992,7 +4042,7 @@ class EconomyAbmTests(unittest.TestCase):
         stored = {arm: measures(run, economy) for arm, run in runs.items()}
         after = slice(economy.burn_in, economy.burn_in + economy.months)
         for arm, run in runs.items():
-            # The recording-only measures (3 and 12 Nov, tests/test_measures.py) are stored beside them.
+            # The recording-only measures (tests/test_measures.py) are stored beside them.
             from cpm_abm.economy_abm import MEASURE_SERIES
             self.assertEqual(set(stored[arm]),
                              set(APPLIES[arm]) | set(WAGE_LOSS) | set(MEASURE_SERIES)
@@ -4006,11 +4056,11 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertEqual(stored["S0"][name], stored["M2"][name])
             self.assertTrue(all(share > 0 for share in stored["S0"][name][1:3]))   # the distress year
         self.assertGreater(sum(stored["M2"]["wages_withheld"]), 0.0)
-        self.assertGreater(sum(stored["M2"]["wages_out"]), 0.0)   # the distress year's extra layoffs (14 Nov 2026)
+        self.assertGreater(sum(stored["M2"]["wages_out"]), 0.0)   # the distress year's extra layoffs
 
     def test_distress_keeps_wealth_accounting_exact(self):
         """With layoffs on, the conservation identity holds every month in every arm; payers keep the wages of normal
-        job loss and, under the harsh stress (14 Nov 2026), send the extra layoffs' wages outside."""
+        job loss and, under the harsh stress, send the extra layoffs' wages outside."""
         economy = replace(TINY, n=100, burn_in=2, months=6, distress=0.2, distress_start=1, distress_length=3)
         for arm in ("S0", "M0", "M1", "M2"):
             series = simulate(Inputs(), 0.6, economy, arm)["series"]
@@ -4028,11 +4078,11 @@ class EconomyAbmTests(unittest.TestCase):
         m1 = pooled(frozen, 1.0, economy, "M1")["series"]["failure_share"][economy.burn_in + 1:]
         self.assertLess(float(m1.mean()), float(s0.mean()))
 
-    # ---- Records and runner fixes that change no outcome (the 3 Nov review) -----------------------------------------
+    # ---- Records and runner settings that change no outcome ----------------------------------------------------------
     def test_run_record_stores_what_the_engine_reads(self):
         """The stored inputs are the Inputs fields the engine reads and no other: the core model's 3.7% inflation, 5%
         penalty, no rewards and shocks are not among them. The constants are the engine's own ($27 a failed payment,
-        0.75% card rewards), without codes, and rho_H is stored once per r_out (the 3 Nov review)."""
+        0.75% card rewards), without codes, and rho_H is stored once per r_out."""
         from scripts.run_economy_figures import ENGINE_INPUTS, engine_record
         from scripts.run_economy_population import A0S, DISTRESS, RATES, cell_inputs, run_record
         engine = Path(__file__).resolve().parents[1] / "src" / "cpm_abm" / "economy_abm.py"
@@ -4060,7 +4110,7 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual([meta["economy"][key] for key in ("seed", "distress", "lender_income_recirculated")],
                          [None] * 3)
         self.assertEqual(meta["economy"]["n"], 40)
-        # The record shows what entry reads (11 Nov, the entry check).
+        # The record shows what entry reads.
         self.assertEqual(meta["economy"]["entry_reads"], "quote")
         self.assertEqual(run_record(Economy(n=40, entry_reads="realised"), "development", 0)["economy"]["entry_reads"],
                          "realised")
@@ -4072,14 +4122,14 @@ class EconomyAbmTests(unittest.TestCase):
         """Each source is hashed with CRLF read as LF, as git stores it, so a source unchanged since the commit hashes
         as the committed file whatever the working copy's line endings; comet.py is among the sources and the record
         names the block of the Comet snapshot M0 reads and the raw-byte hash of the manifest its files are checked
-        against (the 3 Nov review)."""
+        against."""
         from scripts.run_economy_figures import COMET_DATA, provenance
         root = Path(__file__).resolve().parents[1]
         record = provenance("scripts/run_economy_population.py")
-        # The engine is a package (16 Nov 2026): every module of it is among the sources.
+        # The engine is a package: every module of it is among the sources.
         engine = {path.relative_to(root).as_posix() for path in (root / "src" / "cpm_abm" / "engine").glob("*.py")}
         self.assertGreaterEqual(len(engine), 10)
-        # So is the population runner (16 Nov 2026): every module of the experiment package is among the sources.
+        # So is the population runner: every module of the experiment package is among the sources.
         experiment = {path.relative_to(root).as_posix()
                       for path in (root / "src" / "cpm_abm" / "experiment").glob("*.py")}
         self.assertGreaterEqual(len(experiment), 8)
@@ -4104,11 +4154,10 @@ class EconomyAbmTests(unittest.TestCase):
 
     def test_population_map_defaults_to_twelve_workers_on_one_blas_thread(self):
         """A population run uses 12 workers by default, and refuses more (``main``) unless --most-workers raises the
-        limit: 12 is what a 31 GB laptop holds (the 13 Nov review; more ran out of memory), and a machine with about
-        1.5 GB for every worker may set a higher one. Checked in a --dry-run, which simulates and writes nothing: 16
-        workers are refused at the default limit and accepted with --most-workers 16. The runner sets one BLAS and
-        OpenMP thread per process before numpy loads (the 5 Nov speed review), which cut each worker's committed memory
-        from about 1.7 GB to 0.25 GB."""
+        limit: 12 is what a 31 GB laptop holds (more run out of memory), and a machine with about 1.5 GB for every
+        worker may set a higher one. Checked in a --dry-run, which simulates and writes nothing: 16 workers are
+        refused at the default limit and accepted with --most-workers 16. The runner sets one BLAS and OpenMP thread
+        per process before numpy loads, which cuts each worker's committed memory from about 1.7 GB to 0.25 GB."""
         import os
         import sys
         from unittest import mock
@@ -4133,11 +4182,12 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertLess(source.index('os.environ[_threads] = "1"'), source.index("import numpy"))
 
     def test_runners_default_to_no_collateral_lending_the_decided_noise_and_no_provider_fee(self):
-        """The runners' defaults: M0 runs with no crypto collateral holders (decided 12 Nov: collateral lending by
-        Compound III is not run or reported; the option remains for the unit tests); the leaving rule's noise is its decided scale, with half and twice as options
-        and nothing else; and every runner that builds cell inputs (population, figures, stress) runs with no provider
-        fee (decided 5 Nov: P payments run on stablecoin rails), the core model's alpha set to zero in one place,
-        while the core model keeps its own 0.2%, which the engine no longer reads (nor stores among its inputs)."""
+        """The runners' defaults: M0 runs with no crypto collateral holders (collateral lending by Compound III is
+        not run or reported; the option remains for the unit tests); the leaving rule's noise is its default scale,
+        with half and twice as options and nothing else; and every runner that builds cell inputs (population,
+        figures, stress) runs with no provider fee (P payments run on stablecoin rails), the core model's alpha set
+        to zero in one place, while the core model keeps its own 0.2%, which the engine no longer reads (nor stores
+        among its inputs)."""
         import scripts.run_economy_figures as figures
         import scripts.run_economy_population as population
         import scripts.run_economy_stress as stress
@@ -4146,13 +4196,13 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(CRYPTO_SHARE, 0.0)
         self.assertEqual(population.options().parse_args(["--seeds", "development", "--leave-noise", "2"]).leave_noise,
                          2.0)
-        # What entry reads (11 Nov, the entry check): the decided quote by default, the track record as the sensitivity.
+        # What entry reads: the quote by default, the track record as the sensitivity.
         self.assertEqual(args.entry_reads, "quote")
         self.assertEqual(population.options().parse_args(["--seeds", "development", "--entry-reads", "realised"])
                          .entry_reads, "realised")
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
             population.options().parse_args(["--seeds", "development", "--leave-noise", "3"])
-        # Card lines in the distress year (14 Nov 2026): held by default, the cut a side check on its own switch.
+        # Card lines in the distress year: held by default, the cut on its own switch.
         self.assertEqual(args.card_lines, "held")
         self.assertEqual(population.options().parse_args(["--seeds", "development", "--card-lines", "cut"]).card_lines,
                          "cut")
@@ -4174,9 +4224,11 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(run.call_args.args[0].alpha, 0.0)
 
     def test_bridges_drawn_over_wanted_is_the_share_the_pool_funds(self):
-        """Hand case: a bill of 0.04 (months of spending) wanted in full from a pool holding 0.01 of cash: a quarter is
-        drawn. The record names it for what it holds (the 3 Nov review); "coverage" is demurrage's share of the
-        bridging capital cost (decided 4 Nov), zero here with no cycle observed, and "bridges" the value drawn."""
+        """The record "bridges_drawn_over_wanted" is the share of the bridging wanted that the pool funds.
+
+        Example: a bill of 0.04 (months of spending) wanted in full from a pool holding 0.01 of cash: a quarter is
+        drawn. "coverage" is the holding charge's (demurrage) share of the bridging capital cost, zero here with no
+        cycle observed, and "bridges" is the value drawn."""
         w = controlled_world()
         funded_pool(w, 0.01)
         w.r_g = w.r_b = 0.005
@@ -4192,9 +4244,8 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(w.series["bridges"][-1] * 10, 0.01, places=12)
 
     def test_credit_death_reads_cash_to_lend(self):
-        """Six second-window months with no new pool loans are credit death only while the pool has cash to lend (the
-        3 Nov review): the same months read as nothing when the pool holds cash it may not lend. At the close a pool
-        serving lends its cash net of what it owes its creditors, and one not serving lends nothing."""
+        """Six second-window months with no new pool loans are credit death only while the pool has cash to lend:
+        the same months read as nothing when the pool holds cash it may not lend. At the close a pool serving lends its cash net of what it owes its creditors, and one not serving lends nothing."""
         from scripts.run_economy_figures import persistence
         months = 60
         series = {key: np.ones(months) for key in ("A", "N", "service", "pool_pt", "new_pool_loans", "pool_cash",
@@ -4220,7 +4271,7 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertAlmostEqual(w.series["cash_to_lend"][-1], w._cash_to_lend() / 10, places=15)
 
     def test_new_records_change_no_outcome(self):
-        """The records added on 3 Nov change no outcome: the same small economy with cash to lend silenced gives every
+        """The cash-to-lend record changes no outcome: the same small economy with cash to lend silenced gives every
         other record exactly (the test device, whose pool forms, in M1 and M2)."""
         class Silenced(PooledWorld):
             def _cash_to_lend(self):
@@ -4232,9 +4283,9 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertEqual(float(np.max(silenced["series"]["cash_to_lend"])), 0.0)
             self.assert_same_outcome(run, silenced, ("cash_to_lend",))
 
-    # ---- Failure counts (decided 3 Nov) -------------------------------------------------------------------------
+    # ---- Failure counts ---------------------------------------------------------------------------------------
     def test_whole_items_are_the_fewest_a_bank_paying_in_order_returns(self):
-        """Hand cases ($): each payment's running total within its payer's day, smallest first, whatever order the day
+        """Example ($): each payment's running total within its payer's day, smallest first, whatever order the day
         lists them in (equal payments in either order). Two $40 bills against $30 return both; three $14 against $41
         one; $100 and $5 against $100 one; $10, $30 and $50 against $45 one, the $50."""
         payer = np.array([0, 0, 1, 1, 1, 2, 2, 3, 3, 3])
@@ -4250,7 +4301,9 @@ class EconomyAbmTests(unittest.TestCase):
         np.testing.assert_array_equal(returned(payer[shuffle], shuffled), [2.0, 1.0, 1.0, 1.0])
 
     def test_failures_count_in_fee_units_unpaid_shares_and_whole_items(self):
-        """Hand cases ($), a payer without a card or savings. $40 + $40 against $30: 1.25 payments fail in shares, one
+        """Failures count in fee units, unpaid shares and whole items.
+
+        Examples ($), a payer without a card or savings. $40 + $40 against $30: 1.25 payments fail in shares, one
         fee unit ($27) and both bills in whole items. Three $14 against $41: 3/42 in shares and fee units, one whole
         bill. $5 + $100 against $100: 10/105, one. $10 + $30 + $50 against $45: 1.5 shares, one fee unit, one whole
         bill. A $14 card-eligible purchase and a $40 bill against $30: each loses 24/54, the bill alone carries the fee
@@ -4289,18 +4342,17 @@ class EconomyAbmTests(unittest.TestCase):
     def test_failure_counts_are_kept_by_person_and_month_and_reproduce_the_fee(self):
         """In short runs of S0 and M1 (everyone participating, the test device, whose pool forms) the counts are kept by
         person and month and as series a person a month; the fee is $27 a fee unit up to the monthly cap a person a
-        month (``fees_a_month``, two from 4 Nov), the count starting again each month (3 Nov), so no person-month pays
-        more than $54 and the cap binds on some; fee units never exceed unpaid shares or days with a failure; whole
-        items are whole; the real part's failed payments are read from the unpaid and bridged shares (3 Nov); and only
-        the pool bridges."""
+        month (``fees_a_month``, two), the count starting again each month, so no person-month pays more than $54 and
+        the cap binds on some; fee units never exceed unpaid shares or days with a failure; whole items are whole; the
+        real part's failed payments are read from the unpaid and bridged shares; and only the pool bridges."""
         from scripts.run_economy_population import real_part
         frozen = replace(Inputs(), xi0=0.0, xi1=0.0, upsilon=0.0)
         economy = replace(TINY, n=120)
         cap = economy.fees_a_month
         self.assertEqual(cap, 2.0)
         after = slice(economy.burn_in, economy.burn_in + economy.months)
-        # upsilon 0 freezes participation, and since 13 Nov also the savers' entry review, so every saver is made to
-        # review entry each month (``EnteringWorld``) for the pool to form as before.
+        # upsilon 0 freezes participation and also the savers' entry decision, so every saver is made to consider
+        # entry each month (``EnteringWorld``) for the pool to form.
         runs = dict(S0=simulate(frozen, 1.0, economy, "S0"), M1=EnteringWorld(frozen, 1.0, economy, "M1").run())
         for arm, run in runs.items():
             counts, series = run["failure_counts"], run["series"]
@@ -4323,12 +4375,14 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertGreater(float(runs["M1"]["failure_counts"]["bridged_shares"].sum()), 0.0)
 
     def test_failure_report_reads_the_monthly_cap_from_the_spread_of_fee_units(self):
-        """Hand case ($), two people over one month after launch with 4 and 1 fee units: $810 of fees a person a year;
+        """The failure report reads the monthly cap from the spread of fee units.
+
+        Example ($): two people over one month after launch with 4 and 1 fee units: $810 of fees a person a year;
         under a monthly cap of 2, 3 and 5, $486, $648 and $810; at 3 a month 2 units a person are left, the cap binds
         half the people and everyone paid; the heaviest payer's 4 units are 48 a year. With the development seeds each
         person-month is stored, named apart from the monthly payers; the map's seed sets store the monthly series and
         spread only. Every stored key has a label: the monthly series, the yearly figures and the table's columns. The
-        run's own monthly cap (3 Nov) binds nobody where every fee unit was charged, and half the people where the
+        run's own monthly cap binds nobody where every fee unit was charged, and half the people where the
         fees stop at three a month ($648 a person a year)."""
         from scripts.run_economy_population import FAILURE_LABELS, failure_report
         w = Economy(n=2, burn_in=1, months=1)
@@ -4342,7 +4396,7 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(year["fees_usd"], 810.0)
         self.assertEqual([year[f"fees_usd_cap_{cap}"] for cap in (2, 3, 5)], [486.0, 648.0, 810.0])
         self.assertEqual((month["capped_3"], month["binds_3"], month["payers"]), ([2.0], [0.5], [1.0]))
-        # The run's own monthly cap (3 Nov): these fees were charged on every fee unit, so it binds nobody; charged
+        # The run's own monthly cap: these fees were charged on every fee unit, so it binds nobody; charged
         # under a cap of 3 a month, it binds the person with 4 fee units, half the people.
         self.assertEqual(month["binds"], [0.0])
         capped = failure_report(dict(run, fees=np.minimum(units, 3.0) * FAIL_FEE), w)
@@ -4361,7 +4415,7 @@ class EconomyAbmTests(unittest.TestCase):
     def assert_same_outcome(self, run, other, new):
         """Two runs agree exactly on every record but the ``new`` ones, each a series or a key of the run: every other
         series and every other key of the run, the person-level paths and reports, channels, exits, loan ages, the
-        population, the economy, the payments log and the reserve rate (the 3 Nov review)."""
+        population, the economy, the payments log and the reserve rate."""
         self.assertEqual(set(run), set(other))
         self.assertEqual(set(run["series"]), set(other["series"]))
         self.assertTrue(set(new) <= set(run) | set(run["series"]), new)   # each record left out exists
@@ -4379,13 +4433,13 @@ class EconomyAbmTests(unittest.TestCase):
         same(kept(dict(run, series=kept(run["series"]))), kept(dict(other, series=kept(other["series"]))), "run")
 
     def assert_exits_reached(self, run, arm):
-        """The forced run reaches the exit path (decided 5 Nov: owners leave by the users' rule and are paid from
-        pool cash): owners request exits and some are paid."""
+        """The forced run reaches the exit path (owners leave by the users' rule and are paid from pool cash):
+        owners request exits and some are paid."""
         self.assertGreater(float(np.max(run["series"]["exit_requested"])), 0.0, arm)
         self.assertGreater(float(np.max(run["series"]["exit_paid"])), 0.0, arm)
 
     def test_failure_counts_change_no_outcome(self):
-        """The failure counts (3 Nov) change no outcome: the same small economy with the counting silenced gives every
+        """The failure counts change no outcome: the same small economy with the counting silenced gives every
         other record exactly, in S0, M0, M1 and M2 (the test device, whose pool forms), and in M1 and M2 in a forced
         run with distress, whose owners ask to exit."""
         silence = lambda base: type("Silenced", (base,), dict(_count_failures=lambda self, *args: None))
@@ -4399,19 +4453,19 @@ class EconomyAbmTests(unittest.TestCase):
             if base is ForcedRun:
                 self.assert_exits_reached(run, arm)
                 self.assertGreater(float(run["series"]["laid_off"].max()), 0.0, arm)
-            # Hit workers' failed shares (the harsh stress's read-out, 14 Nov 2026) are part of the failure counts.
+            # Hit workers' failed shares (the harsh stress's read-out) are part of the failure counts.
             self.assert_same_outcome(run, silenced, FAILURE_COUNTS + ("failure_counts", "fail_shares_hit"))
 
-    # ---- The wage-loss path and paired differences (decided 3 Nov) ----------------------------------------------
+    # ---- The wage-loss path and paired differences ----------------------------------------------------------------
     def test_wage_loss_and_paired_differences_change_no_outcome(self):
-        """The count of jobs without a wage on the month's last day and each seed's paired differences (3 Nov) change
+        """The count of jobs without a wage on the month's last day and each seed's paired differences change
         no outcome: the same small distressed economy with the count silenced gives every other record exactly, in S0,
         M0, M1 and M2 (the test device, whose pool forms); from the distress year's last month on, the count reads the
         spells the run ends with; and each arm's row with its paired differences silenced keeps every other field."""
         from unittest import mock
         from scripts import run_economy_population as population
         silence = lambda base: type("Silenced", (base,), dict(_laid_off_last_day=lambda self, spell: 0.0))
-        # Without normal job loss (3 Nov), so that no spell starts after the distress year and the spells a run ends
+        # Without normal job loss, so that no spell starts after the distress year and the spells a run ends
         # with are those the last months read: the record is what this checks, not the job-loss rule.
         economy = replace(TINY, n=100, months=8, distress=0.5, distress_start=1, distress_length=2, job_loss=0.0)
         runs = {}
@@ -4439,13 +4493,14 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertIsNotNone(live[arm]["against"]["S0"])
             self.assertEqual(drop(live[arm]), drop(quiet[arm]), arm)
 
-    # ---- Owners' return, the issuer-held share and crossings between E and P (decided 3 Nov) --------------------
+    # ---- Owners' return, the issuer-held share and crossings between E and P -------------------------------------
     def test_owners_income_is_their_capital_times_the_nav_change(self):
         """Dealing is at NAV, so households' income each month is their capital after dealing times the NAV's change
-        from dealing to the close before CPI, read here from the pool's own books; with demurrage (decided 4 Nov)
-        no issuer money reaches the pool's income, so net of issuer money it is the same, read in months where the
-        pool's float is paid; households hold all pool capital (decided 5 Nov: the issuer is a pure custodian; the
-        forced run in the test device, whose pool forms, in M1 and M2, over 24 months after launch, ``FORCED_LONG``)."""
+        from dealing to the close before CPI, read here from the pool's own books. With the holding charge
+        (demurrage) no issuer money reaches the pool's income, so net of issuer money it is the same, read in months
+        where the pool's float is paid. Households hold all pool capital (the issuer is a pure custodian). Checked
+        in the forced run of the test device, whose pool forms, in M1 and M2, over 24 months after launch
+        (``FORCED_LONG``)."""
         class Watched(ForcedRun):
             def _close(self, *args):
                 self.navs.append([self.nav_ps, np.nan])              # the dealing NAV, unchanged through the days
@@ -4475,9 +4530,11 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertTrue(np.all(s["owners_income"][~pool] == 0.0))
 
     def test_owners_lose_at_most_their_whole_holding_net_as_in_all(self):
-        """Hand cases (the 3 Nov review): households hold 1.9 of 2.0 of pool capital. At R = 3% they earn 0.057;
+        """Owners lose at most their whole holding, net as in all.
+
+        Example: households hold 1.9 of 2.0 of pool capital. At R = 3% they earn 0.057;
         where the NAV falls by 99.5% they lose 1.8905, and where it closes below zero (R = -120%) their whole holding,
-        1.9, and no more; R itself is not capped. With demurrage (decided 4 Nov) the pool's float and the charge
+        1.9, and no more; R itself is not capped. With the holding charge (demurrage) the pool's float and the charge
         are the contract's, not issuer money, so net of issuer money is the same as in all, even with a float of 0.02
         in the month's books."""
         w = controlled_world()
@@ -4491,7 +4548,9 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertEqual(income_net, income, msg=R)
 
     def test_own_return_runs_from_buying_over_at_most_twelve_months(self):
-        """Hand case: two owners over five months. The first holds $1,000 for three months, sells, and buys $500 again:
+        """An owner's own return runs from buying, over at most twelve months.
+
+        Example: two owners over five months. The first holds $1,000 for three months, sells, and buys $500 again:
         its return restarts. The second buys $2,000 in the second month. Over at most two months the window drops the
         oldest month."""
         owned = np.array([[1000.0, 0.0], [1000.0, 2000.0], [1000.0, 2000.0], [0.0, 2000.0], [500.0, 2000.0]])
@@ -4506,7 +4565,9 @@ class EconomyAbmTests(unittest.TestCase):
         np.testing.assert_allclose(own_returns(owned[:2], np.array([np.nan, 0.02]))[1], [0.01, 0.02], rtol=1e-12)
 
     def test_owners_return_reads_the_hand_case(self):
-        """Hand case, one household holding $10,000 of shares for five years after launch, earning 0.1% a month in the
+        """The owners' return report reads a worked case.
+
+        Example: one household holding $10,000 of shares for five years after launch, earning 0.1% a month in the
         first year, 0.2% in the second and so on, 0.05% a month of it issuer money: 1.2% to 6.0% a year by year, 5.4% in
         W2 and 4.8% net. Its own net return over the last 12 months is lowest, 3.1%, in W2's first month, where 11
         months of the third year (2.5% a month net, x 12) meet one of the fourth (3.5%); over W2 it averages 4.25%."""
@@ -4528,7 +4589,7 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(report["by_loan_year"], dict.fromkeys(("all", "bridge", "term"), [None] * LOAN_YEARS))
         json.dumps(report)
         # A holding bought in W2's first month whose NAV closes below zero (R -120%, -121% net) loses all of itself:
-        # -1,200% a year net, not -1,212% (the 3 Nov review).
+        # -1,200% a year net, not -1,212%.
         first = np.arange(61) == w.burn_in + 36
         lost, R = np.where(first, 10000 / MONTH_USD, 0.0), np.where(first, -1.2, np.nan)
         series = dict(owners_capital=lost, owners_income=-lost, R=R, R_net=R - 0.01, owners_income_net=-lost)
@@ -4543,13 +4604,15 @@ class EconomyAbmTests(unittest.TestCase):
                     shared=np.zeros(months))
 
     def test_owners_return_reads_each_loan_year(self):
-        """Hand case (decided 4 Nov) over five years after launch. Bridges made in the first year carry 0.5 for 12
+        """The owners' return is read for each loan year.
+
+        Example: five years after launch. Bridges made in the first year carry 0.5 for 12
         months and earn 0.005 a month, 12% a year; term loans of that year carry 2.0 for 24 months and earn 0.01 a
         month, 6%: together 6.667%. Term loans made in the second year carry 1.0 for 12 months and earn 0.004 a month,
         but 0.3 of them is written off and 0.1 later recovered: -15.2% a year. No loan was made later, nor a bridge in
         the second year (None). A burn-in month is not read, nor a payment of 0.5 after the pool wound down for good
-        in month 50 (R undefined from then). Those are the loans' own incomes. Spread by principal-time (decided
-        4 Nov), 0.0025 a month of provider fees less the fixed cost in the first year goes 0.0005 to the bridges and
+        in month 50 (R undefined from then). Those are the loans' own incomes. Spread by principal-time,
+        0.0025 a month of provider fees less the fixed cost in the first year goes 0.0005 to the bridges and
         0.002 to the term loans carried then, which earn 13.2% and 6.6%, 7.333% together; the -0.002 of month 30,
         with no loan carried, is no loan year's (-$12.88 a person), and the 1.0 after the wind-down is not read."""
         from scripts.run_economy_population import owners_return
@@ -4579,7 +4642,9 @@ class EconomyAbmTests(unittest.TestCase):
         json.dumps(report)
 
     def test_crossings_count_each_persons_net_move_in_a_step(self):
-        """Hand cases ($): a participant paying a $40 bill in E from its P crosses once for $40, and its payee, outside
+        """Crossings count each person's net move between E and P in a step.
+
+        Example ($): a participant paying a $40 bill in E from its P crosses once for $40, and its payee, outside
         P and paid in E, does not. $50 swept into P and paid out in E within one step does not cross; split over two
         steps it crosses twice. Joining, leaving and P redeemed by a non-participant are conversions, valued before
         the fee."""
@@ -4627,7 +4692,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertGreater(float(m1["conversions"][TINY.burn_in]), 0.0)   # the launch conversions
 
     def test_crossings_report_reads_the_hand_case(self):
-        """Hand case ($), one person over a year after launch: 20 routine crossings of $50 every month and one $3,220
+        """The crossings report counts routine crossings and conversions.
+
+        Example ($): one person over a year after launch: 20 routine crossings of $50 every month and one $3,220
         conversion at launch are 240 crossings and $12,000 a year and one conversion of $3,220; a participant half the
         time crosses 480 times a participant-year."""
         from scripts.run_economy_population import crossings
@@ -4650,16 +4717,16 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertIsNone(seed_nanmeans([None, None]))
 
     def test_pool_series_change_no_outcome(self):
-        """Owners' income, their holdings and crossings (3 Nov) change no outcome: the same small economy with all
+        """Owners' income, their holdings and crossings change no outcome: the same small economy with all
         three silenced gives every other record exactly, in M0, M1 and M2 (the test device, whose pool forms), and in
         forced runs whose owners ask to exit: M1 and M2 with distress, and over 24 months M2 without and M1 with
-        distress, in each of which the pool's float (4 Nov) reaches the silenced owners' income."""
+        distress, in each of which the pool's float reaches the silenced owners' income."""
         def silence(base):
             quiet = dict(_crossed=lambda self, *args, **kwargs: None, _count_crossings=lambda self: None,
                          _holdings=lambda self: None,
                          _owners_income=lambda self, R: (np.nan, 0.0, 0.0, 0.0))
             return type("Silent", (base,), quiet)
-        # The yardsticks' records (3 Nov) read owners' holdings and income too: the income in the joint test.
+        # The yardsticks' records read owners' holdings and income too: the income in the joint test.
         new = ("owners_capital", "owners_income", "owners_income_net", "R_net", "crossings", "crossed", "conversions",
                "converted", "owned", "own_margin", "joint")
         economy = replace(TINY, n=100, months=12)
@@ -4681,22 +4748,22 @@ class EconomyAbmTests(unittest.TestCase):
             self.assert_same_outcome(run, silent, new)
 
     def test_loan_year_record_changes_no_outcome(self):
-        """Owners' return by loan year (4 Nov) changes no outcome: forced runs with distress in M1 and M2 (the test
-        device, whose pool lends, writes loans off and recovers on them) with the record silenced and bridges undated,
-        as before, give every other record exactly. The silenced run reads the books R reads, where R reads them; as
-        every other record is the same, they are the live run's, and the live record adds up to them each month: its
-        income to the coupons less the operating cost, write-offs and recoveries, in all and by product, and its
-        principal-time to the pool's, and with the pool-wide income to the owners' income less demurrage's revenue (the
-        pool's float and the charge, 4 Nov) in every month the pool has capital. No band holds a loan before its year,
-        and bridges of the second year are dated. Changed 12 Nov: a due bridge is now collected before overdue wages,
-        so the 24-month runs at 2 points of distress write nothing off; the runs are 36 months long with 10 points
-        of distress for a year. Changed again 12 Nov: a missed instalment is collected from all money too, and then
-        no forced run leaves a pool loan unpaid for 90 days (none at up to 50 points of distress), so here the test
-        device writes a loan off 10 days past due: the same write-off and recovery paths, sooner. Changed 14 Nov 2026:
-        under the harsh stress a year at 10 points sends so many wages outside that by month 34 four payers with no
-        money owe each other a ring of late wages (one owes 123 months of its spending), whose settlement reaches its
-        fixed point only slowly, so the run allows 20,000 sweeps a day; a day that converges within the engine's 500
-        is unchanged by the cap."""
+        """Owners' return by loan year changes no outcome: forced runs with distress in M1 and M2 (the test
+        device, whose pool lends, writes loans off and recovers on them) with the record silenced and bridges undated
+        give every other record exactly. The silenced run reads the books R reads, where R reads them; as every other
+        record is the same, they are the live run's, and the live record adds up to them each month: its income to
+        the coupons less the operating cost, write-offs and recoveries, in all and by product, and its
+        principal-time to the pool's, and with the pool-wide income to the owners' income less the holding charge's
+        (demurrage) revenue (the pool's float and the charge) in every month the pool has capital. No band holds a
+        loan before its year, and bridges of the second year are dated.
+
+        A due bridge is collected before overdue wages, so the runs are 36 months long with 10 points of distress
+        for a year. A missed instalment is collected from all money too, so no forced run leaves a pool loan unpaid
+        for 90 days; the test device therefore writes a loan off 10 days past due, which exercises the same
+        write-off and recovery paths sooner. Under the harsh stress a year at 10 points sends so many wages outside
+        that by month 34 four payers with no money owe each other a ring of late wages (one owes 123 months of its
+        spending), whose settlement reaches its fixed point only slowly, so the run allows 20,000 sweeps a day; a
+        day that converges within the engine's 500 is unchanged by the cap."""
         from unittest import mock
         from cpm_abm import economy_abm
         from cpm_abm.engine import world_credit   # where _write_off looks WRITE_OFF_DAYS up
@@ -4706,7 +4773,7 @@ class EconomyAbmTests(unittest.TestCase):
 
             def _add_loans(self, borrower, pool, kind, principal, rate, alt, due, months=None, m0=0, card_part=0.0,
                            cover=0.0, business=False):
-                # A cash advance keeps its month, which the replays' card room reads (14 Nov 2026, the review).
+                # A cash advance keeps its month, which the replays' card room reads.
                 super()._add_loans(borrower, pool, kind, principal, rate, alt, due, months,
                                    m0 if kind in (TERM, CASH_ADVANCE) else 0, card_part, cover, business)
 
@@ -4751,14 +4818,16 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertFalse(any(silent["vintage"][key].any() for key in ("income", "exposure")))
             self.assert_same_outcome(run, silent, ("vintage",))
 
-    # ---- The buffers people choose (the 3 Nov review) ---------------------------------------------------------------
+    # ---- The buffers people choose ---------------------------------------------------------------------------------
     def test_buffers_are_kept_by_person_and_month_and_by_card_holding(self):
-        """Hand case ($): at a month's dealing four card holders chose buffers of $0, $644, $1,288 and $3,220 and six
+        """Buffers are recorded by person and month and averaged by card holding.
+
+        Example ($): at a month's dealing four card holders chose buffers of $0, $644, $1,288 and $3,220 and six
         people without a card $322 each, so the means are $1,288 and $322; with nobody without a card that mean is
         undefined. In short runs of S0 and M1 (the test device, whose pool forms) each person's record is the buffer
         the dealing chose, in months of mean spending, and the series are its means by card holding. The means read each
-        person's class, the population's card holding, which a closed line does not change (14 Nov 2026: changed, so
-        the hand case sets the population's holding)."""
+        person's class, the population's card holding, which a closed line does not change, so the example sets the
+        population's holding."""
         w = controlled_world()
         w.holder[:4] = w.pop["holder"][:4] = True
         w.pop["holder"][4:] = False
@@ -4788,7 +4857,7 @@ class EconomyAbmTests(unittest.TestCase):
             np.testing.assert_allclose(run["series"]["buffer_nocard"], buffers[:, ~holder].mean(axis=1), rtol=1e-12)
 
     def test_buffer_record_changes_no_outcome(self):
-        """The buffers kept by person and month and their means by card holding (the 3 Nov review) change no outcome:
+        """The buffers kept by person and month and their means by card holding change no outcome:
         the same small economy with the record silenced gives every other record exactly, in S0 and M1 (the test
         device, whose pool forms)."""
         silence = lambda base: type("Silenced", (base,), dict(_buffers=lambda self: (np.zeros(self.n), np.nan, np.nan)))
@@ -4800,13 +4869,15 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertEqual(float(silenced["buffers"].sum()), 0.0)
             self.assert_same_outcome(run, silenced, ("buffers", "buffer_nocard", "buffer_card"))
 
-    # ---- The household economy and failure cost (decided 3 and 4 Nov) -------------------------------------------
+    # ---- The household economy and failure cost -------------------------------------------------------------------
     def test_the_replay_counts_a_requeued_wage_once(self):
-        """Hand case ($, 3 Nov): a $100 wage from person 3 to person 4, whose cycle is one day (wages on billing dates,
-        so the wage is re-queued daily), with no money for five settlement days and $100 on the sixth. The six days of
-        payer 3's own cash flow add up to -$100: the wage once, on the day it first fell due, its later failures adding
-        nothing and its payment taken back out of the day it is paid. As built, each failed retry counted again and the
-        payment once more: -$600."""
+        """The replay counts a re-queued wage once.
+
+        Example ($): a $100 wage from person 3 to person 4, whose cycle is one day (wages on billing dates, so the
+        wage is re-queued daily), with no money for five settlement days and $100 on the sixth. The six days of
+        payer 3's own cash flow add up to -$100: the wage once, on the day it first fell due, its later failures
+        adding nothing and its payment taken back out of the day it is paid. With ``requeued_once`` off, each failed
+        retry counts again and the payment once more: -$600."""
         def flows(requeued_once):
             w = controlled_world("S0")
             w.economy = replace(w.economy, pay_dates=False, requeued_once=requeued_once)
@@ -4823,7 +4894,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(flows(False), -600.0, places=9)
 
     def test_wages_settle_on_their_jobs_pay_dates_at_bls_frequencies(self):
-        """Hand cases (3 Nov): a weekly job with phase 3 and a $10 daily wage settles month 0's wages on days 3, 10, 17,
+        """Wages settle on their job's pay dates at BLS frequencies.
+
+        Example: a weekly job with phase 3 and a $10 daily wage settles month 0's wages on days 3, 10, 17,
         24 and 31 with $40, $70, $70, $70 and $50, whatever its recipient's billing cycle (daily or 60-day); a job paid
         twice a month, phase 4, pays exactly twice in month 1, on days 34 and 49, 15 days' wages each time. At 1,000
         people the pay periods follow the BLS shares in exact proportion, each phase within its period."""
@@ -4854,7 +4927,7 @@ class EconomyAbmTests(unittest.TestCase):
 
     def test_a_failed_wage_is_requeued_to_its_jobs_next_pay_date(self):
         """A weekly job (phase 2) whose $100 wage fails on its pay date, day 30, is re-queued to the job's next pay
-        date, day 37 (3 Nov); as built, to its recipient's next billing date, day 31 on a daily cycle."""
+        date, day 37; with ``pay_dates`` off, to its recipient's next billing date, day 31 on a daily cycle."""
         def later(pay_dates):
             w = controlled_world("S0")
             w.economy = replace(w.economy, pay_dates=pay_dates)
@@ -4868,12 +4941,14 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual((later(True), later(False)), (37, 31))
 
     def test_a_lean_month_costs_54_dollars_at_two_fees_and_81_at_three(self):
-        """Hand cases ($, 3 Nov; the cap of two, decided 4 Nov): a payer without a card or money owes a $100 bill on
-        each of days 30, 35, 40 and 45. All four fail in full (4 unpaid shares and fee units), but at most two fees a
-        model month are charged: $27, $27 and nothing twice, $54, booked as fee debt. With $50 of cash before each
-        bill, half of each fails, half a fee a day: fees on four days make $54 and the other three carry none. A bill
-        on day 60, after the count resets on day 1, carries $27 again. At three fees a month, the cap until the S0
-        check: $27 three times, $81, fees on six days and $27 again after the reset."""
+        """A lean month costs $54 at a cap of two fees and $81 at three.
+
+        Example ($): a payer without a card or money owes a $100 bill on each of days 30, 35, 40 and 45. All four
+        fail in full (4 unpaid shares and fee units), but at most two fees a model month are charged: $27, $27 and
+        nothing twice, $54, booked as fee debt. With $50 of cash before each bill, half of each fails, half a fee a
+        day: fees on four days make $54 and the other three carry none. A bill on day 60, after the count resets on
+        day 1, carries $27 again. At a cap of three fees a month: $27 three times, $81, fees on six days and $27
+        again after the reset."""
         def bills(days, cash=0.0, cap=None):
             w = controlled_world("S0")
             if cap is not None:
@@ -4903,10 +4978,12 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertEqual(charged, [13.5] * (2 * fees) + [0.0] * (7 - 2 * fees))
 
     def test_the_buffer_replay_prices_failures_past_the_cap_at_27_and_the_experience_replays_at_0(self):
-        """The round's test (3 Nov): failures of 0.1 on days 5, 10, 15 and 20 from no buffer, at 1.0 a unit and at most
+        """The buffer replay prices failures past the cap at $27 and the experience replays at $0.
+
+        Example: failures of 0.1 on days 5, 10, 15 and 20 from no buffer, at 1.0 a unit and at most
         0.05 a day. The buffer replay prices all four, 0.20 ($27 past the cap); the experience replays three, 0.15 ($0
         past it, what the wallet pays). In a run the dealing's replay is given no monthly limit and both experience
-        replays the month's cap of fees (``fees_a_month``, two from 4 Nov); with the device off
+        replays the month's cap of fees (``fees_a_month``, two); with the device off
         (``buffer_prices_past_cap``) the dealing's replay the cap too, and with no monthly cap no replay has a
         limit."""
         from unittest import mock
@@ -4936,9 +5013,11 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(limits(replace(w, fees_a_month=np.inf)), [None] * 5)
 
     def test_fee_debt_is_repaid_before_card_debt(self):
-        """Hand case ($, 3 Nov): a card holder owes $27 of fee debt and $100 revolving on the card at 28.49% a year, and
-        repays from $50: the fee first ($27), then $23 to the card. As built, the fee was outside debt at 22% a year,
-        repaid dearest first, so the card took all $50. Fee debt accrues nothing: still $27 after 30 days."""
+        """Fee debt is repaid before card debt.
+
+        Example ($): a card holder owes $27 of fee debt and $100 revolving on the card at 28.49% a year, and repays
+        from $50: the fee first ($27), then $23 to the card. Were the fee outside debt at 22% a year, repaid dearest
+        first, the card would take all $50. Fee debt accrues nothing: still $27 after 30 days."""
         def repay(kind, rate):
             w = controlled_world("S0")
             w.holder[0], w.cash[0] = True, 50 / MONTH_USD
@@ -4955,17 +5034,19 @@ class EconomyAbmTests(unittest.TestCase):
         np.testing.assert_allclose((w.book["principal"] + w.book["interest"]) * MONTH_USD, [27.0], rtol=1e-12)
 
     def test_the_real_failure_line_counts_unpaid_and_bridged_shares(self):
-        """Hand cases ($, 3 Nov), one person over one month after launch, at $2 a unit whatever the fee and the cap. Two
-        $40 bills against $30 of cash: 1.25 unpaid shares (as the settlement counts them), $2.50 (as built, one fee
-        unit, $2.00), with the two whole bills returned, $4.00, beside it. With half a bill bridged by the pool for a
-        payer without a card, $3.50 (as built, the bridged payer-day added, $4.00). Three $14 bills against $41: 3/42
-        shares, $0.14. A bridged card-eligible purchase is card credit by its principal-time, with its $2 reading
+        """The real failure line counts unpaid and bridged shares.
+
+        Examples ($): one person over one month after launch, at $2 a unit whatever the fee and the cap. Two
+        $40 bills against $30 of cash: 1.25 unpaid shares (as the settlement counts them), $2.50 (against $2.00 for
+        one fee unit), with the two whole bills returned, $4.00, beside it. With half a bill bridged by the pool for
+        a payer without a card, $3.50 (against $4.00 with the bridged payer-day added). Three $14 bills against $41:
+        3/42 shares, $0.14. A bridged card-eligible purchase is card credit by its principal-time, with its $2 reading
         beside: a $1,000 bridge held a month costs $2.83, and the pool's sourced cost adds the bridged share's $1."""
         from scripts.run_economy_population import real_part
         w = Economy(n=1, burn_in=1, months=1)
 
         def read(rule=True, **volumes):
-            """The real part of one month's volumes, with the real failure line (``rule``) or as built."""
+            """The real part of one month's volumes, with the real failure line (``rule``) or the fee-unit line."""
             series = {key: np.zeros(2) for key in REAL_SERIES}
             list(map(lambda item: series[item[0]].__setitem__(1, item[1]), volumes.items()))
             return real_part(dict(arm="S0", series=series), replace(w, failure_shares=rule))
@@ -4984,7 +5065,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(read(rule=False, pt_pool_nocard_card=1000 / MONTH_USD)["card_credit"], 0.0)
 
     def test_a_pool_bridge_records_the_card_eligible_part_for_a_payer_without_a_card(self):
-        """Hand case ($, 3 Nov): the pool bridges a $14 card-eligible purchase and a $40 bill of a payer without a card
+        """A pool bridge records the card-eligible part for a payer without a card.
+
+        Example ($): the pool bridges a $14 card-eligible purchase and a $40 bill of a payer without a card
         or money. The bill is one bridged share, a replaced failure, and the purchase new lending: 14/54 of the bridge,
         its principal-time counted apart ($14 for a day)."""
         w = controlled_world()
@@ -5008,10 +5091,10 @@ class EconomyAbmTests(unittest.TestCase):
         w._accrue()
         self.assertAlmostEqual(w.acc["pt_pool_nocard_card"] * MONTH_USD, 14.0 / DAYS, places=12)
 
-    # ---- Earned-wage access and payers in chronic deficit (decided 3 Nov) ---------------------------------------
+    # ---- Earned-wage access and payers in chronic deficit ---------------------------------------------------------
     @staticmethod
     def wage_case(arm="S0", bill=100.0, on=40, spell=(0, 0)):
-        """The earned-wage hand case's world ($, 3 Nov): job 2 pays person 1 monthly, on day 59, and is in a spell on
+        """The world of the earned-wage examples ($): job 2 pays person 1 monthly, on day 59, and is in a spell on
         the days ``spell`` gives; person 1 holds earned-wage access, has no card and no money, and owes a bill of
         ``bill`` to person 5 on day ``on``, when $330 is earned and still unpaid (11 days at $30). The month's $900 wage
         row settles on day 59; payer 2 has no money. The month's accumulators are emptied."""
@@ -5029,7 +5112,9 @@ class EconomyAbmTests(unittest.TestCase):
         return w
 
     def test_earned_wage_access_applies_only_to_earned_unpaid_wages_and_is_repaid_first_from_them(self):
-        """The round's test, hand cases ($, 3 Nov). Person 1, with no card or money, owes a $100 bill on day 40, when
+        """Earned-wage access applies only to earned, unpaid wages and is repaid first from them.
+
+        Examples ($): person 1, with no card or money, owes a $100 bill on day 40, when
         $330 of job 2's wage is earned and unpaid: it advances $100, owes $102.45 against job 2, the $2.45 fee leaves
         the economy, no failure fee is charged and nothing fails. On day 59 payer 2 pays the $900 wage: the advance is
         taken from it first, so person 1 keeps $797.55 and owes nothing. A $200 bill instead: half of the $330, $165,
@@ -5088,7 +5173,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertGreater(float(world.accrued.sum()), 0.0)                   # wages earned and not yet due remain
 
     def test_the_pool_is_kept_where_no_dearer_than_the_advance_held(self):
-        """The round's hand case ($, 3 Nov): a wage earner without a card, short $84 five days before its covering date,
+        """The pool is kept where it is no dearer than the advance held.
+
+        Example ($): a wage earner without a card, short $84 five days before its covering date,
         can advance it for $2.06 (2.45%); the pool bridge costs about $0.08 (5 days at 4.44%, the owners' 0.25 point and
         2% a year, its full coupon), so the payer stays in the pool's queue and the pool lends the $84. With a coupon of
         2% a month over 60 days (a factor of 1.04, above 1.0245) the pool is dearer: the payer leaves the queue and
@@ -5105,9 +5192,9 @@ class EconomyAbmTests(unittest.TestCase):
             w.r_g = w.r_b = w.r_g if coupon is None else coupon
             w.pop["cycles"][0], w.pop["phases"][0] = cycle, (40 + (5 if cycle == 30 else 0)) % cycle
             w.last["receipts"][:] = 1.0
-            # Changed 12 Nov: the budget now expects wages on their jobs' pay dates, and the quiet month's wage to
-            # person 0 would date the draw on day 42, an incoming job's pay date. The hand case's receipts are none of
-            # them wages, so the covering date stays person 0's own billing date.
+            # The budget expects wages on their jobs' pay dates, and the quiet month's wage to person 0 would date
+            # the draw on day 42, an incoming job's pay date. The example's receipts are none of them wages, so the
+            # covering date stays person 0's own billing date.
             w.last["wages_paid"][:] = 0.0
             w.pop["wage_to"][3], w.pop["ewa"][:] = 0, np.arange(10) == 0
             w.spell_start[:], w.spell_end[:] = 0, 0
@@ -5138,7 +5225,7 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual((usd(w.acc["ewa_value"][0]), usd(w.ewa_owed[3]), usd(w.acc["fee"][0])), (84.0, 86.058, 0.0))
 
     def test_pool_limit_counts_the_advance_and_its_fee_ahead_of_the_draw(self):
-        """The same-day limit with earned-wage access (3 Nov), in the units of the other limit cases: short 300, room
+        """The same-day limit with earned-wage access, in the units of the other limit cases: short 300, room
         100, receipts 250, the pool at 1.01, the fee 0.28 a failed unit and at most 28, the advance at 1.0245. The debt
         is 130.45 with no draw and 231.45 at a draw of 100, where the fee stops binding at its cap; it then rises 0.73
         a unit, so the pool lends 100 + 18.55 / 0.73 = 125.41: with the advance of 100 and a fee of 20.885 on the 74.59
@@ -5161,11 +5248,13 @@ class EconomyAbmTests(unittest.TestCase):
                                    limit_with_fee(short, spare, f_pool, unit, cap), rtol=1e-12, atol=1e-15)
 
     def test_replays_price_the_advance_per_unit_drawn_before_failure(self):
-        """Hand case (3 Nov): a dip of 0.3 from day 10 to day 20 from no buffer, a failure costing 0.3 a unit and room
+        """The replays price the advance per unit drawn before failure.
+
+        Example: a dip of 0.3 from day 10 to day 20 from no buffer, a failure costing 0.3 a unit and room
         of 0.2 every day at 2.45% a unit drawn: 0.2 is advanced once (0.0049) and 0.1 fails (0.03), 0.0349 against 0.09
         without access. In a run the dealing's replay and both experience replays read the room at the advance's fee
-        for holders of access (S0: nobody admitted by a pool), card holders among them since card limits (14 Nov 2026:
-        changed, as holders reach access after their cash line), and with no access none does."""
+        for holders of access (S0: nobody admitted by a pool), card holders among them, as holders reach access after
+        their cash line, and with no access none does."""
         from unittest import mock
         from cpm_abm import economy_abm
         from cpm_abm.engine import world_close, world_dealing   # where _dealing and _close look choose_buffer up
@@ -5197,11 +5286,11 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual([pair for pair in calls(legacy(w))[0] if pair != (None, None)], [])
 
     def test_earned_wage_holders_are_drawn_among_earners_on_their_own_stream(self):
-        """Holders (3 Nov): exactly round(share x n) people, 74 of 1,000 at the declared 10 million users over the
+        """Holders are exactly round(share x n) people, 74 of 1,000 at the declared 10 million users over the
         consumer units, all wage earners, the same whatever the arm; a larger share's holders include a smaller one's,
-        and the draw moves no other part of the population. In a run, holders of access use it (card holders too since
-        card limits, 14 Nov 2026, after their cash line: changed, the run no longer checks that card holders draw
-        none), wealth accounting stays exact in every arm, and with no access nothing is advanced."""
+        and the draw moves no other part of the population. In a run, holders of access use it (card holders too,
+        after their cash line), wealth accounting stays exact in every arm, and with no access nothing is
+        advanced."""
         self.assertAlmostEqual(EWA_SHARE, 10e6 / CONSUMER_UNITS, places=15)
         self.assertEqual((EWA_FEE, EWA_LIMIT, round(EWA_COST * MONTH_USD, 12)), (0.0245, 0.5, 2.0))
         pop = build_population(Economy(n=1000))
@@ -5226,7 +5315,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(float(run["series"]["ewa_value"].sum() + run["series"]["ewa_owed"].sum()), 0.0)
 
     def test_payers_in_chronic_deficit_are_flagged_at_launch(self):
-        """Hand cases (3 Nov), three people at launch, each with a month's spending of 1.0: one spent 6.0 over the
+        """Payers in chronic deficit are flagged at launch.
+
+        Examples: three people at launch, each with a month's spending of 1.0: one spent 6.0 over the
         burn-in against 5.0 received, with a cushion of 0.5 (0.3 in E and 0.2 in savings), and is flagged; with a
         cushion of 1.2 it is not; one that spent 5.0 against 6.0 received, with a cushion of 0.1, is not. In a run the
         flags are set from the burn-in, the same in S0 and M1 (the test device, whose pool forms)."""
@@ -5244,7 +5335,7 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertTrue(runs[0]["chronic"].any() and not runs[0]["chronic"].all())
 
     def test_the_chronic_deficit_flag_changes_no_outcome(self):
-        """The flag (3 Nov) is a record only: a run with it silenced gives every other record exactly, in S0 and M1
+        """The flag is a record only: a run with it silenced gives every other record exactly, in S0 and M1
         (the test device, whose pool forms)."""
         silence = lambda base: type("Silenced", (base,), dict(_chronic=lambda self: None))
         economy = replace(TINY, n=100, months=12)
@@ -5255,7 +5346,9 @@ class EconomyAbmTests(unittest.TestCase):
             self.assert_same_outcome(run, silenced, ("chronic",))
 
     def test_the_runner_reports_earned_wage_access_and_chronic_payers_apart(self):
-        """Hand cases ($, 3 Nov), four people over a year after launch: two hold access, one used it on 30 days with
+        """The runner reports earned-wage access and chronic payers apart.
+
+        Example ($): four people over a year after launch: two hold access, one used it on 30 days with
         $1,200 advanced and $29.40 of fees, so per user a year 30 advances, $29.40 and $1,200. People 0 and 1 are
         flagged as in chronic deficit: they paid $54 and $0 of failure fees, 2 and 0 unpaid shares and $60 and $20 to
         intermediaries, and the others nothing."""
@@ -5279,11 +5372,13 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertIsNone(ewa_report(nobody, w)["advances_a_user_year"])
         self.assertIsNone(by_chronic(nobody, w)["flagged"]["fees_usd_a_year"])
 
-    # ---- The card base, outside prices and normal job loss (decided 3 Nov) --------------------------------------
+    # ---- The card base, outside prices and normal job loss --------------------------------------------------------
     def test_every_non_housing_bundle_is_card_eligible(self):
-        """The card base (3 Nov): at 1,000 people over one month, card-eligible bundles are 28% of spending (0.417 x
-        0.671), against 18.2% as built (0.417 x 0.436). The same uniform draw decides, so every bundle eligible as
-        built stays eligible, and the bundles are otherwise the same."""
+        """Every non-housing bundle is card-eligible.
+
+        At 1,000 people over one month, card-eligible bundles are 28% of spending (0.417 x 0.671), against 18.2%
+        in the first run (0.417 x 0.436). The same uniform draw decides, so every bundle eligible in the first run
+        stays eligible, and the bundles are otherwise the same."""
         def services(card_base_all):
             world = _World(Inputs(), 0.6, Economy(n=1000, card_base_all=card_base_all), "S0")
             world.acc = dict(shocks=0.0, volume=0.0)
@@ -5303,19 +5398,21 @@ class EconomyAbmTests(unittest.TestCase):
             np.testing.assert_array_equal(decided[key], built[key])
 
     def test_each_outside_price_matches_its_hand_value_at_each_r_out(self):
-        """Hand cases (3 Nov), a year, from three-month bills at 4.05% in October 2026, on r_out's basis, credited
-        monthly, 4.13452% (decided 5 Nov: every anchor on the monthly-credited basis): at r_out 2, 4.4 and 6%
+        """Each outside price matches its hand value at each r_out.
+
+        Examples, a year, from three-month bills at 4.05% in October 2026, on r_out's basis, credited monthly,
+        4.13452% (every anchor is on the monthly-credited basis): at r_out 2, 4.4 and 6%
         deposits pay 0.209238, 0.401238 and 0.529238%, the lowest card tier 26.355, 28.755 and 30.355% (the other tiers
         26.065 and 20.855, 28.465 and 23.255, 30.065 and 24.855%) and business loans 5.265, 7.665 and 9.265%. Vehicle
         and personal loans move by their pass-throughs, 0.75 and 0.63 (Fed G.19 on the bill, February 2022 to February
-        2024; 13 Nov 2026): the shifts are -2.13452, +0.26548 and +1.86548 points (-4.13452 at 0%), so a new vehicle at
+        2024): the shifts are -2.13452, +0.26548 and +1.86548 points (-4.13452 at 0%), so a new vehicle at
         score 700 (6.15%) is 6.15 - 0.75 x 2.13452 = 4.54911%, 6.15 + 0.75 x 0.26548 = 6.34911% and 6.15 + 0.75 x
         1.86548 = 7.54911% (3.04911% at 0%), and a personal loan at score 700 (13.19%) is 13.19 - 0.63 x 2.13452 =
         11.84525%, 13.19 + 0.63 x 0.26548 = 13.35725% and 13.19 + 0.63 x 1.86548 = 14.36525% (10.58525% at 0%). M2's
-        deposit-part edge (2% less the deposit rate) is $17.908, $15.988 and $14.708 per $1,000, and the pool's business-loan edge at no learned loss
-        (the outside rate less rho_H, the owners' 0.25 point and o, decided 3 Nov) +1.015 points at every r_out. As
-        built, prices are fixed: 0.38%, 28.49, 28.20 and 22.99%, 7.4%, $16.20 and edges of +3.15, +0.75 and -0.85
-        points. At a synthetic r_out of 0% deposits sit on the 0.06% floor, the lowest card tier at 24.355% and business
+        deposit-part edge (2% less the deposit rate) is $17.908, $15.988 and $14.708 per $1,000, and the pool's
+        business-loan edge at no learned loss (the outside rate less rho_H, the owners' 0.25 point and o) is +1.015
+        points at every r_out. In the first run prices are fixed: 0.38%, 28.49, 28.20 and 22.99%, 7.4%, $16.20 and
+        edges of +3.15, +0.75 and -0.85 points. At a synthetic r_out of 0% deposits sit on the 0.06% floor, the lowest card tier at 24.355% and business
         loans at 3.265%."""
         from scripts.run_economy_population import cell_inputs
         self.assertAlmostEqual(BILL_MONTHLY, 0.0413452, places=7)
@@ -5357,7 +5454,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(BUSINESS_APR, 0.074)
 
     def test_existing_loans_keep_their_sealed_rates(self):
-        """Hand case (3 Nov; the anchor on the monthly-credited basis, 5 Nov): business requests made at r_out 2% carry
+        """Existing loans keep their sealed rates.
+
+        Example (the anchor on the monthly-credited basis): business requests made at r_out 2% carry
         5.265%; when outside prices move to r_out 6%'s, the month's new business requests carry 9.265% and the earlier
         requests keep 5.265%, and an outside business loan booked at 5.35% keeps that rate and accrues at it, a month's
         interest 5.35% / 12 of its principal: a rate is read when a request is made and sealed with it."""
@@ -5388,7 +5487,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(float(w.book["interest"][0]), 0.0535 / 12, places=15)
 
     def test_the_deposit_floor_binds_on_a_synthetic_rate_below_it(self):
-        """Hand case (3 Nov; the anchor on the monthly-credited basis, 4.13452%, 5 Nov): at a synthetic r_out of 0% the
+        """The deposit floor binds on a synthetic rate below it.
+
+        Example (the anchor on the monthly-credited basis, 4.13452%): at a synthetic r_out of 0% the
         deposit rate would be 0.38% - 0.08 x 4.13452% = 0.0492% a year, below the 0.06% floor, so it is 0.06%; with the
         0.46 pass-through (a sensitivity) at r_out 2% it would be negative, and is 0.06% too; at r_out 6% that
         pass-through gives 0.38% + 0.46 x 1.86548% = 1.2381%, above it."""
@@ -5403,12 +5504,14 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(_World(replace(Inputs(), rho_H=0.0), 0.6, Economy(n=40), "S0").deposit_rate, DEPOSIT_FLOOR)
 
     def test_normal_job_loss_at_055_percent_a_month_gives_a_19_percent_stock(self):
-        """Hand case (3 Nov): at 0.55% a month with completed spells (a mean of 109.4 days, 3.65 months) the steady
-        stock h D / (1 + h D) is 1.967% of jobs. 20,000 synthetic jobs of weight one, started at that stock
-        (``spell_stock``) and laid off month by month as the engine lays them off (``draw_spells``: a job in a spell is
-        not laid off again), hold a mean month-end stock over 48 months within 1.85% to 2.10%. A world draws its month-0
-        stock so, on a stream of its own, from each job's own hazard, every spell in it under way on day 0; without
-        normal job loss no job starts in a spell."""
+        """Normal job loss holds a steady stock of jobs without a wage, h D / (1 + h D).
+
+        Example: at 0.55% a month with completed spells (a mean of 109.4 days, 3.65 months) the stock is 1.967% of
+        jobs. 20,000 synthetic jobs of weight one, started at that stock (``spell_stock``) and laid off month by month
+        as the engine lays them off (``draw_spells``: a job in a spell is not laid off again), hold a mean month-end
+        stock over 48 months within 1.85% to 2.10%. A world draws its month-0 stock the same way, on a stream of its
+        own, from each job's own hazard, with every spell in it under way on day 0; without normal job loss no job
+        starts in a spell."""
         median, sigma = spell_law(Economy())
         self.assertEqual((median, sigma), (COMPLETED_SPELL_MEDIAN_DAYS, COMPLETED_SPELL_SIGMA))
         self.assertEqual(spell_law(legacy()), (SPELL_MEDIAN_DAYS, SPELL_SIGMA))
@@ -5435,12 +5538,14 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertFalse(_World(Inputs(), 0.6, Economy(n=1000, job_loss=0.0), "S0").spell_end.any())
 
     def test_holders_card_bridging_is_recorded_for_the_s0_check(self):
-        """Hand cases ($, 3 Nov): a card holder with no money bridges a $100 bill on the card, since card limits (14 Nov
-        2026) as a cash advance, and the record holds the $100; a payer without a card bridges nothing on a card. In a
-        run the record is live. The runner reads $12 a month per capita over a year, ten people of whom two hold a card,
-        as $144 a person and $720 a holder a year, and None with no holder. Beside it (14 Nov 2026: changed, the report
-        now carries the card's fees and charge-offs): $1 a month per capita of cash-advance fees, $0.50 of late fees
-        and $2 charged off are $60, $30 and $120 a holder a year, and one line closed is half the two holders."""
+        """Holders' bridging on the card is recorded, and the runner reports it a person and a holder a year.
+
+        Examples ($): a card holder with no money bridges a $100 bill on the card as a cash advance, and the record
+        holds the $100; a payer without a card bridges nothing on a card. In a run the record is live. The runner reads
+        $12 a month per capita over a year, ten people of whom two hold a card, as $144 a person and $720 a holder a
+        year, and None with no holder. The report carries the card's fees and charge-offs beside it: $1 a month per
+        capita of cash-advance fees, $0.50 of late fees and $2 charged off are $60, $30 and $120 a holder a year, and
+        one line closed is half the two holders."""
         from scripts.run_economy_population import card_bridging
         for holder, bridged in ((True, 100.0), (False, 0.0)):
             w = controlled_world("S0")
@@ -5464,11 +5569,12 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertIsNone(card_bridging(nobody, economy)["usd_a_holder_year"])
 
     def test_the_s0_check_runs_s0_alone(self):
-        """The S0 check (3 Nov round, Step 3): ``--arms S0`` at r_out 2, 4.4 and 6% and distress 0, 1 and 2% on the
-        development seeds is 27 jobs of one run each; by default every arm runs. A job with S0 alone runs no other arm,
-        and its S0 reports are exactly the full job's (common random numbers); its cell reads S0 alone, with no highest
-        mean gain and S0's own paired distress reading; the four stores are written, opening with the arms run, and the
-        region figures are skipped with printed notes."""
+        """The S0 check (``--arms S0``) runs S0 alone; by default every arm runs.
+
+        Example: r_out 2, 4.4 and 6% and distress 0, 1 and 2% on the development seeds are 27 jobs of one run each. A
+        job with S0 alone runs no other arm, and its S0 reports are exactly the full job's (common random numbers). Its
+        cell reads S0 alone, with no highest mean gain and S0's own paired distress reading. The four stores are
+        written, opening with the arms run, and the region figures are skipped with printed notes."""
         from scripts.run_economy_population import (SEEDS, decide_cells, job, options, run_record, runs_in, selected,
                                                     tasks_for, write_stores)
         from scripts.run_region_figures import draw
@@ -5504,12 +5610,12 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertEqual(len(list(output.iterdir())), 4)
 
     def test_run_record_stores_the_outside_prices_and_the_distress_labels(self):
-        """The run record (3 Nov) stores the outside prices each r_out runs at, a year (deposits, card tiers, business
-        loans and the vehicle and personal grids, which move by 0.75 and 0.63 of the shift since 13 Nov 2026: at r_out
-        6% by 0.75 x 1.86548 = 1.39911 and 0.63 x 1.86548 = 1.17525 points), the products kept fixed (none with every
-        pass-through sourced), and each distress level's labels: its extra and total monthly rates with normal
-        job loss (0.55% to 2.55%) and its hand label of jobs without a wage at month 36. With fixed prices every product
-        is fixed and the prices are as built."""
+        """The run record stores the outside prices each r_out runs at, a year: deposits, card tiers, business loans
+        and the vehicle and personal grids, which move by 0.75 and 0.63 of the shift (at r_out 6% by 0.75 x 1.86548 =
+        1.39911 and 0.63 x 1.86548 = 1.17525 points). It also stores the products kept fixed (none, every pass-through
+        being sourced) and each distress level's labels: its extra and total monthly rates with normal job loss (0.55%
+        to 2.55%) and its label of jobs without a wage at month 36 (``STOCK_LABELS``). Under ``legacy`` no price
+        follows r_out: every product is fixed, deposits at 0.38% and cards at ``CARD_APR``."""
         from scripts.run_economy_population import RATES, STOCK_LABELS, run_record
         meta = run_record(Economy(n=40), "development", 0)
         rates = meta["outside_rates"]
@@ -5532,22 +5638,24 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(fixed["distress_labels"]["total_pct_a_month"], [0.0, 0.5, 1.0, 1.5, 2.0])
         json.dumps(meta)
 
-    # ---- The yardsticks' shared helpers and the fee plumbing (decided 3 and 4 Nov) ------------------------------
+    # ---- The yardsticks' shared helpers and the fee plumbing ----------------------------------------------------
     def test_the_capital_limit_switches_on_the_real_rate_and_the_return_reads_the_hand_cases(self):
-        """Hand cases (the round's Step 4 tests and question 2; monthly units except the first two): lending of $1,000,
-        a margin of $5 and rho 5% give N* $1,100 and R(N*) 5%; a $3 rail paid from $10 of fees leaves a margin of $2, N*
-        $1,040 and R(N*) 5%. P* 0.6 and m 0.001 at r_out 4.4%: N* 0.872727 without the spread and 0.858065 with its 0.25
-        point, where R is 6.65% a year at P*, 4.65% at N* and 4.2273% at 1.1 N*, falling strictly above P*; with m
-        -0.0002, N* 0.548387, below P*. Where the real reserve rate is zero (M2 at r_out 2%), N* is P*, 0.6, although
-        the spread keeps the alternative above zero: switched on the alternative it would be 5.40, nine times P* (the
-        critic's reproducer). The real rate is the reserve rate net of the arm's index, nominal in M1, so M1 at r_out 2%
-        keeps its standby: N* 1.133333 at m 0.001. A margin at or below zero leaves N* at P* (the free-entry limit,
-        derived 5 Nov: the quote is then below the alternative at any capital above P*), where -0.0002 and -0.003 would
-        have given 0.548387 and -0.174194. The free-entry limit with the pool's own cash at p_net = rho - c_I (0.24%):
-        N* = P* + F / (alternative - p_net) = 0.6 + 0.001 / ((0.25 + 0.24) / 1200) = 3.048980, where the quote is the
-        alternative and above which it falls towards p_net, its limit at unbounded capital; with no return on idle cash
-        it is the October 2026 draft's N* above. Where idle cash earns the alternative itself (no spread and no custody)
-        N* is unbounded and the quote never falls below the alternative. No capital has no return."""
+        """The capital limit N* (``paper_capital``) is the lending need P* plus the margin over the alternative,
+        switched on the real reserve rate, and the return on capital (``paper_return``) falls to the alternative at N*.
+
+        Examples (monthly units except the first two): lending of $1,000, a margin of $5 and rho 5% give N* $1,100 and
+        R(N*) 5%; a margin of $2 (10 - 3 - 5) gives N* $1,040 and R(N*) 5%. P* 0.6 and m 0.001 at r_out 4.4%: N*
+        0.872727 without the spread and 0.858065 with its 0.25 point, where R is 6.65% a year at P*, 4.65% at N* and
+        4.2273% at 1.1 N*, falling strictly above P*. Where the real reserve rate is zero (M2 at r_out 2%), N* is P*,
+        0.6, although the spread keeps the alternative above zero: switched on the alternative it would be 5.40, nine
+        times P*. The real rate is the reserve rate net of the arm's index, nominal in M1, so M1 at r_out 2% keeps its
+        standby: N* 1.133333 at m 0.001. A margin at or below zero leaves N* at P* (the free-entry limit: the quote is
+        then below the alternative at any capital above P*), where the formula alone would give 0.548387 at m -0.0002
+        and -0.174194 at m -0.003. With the pool's own cash earning p_net = rho - c_I (0.24%), N* = P* + F /
+        (alternative - p_net) = 0.6 + 0.001 / ((0.25 + 0.24) / 1200) = 3.048980, where the quote is the alternative and
+        above which it falls towards p_net, its limit at unbounded capital; with no return on idle cash it is the N*
+        above. Where idle cash earns the alternative itself (no spread and no custody) N* is unbounded and the quote
+        never falls below the alternative. No capital has no return."""
         self.assertAlmostEqual(paper_capital(1000.0, 5.0, 0.05, 0.05), 1100.0, places=9)
         self.assertAlmostEqual(paper_return(1000.0, 5.0, 1100.0, 0.05), 0.05, places=15)
         self.assertAlmostEqual(paper_capital(1000.0, 10.0 - 3.0 - 5.0, 0.05, 0.05), 1040.0, places=9)
@@ -5582,11 +5690,13 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertTrue(np.isnan(paper_return(0.6, 0.001, 0.0, alt)))
 
     def test_a_late_wage_paid_in_p_pays_gas_on_the_share_it_completes(self):
-        """Hand case ($, routing "all", the 4 Nov review; decided 5 Nov: one transfer's gas a P payment): payer 2
-        owes person 1 a $100 late wage in P and pays it from $50.000845 of P, $50 and half a transfer's gas, half of
-        what it owed: that payment counts half a payment among P payments, as ``_settle`` counts a payment, and pays
-        half the gas, $0.000845. Paid off later from $50.00169 more, the rest counts one payment, the whole of what it
-        still owed, and pays a whole transfer's gas. The pool's cash is untouched: no fee exists."""
+        """A late wage paid in P pays one transfer's gas on the share of what is owed that the payment completes.
+
+        Example ($, routing "all"): payer 2 owes person 1 a $100 late wage in P and pays it from $50.000845 of P, $50
+        and half a transfer's gas, half of what it owed: that payment counts half a payment among P payments, as
+        ``_settle`` counts a payment, and pays half the gas, $0.000845. Paid off later from $50.00169 more, the rest
+        counts one payment, the whole of what it still owed, and pays a whole transfer's gas. The pool's cash is
+        untouched: no fee exists."""
         w = controlled_world()
         w.economy = replace(w.economy, routing="all")
         funded_pool(w)                                                        # everyone participates; the pool serves
@@ -5606,7 +5716,7 @@ class EconomyAbmTests(unittest.TestCase):
     def test_owners_alternative_is_the_reserve_rate_floored_at_zero_and_the_spread(self):
         """The owners' alternative a month in P terms is the reserve rate floored at zero plus the 0.25 point spread:
         4.65% a year in M1 at r_out 4.4%, the spread alone in M2 at r_out 2% and at 1%; nominal, each saver's rho_H
-        plus the spread. Without the Step 4 and 5 rules there is no spread."""
+        plus the spread. Under ``LEGACY_STEP45`` there is no spread."""
         spread = 0.0025 / 12
         for arm, rate, index, want in (("M1", 0.044, 0.0, 0.0465 / 12), ("M2", 0.02, 0.02, spread),
                                        ("M2", 0.01, 0.02, spread)):
@@ -5619,13 +5729,13 @@ class EconomyAbmTests(unittest.TestCase):
         np.testing.assert_array_equal(w._owners_alternative_nominal(), w.pool_alternative)
 
     def test_the_issuer_books_carry_no_fee_or_rail_and_its_cost_of_p_every_month(self):
-        """In the test device's pooled runs under the decided rules, M1, M2 and M1 under routing "all" (where wages paid
-        late and term purchases in P pay gas too): the issuer is not a payment operator (decided 5 Nov: P payments
-        run on stablecoin rails), so its books have no fee line and no rail; its expenses line is its 0.24% a year of
-        the P outstanding alone; its four lines (decided 5 Nov: a pure custodian) add up to the wallet; the stay
-        test reads that wallet; wealth accounting, backing and the issuer's cash close every month. Payers' gas is one
-        transfer a completed P payment, counted as the share completed, and no fee record exists. With the rules off (as
-        built) the expenses line is zero."""
+        """The issuer is a pure custodian and not a payment operator, since P payments run on stablecoin rails: its
+        books have no fee line and no rail, and its expenses line is its 0.24% a year of the P outstanding alone.
+
+        Checked in the test device's pooled runs of M1, M2 and M1 under routing "all" (where wages paid late and term
+        purchases in P pay gas too): the four lines add up to the wallet; the stay test reads that wallet; wealth
+        accounting, backing and the issuer's cash close every month. Payers' gas is one transfer a completed P payment,
+        counted as the share completed, and no fee record exists. Under ``LEGACY_STEP45`` the expenses line is zero."""
         economy = replace(TINY, n=100, months=12)
         self.assertFalse({"fees", "expense_rail"} & set(ISSUER_BOOKS))
         for arm, w in (("M1", economy), ("M2", economy), ("M1", replace(economy, routing="all"))):
@@ -5656,12 +5766,13 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertFalse(series[key].any(), key)
 
     def test_the_issuers_wallet_per_dollar_of_p_reads_the_hand_case(self):
-        """Hand case (the round's Step 4 test; $1 of P for a year, one model month standing for the year, no pool
-        flows): the issuer's wallet is r_out less its 0.24% in M1, +1.76%, +4.16% and +5.76% at r_out 2, 4.4 and 6%,
-        and r_out less 2% inflation and 0.24% in M2, -0.24%, +2.16% and +3.76%. So M2 at r_out 2%, where reserve
-        income and indexation cancel, records 'issuer would leave' (its declared limit) wherever the wallet carries no
-        pool flows; with a pool what it pays out of the reserve return enters. As built it read zero, which counts as
-        staying."""
+        """The issuer's wallet per $1 of P is the reserve return less indexation and its 0.24% cost of holding P.
+
+        Example ($1 of P for a year, one model month standing for the year, no pool flows): the wallet is r_out less
+        0.24% in M1, +1.76%, +4.16% and +5.76% at r_out 2, 4.4 and 6%, and r_out less 2% inflation and 0.24% in M2,
+        -0.24%, +2.16% and +3.76%. So M2 at r_out 2%, where reserve income and indexation cancel, records 'issuer would
+        leave' (its declared limit) wherever the wallet carries no pool flows; with a pool what it pays out of the
+        reserve return enters. With no issuer cost the wallet there reads zero, which counts as staying."""
         def wallet(arm, rate, cost=0.0024):
             w = controlled_world(arm)
             index = 0.02 if arm == "M2" else 0.0
@@ -5682,12 +5793,14 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(wallet("M2", 0.02, cost=0.0), (0.0, False))
 
     def test_the_most_cost_the_issuer_could_bear_adds_its_costs(self):
-        """The stay reading's most annual expense (decided 30 Oct) is read on a wallet that carries the issuer's
-        own costs (3 Nov), so it is what the issuer could bear beyond them; the report adds those costs over the same
-        12 months and their sum, per person and over P. Hand case ($ a person): the lowest 12-month reading, -$0.0005 a
-        month of model money, is -$38.64 a year, as built; expenses of $0.30 a month are $3.60 a year over the same
-        months; the most it could bear in all is -$35.04 a year, over the $1,288 of P. With no costs the two readings
-        agree, and a run that does not store the expenses line has neither."""
+        """The stay reading's most annual expense is read on a wallet that already carries the issuer's own costs, so
+        it is what the issuer could bear beyond them; the report adds those costs over the same 12 months and their
+        sum, per person and over P.
+
+        Example ($ a person): the lowest 12-month reading, -$0.0005 a month of model money, is -$38.64 a year; expenses
+        of $0.30 a month are $3.60 a year over the same months; the most it could bear in all is -$35.04 a year, over
+        the $1,288 of P. With no costs the two readings agree, and a run that does not store the expenses line has
+        neither."""
         from scripts.run_economy_figures import DOLLARS, issuer_stay, persistence
         months = 60
         read = np.arange(months) >= STAY_MONTHS - 1
@@ -5716,16 +5829,18 @@ class EconomyAbmTests(unittest.TestCase):
         del series["issuer_expenses"]
         self.assertEqual((issuer_stay(run)["costs"], issuer_stay(run)["most_cost"]), (None, None))
 
-    # ---- The yardsticks' records and readings (decided 3 and 4 Nov) --------------------------------------------
+    # ---- The yardsticks' records and readings ------------------------------------------------------------------
     def test_the_pools_own_margin_reads_the_hand_cases(self):
-        """Hand cases (the round's Step 4 tests; DECISIONS "The pool pays its own way"; one model month standing for the
-        year, the alternative 5% and no spread): lending of $1,000 at the 5% alternative plus o 2% plus the fixed cost's
-        part (decided 5 Nov: the coupon carries the fixed cost at break-even, $5 over $1,000 of principal-time,
-        0.5%) accrues $75 of coupons and costs $20 to operate and $5 fixed, so the margin is zero, 75 - 20 - 5 - 50,
-        realised losses being the learned loss (none here), and N* is the lending need. Coupons without the fixed part,
-        $70, leave the fixed cost unpaid, a margin of -$5. No provider fee exists, so neither fees nor owners' own fees
-        are parts. The owners' spread (0.25 point a year) raises the alternative on the $1,000 lent. Outside the pool
-        arms there is no margin, and S0 and M0 record none."""
+        """The pool's own margin is coupons and recoveries less operating and fixed costs, write-offs and owners'
+        alternative on what is lent (docs/DECISIONS.md, "The pool pays its own way"); it is zero at break-even.
+
+        Example (one model month standing for the year, the alternative 5% and no spread): lending of $1,000 at the 5%
+        alternative plus o 2% plus the fixed cost's part (the coupon carries the fixed cost at break-even, $5 over
+        $1,000 of principal-time, 0.5%) accrues $75 of coupons and costs $20 to operate and $5 fixed, so the margin is
+        zero, 75 - 20 - 5 - 50, realised losses being the learned loss (none here), and N* is the lending need.
+        Coupons without the fixed part, $70, leave the fixed cost unpaid, a margin of -$5. No provider fee exists, so
+        fees are not a part. The owners' spread (0.25 point a year) raises the alternative on the $1,000 lent. Outside
+        the pool arms there is no margin, and S0 and M0 record none."""
         def world(spread=0.0, arm="M1", coupons=75.0):
             w = controlled_world(arm)
             w.economy = replace(w.economy, owner_spread=spread)
@@ -5756,11 +5871,15 @@ class EconomyAbmTests(unittest.TestCase):
                 self.assertTrue(np.isnan(series[key]).all(), (arm, key))
 
     def test_recoveries_are_credited_in_the_margin_and_the_old_ratio(self):
-        """Defect A3's reproducer (the Step 4 spec): a $100 pool bridge accrues $1 of coupons, is written off at $101,
-        and is then repaid in full with $0.50 more of legal interest, $101.50. In the margin the write-off is -$101 and
-        the recovery +$101.50, so with the $1 accrued the loan nets to its whole interest, $1.50. The principal part of
-        the recovery, $100, is credited in the old ratio's numerator under the own margin (decided 3 Nov), and not
-        as built, where the repaid bridge still cost the ratio its $100."""
+        """A written-off pool loan that is repaid later is credited: in the pool's own margin it nets to its interest,
+        and its principal is credited in the numerator of the old ratio (collected income over owners' compensation K
+        and the pool's costs).
+
+        Example: a $100 pool bridge accrues $1 of coupons, is written off at $101, and is then repaid in full with
+        $0.50 more of legal interest, $101.50. In the margin the write-off is -$101 and the recovery +$101.50, so with
+        the $1 accrued the loan nets to its whole interest, $1.50. Under ``self_financing`` "margin" the $100 of
+        principal recovered is credited in the ratio's numerator; under "coverage" it is not, and the repaid bridge
+        still costs the ratio its $100."""
         def repaid(rules=None):
             w = controlled_world()
             w.economy = replace(w.economy, **(rules or {}))
@@ -5793,11 +5912,13 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(records["margin"]["margin_written_off"], -101.0, places=10)
 
     def test_the_held_capital_ratio_is_one_at_the_capital_limit(self):
-        """Hand cases (the round's Step 4 tests and question 2; decided 5 Nov: the coupon carries the fixed cost at
-        break-even and no fee exists): at the capital limit of $1,000, the lending need, collected income of $75 of
-        coupons against owners' compensation K at the 5% alternative on $1,000 ($50) and the pool's $25 of costs
-        (operating $20 and fixed $5) is a ratio of 1.000. So the old ratio, kept for one map, is about 1 at the capital
-        limit by construction (decided 3 Nov). As built, with K at 0.9 of r_out, it is 75 / 70, 1.071."""
+        """The old ratio, collected income over owners' compensation K and the pool's costs, is about 1 at the capital
+        limit by construction once K is at owners' alternative.
+
+        Example: at the capital limit of $1,000, the lending need, collected income of $75 of coupons (the coupon
+        carries the fixed cost at break-even and no fee exists) against K at the 5% alternative on $1,000 ($50) and the
+        pool's $25 of costs (operating $20 and fixed $5) is a ratio of 1.000. Under ``self_financing`` "coverage", with
+        K at 0.9 of r_out ($45), it is 75 / 70, 1.071."""
         def ratio(coupons, capital, rules=None):
             w = controlled_world(cost=0.5)                                  # a fixed cost of $5 over ten people
             w.economy = replace(w.economy, owner_spread=0.0, **(rules or {}))
@@ -5818,18 +5939,20 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(got, 1.071, places=3)
 
     def test_the_joint_test_reads_the_hand_case_and_consolidates_the_books(self):
-        """Hand case (the Step 4 spec; one model month standing for the year, the alternative 5%; decided 5 Nov: no
-        fee and no rail, and the issuer a pure custodian): at the capital limit of $1,000, the lending need, households
-        hold all of it, and P outstanding is $10,000 with no yield paid out in the hand case. The issuer's wallet is
-        500 - 24 = $476, households earn their alternative, so the joint test is $476; bottom up, the margin of zero at
-        break-even less the alternative on nothing not lent plus the custodian and expenses lines is $476 too. The
-        owners' spread is charged on every share (decided 4 Nov). In forced runs, M1
-        with CPI and M2, whose owners ask to exit, the joint test equals that bottom-up form every month, with
-        demurrage's charge added and the coupon cut the margin counts taken off (4 Nov): the firm's float pays the cut,
-        so it is income once, and households pay the charge to the firm. Under competitive P (5 Nov) the firm also
-        pays the yield on wallet P before demurrage (the books' float line), which the bottom-up form takes off. The
-        cut the margin counts is at most the demurrage taken (the 5 Nov review), not demurrage plus the pool cash's
-        own return."""
+        """The joint issuer-and-pool test reads the two as one firm: the issuer's wallet plus the income credited to
+        households' shares less their alternative on their capital. It equals its bottom-up form every month.
+
+        Example (one model month standing for the year, the alternative 5%, no fee and no rail, the issuer a pure
+        custodian): at the capital limit of $1,000, the lending need, households hold all of it, and P outstanding is
+        $10,000 with no yield paid out. The issuer's wallet is 500 - 24 = $476, households earn their alternative, so
+        the joint test is $476; bottom up, the margin of zero at break-even less the alternative on nothing not lent
+        plus the custodian and expenses lines is $476 too. The owners' spread is charged on every share.
+
+        In forced runs, M1 with CPI and M2, whose owners ask to exit, the joint test equals the bottom-up form every
+        month, with demurrage's charge added and the coupon cut the margin counts taken off: the firm's float pays the
+        cut, so it is income once, and households pay the charge to the firm. The firm also pays the yield on wallet P
+        before demurrage (the books' float line), which the bottom-up form takes off. The cut the margin counts is at
+        most the demurrage taken, not demurrage plus the pool cash's own return."""
         def books(spread=0.0):
             w = controlled_world()
             w.economy = replace(w.economy, owner_spread=spread, issuer_cost=0.0024)
@@ -5861,14 +5984,15 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertTrue(np.any(series["joint"] != series["issuer_wallet"]), arm)
 
     def test_queued_exits_and_the_90_percent_reading_on_both_bases(self):
-        """The partial run (the round's question 2 hand case, with the issuer a pure custodian, 5 Nov): two owners'
-        executed exits of $1,000 each, of which pool cash paid $550, leave $1,305 queued beside an owner's $755, and
-        households hold all of the $2,060 of pool capital. A request is queued from its filing, within its notice too,
-        on the shares it still has to pay (a reading, 4 Nov), and one that lapsed is not. The 90% reading reads the
-        records (decided 4 Nov: on capital net of queued exits, the record's base, all pool capital, beside it):
-        a synthetic pool where households hold $2,060 of $2,350, $1,305 of it queued, holds 72.25% net of the queue and
-        87.66% of all capital and fails both; households holding 95%, or exactly 90%, in every W2 month pass; one W2
-        month without pool capital fails (a reading, 4 Nov), and a run ending before W2 holds in none."""
+        """Queued exits and the 90% reading of household-held capital, on two bases.
+
+        Example, with the issuer a pure custodian: two owners' executed exits of $1,000 each, of which pool cash paid
+        $550, leave $1,305 queued beside an owner's $755, and households hold all of the $2,060 of pool capital. A
+        request is queued from its filing, within its notice too, on the shares it still has to pay; one that has
+        lapsed is not. The 90% reading is taken on capital net of queued exits and, beside it, on all pool capital:
+        a pool where households hold $2,060 of $2,350, $1,305 of it queued, holds 72.25% net of the queue and 87.66%
+        of all capital and fails both; households holding 95%, or exactly 90%, in every W2 month pass; one W2 month
+        without pool capital fails, and a run ending before W2 holds in none."""
         from scripts.run_economy_population import households_pool
         w = controlled_world()
         w.shares[:3], w.nav_ps = (652.5, 652.5, 755.0), 1.0
@@ -5915,14 +6039,15 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual((*both(got), got["p_routes_W2"], got["counts"]), (False, False, False, False))
 
     def test_p4_and_x3_read_the_own_margin_on_household_held_months(self):
-        """Persistence test 4 and falsifier 3 on the pool's own margin (decided 3 Nov), read on the months
-        households hold pool capital: a second window whose margin sums to zero passes; -$0.01 a consumer unit a year
-        fails; a second window held only by the issuer's shares gives no reading (None), however high its margin (the
-        critic's reproducer: the opening owns the whole fee margin there), and the joint test, read on the same months,
-        gives none either (a reading, 4 Nov); X3 fires only when both windows are below zero. The detail gives the
-        margin, the number of household-held months it averages over (24 and 24, then 24 and none, then 24 and one),
-        its parts, the joint test and the old ratio with its label, by window. With the Step 4 and 5 rules off
-        (``LEGACY_STEP45``) both read the coverage as built, and any other reading is refused."""
+        """Persistence test 4 and falsifier 3 read the pool's own margin on the months households hold pool capital.
+
+        A second window whose margin sums to zero passes; -$0.01 a consumer unit a year fails; a second window held
+        only by the issuer's shares gives no reading (None), however high its margin, because the opening owns the
+        whole fee margin there. The joint test, read on the same months, gives none either. X3 fires only when both
+        windows are below zero. The detail gives, by window, the margin, the number of household-held months it
+        averages over (24 and 24, then 24 and none, then 24 and one), its parts, the joint test and the old ratio
+        with its label. With the Step 4 and 5 rules off (``LEGACY_STEP45``) both read the coverage as in the first
+        run, and any other reading is refused."""
         from scripts.run_economy_figures import DOLLARS, HELD_CAPITAL_LABEL, persistence
         months = 60
         series = {key: np.ones(months) for key in ("A", "N", "service", "pool_pt", "new_pool_loans", "pool_cash",
@@ -5945,45 +6070,45 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertNotIn("self_financing_coverage", got["detail"])
         series["own_margin"][36:60] = -0.01 / 12 / DOLLARS                              # -$0.01 a CU a year
         got = read()
-        self.assertIs(got["P"]["P4"], True)        # no outside money: owners absorb the margin (decided 5 Nov)
+        self.assertIs(got["P"]["P4"], True)        # no outside money: owners absorb the margin
         self.assertAlmostEqual(got["detail"]["own_margin_usd_a_year"][1], -0.01, places=12)
         self.assertIs(got["X"]["X3"], False)                                           # W1 is still zero
         series["own_margin"][12:36] = -0.01 / 12 / DOLLARS
-        self.assertIs(read()["X"]["X3"], False)    # no outside money can enter (decided 5 Nov)
+        self.assertIs(read()["X"]["X3"], False)    # no outside money can enter
         # A second window held only by the issuer's shares: no reading, whatever its margin.
         series["owners_capital"][36:60], series["own_margin"][36:60] = 0.0, 1.0
         got = read()
         self.assertIsNone(got["P"]["P4"])
         self.assertIsNone(got["X"]["X3"])
         self.assertIsNone(got["detail"]["own_margin_usd_a_year"][1])
-        self.assertIsNone(got["detail"]["joint_usd_a_year"][1])           # nor the joint test there (a reading, 4 Nov)
+        self.assertIsNone(got["detail"]["joint_usd_a_year"][1])           # nor the joint test there
         self.assertEqual(got["detail"]["own_margin_held_months"], (24, 0))
         self.assertNotIn("Persistent", got["verdict"])
-        # One household month in W2 is read alone, annualised from that month, and the count says so (the 4 Nov
-        # review).
+        # One household month in W2 is read alone, annualised from that month, and the count says so.
         series["owners_capital"][50], series["own_margin"][50] = 1.0, -1.0
         got = read()
-        self.assertIs(got["P"]["P4"], True)        # no outside money (decided 5 Nov); the margin is reported
+        self.assertIs(got["P"]["P4"], True)        # no outside money; the margin is reported
         self.assertAlmostEqual(got["detail"]["own_margin_usd_a_year"][1], -12 * DOLLARS, places=9)
         self.assertEqual(got["detail"]["own_margin_held_months"], (24, 1))
-        # As built: the coverage, collected income over K and the costs, 10 against 0.95.
+        # The first run's reading: the coverage, collected income over K and the costs, 10 against 0.95.
         run["economy"] = replace(run["economy"], **LEGACY_STEP45)
         got = read()
         self.assertIs(got["P"]["P4"], True)
         np.testing.assert_allclose(got["detail"]["self_financing_coverage"], (10.0, 10.0), rtol=1e-15)
         self.assertNotIn("own_margin_usd_a_year", got["detail"])
-        # A misspelt reading is refused rather than read as the coverage (the 4 Nov review).
+        # A misspelt reading is refused rather than read as the coverage.
         with self.assertRaises(ValueError):
             replace(run["economy"], self_financing="margins")
 
     def test_m2_gains_are_read_in_full_with_no_issuer_transfer_line(self):
-        """M2's indexation is the holder's own yield (decided 5 Nov): under competitive P the CPI indexation on P is
-        paid out of the holder's own reserve return while the issuer keeps only c_I, so no run records it as an issuer
-        transfer, the transfers report sets nothing beside the issuer's row, and paired gains are read in full: a
-        person gaining $100 against S0 over two years gains $50 a year, with no gain net of transfers beside it. In a
-        pooled M2 run the issuer's books still carry the indexation, dJ/J on all P, in its indexer line, and its
-        custodian, indexer and float lines net to its custody c_I every month the pool takes demurrage, so the
-        indexation came out of the holders' reserve return, not the issuer's."""
+        """M2's indexation is the holder's own yield, so paired gains are read in full.
+
+        Under competitive P the CPI indexation on P is paid out of the holder's own reserve return while the issuer
+        keeps only c_I, so no run records it as an issuer transfer and the transfers report sets nothing beside the
+        issuer's row. Example: a person gaining $100 against S0 over two years gains $50 a year, with no gain net of
+        transfers beside it. In a pooled M2 run the issuer's books still carry the indexation, dJ/J on all P, in its
+        indexer line, and its custodian, indexer and float lines net to its custody c_I every month the pool takes
+        demurrage, so the indexation comes out of the holders' reserve return, not the issuer's."""
         from scripts.run_economy_population import differences, transfers
         run = kept_run(PooledWorld, "M2", replace(TINY, n=100, months=12))
         self.assertFalse({"issuer_transfers", "index_books"} & set(run))
@@ -6007,12 +6132,13 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertFalse({"issuer_transfers_usd_a_year", "net_of_issuer_transfers"} & set(got))
 
     def test_transfers_and_the_gain_split_carry_the_gas_paid_to_validators(self):
-        """The issuer is not a payment operator (decided 5 Nov: P payments run on stablecoin rails): its row in the
-        transfers report is its net reserve income against holding P, $33 and $2.40 on $1,000 of P, a $30.60 margin,
-        with no fee and no rail. P payments' gas goes to validators: 1,000 P payments in a year pay $1.69, all of it
-        real, as M0's USDC payments pay theirs. In the gain split the gas leaves the household economy on a line of its
-        own, as the card's cash-advance and late fees do since card limits (14 Nov 2026: the keys add those records,
-        and the wages sent outside under the harsh stress)."""
+        """The issuer is not a payment operator, because P payments run on stablecoin rails.
+
+        Its row in the transfers report is its net reserve income against holding P, $33 and $2.40 on $1,000 of P, a
+        $30.60 margin, with no fee and no rail. P payments' gas goes to validators: 1,000 P payments in a year pay
+        $1.69, all of it real, as M0's USDC payments pay theirs. In the gain split the gas leaves the household
+        economy on a line of its own, as do the card's cash-advance and late fees and the wages sent outside under
+        the harsh stress."""
         from scripts.run_economy_population import split, transfers
         w = Economy(n=1, burn_in=1, months=12)
         usd = lambda dollars: dollars / MONTH_USD
@@ -6038,13 +6164,16 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(parts["other_outside_flows"], 0.0, places=9)
 
 
-    # ---- Demurrage and pool entry by the rule first set out on 4 Nov (decided 4 Nov) ---------------------------
+    # ---- Demurrage and pool entry -----------------------------------------------------------------------------
 
     def test_wallet_p_earns_its_yield_less_demurrage_and_the_issuer_keeps_its_custody(self):
-        """Hand cases (decided 4 and 5 Nov; one model month standing for the year). The issuer's share of the
-        reserve return is derived, never set: its break-even under contestable issuance, s_I = c_I / rho with c_I
-        0.24%: 5.45% at 4.4%, 12% at 2%, 10% in M2 at 4.4% (2.4% real), and all of it where rho is at or below c_I
-        (r_out 0.2%) or zero (M2 at r_out 2%); outside the pool arms there is none. In a month whose two wallets held
+        """Wallet P earns its yield less demurrage, and the issuer keeps its custody cost.
+
+        The issuer's share of the reserve return is derived, never set: its break-even under contestable issuance,
+        s_I = c_I / rho with c_I 0.24%: 5.45% at 4.4%, 12% at 2%, 10% in M2 at 4.4% (2.4% real), and all of it where
+        rho is at or below c_I (r_out 0.2%) or zero (M2 at r_out 2%); outside the pool arms there is none.
+
+        Example, one model month standing for the year: in a month whose two wallets held
         $1,000 and $500 of P and the pool's own cash $200, the reserve return at 4.4% is $74.80. With demurrage at
         0.66%, the holders are paid 4.16% less 0.66%, $35.00 and $17.50, as P, the pool takes the $9.90 of demurrage
         and $8.32 on its own cash, $70.72 in all from outside the household economy, and the issuer keeps $4.08,
@@ -6110,16 +6239,18 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertAlmostEqual(w.acc["float_issuer"], 12.40, places=10)
 
     def test_capital_settles_at_the_free_entry_limit_where_the_quote_is_the_alternative(self):
-        """Hand cases (derived 5 Nov, the free-entry equilibrium; one model month standing for the year, owners'
-        alternative 5% and no spread, the pool's own cash earning p_net 4%): F, the fee margin, is 0 with no fees
-        (decided 5 Nov), so N* is the capital target: the last cycle lent $1,000 and N* is $1,000 whether its
-        realised margin was +$10 or -$10, which stay in owners' NAV, not in N*. The quote at capital N is (alt min(N,
-        P*) + p_net max(N - P*, 0)) / N: the alternative at N* and below it, 54 / 1,100 at $1,100 and 130 / 3,000 at
-        $3,000, falling towards p_net above N*. With no return on idle cash (p_net 0) it is the October 2026 draft's N*
-        = P* + m / rho at m = 0, $1,000 again, and at a real reserve rate of zero N* is the lending need alone. N* never
-        reads the pool's own capital, so it cannot ratchet. In a dealing, a saver whose own rate is rho_H plus the
-        owners' spread invests at N* (a tie) up to N* whatever the realised margin; an owner whose own realised return
-        is its alternative stays, since exits read each owner's own return, not the quote (decided 3 Nov)."""
+        """Capital settles at the free-entry limit N*, where the quote is the owners' alternative.
+
+        Example, one model month standing for the year, owners' alternative 5% and no spread, the pool's own cash
+        earning p_net 4%: F, the fee margin, is 0 with no fees, so N* is the capital target: the last cycle lent
+        $1,000 and N* is $1,000 whether its realised margin was +$10 or -$10, which stay in owners' NAV, not in N*.
+        The quote at capital N is (alt min(N, P*) + p_net max(N - P*, 0)) / N: the alternative at N* and below it,
+        54 / 1,100 at $1,100 and 130 / 3,000 at $3,000, falling towards p_net above N*. With no return on idle cash
+        (p_net 0) it is N* = P* + m / rho at m = 0, $1,000 again, and at a real reserve rate of zero N* is the
+        lending need alone. N* never reads the pool's own capital, so it cannot ratchet. In a dealing, a saver whose
+        own rate is rho_H plus the owners' spread invests at N* (a tie) up to N* whatever the realised margin; an
+        owner whose own realised return is its alternative stays, since exits read each owner's own return, not the
+        quote."""
         def limit(margin, rho=0.05, pool=0.04):
             w = controlled_world()
             w.economy, w.rho_p, w.p_net = replace(w.economy, owner_spread=0.0), rho, pool
@@ -6154,7 +6285,7 @@ class EconomyAbmTests(unittest.TestCase):
             self.assertEqual(int(w.exit_start[1]), -1)
 
     def test_a_pool_whose_last_share_is_paid_out_reopens_by_free_entry(self):
-        """Free entry applies in every month (decided 5 Nov): the single owner's exit winds the pool down and its
+        """Free entry applies in every month: the single owner's exit winds the pool down and its
         last share is paid out at the dealing two months on, which takes no entry although a saver offers. The pool is
         then not closed for good: at the next dealing with a lending need (an N* of 5 months of spending here, the quote
         above the saver's own rate) the saver enters at the published quote up to N*, as at launch, and the pool takes
@@ -6181,12 +6312,14 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertTrue(not w.winding and w._takes_demurrage())
 
     def test_the_launch_plan_prices_the_fixed_cost_on_its_lending_need_with_no_fee_and_no_demurrage(self):
-        """Hand case (decided 3, 4 and 5 Nov): half the people participate at launch, and the lending need P* is the
+        """The launch plan prices the fixed cost on its lending need, with no fee and no demurrage.
+
+        Example: half the people participate at launch, and the lending need P* is the
         mean of the participants' bridging need path, 3. No fee exists (P payments run on stablecoin rails), so the
         plan's only cost beyond its loans is the fixed cost, ten people's $0.322 a month, which the coupon prices on
         that lending need at break-even: its part is the fixed cost over 3 a month, and the plan's margin F is zero.
         The launch month's limit is the free-entry N* at F zero: in U the lending need P* itself, and in M1 the peak
-        bridging need, the path's largest day, 4 (decided 5 Nov: demurrage pays for liquidity kept available), where
+        bridging need, the path's largest day, 4 (demurrage pays for liquidity kept available), where
         the quote is owners' alternative.
         Under competitive P the wallets' reserve return goes to their holders, no bridging is observed yet and the pool
         holds no cash, so the plan counts no demurrage and is the same in U and M1. With no bridging need there is no
@@ -6221,15 +6354,18 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertTrue(np.isnan(w.R_hat))
 
     def test_the_coupon_carries_the_fixed_cost_at_break_even(self):
-        """Hand case ($; decided 5 Nov: P payments run on stablecoin rails, so no fee carries the pool's fixed cost,
-        and the coupon prices it at break-even, the zero-profit principle). Ten people at the core's fixed cost of
+        """The coupon carries the pool's fixed cost at break-even, the zero-profit principle.
+
+        P payments run on stablecoin rails, so no fee carries the fixed cost.
+
+        Example ($): ten people at the core's fixed cost of
         $0.322 a person a month bear $3.22 a month; over the last cycle, two months whose loans carried $3,220 of
         principal-time each, bridging and term, that is $6.44 over $6,440 of principal-months, 0.1% a month (1.2% a
         year), added to the coupon's operating part o, 2% a year, beside the capital part, owners' alternative. A
         bridge drawn this month, its whole capital part covered by demurrage, is sealed at o and the fixed part alone,
         3.2% a year: the bridger pays the fixed cost after demurrage covers the capital part. Accrued on the same
         lending the fixed part pays the $6.44 exactly. A cycle that lent nothing prices the fixed cost a month on its
-        lending need P* (a reading, 5 Nov): $3.22 a month over a need of $3,220 is 0.1% again; with no lending need, or
+        lending need P*: $3.22 a month over a need of $3,220 is 0.1% again; with no lending need, or
         no cycle, there is no fixed part."""
         w = controlled_world()
         funded_pool(w, 1.0)
@@ -6252,7 +6388,7 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(w._fixed_rate([]), 0.0)
 
     def test_the_pools_own_margin_is_zero_at_break_even_in_a_steady_cycle(self):
-        """Over a steady cycle (decided 5 Nov) the coupon's fixed part pays the fixed cost exactly: the pool's loans
+        """Over a steady cycle the coupon's fixed part pays the fixed cost exactly: the pool's loans
         carried 0.5 of principal-time in each of the last two months, a term loan of 0.5 is sealed at this month's
         coupon and carried the whole month, and it accrues the capital part on its principal-time, the operating cost
         and the fixed cost, so the pool's own margin, coupons less the operating cost, the fixed cost and owners'
@@ -6272,7 +6408,7 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertAlmostEqual(margin, 0.0, places=15)
 
     def test_the_engine_reads_no_provider_fee_and_gas_is_the_only_payment_cost(self):
-        """No provider fee exists (decided 5 Nov: P payments run on stablecoin rails): the same small pooled run at
+        """No provider fee exists, since P payments run on stablecoin rails: the same small pooled run at
         the core model's 0.2% fee and at 5% gives every record exactly, in M1 and in M0, so the engine reads none; the
         P payments' only cost is gas, one transfer a completed P payment in M1 (the share completed) and two a USDC
         payment in M0, and the records hold no fee, rail or owners' own fees anywhere."""
@@ -6289,13 +6425,14 @@ class EconomyAbmTests(unittest.TestCase):
             np.testing.assert_allclose(low["channels"]["gas_paid"].sum(), series["gas"].sum() * economy.n, rtol=1e-12)
 
     def test_p_payments_cost_one_transfers_gas_with_or_without_a_pool(self):
-        """P payments run on stablecoin rails (decided 5 Nov): P is a token on the same chain as USDC, so a P
-        payment costs its payer one transfer's gas on Base, $0.00169 (growthepie, October 2026 mean), half a USDC
-        payment's two legs, whatever its value: a $64.40 and a $6,440 card-eligible purchase between participants each cost their
-        payer exactly that. It leaves for the validators, outside the economy, as P redeemed, so the reserves fall with
-        it; the payees receive the full amounts, the pool's cash is untouched and nobody inside receives a fee. P
-        payments do not depend on the pool (3 Nov): the same holds with a pool that serves and after launch with
-        none."""
+        """P payments run on stablecoin rails and cost one transfer's gas, with or without a pool.
+
+        P is a token on the same chain as USDC, so a P payment costs its payer one transfer's gas on Base, $0.00169
+        (growthepie, October 2026 mean), half a USDC payment's two legs, whatever its value: a $64.40 and a $6,440
+        card-eligible purchase between participants each cost their payer exactly that. It leaves for the
+        validators, outside the economy, as P redeemed, so the reserves fall with it; the payees receive the full
+        amounts, the pool's cash is untouched and nobody inside receives a fee. P payments do not depend on the
+        pool: the same holds with a pool that serves and after launch with none."""
         self.assertAlmostEqual(GAS_PER_P_PAYMENT * MONTH_USD, 0.00169, places=15)
         self.assertEqual(GAS_PER_PAYMENT, 2 * GAS_PER_P_PAYMENT)
         for serves in (True, False):
@@ -6321,12 +6458,13 @@ class EconomyAbmTests(unittest.TestCase):
             np.testing.assert_array_equal(w.acc["merchant"], merchant)          # no card fee: both went in P
 
     def test_a_bridge_is_sealed_at_the_coupon_less_the_capital_part_demurrage_pays(self):
-        """Hand case (decided 4 and 5 Nov): with coverage of a half (demurrage held at rho_p - c_I on a cycle's
-        wallet P that pays half its $1 capital cost), a bill the pool bridges this month is sealed at r_b, the coupon
-        less half its capital part (owners'
-        alternative, the owners' spread included), and carries that cut. A day's accrual books the borrower's coupon at
-        r_b and the cut demurrage pays beside it, so theta, demurrage's share of bridging finance, is the cut over the
-        full coupon. Next month's terms do not reprice the sealed bridge."""
+        """A bridge is sealed at the coupon less the capital part that demurrage pays.
+
+        Example: with coverage of a half (demurrage held at rho_p - c_I on a cycle's wallet P that pays half its $1
+        capital cost), a bill the pool bridges this month is sealed at r_b, the coupon less half its capital part
+        (owners' alternative, the owners' spread included), and carries that cut. A day's accrual books the borrower's
+        coupon at r_b and the cut demurrage pays beside it, so theta, demurrage's share of bridging finance, is the cut
+        over the full coupon. Next month's terms do not reprice the sealed bridge."""
         w = controlled_world()
         funded_pool(w, 10.0)
         w.window = [entry(revenue=0.25, capital_cost=0.5, wallet=0.25 / w.p_net, charges=0.25)] * 2
@@ -6353,16 +6491,18 @@ class EconomyAbmTests(unittest.TestCase):
 
 
     def test_demurrage_pays_the_coupon_cut_and_the_pool_cash_return_is_pool_income(self):
-        """Hand case (decided 4 and 5 Nov; one model month standing for the year, the reserve rate 4.4%, c_I 0.24%,
-        no owners' spread and no fixed cost): a pool of $1,000, all lent, earns $30 of coupons from its borrowers,
+        """Demurrage pays the coupon cut, and the return on the pool's cash is pool income.
+
+        Example, one model month standing for the year, the reserve rate 4.4%, c_I 0.24%, no owners' spread and no
+        fixed cost: a pool of $1,000, all lent, earns $30 of coupons from its borrowers,
         sealed at r_b, while demurrage at 1.4% on $1,000 of wallet P takes the $14 the cut costs. Its realised return
         is R = (30 + 14) / 1,000, owners' alternative; the margin F next month's quote reads is zero, demurrage
         just paying the cut, so N* is the lending need; and the pool's own margin counts the full coupon, $44, and is
         zero too. The holders are paid 4.16% less 1.4% on their $600 and $400. With $200 of the pool's own cash beside
-        it, that cash's $8.32 is pool income in R, (30 + 14 + 8.32) / 1,000, but not in the margin F, which stays
-        zero: the free-entry quote counts that return on capital beyond P* instead, so N* cannot ratchet on it (the
-        5 Nov review), and the own margin's coupons still add at most the demurrage taken, $14: with a $20 cut (c was
-        published from the cycle before) they are $44, not $50, as the pool cash's return is no coupon income."""
+        it, that cash's $8.32 is pool income in R, (30 + 14 + 8.32) / 1,000, but not in the margin F, which stays zero:
+        the free-entry quote counts that return on capital beyond P* instead, so N* cannot ratchet on it, and the own
+        margin's coupons still add at most the demurrage taken, $14: with a $20 cut (c was published from the cycle
+        before) they are $44, not $50, as the pool cash's return is no coupon income."""
         def close(pool_cash_bt, covered=14.0):
             w = controlled_world(cost=0.0)
             w.economy = replace(w.economy, owner_spread=0.0, issuer_cost=0.0024)
@@ -6398,12 +6538,13 @@ class EconomyAbmTests(unittest.TestCase):
 
 
     def test_u_is_m1_with_no_demurrage_on_the_same_draws(self):
-        """U (decided 4 and 5 Nov) is the same P with no demurrage, so U against M1 is what demurrage adds: an M1
-        world with demurrage turned off gives every record of U. On the same draws U and M1 share every record before
-        launch, and their launch plans are the same (no demurrage is observed yet). In U demurrage and coverage are
-        zero, a bridge pays the full coupon and wallet P earns rho_p - c_I on its balance-time; in M1 it earns that
-        less the demurrage the pool takes. With no provider fee (5 Nov; 100 people, 10 months after launch, r_out
-        4.44%) both pools form."""
+        """U is the same P with no demurrage, so U against M1 is what demurrage adds.
+
+        An M1 world with demurrage turned off gives every record of U. On the same draws U and M1 share every record
+        before launch, and their launch plans are the same (no demurrage is observed yet). In U demurrage and
+        coverage are zero, a bridge pays the full coupon and wallet P earns rho_p - c_I on its balance-time; in M1 it
+        earns that less the demurrage the pool takes. With no provider fee (100 people, 10 months after launch,
+        r_out 4.44%) both pools form."""
         from scripts.run_economy_figures import engine_inputs
         economy, inputs = Economy(n=100, months=10), engine_inputs()
 
@@ -6433,9 +6574,9 @@ class EconomyAbmTests(unittest.TestCase):
 
 
     def test_a_small_run_forms_a_pool_at_its_limit_and_keeps_every_record(self):
-        """In a small economy (100 people, 10 months after launch, r_out 4.44%, no provider fee, 5 Nov, no test
+        """In a small economy (100 people, 10 months after launch, r_out 4.44%, no provider fee, no test
         device) every pool arm's pool forms at launch, entry filling it to N*, which is the lending need P* since the
-        launch plan's margin F is zero when the coupon carries the fixed cost at break-even (5 Nov), so the quote at N*
+        launch plan's margin F is zero when the coupon carries the fixed cost at break-even, so the quote at N*
         is owners' alternative, rho_H plus the owners' spread; in no month is the quote at N* above it. In M1
         demurrage stays within its bound and is taken only while the pool serves; where it is below its bound and the
         cycle bridged it covers the whole capital cost of bridging, a bridge is sealed at the coupon less coverage
@@ -6446,7 +6587,7 @@ class EconomyAbmTests(unittest.TestCase):
         wallet P, the pool cash's return and the issuer's custody add up to the reserve return on all P, and P's
         published yield is rho_p - c_I - c plus M2's indexation. The total
         precautionary money is households' buffers plus the pool's idle cash (idle P, inside the buffers, is recorded
-        beside it and not counted twice: the 5 Nov review), and failures are the month's new failed payments. Wealth
+        beside it and not counted twice), and failures are the month's new failed payments. Wealth
         accounting is exact in every arm, U included, and backing in every pool arm."""
         from scripts.run_economy_figures import engine_inputs
         economy, inputs = Economy(n=100, months=10), engine_inputs()
@@ -6501,16 +6642,19 @@ class EconomyAbmTests(unittest.TestCase):
 
 
     def test_owners_earn_their_alternative_on_a_steady_cycle_with_idle_standby(self):
-        """Hand case (decided 5 Nov: demurrage pays for liquidity kept available; one model month standing for the
-        year, the reserve rate 4.4%, c_I 0.24%, so idle cash earns p_net 4.16%, no owners' spread and no fixed cost):
-        a pool of $1,500 carries $1,500 of bridges for the first half of a month and $500 for the second, $1,000 of
-        principal-time, its peak bridging need $1,500, so its cash, $0 and then $1,000, is all standby, $500 of
-        cash-time. Bridges sealed at the coupon less their whole capital part pay o, $20, which the operating cost
-        takes. Demurrage at c = (4.4% x 1,000 + 0.24% x 500) / 10,000 = 0.452% on $10,000 of wallet P takes $45.20 and
-        the pool's cash earns $20.80, so owners earn (45.20 + 20.80) / 1,500 = 4.4%, their alternative exactly; with
-        demurrage covering bridging alone, 0.44%, they would earn 4.32%. The month's margin less the standby's part is
-        zero, so the next terms read N* at the capital target, the peak $1,500 (no term lending), the quote there is
-        the alternative, and c on the same cycle is the same 0.452%. U reads the lending need, $1,000, as its target."""
+        """Owners earn their alternative on a steady cycle with idle standby, as demurrage pays for liquidity kept
+        available.
+
+        Example, one model month standing for the year, the reserve rate 4.4%, c_I 0.24%, so idle cash earns p_net
+        4.16%, no owners' spread and no fixed cost: a pool of $1,500 carries $1,500 of bridges for the first half
+        of a month and $500 for the second, $1,000 of principal-time, its peak bridging need $1,500, so its cash, $0 and
+        then $1,000, is all standby, $500 of cash-time. Bridges sealed at the coupon less their whole capital part pay
+        o, $20, which the operating cost takes. Demurrage at c = (4.4% x 1,000 + 0.24% x 500) / 10,000 = 0.452% on
+        $10,000 of wallet P takes $45.20 and the pool's cash earns $20.80, so owners earn (45.20 + 20.80) / 1,500 =
+        4.4%, their alternative exactly; with demurrage covering bridging alone, 0.44%, they would earn 4.32%. The
+        month's margin less the standby's part is zero, so the next terms read N* at the capital target, the peak $1,500
+        (no term lending), the quote there is the alternative, and c on the same cycle is the same 0.452%. U reads the
+        lending need, $1,000, as its target."""
         def close(c, arm="M1"):
             w = controlled_world(arm, cost=0.0)
             w.economy = replace(w.economy, owner_spread=0.0, issuer_cost=0.0024)
@@ -6555,7 +6699,9 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual(u.c, 0.0)
 
     def test_the_capital_target_is_the_term_need_plus_the_peak_bridging_need(self):
-        """Hand case (decided 5 Nov): over a two-month cycle whose term lending need is $300 and $500 a month, whose
+        """The capital target is the term need plus the peak bridging need.
+
+        Example: over a two-month cycle whose term lending need is $300 and $500 a month, whose
         largest day carried $800 of bridging and which refused $50 and $30 of bridging, the peak bridging need is
         $800 + $80 = $880 and the capital target $400 + $880 = $1,280, where U's target is the mean lending need,
         (300 + 400 + 500 + 400) / 2 = $800. Standby is the cash held ready up to the peak beyond the bridging carried,
@@ -6583,13 +6729,15 @@ class EconomyAbmTests(unittest.TestCase):
         self.assertEqual((u.peak, u.need), (880.0, 800.0))
 
     def test_the_term_need_adds_the_growth_of_the_pool_term_book(self):
-        """Hand case (decided 12 Nov: the term part of the capital target funds next month's lending), as
-        arithmetic on one closed month's ``window`` entry. The pool's term book was $400 at the last close; in the
-        month $40 of new term loans was asked and $20 repaid, the pool lent $30 and refused $10, so the book ends at
-        $410. The carried term principal-time is set at $400, as if the month's lending and repayments all came on its
-        last day, so the entry reads the decision's numbers exactly: as built the term need was carried plus refused,
-        $400 + $10 = $410, and next month only the $10 cushion and $20 repaid could be lent again, $30; now the book's
-        growth, $410 - $400 = $10, is added, so the term need is $420, the cushion $20 and all $40 can be lent. U's
+        """The term need adds the growth of the pool's term book, so the term part of the capital target funds next
+        month's lending.
+
+        Example, as arithmetic on one closed month's ``window`` entry. The pool's term book was $400 at the last
+        close; in the month $40 of new term loans was asked and $20 repaid, the pool lent $30 and refused $10, so
+        the book ends at $410. The carried term principal-time is set at $400, as if the month's lending and
+        repayments all came on its last day. Without the growth the term need would be carried plus refused, $400 +
+        $10 = $410, and next month only the $10 cushion and $20 repaid could be lent again, $30. With the book's
+        growth, $410 - $400 = $10, added, the term need is $420, the cushion $20 and all $40 can be lent. U's
         lending need, the pool's principal-time plus refused lending, takes the same $10. A book that shrinks adds
         nothing (the growth is floored at zero), and the launch month's entry, with no earlier close, adds none."""
         def close(arm="M1", before=400.0, book=410.0):
@@ -6614,7 +6762,7 @@ class EconomyAbmTests(unittest.TestCase):
     def test_each_window_entry_adds_the_floored_growth_of_the_pool_term_book(self):
         """On a tiny run whose pool forms (the test device), each month's ``window`` entry holds the term need as the
         month's carried term principal-time plus the term lending refused plus the growth of the pool's carried term
-        principal over the month, floored at zero, and zero growth in the launch month's entry (decided 12 Nov).
+        principal over the month, floored at zero, and zero growth in the launch month's entry.
         The growth is read in the month's own units: the book at its close before CPI less the book at the last close
         after CPI, and in M1 CPI deflates pool loans by 1 / (1 + inflation), so the book before CPI is the book after
         it times 1 + inflation; with no inflation the two are the same. U's lending need takes the same growth. The
@@ -6652,14 +6800,15 @@ class EconomyAbmTests(unittest.TestCase):
                 self.assertAlmostEqual(need, lent + refused_all + grown, places=9)
 
     def test_the_fixed_cost_is_sourced_and_the_runners_read_its_level(self):
-        """The pool's fixed cost is sourced (decided 5 Nov): Aave's 2025 paid service providers, $24.15m, over
-        134.556m consumer units (the 2023 survey's count, the year of the model's dollar unit; source audit of
-        13 Nov) is 24.15 / 134.556 = $0.1795 a consumer unit a year; Compound's $13.1m gives $0.0974 and Sky's $67m
-        $0.4979. In model units, a person a month of a month's mean spending ($6,440), the central level is
-        0.17948 / 12 / 6,440 = 2.3225e-6, against the old 5e-5, which is $3.864 a consumer unit a year, 21.5 times
-        it. Every runner's inputs carry the
-        central level, a cell reads the level asked for, the population runner takes --fixed-cost low, central or high
-        (central by default) and --m0-rates observed or fitted, and its run record names the level."""
+        """The pool's fixed cost is sourced, and the runners read its level.
+
+        Aave's 2025 paid service providers, $24.15m, over 134.556m consumer units (the 2023 survey's count, the year
+        of the model's dollar unit) is 24.15 / 134.556 = $0.1795 a consumer unit a year; Compound's $13.1m gives
+        $0.0974 and Sky's $67m $0.4979. In model units, a person a month of a month's mean spending ($6,440), the
+        central level is 0.17948 / 12 / 6,440 = 2.3225e-6; a level of 5e-5 would be $3.864 a consumer unit a year,
+        21.5 times it. Every runner's inputs carry the central level, a cell reads the level asked for, the
+        population runner takes --fixed-cost low, central or high (central by default) and --m0-rates observed or
+        fitted, and its run record names the level."""
         from scripts.run_economy_figures import (ENGINE_INPUTS, FIXED_COST, FIXED_COST_UNITS, FIXED_COST_USD,
                                                  engine_inputs)
         from scripts.run_economy_population import cell_inputs, options, run_record
@@ -6688,7 +6837,7 @@ class EconomyAbmTests(unittest.TestCase):
 
 
 def loss_world(arm="M1"):
-    """A controlled world under the loan-loss bound (decided 12 Nov), at month 5, with no job without a wage in
+    """A controlled world under the loan-loss bound, at month 5, with no job without a wage in
     any earlier month, so the normal rates apply, and the month's loss records emptied."""
     w = controlled_world(arm)
     w.economy = replace(w.economy, loan_losses="sourced")
@@ -6699,7 +6848,7 @@ def loss_world(arm="M1"):
 
 
 def carried_all_month(w):
-    """Stand in for the month's days in a loan-loss hand case: the book as it is was carried all month, so each
+    """Stand in for the month's days in a loan-loss example: the book as it is was carried all month, so each
     class's average principal over the month (``_loss_base``, the bound's base) is its principal now."""
     w.acc["loss_base"] = w._loss_base()[1]
 
@@ -6711,16 +6860,17 @@ def without_wage(w):
 
 
 class LoanLossTests(unittest.TestCase):
-    """Loan losses at sourced rates, the bound reading (decided 12 Nov): the rates, who bears them and how each
-    lender books them."""
+    """Loan losses at sourced rates, the bound reading: the rates, who bears them and how each lender books
+    them."""
 
     def test_rates_move_from_normal_to_peak_with_jobs_without_a_wage_three_months_earlier(self):
         """J of 0.0232 or less gives the normal rates (3.402, 0.829 and 0.3315% a year), 0.0768 the peaks (10.54, 3.36
         and 2.57%), halfway the midpoints; month m reads J of month m - 3, and months 0 to 2 month 0's. The anchors are
-        U-2 in payroll-job units (decided 14 Nov 2026): September 2009's 6.5% of the labor force times 153,827 /
-        130,246 thousand is 7.68% of payroll jobs. Hand case: at the month-35 stock of 7.983% (x = 5.663 / 5.36 =
-        1.0565) the card class's rate is 3.402 + 7.138 x 1.0565 = 10.94%, where the anchors per labor-force member gave
-        12.96%."""
+        U-2 in payroll-job units: September 2009's 6.5% of the labor force times 153,827 / 130,246 thousand is 7.68%
+        of payroll jobs.
+
+        Example: at the month-35 stock of 7.983% (x = 5.663 / 5.36 = 1.0565) the card class's rate is 3.402 + 7.138
+        x 1.0565 = 10.94%, where anchors per labor-force member would give 12.96%."""
         from cpm_abm.economy_abm import (CHARGE_OFF_NORMAL, CHARGE_OFF_PEAK, JOB_LOSER_NORMAL, JOB_LOSER_PEAK,
                                          charge_off_rates)
         self.assertEqual((JOB_LOSER_NORMAL, JOB_LOSER_PEAK), (0.0232, 0.0768))
@@ -6743,7 +6893,9 @@ class LoanLossTests(unittest.TestCase):
         self.assertEqual(w._lagged_jobs_without_wage(0), 0.07)   # month 0's own, the earliest
 
     def test_a_pool_bridge_book_loses_the_card_rate_first_from_borrowers_without_a_wage(self):
-        """Hand case: a pool bridge book of 1,200 carried all month, 100 owed by a borrower without a wage and 1,100
+        """A pool bridge book loses the card rate first, from borrowers without a wage.
+
+        Example: a pool bridge book of 1,200 carried all month, 100 owed by a borrower without a wage and 1,100
         by one with a wage, at the normal card rate: 1,200 x 3.402% / 12 = 3.402 is discharged, all from the first,
         whose debt falls by it; the pool's assets (NAV) fall by it, it is written off, the loan-year record holds it
         and no outside flow or valuation moves. The coupon carries the same rate, so it is no loss the learned rate
@@ -6773,13 +6925,15 @@ class LoanLossTests(unittest.TestCase):
             self.assertEqual((w.external, w.valuation), (0.0, 0.0))
 
     def test_the_pool_prices_the_sourced_rate_of_each_class(self):
-        """The pool prices what the bound makes it lose (decided 12 Nov). Hand case, no job without a wage in
-        any earlier month: the bridging coupon is owners' alternative, o and 3.402% / 12, the consumer term coupon
-        carries 0.829% / 12 and the business one 0.3315% / 12, and a learned loss of the engine's own write-offs
-        (0.01 over 10 of lagged term exposure) is added to both term coupons. With 7.68% of jobs without a wage three
-        months earlier (the peak in payroll-job units, 14 Nov 2026) each carries its peak rate (10.54, 3.36 and 2.57%). A business request at an outside rate
-        between the two term coupons is cheaper at the pool and a consumer one is not, and each loan is sealed at its
-        own class's coupon. Without the bound nothing is priced and the business coupon is r_term."""
+        """The pool prices what the bound makes it lose.
+
+        Example, with no job without a wage in any earlier month: the bridging coupon is owners' alternative, o and
+        3.402% / 12, the consumer term coupon carries 0.829% / 12 and the business one 0.3315% / 12, and a learned loss
+        of the engine's own write-offs (0.01 over 10 of lagged term exposure) is added to both term coupons. With 7.68%
+        of jobs without a wage three months earlier (the peak in payroll-job units) each carries its peak rate (10.54,
+        3.36 and 2.57%). A business request at an outside rate between the two term coupons is cheaper at the pool and a
+        consumer one is not, and each loan is sealed at its own class's coupon. Without the bound nothing is priced and
+        the business coupon is r_term."""
         w = loss_world()
         w.launched = True
         w._cycle_terms(5)
@@ -6810,7 +6964,9 @@ class LoanLossTests(unittest.TestCase):
         self.assertEqual((plain.r_g, plain.r_term, plain.r_term_business), (base, base, base))
 
     def test_an_outside_term_loan_is_the_outside_lenders_loss(self):
-        """Hand case: an outside business instalment loan of 1,000 and an outside personal one of 1,000, both
+        """An outside term loan is the outside lender's loss.
+
+        Example: an outside business instalment loan of 1,000 and an outside personal one of 1,000, both
         borrowers with a wage, at the normal rates: 1,000 x 0.3315% / 12 and 1,000 x 0.829% / 12 discharged; each
         borrower's net wealth rises by its amount, an outside flow, so the conservation identity holds, and a pool
         written-off loan or fee debt loses nothing."""
@@ -6880,10 +7036,9 @@ class LoanLossTests(unittest.TestCase):
         self.assertGreater(float(discharged.sum()), 0.0)
         average, at_close = np.array(world.average), np.array(world.at_close)
         want = 0.03402 / 12 * average
-        # At most all of the book at the close: before card limits it was empty in the one month the forced exits
-        # stopped the pool's lending, and what it could not absorb is carried to the next month's amount (the 13 Nov
-        # review). Card limits (14 Nov 2026) changed the forced run's path, so at most one such month is
-        # read here (changed from exactly one: a property of the path); the carry has its own hand case.
+        # At most all of the book at the close: in a month where the forced exits stop the pool's lending the book is
+        # empty, and what it cannot absorb is carried to the next month's amount. At most one such month is read
+        # here, a property of the forced run's path; the carry has its own example.
         self.assertLessEqual(int((want > at_close).sum()), 1)
         carry, expect = 0.0, []
         for owed, book in zip(want, at_close):
@@ -6899,7 +7054,9 @@ class LoanLossTests(unittest.TestCase):
         self.assertTrue(bool((series["r_term_business"] < series["r_term"]).all()))
 
     def test_an_amount_the_book_cannot_absorb_is_carried_to_the_next_month(self):
-        """From the 13 Nov review. Hand case: a pool bridge base of 1,200 (the month's average) with no pool bridge
+        """An amount the book cannot absorb is carried to the next month.
+
+        Example: a pool bridge base of 1,200 (the month's average) with no pool bridge
         on the book at the close discharges nothing and carries 1,200 x 3.402% / 12 = 3.402. The next month a pool
         bridge book of 1,200 carried all month owes 3.402 + 3.402 = 6.804, all discharged, and nothing is carried. The
         carried total is recorded at the close. With the bound off nothing is discharged or carried."""
@@ -6925,7 +7082,9 @@ class LoanLossTests(unittest.TestCase):
         self.assertEqual(float(plain.loss_carried.sum()), 0.0)
 
     def test_without_the_bound_a_run_is_as_built(self):
-        """With "none" (the default) nothing is discharged and no loss series is kept: a run equals the default's bit
+        """Without the bound a run is the default run.
+
+        With "none" (the default) nothing is discharged and no loss series is kept: a run equals the default's bit
         for bit, and the runner stores no discharge measure; under "sourced" it stores each."""
         from cpm_abm.economy_abm import LOAN_LOSS_SERIES
         from scripts.run_economy_population import measures, options, same
@@ -6949,13 +7108,13 @@ class LoanLossTests(unittest.TestCase):
 
 
 class LendersInterestTests(unittest.TestCase):
-    """Outside lenders' interest returned to households over the whole grid (decided 12 Nov)."""
+    """Outside lenders' interest returned to households over the whole grid."""
 
     def test_a_map_with_lenders_interest_returned_runs_every_job_with_it(self):
         """With "returned" every task of the grid carries the convention and no extra baseline set is added; a tiny map
         of two jobs is decided, stored and read for its figures as a normal map, its cells under the convention, no
         separate baseline, and the economy record and provenance saying so; with "leaves" (the default) the full grid
-        adds the baseline set and the record is as built."""
+        adds the baseline set and the record is the default's."""
         from scripts.run_economy_population import (GRID, decide_cells, job, options, run_record, selected, tasks_for,
                                                     write_stores)
         from scripts.run_region_figures import baseline_jobs
@@ -7014,9 +7173,9 @@ def bills(w, amounts, card=False, at=30):
 
 
 def open_ended(base):
-    """Card limits' regression device (14 Nov 2026): ``base`` with every holder's line open-ended, no starting balance,
-    and the card priced as before card limits, a holder's other payments bridged on the card at its purchase APR with
-    no fee, dated at their covering date, and no minimum payment; the line's own rules are left in place."""
+    """Comparison device without card limits: ``base`` with every holder's line open-ended, no starting balance,
+    and the card priced without limits, a holder's other payments bridged on the card at its purchase APR with no
+    fee, dated at their covering date, and no minimum payment; the line's own rules are left in place."""
     class OpenEnded(base):
         def __init__(self, *args):
             super().__init__(*args)
@@ -7044,16 +7203,18 @@ def pooled_device(base):
 
 
 class CardLimitTests(unittest.TestCase):
-    """Card limits, the outside-card contract (decided 14 Nov 2026)."""
+    """Card limits, the outside-card contract."""
 
     def test_card_lines_follow_the_score_tiers_on_a_stream_of_their_own(self):
         """Each holder's line is its CFPB tier's 2023 line per cardholder (Fig 89), $5,696 for deep subprime (579 or
         below) to $41,654 for superprime (800 and above); nobody else has one. Its starting balance is 90 to 100% of the
-        line with its tier's chance, else a band below 90% times the tier's revolving share. Hand case of the draw: a
-        deep subprime holder drawing 0.5 (below 68.41%) and 0.3 within starts at 93% of $5,696; a superprime holder
-        drawing 0.5 (above 5.2%), a band draw of 0.7 (the 20 to 60% band, past 52/82) and 0.5 within uses 40% of
-        $41,654 times 19.64%, $3,272.34. On 4,000 people the shares at 90% or more follow the tiers and come to about
-        18% of holders, the mean line is near the CFPB's $26,218, and the draw is the same whoever holds a card."""
+        line with its tier's chance, else a band below 90% times the tier's revolving share.
+
+        Example of the draw: a deep subprime holder drawing 0.5 (below 68.41%) and 0.3 within starts at 93% of $5,696; a
+        superprime holder drawing 0.5 (above 5.2%), a band draw of 0.7 (the 20 to 60% band, past 52/82) and 0.5 within
+        uses 40% of $41,654 times 19.64%, $3,272.34. On 4,000 people the shares at 90% or more follow the tiers and come
+        to about 18% of holders, the mean line is near the CFPB's $26,218, and the draw is the same whoever holds a
+        card."""
         self.assertEqual(card_tier(np.array([579.9, 580.0, 619.9, 620.0, 719.9, 720.0, 799.9, 800.0])).tolist(),
                          [0, 1, 1, 2, 3, 4, 4, 5])
         np.testing.assert_allclose(CARD_LINE * MONTH_USD, [5696, 8121, 12524, 22068, 29335, 41654], rtol=1e-12)
@@ -7092,7 +7253,9 @@ class CardLimitTests(unittest.TestCase):
         np.testing.assert_array_equal(everyone[holder], pop["card_start"][holder])
 
     def test_card_purchases_stop_at_the_line_and_the_rest_goes_the_cash_route(self):
-        """Hand cases ($): a holder with a $1,000 line and a $950 starting balance has $50 of room. Of card purchases of
+        """Card purchases stop at the line and the rest goes the cash route.
+
+        Example ($): a holder with a $1,000 line and a $950 starting balance has $50 of room. Of card purchases of
         $30 and $40, smallest first, the $30 goes on the card and the $40, which the room cannot take whole, is paid by
         debit from its $100 of cash, with no merchant fee and no rewards on it. With the whole line used and no money,
         a $40 card purchase is declined without a fee: it is lost, counted as a declined purchase, and nothing is
@@ -7119,7 +7282,9 @@ class CardLimitTests(unittest.TestCase):
         self.assertAlmostEqual(float(w.acc["bought_lost"][0]) * MONTH_USD, 40.0, places=9)
 
     def test_a_holders_bill_is_a_cash_advance_up_to_its_cash_line_with_its_fee(self):
-        """Hand cases ($): a holder with a $1,000 line, nothing owed and no money owes a $300 bill. Its cash line is 20%
+        """A holder's bill is a cash advance up to its cash line, with its fee.
+
+        Example ($): a holder with a $1,000 line, nothing owed and no money owes a $300 bill. Its cash line is 20%
         of the line, $200, so $200 is advanced at the cash APR, 30% a year moved with r_out as the purchase APRs are,
         and a fee of the greater of $10 and 5%, $10, goes on the card's purchase balance at its purchase APR; the other
         $100 fails, a third of the bill, with $9 of failure fee. The advance and its fee are rows of their own, the fee
@@ -7157,9 +7322,9 @@ class CardLimitTests(unittest.TestCase):
                                    rtol=1e-12, atol=1e-12)
 
     def test_a_maxed_holder_reaches_earned_wage_access(self):
-        """Earned-wage access is open to holders (14 Nov 2026), after their cash line: the earned-wage hand case's
-        person 1, $330 earned and unpaid, made a holder with its whole line used, advances its $100 bill as a payer
-        without a card does, and nothing fails."""
+        """Earned-wage access is open to holders, after their cash line: the earned-wage example's person 1, $330 earned
+        and unpaid, made a holder with its whole line used, advances its $100 bill as a payer without a card does, and
+        nothing fails."""
         w = EconomyAbmTests.wage_case()
         w.holder[1], w.card_line[1], w.card_start[1] = True, usd(1000.0), usd(1000.0)
         w._settle(1, 40)
@@ -7168,7 +7333,9 @@ class CardLimitTests(unittest.TestCase):
         self.assertFalse(bool((w.book["kind"] == CASH_ADVANCE).any()))
 
     def test_the_pools_limit_for_a_holder_reads_the_room_on_its_cash_line(self):
-        """Hand cases of the partial limit (``limit_with_card``), receipts' spare S. Three pieces: a $300 shortfall, a
+        """The pool's limit for a holder reads the room on its cash line.
+
+        Examples of the partial limit (``limit_with_card``), receipts' spare S. Three pieces: a $300 shortfall, a
         $100 cash room at no cost beyond the unit, the pool at no cost beyond the unit, and a failure fee of $27 a bill
         on one $300 bill (9 cents a dollar, at most $27): D(0) = 100 + 18 = 118, rising at 0.91 a dollar the pool lends
         until nothing fails at $200, D = 300, then flat. S = 250 lends (250 - 118) / 0.91 = $145.05; S = 100 nothing;
@@ -7176,8 +7343,8 @@ class CardLimitTests(unittest.TestCase):
         fee the greater of $10 and 5%, 10 cents a dollar of failure fee capped at $3: D(0) = 348, rising at 1 until the
         fee is at its cap at $170 (518), at 0.9 until nothing fails at $200 (545), then falling at 0.15 while the fee is
         5% and at 0.1 once it is the $10 floor. S = 400 lends $52, S = 530 $183.33, S = 545 all of it. With a room
-        that takes the whole shortfall and no fee it is the holder's test before card limits: all of it where S repays
-        it at card terms, else nothing. In a settlement the hand case's first numbers give the pool $145.05, the cash
+        that takes the whole shortfall and no fee it is the holder's test without card limits: all of it where S repays
+        it at card terms, else nothing. In a settlement the first example's numbers give the pool $145.05, the cash
         line $100, and the rest, $54.95, fails with its fee."""
         one = lambda x: np.array([float(x)])
         three = lambda spare: float(limit_with_card(one(300), one(spare), one(1.0), one(0.09), one(27.0), one(100),
@@ -7197,7 +7364,7 @@ class CardLimitTests(unittest.TestCase):
         funded_pool(w)
         w.r_g = w.r_b = 0.0
         w.card_apr[:] = w.cash_apr[:] = 0.0
-        w.advance_floor = w.advance_rate = 0.0   # no cost but the unit, as in the hand case
+        w.advance_floor = w.advance_rate = 0.0   # no cost but the unit, as in the example
         w.pop["cycles"][:], w.pop["phases"][:] = 30, 0
         w.last["receipts"][:], w.last["wages_paid"][:] = usd(125.0), 0.0
         bills(w, [300.0])
@@ -7209,11 +7376,13 @@ class CardLimitTests(unittest.TestCase):
                                27.0 * (200.0 - 132.0 / 0.91) / 300.0, places=6)
 
     def test_the_pools_statement_limit_counts_the_late_fee(self):
-        """Hand cases of the statement's limit (``limit_with_revolve``): a $100 unpaid statement revolving at 5% to the
+        """The pool's statement limit counts the late fee.
+
+        Examples of the statement's limit (``limit_with_revolve``): a $100 unpaid statement revolving at 5% to the
         date, a pool at no cost beyond the unit, and own money leaving $40 of the minimum unmet, so a $30 late fee
         unless the pool pays it: D(0) = 105 + 30 = 135 and falling, so S = 135 pays all of it and S = 134 nothing. A
         pool dearer than the card, 10% to the date, rises at 5 cents a dollar: S = 136 pays $20 and S = 140 all of it.
-        With no fee it is the test before card limits, all of it where the receipts repay it at card terms."""
+        With no fee it is the test without card limits, all of it where the receipts repay it at card terms."""
         one = lambda x: np.array([float(x)])
         limit = lambda spare, pool=1.0, fee=30.0: float(limit_with_revolve(one(100), one(spare), one(pool), one(1.05),
                                                                            one(40), one(fee))[0])
@@ -7223,7 +7392,9 @@ class CardLimitTests(unittest.TestCase):
         self.assertEqual((limit(105.0, fee=0.0), limit(104.9, fee=0.0)), (100.0, 0.0))
 
     def test_the_pool_is_dearer_only_than_a_cash_advance_on_the_part_the_room_could_take(self):
-        """Hand cases (the loan-cost comparison, 14 Nov 2026), APRs zero: a $100 draw due 25 days on costs 1 + 25/30 r_b
+        """The pool is dearer than a cash advance only on the part the room could take.
+
+        Examples of the loan-cost comparison, APRs zero: a $100 draw due 25 days on costs 1 + 25/30 r_b
         a unit at the pool against a cash advance's 1 + its fee per unit, the greater of $10 and 5% over what the room
         takes. With $100 of cash room the advance costs 1.10, so a pool at 20% a month (1.167) is dearer and one at 0.5%
         is not; with $40 of room the fee is 25 cents a unit of it, 1.25, so the pool at 20% is not dearer; with no room
@@ -7241,7 +7412,9 @@ class CardLimitTests(unittest.TestCase):
         self.assertEqual((dearer(40.0, 0.2), dearer(0.0, 0.2)), (False, False))
 
     def test_the_buffer_replay_prices_a_cash_advance_up_to_the_room_and_failure_beyond(self):
-        """Hand cases (14 Nov 2026): half a unit short from day 10 to day 20, no buffer, the cash line at 3% a month
+        """The buffer replay prices a cash advance up to the room and failure beyond it.
+
+        Example: half a unit short from day 10 to day 20, no buffer, the cash line at 3% a month
         with a fee of the greater of 0.001 and 5% a new advance, failure at 0.3 a unit. With 0.3 of room: interest on
         0.3 for 10 days, 0.003, the fee on 0.3, 0.015, and 0.2 failing, 0.06, so 0.078. With a room of 1: interest on
         0.5, 0.005, and the fee 0.025, so 0.03. With no room the whole half unit fails, 0.15. With a fee rate of 0.1%
@@ -7258,7 +7431,9 @@ class CardLimitTests(unittest.TestCase):
         self.assertAlmostEqual(cost(1.0, floor=0.01, rate=0.001), 0.005 + 0.01, places=15)
 
     def test_the_minimum_payment_and_a_late_fee_never_above_it(self):
-        """Hand cases ($, day 20 of month 1). A $20 statement and no money: the minimum is the whole $20, unpaid, so a
+        """The minimum payment and a late fee never above it.
+
+        Example ($, day 20 of month 1). A $20 statement and no money: the minimum is the whole $20, unpaid, so a
         late fee of $30 capped at the minimum, $20, goes on the card, $20 is past due and the card is delinquent from
         today, which puts its holder in arrears tomorrow. A $5,000 balance of $4,910 and $90 of interest charged in the
         cycle owes 1% plus the interest, $140; $100 of money below a $1,000 buffer is collected on the card (the
@@ -7303,7 +7478,9 @@ class CardLimitTests(unittest.TestCase):
         self.assertAlmostEqual(LATE_FEE * MONTH_USD, 30.0, places=12)
 
     def test_payments_on_the_card_since_the_statement_count_towards_the_minimum(self):
-        """Hand case ($, the review of 14 Nov 2026): a holder with no buffer owes $3,000 revolving, repays $1,500 of it
+        """Payments on the card since the statement count towards the minimum.
+
+        Example ($): a holder with no buffer owes $3,000 revolving, repays $1,500 of it
         on day 5 of the cycle from a wage, and holds $10 on day 20, when an $1,800 statement falls due. The minimum on
         the $3,300 balance is the $40 floor, and the $1,500 already paid meets it, so no late fee is charged, nothing
         is past due and the card stays current; the cycle's payments then start again from zero. Without the earlier
@@ -7333,7 +7510,9 @@ class CardLimitTests(unittest.TestCase):
         self.assertEqual(int(w.card_late_since[0]), t)
 
     def test_the_pool_paying_a_statement_spares_the_late_fee(self):
-        """Hand case ($, M1, the review of 14 Nov 2026): a member with no money owes a $100 statement, so its own
+        """The pool paying a statement spares the late fee.
+
+        Example ($, M1): a member with no money owes a $100 statement, so its own
         payment leaves the whole $40 minimum unmet. With receipts that repay it and a pool with cash the pool pays all
         $100: the minimum is met, so no late fee, nothing past due, the card current, and the draw is card credit
         whole in the real part. With no pool cash the statement revolves, the $30 late fee goes on the card and the
@@ -7364,12 +7543,14 @@ class CardLimitTests(unittest.TestCase):
         self.assertEqual(int(w.card_late_since[0]), t)
 
     def test_a_holders_pool_rescue_is_what_its_cash_line_could_not_have_taken(self):
-        """Hand cases ($, M1, the review of 14 Nov 2026), from the partial limit's settlement: a $300 bill, $100 of
+        """A holder's pool rescue is what its cash line could not have taken.
+
+        Example ($, M1), from the partial limit's settlement: a $300 bill, $100 of
         cash room and a pool draw of $145.05 rationed by the receipts leave $54.95 failing, where without the draw $200
         would have failed, so the draw paid $145.05 in place of failing, 0.4835 of the bill, and none of it replaced
         card credit. With receipts that repay the whole $300 the pool pays all of it: $200 in place of failing and $100
         that the cash line would have taken, which the real part counts as card credit, a third of the draw. A payer
-        without a card's draw is bridged whole, as before."""
+        without a card's draw is bridged whole."""
         def settle(receipts, holder=True):
             w = holder_world("M1", line=500.0)
             w.holder[0] = w.pop["holder"][0] = holder
@@ -7406,7 +7587,9 @@ class CardLimitTests(unittest.TestCase):
         self.assertEqual(float(part[0]), 0.0)
 
     def test_the_replays_card_room_counts_only_the_months_advances_still_owed(self):
-        """Hand case ($, the review of 14 Nov 2026): a $1,000 line has a $200 cash line. A $200 bill with no money on
+        """The replay's card room counts only the month's advances still owed.
+
+        Example ($): a $1,000 line has a $200 cash line. A $200 bill with no money on
         day 3 is advanced whole, so day 4 records the cash room left, nothing, plus the month's advance still owed,
         $200. Once the advance and its fee are repaid on day 10, day 11 records the cash line, $200, not the $400 that
         counting every advance the month made would give, and no day records more than the cash line. An advance made
@@ -7435,7 +7618,9 @@ class CardLimitTests(unittest.TestCase):
         self.assertEqual(float(later.acc["card_room"][0, 4]), 0.0)
 
     def test_the_s0_counterfactual_takes_a_p_purchase_on_the_card_only_within_the_room(self):
-        """Hand case ($, M1, the review of 14 Nov 2026): a member holding a card pays a $1,000 card-eligible purchase in
+        """The S0 counterfactual takes a P purchase on the card only within the room.
+
+        Example ($, M1): a member holding a card pays a $1,000 card-eligible purchase in
         P to another member. With $300 of room on its line S0 would have paid it by debit, so the seller saved no
         merchant fee and the buyer had no float; with $2,000 of room S0 would have put it on the card, so the seller
         saved its 1.7% and the buyer floated the $1,000."""
@@ -7455,7 +7640,9 @@ class CardLimitTests(unittest.TestCase):
         self.assertAlmostEqual(floated, 1000.0, places=9)
 
     def test_the_card_fees_follow_outside_lenders_income_and_the_minimums_conversion_is_a_days_fee(self):
-        """The review of 14 Nov 2026. Under the recirculation stress the card's fees are outside lenders' income that
+        """The card's fees follow outside lenders' income, and the minimum's conversion is a day's fee.
+
+        Under the recirculation stress the card's fees are outside lenders' income that
         returns to households at the close, as its interest does: a $100 bill advanced on a $1,000 line puts its $10
         fee with the lenders and takes nothing from the outside account, and a missed $20 minimum's late fee goes there
         too; without the stress both leave the economy. A minimum collected from P under routine conversion pays its
@@ -7485,7 +7672,9 @@ class CardLimitTests(unittest.TestCase):
         np.testing.assert_allclose(w.today["fees"], w.acc["conversion"], rtol=1e-12)
 
     def test_the_replays_price_the_cash_line_at_its_own_terms_within_the_cash_line(self):
-        """The review of 14 Nov 2026: in a run, the dealing's replay and both experience replays read each holder's day
+        """The replays price the cash line at its own terms, within the cash line.
+
+        In a run, the dealing's replay and both experience replays read each holder's day
         room on its cash line, zero for anyone without a card and never above 20% of its line, and price what it
         takes at the cash APR and the advance's fee, scaled alike by the share of a shortfall the cash line meets: in
         S0 every holder's whole shortfall; in M1 what the pool did not admit, and in the S0 experience replay the whole
@@ -7528,7 +7717,9 @@ class CardLimitTests(unittest.TestCase):
             self.assertTrue(any(float(terms["card_room"].max()) > 0.0 for terms in seen), arm)
 
     def test_a_card_180_days_past_due_is_charged_off_and_its_debt_stays_owed(self):
-        """Hand case ($): a holder 179 days past due on a $500 revolving balance, a $100 cash advance, a $50 statement
+        """A card 180 days past due is charged off and its debt stays owed.
+
+        Example ($): a holder 179 days past due on a $500 revolving balance, a $100 cash advance, a $50 statement
         and $20 of this month's purchases keeps its card; at 180 days the line closes, so it holds no card, every
         balance, $670, stays owed as a charged-off balance at no further interest, net wealth does not move, and it is
         in arrears while it is owed. Its class, the population's card holding, is unchanged; repaid in full, it is out
@@ -7613,9 +7804,9 @@ class CardLimitTests(unittest.TestCase):
         card purchases at the line, takes cash advances with their fees, charges late fees and keeps the conservation
         identity to 1e-12 every month; the card's fees go to outside lenders in the runner's transfers and gain split,
         which still adds up. One card in each run, the holder with most purchases on it on the tenth day of the month
-        after launch, is read as 180 days past due then, so every run charges a card off (changed in the review of 14
-        Nov 2026: since payments during the cycle count towards the minimum, no card in so short a run reaches 180
-        days on its own); and with both bounds on the identity holds too."""
+        after launch, is read as 180 days past due then, so every run charges a card off (payments during the cycle
+        count towards the minimum, so no card in so short a run reaches 180 days on its own); and with both bounds on
+        the identity holds too."""
         from scripts.run_economy_population import split, transfers
 
         def tight(base):
@@ -7652,7 +7843,7 @@ class CardLimitTests(unittest.TestCase):
         whole = float(np.nansum(runs["M1"]["series"]["external"][after] - runs["S0"]["series"]["external"][after]))
         named = sum(value for key, value in parts.items() if key not in ("valuation", "inflation"))
         self.assertAlmostEqual(named, whole * MONTH_USD, places=6)
-        # With both bounds on (the review of 14 Nov 2026): loan losses at sourced rates, and outside lenders' interest
+        # With both bounds on: loan losses at sourced rates, and outside lenders' interest
         # and the card's fees returned to households; the identity still holds with lines that bind.
         bounds = replace(economy, loan_losses="sourced", lender_income_recirculated=True)
         for arm in ("S0", "M1"):
@@ -7681,12 +7872,14 @@ def sink_world(amount=1000.0, cash=0.0, kind=OUTSIDE_WAGE):
 
 
 class HarshStressTests(unittest.TestCase):
-    """The harsh stress (decided 14 Nov 2026): the distress year's extra layoffs send the laid-off wage out of the
-    household economy, owed by the payer to the outside on the job's pay dates, the worker receiving nothing; normal
-    job loss keeps the payer-keeps rule, so level 0 is unchanged."""
+    """The harsh stress: the distress year's extra layoffs send the laid-off wage out of the household economy,
+    owed by the payer to the outside on the job's pay dates, the worker receiving nothing; normal job loss keeps
+    the payer-keeps rule, so level 0 is unchanged."""
 
     def test_an_extra_layoff_is_marked_from_the_draw_it_already_had(self):
-        """Hand case (``draw_spells``): at a rate of 0.03 with a normal rate of 0.01, draws of 0.005, 0.01, 0.02 and
+        """An extra layoff is marked from the draw it already had.
+
+        Example (``draw_spells``): at a rate of 0.03 with a normal rate of 0.01, draws of 0.005, 0.01, 0.02 and
         0.03 lay off the first three, the second and third as extra layoffs, and draw nothing more; without a normal
         rate it returns the three values it did. In a world at 2%, the distress year's first month marks exactly the
         jobs laid off whose uniform lies at or above the normal rate times their weight, on the layoff stream as it
@@ -7741,13 +7934,16 @@ class HarshStressTests(unittest.TestCase):
             self.assertGreater(float(got[0.2]["series"]["wages_out"].sum()), 0.0)
 
     def test_an_extra_layoffs_wage_row_is_its_payers_payable_and_the_outside_is_credited_when_it_is_made(self):
-        """Hand case (a sink row): job 0, laid off by an extra layoff for the whole month, makes no wage row; it makes
+        """An extra layoff's wage row is its payer's payable, and the outside is credited when it is made.
+
+        Example (a sink row): job 0, laid off by an extra layoff for the whole month, makes no wage row; it makes
         wage rows sent outside of its whole wage, 58.3% of its payer's spending, from its payer to its worker on its
         own pay dates, in its payer's payable and in nobody's receivable, and the outside account is credited with
         it at once, so households' net wealth falls by it now; no wage is withheld. Job 1, paid monthly on day 29 and
         laid off by an extra layoff from day 15, owes a wage row of its first 15 days and a row sent outside of its
-        last 15, both on day 29. Job 2, laid off at the normal rate all month, keeps the rule as built: no row, its
-        wage withheld. The jobs' workers are the month's hit workers. The share of jobs without a wage is as before."""
+        last 15, both on day 29. Job 2, laid off at the normal rate all month, keeps the payer-keeps rule: no row, its
+        wage withheld. The jobs' workers are the month's hit workers. The share of jobs without a wage is unchanged
+        by the stress."""
         world = tiny_world()
         world.acc = dict(shocks=0.0, volume=0.0)
         world.spell_start[:], world.spell_end[:] = 0, 0
@@ -7780,7 +7976,9 @@ class HarshStressTests(unittest.TestCase):
         np.testing.assert_array_equal(np.flatnonzero(world.acc["hit"]), np.unique(world.pop["wage_to"][:3]))
 
     def test_a_wage_sent_outside_is_paid_by_its_payer_received_by_nobody_and_requeued_while_unpaid(self):
-        """Settlement hand cases ($): person 0 owes a $1,000 wage row sent outside on day 30. With $1,500 it pays it:
+        """A wage sent outside is paid by its payer, received by nobody and requeued while unpaid.
+
+        Example of settlement ($): person 0 owes a $1,000 wage row sent outside on day 30. With $1,500 it pays it:
         its money falls to $500 and its payable to 0, while its worker's money, receipts and the wages paid on the job
         do not move, and no outside flow is booked, since the row's wage left at its making. With $400 it pays $400:
         the other $600 is re-queued as a wage sent outside to the job's next pay date, day 59, still owed, carrying
@@ -7838,7 +8036,9 @@ class HarshStressTests(unittest.TestCase):
         self.assertEqual(expected, {WAGE: (1000.0, 30, 1000.0, 0.0), OUTSIDE_WAGE: (0.0, 30, 0.0, 0.0)})
 
     def test_earned_wage_access_has_no_room_on_a_wage_sent_outside_and_it_repays_no_advance(self):
-        """The earned-wage hand case's world ($): job 2 back at work after an extra layoff's spell, nothing accrued,
+        """Earned-wage access has no room on a wage sent outside, and it repays no advance.
+
+        The earned-wage example's world ($): job 2 back at work after an extra layoff's spell, nothing accrued,
         and $900 of its wage still owed. Owed to its worker (a late wage), it is earned and unpaid, so the $100 bill on
         day 40 is advanced and nothing fails; owed to the outside, the worker earned none of it, so nothing is advanced
         and the bill fails with its $27. With $102.45 owed on advances against job 2, the payer's $900 sent outside,
@@ -7866,12 +8066,14 @@ class HarshStressTests(unittest.TestCase):
                              (0.0, 0.0, 102.45, 0.0), kind)
 
     def test_a_day_whose_completions_move_by_no_money_is_settled_at_the_sweep_cap(self):
-        """Found under the harsh stress (a payer with a tiny remainder due has its completed share moved by rounding
-        forever): at the sweep cap a day is settled where every payer's completion still moves by no more than EPS of
-        money. Hand case, a one-sweep cap and no money anywhere: person 0 owes person 1 1e-13 and person 1 owes person
+        """A day whose completions move by no money is settled at the sweep cap.
+
+        Under the harsh stress a payer with a tiny remainder due can have its completed share moved by rounding
+        forever. At the sweep cap a day is settled where every payer's completion still moves by no more than EPS of
+        money. Example, a one-sweep cap and no money anywhere: person 0 owes person 1 1e-13 and person 1 owes person
         2 1e-13; from full completion the second sweep moves person 1's completed share from 1 to 0, 1e-13 of money,
         so the day settles at that sweep's state, both payments failing. With amounts of 1 the same move is a whole
-        unit of money and the cap is an error, as before."""
+        unit of money and the cap is an error."""
         for amount, settles in ((1e-13, True), (1.0, False)):
             w = controlled_world("S0")
             w.economy = replace(w.economy, sweeps=1)
@@ -7994,8 +8196,8 @@ class EngineSpeedDeviceTests(unittest.TestCase):
 
 
 class PoolRunRecordTests(unittest.TestCase):
-    """Records and read-outs for the pool run under the harsh stress and the cash-advance bound (decided 15 Nov
-    2026): records only, so every record the engine made before them is unchanged."""
+    """Records and read-outs for the pool run under the harsh stress and the cash-advance bound: records only, so
+    every other record of the engine is unchanged."""
 
     def test_the_new_records_add_up(self):
         """On a short run in every arm with lines a twentieth of their draw, so holders take cash advances and pay late
@@ -8049,7 +8251,9 @@ class PoolRunRecordTests(unittest.TestCase):
                                    rtol=1e-12, atol=1e-15)
 
     def test_a_write_off_is_split_by_loan_kind(self):
-        """Hand case: a $100 pool bridge due on day 10 and a $200 pool term loan past due since day 0 are both written
+        """A write-off is split by loan kind.
+
+        Example: a $100 pool bridge due on day 10 and a $200 pool term loan past due since day 0 are both written
         down on day 100, 90 days and more past due: $100 of bridges, $200 of term loans, $300 in all."""
         w = controlled_world()
         w.acc.update(written_off=0.0, written_off_bridge=0.0, written_off_term=0.0, lost=np.zeros(2))
@@ -8062,7 +8266,9 @@ class PoolRunRecordTests(unittest.TestCase):
                          (100.0, 200.0, 300.0))
 
     def test_cash_advance_records_on_a_hand_case(self):
-        """Hand case: a holder takes a $100 cash advance at a 5% fee with a $10 floor, so its fee is $10, on the
+        """Cash-advance records on a worked example.
+
+        Example: a holder takes a $100 cash advance at a 5% fee with a $10 floor, so its fee is $10, on the
         purchase balance; a day's accruals add the advance's interest to interest_advance and every card balance's,
         the fee's too, to interest_card. A missed $40 minimum's late fee of $30 goes to fees_card and not to
         fees_advance."""
@@ -8116,12 +8322,14 @@ class PoolRunRecordTests(unittest.TestCase):
             return differences(run("M1", credit_arm, wealth), run("S0", credit_other, np.zeros((rows + 1, 3))), w)
 
     def test_the_gain_under_the_cash_advance_bound(self):
-        """Hand case over 40 months (a year is 0.3 of the sums): banks charge person 0 $20 of advance fees and $30 of
+        """The gain under the cash-advance bound.
+
+        Example over 40 months (a year is 0.3 of the sums): banks charge person 0 $20 of advance fees and $30 of
         interest and the arm $10 and $10, a saving of $30, $9 a year; banks charge person 1 $10 and the arm $20, a
         saving of -$3 a year; person 2 takes none. The gains, $30, -$15 and $0 a year, are $21, -$12 and $0 under the
-        bound: a mean of $5.00 as built and $3.00 under the bound, one person in three worse off in both, by cycle
-        (short: persons 0 and 2) $15 and -$15 as built and $10.50 and -$12 under the bound, by class $0 (class 0) and
-        $7.50 (class 2) as built and $0 and $4.50 under it; the saving's mean is $2.00, $0 and $3.00 by class. With no
+        bound: a mean of $5.00 without the bound and $3.00 under it, one person in three worse off in both, by cycle
+        (short: persons 0 and 2) $15 and -$15 without it and $10.50 and -$12 under it, by class $0 (class 0) and
+        $7.50 (class 2) without it and $0 and $4.50 under it; the saving's mean is $2.00, $0 and $3.00 by class. With no
         purchase records both ends of the complete gain are the wealth gain, under the bound too. An arm that charges
         the same for cash advances has its gain under the bound equal to its gain."""
         got = self.paired([(10.0, 10.0), (20.0, 0.0), (0.0, 0.0)], [(20.0, 30.0), (10.0, 0.0), (0.0, 0.0)])
@@ -8147,11 +8355,11 @@ class PoolRunRecordTests(unittest.TestCase):
             np.testing.assert_equal(block["bound"], {key: block[key] for key in block if key != "bound"})
 
     def test_dispersion_and_the_gain_by_month(self):
-        """The same hand case: the gains $30, -$15 and $0 a year have one person in three below -$2 and, by linear
-        interpolation over -15, 0 and 30, the 5th percentile -13.5, the 25th -7.5, the median 0, the 75th 15 and the
-        95th 27, the same at both ends of the complete gain. At 36 months the mean gain of $4 is $1.33 a year, and at
-        the end (40 months) $16.67, $5.00 a year; month 48 is past the run's end and left out. Over 48 months the
-        end is month 48 itself, $16.67 over 4 years, $4.17 a year."""
+        """Dispersion and the gain by month, in the same example: the gains $30, -$15 and $0 a year have one person in
+        three below -$2 and, by linear interpolation over -15, 0 and 30, the 5th percentile -13.5, the 25th -7.5, the
+        median 0, the 75th 15 and the 95th 27, the same at both ends of the complete gain. At 36 months the mean gain of
+        $4 is $1.33 a year, and at the end (40 months) $16.67, $5.00 a year; month 48 is past the run's end and left
+        out. Over 48 months the end is month 48 itself, $16.67 over 4 years, $4.17 a year."""
         got = self.paired([(0.0, 0.0)] * 3, [(0.0, 0.0)] * 3)
         expected = dict(below_margin_share=0.3333,
                         percentiles_usd_a_year={"5": -13.5, "25": -7.5, "50": 0.0, "75": 15.0, "95": 27.0})
@@ -8161,11 +8369,13 @@ class PoolRunRecordTests(unittest.TestCase):
         self.assertEqual(longer["gain_usd_a_year_at_month"], {"36": 1.33, "48": 4.17, "end": 4.17})
 
     def test_the_region_reads_the_bound_beside_the_clause_as_built(self):
-        """Twenty hand-case seeds (``map_seed``), every gain zero: stable as built and under the bound, in the region
-        both ways. With one class at -$3 under the bound at both ends against S0 (the arm saving $3 a year on cash
-        advances it did not take in banks), the verdict as built stays stable, the clause and every key as built
-        unchanged, but the verdict under the bound is "a group loses", on a bare majority too, and the cell is not in
-        the region both ways."""
+        """The region reads the bound beside the clause without it.
+
+        Example: twenty seeds (``map_seed``), every gain zero, are stable without the bound and under it, in the
+        region both ways. With one class at -$3 under the bound at both ends against S0 (the arm saving $3 a year on
+        cash advances it did not take in banks), the verdict without the bound stays stable, with the clause and every
+        key unchanged, but the verdict under the bound is "a group loses", on a bare majority too, and the cell is not
+        in the region both ways."""
         import copy
         from scripts.run_economy_population import decide
 

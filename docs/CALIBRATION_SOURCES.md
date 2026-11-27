@@ -1,9 +1,15 @@
-# Sources checked on 11 November 2026
+# Sources for the calibration
 
 These sources were read to check the model's baseline against data. "Checked" means the quoted figure
 was found again in the report's text; "read" means the figure was read once and has not been re-checked
 line by line; "inferred" means it was read from a chart's layout, not from printed text. No model number
 was changed because of this file.
+
+The left-hand columns describe the model as it was when the sources were read, on 11 November 2026. Since then
+every card has a limit by credit-score tier and a card holder whose line is used up can fail a payment
+(`docs/DECISIONS.md`, the rows on card lines), so the rows on unlimited lines and on holders who never fail
+describe the earlier rule, and the shares of people with and without a card are those of that population (84% and
+16% of people now).
 
 ## 1. Small-business credit and payment mismatch
 
@@ -29,7 +35,7 @@ JPMorgan Chase Institute: https://www.jpmorganchase.com/institute/all-topics/bus
 **Reading.** The business loan in the model (how often, how large, at what rate) matches the survey. The
 two places where the model is kinder to firms than the data are access: every card holder has an unlimited
 line, and every loan request is granted. Both hide need, so they most likely understate what a pool that
-lends on receipts would do for firms; the 4 Nov note on card lines recorded the net direction as unknown.
+lends on receipts would do for firms; the net direction is not known.
 
 ## 2. Payment failure for people without a card
 

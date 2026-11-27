@@ -1,90 +1,107 @@
-"""Population map at N = 4,000 (``POPULATION``, decided 12 Nov) over r_out x a0 x distress: M0, U, M1 and
-M2 against S0, with the region reading and the registered claim's statistics (``claim_statistics``).
+"""Population map at N = 4,000 people (``POPULATION``) over r_out x a0 x distress: M0, U, M1 and M2 against S0, with
+the region reading and the registered claim's statistics (``claim_statistics``).
 
-The (r_out, a0, distress, seed) sweep is a PySPG catalogue (`cpm_abm.catalogue`): the full cross of 3 r_out, 7 a0 and
-5 distress levels, 105 cells (decided 31 Oct). Run from the repository root, only by a deliberate decision, naming
-the seed set; ``--timing`` runs one job, prints how long the whole run would take, and writes nothing; ``--dry-run``
-builds the job list and prints the jobs, seeds, cells, workers, population and output folder, running nothing:
+The (r_out, a0, distress, seed) sweep is a PySPG catalogue (``cpm_abm.catalogue``): the full cross of 3 r_out, 7 a0
+and 5 distress levels, 105 cells. Run from the repository root, naming the seed set. ``--timing`` runs one job, prints
+how long the whole run would take and writes nothing; ``--dry-run`` builds the job list and prints the jobs, seeds,
+cells, workers, population and output folder, running nothing:
     python -X utf8 scripts/run_economy_population.py --seeds confirmation --output results/YYYY-MM-DD_population_map
     python -X utf8 scripts/run_economy_population.py --seeds confirmation --timing
     python -X utf8 scripts/run_economy_population.py --seeds confirmation --output results/YYYY-MM-DD_map --dry-run
-A job that fails stops the run with its cell and seed named. ``--only-seeds`` runs some seeds of the set only, a part
-of the map whose stores say so; the confirmation map runs one seed a part (scripts/run_confirmation.py), and its parts
-are joined into the map (scripts/join_parts.py), the stores one run over all the seeds would write.
+A job that fails stops the run with its cell and seed named. ``--only-seeds`` runs some seeds of the set, a part of
+the map whose stores say so. The confirmation map runs one seed a part (scripts/run_confirmation.py) and its parts
+are joined into the map (scripts/join_parts.py), giving the stores one run over all the seeds would write.
 
-``--r_out``, ``--a0`` and ``--distress`` select cells of the grid, each defaulting to all its values (the 3 Nov review):
-only the selected cells run and are decided, and the recirculation set below runs with the full grid only. Step 2 of
-the 3 Nov round adds ``--r_out 0.044 --a0 0.6 --distress 0 0.02`` on the development seeds: 6 jobs and 30 runs.
-``--arms S0`` runs S0 alone in each job, without the other arms: the S0 check of Step 3 is ``--arms S0 --a0 0.6
---distress 0 0.01 0.02`` on the development seeds, 27 runs. After the stores are written the region figures are drawn
-from them (``scripts/run_region_figures.py``), each figure the store can support.
+``--r_out``, ``--a0`` and ``--distress`` select cells of the grid, each defaulting to all its values: only the
+selected cells run and are decided, and the recirculation set below runs with the full grid only. Example:
+``--r_out 0.044 --a0 0.6 --distress 0 0.02`` on the development seeds is 6 jobs and 30 runs. ``--arms S0`` runs S0
+alone in each job: ``--arms S0 --a0 0.6 --distress 0 0.01 0.02`` on the development seeds is 27 runs. After the
+stores are written the region figures are drawn from them (``scripts/run_region_figures.py``), each figure the store
+can support.
 
-Seeds (decided 31 Oct; new blocks 3 and 12 Nov): "development" is the three seeds used so far, kept
-for development checks; "confirmation" is the first n seeds from 20261401, never run and never used in development,
-with n = 30 in CONFIRMATION_COUNT (decided 17 Nov 2026: the planner's count, ``confirmation_seeds``, with each
-reading's spread at the upper end of its one-sided interval at assurance 0.8; the planner names any cell that 30
-seeds leave underpowered, and the one declared extension takes those cells to 60 seeds; with no count a run with
---seeds confirmation is refused, ``seeds_for``). At most 12
-workers run by default, since more ran out of
-memory on a 31 GB laptop; ``--most-workers M`` raises that limit on a machine with about 1.5 GB for every worker,
-and more workers than the limit are refused. The blocks 20261101 to
-20261120, 20261201 to 20261220 and 20261301 to 20261308 are retired (``RETIRED_SEEDS``); "sweep" records the last,
-which the 12 Nov size sweep used.
+Seeds: "development" is three seeds for development checks. "confirmation" is the first n seeds from 20261401, kept
+out of every development run, with n = 30 (``CONFIRMATION_COUNT``). That count is the planner's
+(``confirmation_seeds``), with each reading's spread at the upper end of its one-sided interval at assurance 0.8; the
+planner names any cell that 30 seeds leave underpowered, and the one declared extension takes those cells to 60
+seeds. With no count fixed, a run with --seeds confirmation is refused (``seeds_for``). The blocks 20261101 to
+20261120, 20261201 to 20261220 and 20261301 to 20261308 are retired (``RETIRED_SEEDS``); "sweep" names the last,
+which the population-size sweep used.
 
-Each job is one (r_out, a0, distress, seed). It runs S0, M0 (the strongest real DeFi, decided 5 Nov: USDC at the
-bill less the Sky Savings Rate's spread under it, two legs of Base gas a payment, conversion at no fee, and no
-collateral lending: collateral lending by Compound III is not run or reported, ``CRYPTO_SHARE`` 0, decided 12 Nov,
-since real DeFi lends only against collateral worth more than the loan, which is not everyday credit), U, M1 and M2 on common random numbers, so every arm faces the same people, obligations
-and draws, layoffs included. No cell has a provider fee (decided 5 Nov: P payments run on stablecoin rails, one
-transfer's gas a P payment, ``engine_inputs``). The pool's fixed cost is sourced (decided 5 Nov): Aave's 2025 paid
-service providers over US consumer units, $0.18 a consumer unit a year, with ``--fixed-cost low`` (Compound, $0.10) and
-``high`` (Sky, $0.50) beside it (``FIXED_COST``). M0's rates move with r_out one for one from their observed October
-2026 levels (decided 5 Nov, ``economy_abm.m0_rates``), with ``--m0-rates fitted``, the lag-3 OLS lines, beside it.
-The issuer is a pure custodian (decided 5 Nov): it holds no pool shares and no support fund, so households alone
-own the pool, and owners leave by the users' rule.
-M1 and M2 run competitive P with demurrage (decided 5 Nov), which pays for the liquidity the pool keeps available;
-U is the same P with no demurrage, so M1 against U on the same draws is what demurrage adds. Demurrage replaced the
-reserve pass-through, so the check that passing reserve income never lowers the issuer's income has nothing to check
-and is gone. With the full grid a second set repeats the
-baseline cell (r_out = 4.4%, a0 = 0.6) with outside lenders' interest recirculated to households (the stress
-convention). ``--lenders-interest returned`` (decided 12 Nov) instead runs every job of the requested grid with
-that interest returned to households in proportion to spending, adds no extra set, and the stores, the region reading
-and the figures are produced as for any map, the run record and its provenance saying so.
+At most 12 workers run by default, since more ran out of memory on a 31 GB laptop. ``--most-workers M`` raises that
+limit on a machine with about 1.0 GB for every worker, and more workers than the limit are refused.
+
+``--second-run base`` runs the second run (every value in ``cpm_abm.experiment.second_run``): its settings and
+lengths, its 210 cells (six outside rates) and both saver readings, each reading's map in quote/ and realised/ under
+--output, through the same shared S0, shared states at launch and distress fork. ``--second-run NAME`` runs a side set
+on its own cells, never on the confirmation seeds. With --entry-reads one reading runs, into --output itself, which
+is how the driver runs it one seed a part, resumable:
+    python -X utf8 scripts/run_economy_population.py --seeds development --second-run base --output results/X_second
+    python -X utf8 scripts/run_confirmation.py --seeds confirmation --output runs/second_quote --second-run base
+        --entry-reads quote
+With --second-run, --seeds confirmation is the second run's own block, from 20261701 upward
+(``grid.SECOND_CONFIRMATION_START``), which shares no seed with the first run's. Its count is fixed from the second
+run's three-seed map; until it is fixed the run is refused, here and in the driver. Without --second-run every run
+is the first run.
+
+Each job is one (r_out, a0, distress, seed). It runs S0, M0, U, M1 and M2 on common random numbers, so every arm
+faces the same people, obligations and draws, layoffs included.
+
+M0 is DeFi as it exists: stablecoin payments at two legs of Base gas a payment, conversion at no fee, and no
+collateral lending. Collateral lending by Compound III is not run or reported (``CRYPTO_SHARE`` 0), since DeFi lends
+only against collateral worth more than the loan, which is not everyday credit. In the first run USDC pays its holder
+the outside rate less the Sky Savings Rate's spread under it, the reading most favourable to M0. The second run sets
+``usdc_yield`` "none", USDC paying its holder nothing, with the reserve yield a side set, so that M0 is stablecoin
+payments with no yield and no credit, nobody able to borrow, as its stored defi_credit shows. M0's rates move with
+r_out one for one from their observed October 2026 levels (``economy_abm.m0_rates``), with ``--m0-rates fitted``, the
+lag-3 OLS lines, beside it.
+
+M1 and M2 run competitive P with the holding charge (demurrage), which pays for the liquidity the pool keeps
+available; U is the same P with no demurrage, so M1 against U on the same draws is what demurrage adds. No cell has
+a provider fee: P payments run on stablecoin rails, one transfer's gas a P payment (``engine_inputs``). The issuer
+is a pure custodian: it holds no pool shares and no support fund, so households alone own the pool, and owners leave
+by the users' rule. The pool's fixed cost is sourced: Aave's 2025 paid service providers over US consumer units,
+$0.18 a consumer unit a year, with ``--fixed-cost low`` (Compound, $0.10) and ``high`` (Sky, $0.50) beside it
+(``FIXED_COST``).
+
+With the full grid a second set repeats the baseline cell (r_out = 4.4%, a0 = 0.6) with outside lenders' interest
+recirculated to households (the stress convention). ``--lenders-interest returned`` instead runs every job of the
+requested grid with that interest returned to households in proportion to spending and adds no extra set; the
+stores, the region reading and the figures are produced as for any map, and the run record and its provenance say
+so.
 
 For every arm and cell it reports:
 
 * the gain against S0 after 60 months (mean, median, share better off) and participation at launch, in years 2 and 3
   (W1) and in years 4 and 5 (W2);
 * per job, each arm's paired differences against S0, for U, M1 and M2 against M0 too, and for M1 against U (what
-  demurrage adds, 4 Nov) (decided 3 Nov): the real saving line by line and the gain, overall, by harm group,
-  quintile, billing cycle and class (card holding x income source, decided 4 Nov), with the share worse off, $ a
-  person a year after launch, so intervals across seeds need no rerun; each cell holds their seed means. The gains are
-  read in full (decided 5 Nov: M2's indexation is the holder's own yield, not an issuer transfer). Beside the
-  wealth gain, the complete gain claim (d) reads (decided 11 Nov), at both ends with the same breakdowns, its
-  parts, and each group's difference in sales, so any surplus share can be read later; and, reported and not tested,
-  the gain by the arm's own role in W2;
-* for U, M1 and M2 the region reading (5 Nov, ``region``): whether the cell is in the stable region, its pool forming
-  and persisting, the issuer staying and every group's lower bound of its mean complete gain (decided 11 Nov: the
-  wealth change plus purchases received, sellers' extra sales at face value and at zero) at or above -$2 a person a
-  year against S0 at both ends and against M0 at face (claim (d); decided 11 Nov, second round: the value of
-  completed trade is not assumed, and against DeFi the result is a break-even value), with each yardstick's
-  break-even surplus share on the bounds and on the means, the means, each part, the same reading on the wealth gain
-  alone and the bare-majority reading beside. Owners' return less their alternative stays reported only, and the
-  entry rule's quote and realised readings (``Economy.entry_reads``) are run as bounds at confirmation;
-* liquidity in every arm (5 Nov, ``liquidity``), by window: the total precautionary money (households' buffers and
-  the pool's idle cash, with idle P beside), the shortfall bridges covered and the money held per dollar of it, and
+  demurrage adds): the real saving line by line and the gain, overall, by harm group, quintile, billing cycle and
+  class (card holding x income source), with the share worse off, $ a person a year after launch, so intervals
+  across seeds need no rerun; each cell holds their seed means. The gains are read in full: M2's indexation is the
+  holder's own yield, not an issuer transfer. Beside the wealth gain, the complete gain that claim (d) reads, at both
+  ends with the same breakdowns, its parts, and each group's difference in sales, so any surplus share can be read
+  later; and, reported and not tested, the gain by the arm's own role in W2;
+* for U, M1 and M2 the region reading (``region``): whether the cell is in the stable region, its pool forming and
+  persisting, the issuer staying and every group's lower bound of its mean complete gain at or above -$2 a person a
+  year against S0 at both ends and against M0 at face (claim (d)). The complete gain is the wealth change plus
+  purchases received, with sellers' extra sales valued at face and at zero, the two ends: the value of completed
+  trade is not assumed, and against DeFi the result is a break-even value. Beside it are each yardstick's break-even
+  surplus share on the bounds and on the means, the means, each part, the same reading on the wealth gain alone and
+  the bare-majority reading. Owners' return less their alternative is reported only, and the entry rule's quote and
+  realised readings (``Economy.entry_reads``) are run as bounds at confirmation;
+* liquidity in every arm (``liquidity``), by window: the total precautionary money (households' buffers and the
+  pool's idle cash, with idle P beside), the shortfall bridges covered and the money held per dollar of it, and
   failed payments;
-* for U, M1 and M2 demurrage by window (5 Nov, ``demurrage``): the issuer's derived share of the reserve return, the
-  yield on wallet P before demurrage, the reserve return on the pool's own cash, what the issuer keeps, demurrage, the
+* for U, M1 and M2 demurrage by window (``demurrage``): the issuer's derived share of the reserve return, the yield
+  on wallet P before demurrage, the reserve return on the pool's own cash, what the issuer keeps, demurrage, the
   coupon cut it paid and the capital cost of bridging, $ a person a year; and the issuer's complete wallet;
 * the gain split exactly by the conservation identity (wealth changes only through outside flows, write-off
   valuation and CPI): outside interest, penalties, card, conversion and pool costs no longer paid, card rewards,
   extra savings and Comet yield received, and the rest;
 * the issuer's reserve income ($ per capita over 60 months), reported apart: like S0's banks it sits outside the
-  household economy (the boundary rule, decided 31 Oct), so no "system gain" adds it;
-* the headline real part (decided 31 Oct and 1 Nov): the real resources each arm's intermediation uses, at the
-  same sourced rate for the same service whoever provides it, and each arm's saving against S0; with the pool's
-  priced costs against the sourced cost of its own lending, a gap the headline does not credit;
+  household economy, so no "system gain" adds it;
+* the headline real part: the real resources each arm's intermediation uses, at the same sourced rate for the same
+  service whoever provides it, and each arm's saving against S0; with the pool's priced costs against the sourced
+  cost of its own lending, a gap the headline does not credit;
 * beside it, the transfers: what households pay each intermediary outside the economy, net of what it pays back,
   against the real cost of its service, the margin going to its owners; and these payments by launch-wealth
   quintile;
@@ -93,11 +110,11 @@ For every arm and cell it reports:
 * the contract's state in W2: pool capital N and its limit N*, demurrage c on wallet P, its coverage of the
   bridging capital cost and its share theta of bridging finance, the bridging rate r_b, the coupon r_g and the
   published quote, and the share of bridges wanted the pool drew;
-* for U, M1 and M2 the issuer's stay test (decided 30 Oct): the share of seeds in which it would leave (falsifier
-  X6, which the cell's verdict names, with M2's declared limit at zero real rates) and the most annual expense it
-  could bear, $ per person and as a share of P outstanding;
-* for U, M1 and M2 backing (decided 30 Oct): the lowest ratio of reserves to P owed since launch over the cell's
-  seeds (below 1 fires the unsafe falsifier) and the issuer's owners' backing top-ups, $ per capita over 60 months;
+* for U, M1 and M2 the issuer's stay test: the share of seeds in which it would leave (falsifier X6, which the
+  cell's verdict names, with M2's declared limit at zero real rates) and the most annual expense it could bear, $ per
+  person and as a share of P outstanding;
+* for U, M1 and M2 backing: the lowest ratio of reserves to P owed since launch over the cell's seeds (below 1 fires
+  the unsafe falsifier) and the issuer's owners' backing top-ups, $ per capita over 60 months;
 * for U, M1 and M2 the persistence tests, falsifiers and verdict, with worse-than-M0 decided against the paired M0
   run:
   - trade: in W2, failed-trade share no higher than M0's. Under the spending rule every arm owes the same
@@ -107,72 +124,68 @@ For every arm and cell it reports:
     when that median is not positive);
   - "systematically" is read as for harm: worse in at least 80% of the cell's paired seeds. The falsifier fires
     if trade or any group fails that way.
-  "Supports CPM" also needs credit cost and investor return against M0; the verdict string still says they are not
-  computed (kept unchanged), and beside it ``better_than_M0`` now computes both from the stored parts (V2, borrowers'
-  credit cost; V4, owners' realised return against DeFi's savings rate), so a configuration with no falsifier is
-  still reported as persistent without "better than M0" established in its verdict;
-* for U, M1 and M2 the yardsticks (decided 3 and 4 Nov), which claim (a) reads across seeds in Step 7: the pool's
-  own margin (persistence test 4 and falsifier 3, read on months households hold pool capital) and the joint
-  issuer-and-pool test by window, $ a person a year, with each seed's W2 value; the 90% household reading on capital
-  net of queued exits, with all pool capital beside it (households alone own the pool, decided 5 Nov); whether P
-  routes through W2; and in each cell the share of seeds that pass each;
+  "Supports CPM" also needs credit cost and investor return against M0. The verdict string does not compute them and
+  says so; beside it ``better_than_M0`` computes both from the stored parts (V2, borrowers' credit cost; V4, owners'
+  realised return against DeFi's savings rate), so a configuration with no falsifier is reported as persistent
+  without "better than M0" established in its verdict;
+* for U, M1 and M2 the yardsticks, which claim (a) reads across seeds: the pool's own margin (persistence test 4 and
+  falsifier 3, read on months households hold pool capital) and the joint issuer-and-pool test by window, $ a person
+  a year, with each seed's W2 value; the 90% household reading on capital net of queued exits, with all pool capital
+  beside it (households alone own the pool); whether P routes through W2; and in each cell the share of seeds that
+  pass each;
 * beside the majority verdict, the share of seeds whose own verdict is Persistent (every persistence test holds and
   no falsifier fires, worse than M0 counting in a seed where the cell is systematically worse and that seed is
-  worse) with its 95% (Wilson) interval (decided 31 Oct; the 3 Nov review); a cell Persistent by majority says in
-  how many seeds a falsifier fired;
+  worse) with its 95% (Wilson) interval; a cell Persistent by majority says in how many seeds a falsifier fired;
 * failure fees and new failed payments (a re-queued wage not counted again) by launch-wealth quintile, $ a person a
-  year after launch (the 31 Oct review);
-* in failure_counts.json (decided 3 Nov), each job's failed bills and wages after launch in every arm, a person a
-  month, in fee units, unpaid shares and whole items, with the declined card-eligible purchases of payers without a
-  card and the pool's bridges in place of failures apart; the spread of each person's fee units under a monthly cap
-  of 2, 3 and 5; and with the development seeds, every arm's fees and counts by person and month, and S0's buffer
-  chosen at dealing by person and month (the 3 Nov review). Reported only: nothing there enters the headline or a
-  verdict;
-* for U, M1 and M2 the small-bill loans the pool refused because the receipts would not also have covered the fee
-  (the 31 Oct review);
-* reported only (decided 3 Nov), none of it in the headline or a verdict: for U, M1 and M2 households' realised
-  return as pool owners, the income credited to their shares over their capital-time, % a year before CPI, in all and
-  net of issuer money (none reaches the pool's income under demurrage, 4 Nov), by window and by year after launch,
-  and their net return less their alternative by window (11 Nov), with its seed mean and 95% t interval in each
-  cell; and beside it by
-  loan year (decided 4 Nov) the pool's loans' income over their principal-time, with the month's fixed cost
-  spread over loan years by principal-time and the loans' own income beside, with each owner's
-  own net return since buying (over at most 12 months) at its lowest and capital-weighted mean in W2; for M0, U, M1
-  and M2 crossings
-  between E and P, routine (free) and conversions (paying the fee), at most one a person a step (a day, the dealing or
-  the close) in each kind, as counts and $ a person a year. measures.json stores their monthly series (``MONTHLY``),
-  with every arm's mean buffer chosen at dealing by people without a card and by card holders (the 3 Nov review),
-  every arm's read-outs of the harsh stress (14 Nov 2026, ``STRESS``: money, savings, wallet P, the bridge book,
-  revolving, write-offs, the wages sent outside and hit workers' failures apart from everyone else's), every arm's
-  settlement records (``CHAINS``: own shortfall and knock-on failure, and dependence on netting), and in U, M1
-  and M2 the contract's monthly path (5 Nov: participation, N, N*, c, coverage, theta, r_b, r_g, the quote);
-* at each distress level the paired reading (decided 30 and 31 Oct): each arm against its own run without
-  distress for the same r_out, a0 and seed, on failures, participation, pool capital, exit requests and the issuer's
-  wallet (those that apply to the arm). Per measure: the largest gap from the start of the distress year and its
-  month; the months after the distress year until the gap stays within a quarter of that largest gap for three
-  months running after it, or not recovered by the end; and the lasting gap, its average over the last 12 months.
-  Each arm's failure dip is also read against S0's, and for U, M1 and M2 the issuer counts as rewarded for failure when
-  its wallet over the distress year beats the run without distress in at least 80% of paired seeds (reported, not a
-  falsifier). Each job stores the monthly series of these measures, and for every arm the share of jobs without a
-  wage (the month's average and its last day) and the wages their payers kept (3 Nov), and since the harsh stress
-  (decided 14 Nov 2026) the wages of extra layoffs sent outside the household economy, so the reading can be
-  redone;
-* for every arm (3 Nov, for the S0 check) card holders' card bridging of the bills and wages their money could not
-  pay, since card limits (14 Nov 2026) their cash advances, with the card's fees and charge-offs beside, $ a person
-  and a holder a year after launch; and in every store's opening record the outside prices each r_out
-  runs at, the products kept fixed, and each distress level's total rate with normal job loss and its hand label of
-  jobs without a wage at month 36.
+  year after launch;
+* in failure_counts.json, each job's failed bills and wages after launch in every arm, a person a month, in fee
+  units, unpaid shares and whole items, with the declined card-eligible purchases of payers without a card and the
+  pool's bridges in place of failures apart; the spread of each person's fee units under a monthly cap of 2, 3 and 5;
+  and with the development seeds, every arm's fees and counts by person and month, and S0's buffer chosen at dealing
+  by person and month. Reported only: nothing there enters the headline or a verdict;
+* for U, M1 and M2 the small-bill loans the pool refused because the receipts would not also have covered the fee;
+* reported only, none of it in the headline or a verdict: for U, M1 and M2 households' realised return as pool
+  owners, the income credited to their shares over their capital-time, % a year before CPI, in all and net of issuer
+  money (none reaches the pool's income under demurrage), by window and by year after launch, and their net return
+  less their alternative by window, with its seed mean and 95% t interval in each cell; and beside it by loan year
+  the pool's loans' income over their principal-time, with the month's fixed cost spread over loan years by
+  principal-time and the loans' own income beside, with each owner's own net return since buying (over at most 12
+  months) at its lowest and capital-weighted mean in W2; for M0, U, M1 and M2 crossings between E and P, routine
+  (free) and conversions (paying the fee), at most one a person a step (a day, the dealing or the close) in each
+  kind, as counts and $ a person a year. measures.json stores their monthly series (``MONTHLY``), with every arm's
+  mean buffer chosen at dealing by people without a card and by card holders, every arm's read-outs of the harsh
+  stress (``STRESS``: money, savings, wallet P, the bridge book, revolving, write-offs, the wages sent outside and hit
+  workers' failures apart from everyone else's), every arm's settlement records (``CHAINS``: own shortfall and
+  knock-on failure, and dependence on netting), and in U, M1 and M2 the contract's monthly path (participation, N,
+  N*, c, coverage, theta, r_b, r_g, the quote);
+* at each distress level the paired reading: each arm against its own run without distress for the same r_out, a0
+  and seed, on failures, participation, pool capital, exit requests and the issuer's wallet (those that apply to the
+  arm). Per measure: the largest gap from the start of the distress year and its month; the months after the
+  distress year until the gap stays within a quarter of that largest gap for three months running after it, or not
+  recovered by the end; and the lasting gap, its average over the last 12 months. Each arm's failure dip is also read
+  against S0's, and for U, M1 and M2 the issuer counts as rewarded for failure when its wallet over the distress year
+  beats the run without distress in at least 80% of paired seeds (reported, not a falsifier). Each job stores the
+  monthly series of these measures, and for every arm the share of jobs without a wage (the month's average and its
+  last day), the wages their payers kept and the wages of extra layoffs sent outside the household economy, so the
+  reading can be redone;
+* for every arm card holders' card bridging of the bills and wages their money could not pay and their cash
+  advances, with the card's fees and charge-offs beside, $ a person and a holder a year after launch; and in every
+  store's opening record the outside prices each r_out runs at, the products kept fixed, and each distress level's
+  total rate with normal job loss and its label of jobs without a wage at month 36.
 """
 import os
 
-# One BLAS/OpenMP thread per process (the 5 Nov speed review), set before numpy loads here and in every worker (each
-# re-imports this module): numpy's and scipy's OpenBLAS otherwise start 24 threads each and commit about 1.5 GB of
-# buffers per process, which is what ran out of memory past 12 workers. The engine's only BLAS calls are small dot
-# products, and its runs are bit-identical with one thread or 24 (checked 5 Nov).
+# One BLAS/OpenMP thread per process, set before numpy loads here and in every worker (each re-imports this module):
+# numpy's and scipy's OpenBLAS otherwise start a thread for every core and commit about 1.5 GB of buffers per
+# process, which runs out of memory past 12 workers on a 31 GB machine. The only BLAS calls are small dot products
+# and the matrix-vector product of the arm rows, and a job's stored record is the same bit for bit at one thread
+# and at the default. The workers inherit these settings from this process and set them again when they
+# import this module.
 for _threads in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
     os.environ[_threads] = "1"
 
 import argparse  # noqa: E402
+from contextlib import nullcontext  # noqa: E402
 import copy  # noqa: E402
 from concurrent.futures import FIRST_EXCEPTION, ProcessPoolExecutor, wait  # noqa: E402
 from dataclasses import asdict, replace
@@ -192,7 +205,7 @@ from scipy.stats import nct, norm, t as student
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
-from cpm_abm.catalogue import finite_catalogue  # noqa: E402  (the pinned, audited PySPG iterator)
+from cpm_abm.catalogue import finite_catalogue  # noqa: E402  (the pinned PySPG iterator)
 from cpm_abm.economy_abm import (BUSINESS_APR, CARD_APR, CARD_FRAUD, CARD_LENDING_COST, CARD_NETWORK,  # noqa: E402
                                  CARD_PROCESSING, CREDIT_RECORDS, EPS, EWA_COST, FAIL_COST, FAIL_FEE,
                                  FAILURE_COUNTS,
@@ -202,8 +215,8 @@ from run_economy_figures import FIXED_COST_TIMES  # noqa: E402
 from run_economy_figures import (DOLLARS, FIXED_COST, classes, engine_inputs, engine_record,  # noqa: E402
                                  issuer_clause, persistence, provenance, windows, years_of_life)
 
-# The experiment's modules (src/cpm_abm/experiment, its code map in the package docstring): every name the
-# runner defined when it was one file is importable from here as before.
+# The experiment's modules (src/cpm_abm/experiment, its code map in the package docstring). Their names are
+# re-exported here, so that callers and tests can import them from the runner.
 from cpm_abm.experiment.notes import (A0S, AGAINST_NOTE, APPLIES, ARMS, BASE, BOOTSTRAP_DRAWS,  # noqa: E402,F401
                                       BOOTSTRAP_SEED, BUFFERS, CLAIM_ALPHA, CLAIM_ARMS, CLAIM_CONFIDENCE, CLAIM_MARGIN,
                                       CLAIM_NOTE, CLASSES, CONTRACT, CROSSINGS, DIP_MARGIN, DIP_MONTHS, DISTRESS,
@@ -227,6 +240,7 @@ from cpm_abm.experiment.grid import (CONFIRMATION_COUNT, CONFIRMATION_EXTENSION,
                                      selected, tasks_for)
 from cpm_abm.experiment.grid import SIDE_DISTRESS  # noqa: E402
 from cpm_abm.experiment.notes import LOW_RATES, SIDE_RATES  # noqa: E402
+from cpm_abm.experiment import second_run  # noqa: E402
 from cpm_abm.experiment.accounts import (COVERED, HELD, by_chronic, by_class, by_quintile,  # noqa: E402,F401
                                          by_windows, card_bridging, cash_check, crossings, demurrage, ewa_report,
                                          failure_report, households_pool, liquidity, measures, monthly, owners_excess,
@@ -249,8 +263,8 @@ from cpm_abm.experiment.jobs import (assemble, cell_task, finish, fork_month, fo
 
 
 def options():
-    """The command line; the workers default is the default limit, 12 (``--most-workers``), and the cells default to the
-    full grid (a selection, the 3 Nov review, takes grid values only)."""
+    """The command line. The workers default to the default limit, 12 (``--most-workers``), and the cells to the full
+    grid; a selection takes grid values only."""
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--seeds", choices=tuple(SEEDS), required=True)
     parser.add_argument("--only-seeds", type=int, nargs="+", metavar="SEED",
@@ -260,10 +274,10 @@ def options():
                              "and scripts/join_parts.py joins the parts into the map")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--n", type=int, default=POPULATION,
-                        help="people in the population: 4,000, the size decided 12 Nov")
+                        help="people in the population: 4,000, the registered size")
     parser.add_argument("--workers", type=int, default=WORKERS)
     parser.add_argument("--most-workers", type=int, default=WORKERS_MOST, metavar="M",
-                        help="the most workers a run may use, 12 by default: each worker needs about 1.5 GB at 4,000 "
+                        help="the most workers a run may use, 12 by default: each worker needs about 1.0 GB at 4,000 "
                              "people, so raise the limit only on a machine with that much memory for every worker; "
                              "--workers above it is refused before anything runs")
     parser.add_argument("--timing", action="store_true", help="time one job at the baseline cell; write nothing")
@@ -278,60 +292,64 @@ def options():
                              "run on the exploratory seeds (or development seeds) only; 0.005 and 0.01 are the low "
                              "rates, an exploratory side check on the side seeds only")
     parser.add_argument("--custody-cost", type=float, metavar="PCT",
-                        help="the issuer's custody cost on P, %% a year (0.24 as built): an exploratory side check "
+                        help="the issuer's custody cost on P, %% a year (0.24 by default): an exploratory side check "
                              "on the side seeds only")
     parser.add_argument("--owners-spread", type=float, metavar="POINTS",
-                        help="the owners' spread over the outside rate, points a year (0.25 as built): an exploratory "
+                        help="the owners' spread over the outside rate, points a year (0.25 by default): an exploratory "
                              "side check on the side seeds only")
     parser.add_argument("--distress-start", type=int, metavar="MONTHS",
-                        help="months after launch at which the distress year starts (24 as built): an exploratory "
+                        help="months after launch at which the distress year starts (24 by default): an exploratory "
                              "side check on the side seeds only")
     parser.add_argument("--a0", type=float, nargs="+", choices=A0S, default=A0S, help="initial participation to run")
     parser.add_argument("--distress", type=float, nargs="+", choices=sorted(DISTRESS + SIDE_DISTRESS), default=DISTRESS,
                         help="distress levels to run; a level's paired reading needs 0 selected too; 0.016 to 0.019, "
                              "the stress boundary's levels beside the grid's, run on development seeds only")
     parser.add_argument("--arms", choices=("all", "S0"), default="all",
-                        help="every arm (default), or S0 alone (the S0 check, 3 Nov)")
+                        help="every arm (default), or S0 alone (the S0 check)")
     parser.add_argument("--fees-a-month", type=float, default=Economy.fees_a_month,
-                        help="the most failure fees a payer pays a month: 2, decided after the S0 check (4 Nov); "
+                        help="the most failure fees a payer pays a month: 2; "
                              "3 and 5 are read beside it")
     parser.add_argument("--past-cap", type=float, choices=(27.0, 0.0), default=27.0,
-                        help="what the buffer replay prices a failure past the monthly cap at, $ (the S0 check, 3 Nov)")
+                        help="what the buffer replay prices a failure past the monthly cap at, $ (the S0 check)")
     parser.add_argument("--crypto-share", type=float, default=CRYPTO_SHARE,
                         help="M0's share of people holding crypto collateral, at full cover; default 0: collateral "
-                             "lending by Compound III is not run or reported (decided 12 Nov: real DeFi lends only "
+                             "lending by Compound III is not run or reported (real DeFi lends only "
                              "against collateral worth more than the loan, which is not everyday credit); the option "
                              "remains only so the existing unit tests of that code path can run")
     parser.add_argument("--leave-noise", type=float, choices=(0.5, 1.0, 2.0), default=1.0,
-                        help="the leaving rule's logistic noise as a multiple of its decided scale, 1e-4 of each "
-                             "person's own monthly spending (decided 4 Nov: half and twice are reported beside)")
+                        help="the leaving rule's logistic noise as a multiple of its registered scale, 1e-4 of each "
+                             "person's own monthly spending (half and twice are reported beside)")
     parser.add_argument("--fixed-cost", choices=tuple(FIXED_COST), default="central",
-                        help="the pool's sourced fixed cost (decided 5 Nov): central, Aave's 2025 paid service "
+                        help="the pool's sourced fixed cost: central, Aave's 2025 paid service "
                              "providers, $0.18 a consumer unit a year; low, Compound's, $0.10; high, Sky's, $0.50")
     parser.add_argument("--m0-rates", choices=("observed", "fitted"), default="observed",
-                        help="how M0's rates follow r_out (decided 5 Nov): observed, one for one from the October "
+                        help="how M0's rates follow r_out: observed, one for one from the October "
                              "2026 levels; fitted, the lag-3 OLS lines, a sensitivity")
-    parser.add_argument("--entry-reads", choices=("quote", "realised", "leaving_rule"), default="quote",
+    parser.add_argument("--entry-reads", choices=("quote", "realised", "leaving_rule"), default=_Unnamed("quote"),
                         help="what entrants compare with their alternative at dealing: quote, the pool's quote at N*, "
-                             "the decided rule; realised, the pool's trailing realised return, a sensitivity "
-                             "(decided 11 Nov: the entry check); leaving_rule, the same return read by each saver "
-                             "with the leaving rule's own dispersion, between the two (decided 12 Nov)")
+                             "the registered rule; realised, the pool's trailing realised return, a sensitivity "
+                             "(the entry check); leaving_rule, the same return read by each saver "
+                             "with the leaving rule's own dispersion, between the two; under "
+                             "--second-run, the one reading to run, and with none named both, quote and realised. "
+                             "Under the quote the saver meets the entry hurdle by construction (a tie at owners' "
+                             "alternative enters), so capital under it shows room and exits; the realised record is "
+                             "the reading that tests whether savers stay")
     parser.add_argument("--loan-losses", choices=("none", "sourced"), default="none",
-                        help="loan losses (decided 12 Nov): none, as built (a written-off loan stays owed); "
+                        help="loan losses: none, by default (a written-off loan stays owed); "
                              "sourced, the bound: every lender, the pool included, discharges each month the Federal "
                              "Reserve charge-off rate of the bank loans its loans replace on their average balance, "
                              "moving with jobs without a wage three months earlier, and the pool's coupons carry "
                              "that rate")
     parser.add_argument("--lenders-interest", choices=("leaves", "returned"), default="leaves",
-                        help="outside lenders' interest (decided 12 Nov): leaves the economy, as built, with the "
+                        help="outside lenders' interest: leaves the economy, by default, with the "
                              "full grid's extra baseline set returning it; or returned to households in proportion to "
                              "spending in every job of the requested grid, with no extra set")
     parser.add_argument("--card-lines", choices=("held", "cut"), default="held",
-                        help="card lines in the distress year (decided 14 Nov 2026): held, the main reading; or "
+                        help="card lines in the distress year: held, the main reading; or "
                              "cut at the start of the distress year by each tier's share of the 2008 to 2012 cut times "
                              "the distress level over 2%%, a side check only")
-    # The robustness switches (docs/ROBUSTNESS_PLAN.md, section 5), side checks on development seeds only, each off
-    # by default; the run record stores every Economy field, so a results folder names its variant.
+    # The robustness switches (docs/ROBUSTNESS_PLAN.md, section 5): each is off by default and runs on development
+    # seeds only. The run record stores every Economy field, so a results folder names its variant.
     parser.add_argument("--buffer-review", type=float, default=Economy.buffer_review, metavar="ALPHA",
                         help="the share of people who re-choose their cash buffer each month, the rest keeping last "
                              "month's: 1, everyone every month, the base; 0.5 and 0.153, the review chance, beside it")
@@ -352,7 +370,31 @@ def options():
                         help="who is in P at launch: scattered, each person with chance a0, the base; neighbourhood, "
                              "round(a0 n) neighbours on the ring (needs --sellers ring); largest, the round(a0 n) "
                              "largest sellers (needs --sellers hubs)")
+    # The second run (cpm_abm.experiment.second_run): its settings, lengths, grid and saver readings.
+    parser.add_argument("--second-run", choices=second_run.NAMES, action=_SecondRun, metavar="NAME",
+                        help="run the second registered run: base, its 210 cells with every setting of "
+                             "cpm_abm.experiment.second_run, or one of its side sets by name on that set's own cells "
+                             f"({', '.join(second_run.SIDE_SETS)}); each cell runs on both saver readings, written to "
+                             "quote/ and realised/ under --output, unless --entry-reads names one, written to --output "
+                             "itself; --r_out, --a0 and --distress still select cells")
     return parser
+
+
+class _Unnamed(str):
+    """The saver reading of a run whose command line names none: "quote", told apart from a named "quote" so that the
+    second run can run both readings when none is named."""
+
+
+class _SecondRun(argparse.Action):
+    """--second-run NAME: the name, and the cells of the second run or of its side set in every dimension the command
+    line has not selected before it (one selected after it replaces them as usual), so the population runner and the
+    driver that runs a map in parts (scripts/run_confirmation.py) read the same cells."""
+
+    def __call__(self, parser, namespace, value, option_string=None):
+        setattr(namespace, self.dest, value)
+        for name, values in second_run.cells(value).items():
+            if getattr(namespace, name) is parser.get_default(name):
+                setattr(namespace, name, list(values))
 
 
 def _thresholds(text):
@@ -373,9 +415,9 @@ SIDE_CHECK_SEEDS = "side"                        # the seed set the exploratory 
 
 
 def side_economy(args):
-    """The Economy settings an exploratory side check sets away from the build, as the engine holds them (a month):
+    """The Economy settings an exploratory side check sets away from their defaults, in the engine's units (a month):
     the custody cost and the owners' spread from per cent a year, the shock date in months. Empty for a run that
-    names none, so such a run builds exactly the Economy it built before."""
+    names none, which then runs on the defaults."""
     found = {}
     if args.custody_cost is not None:
         found["issuer_cost"] = args.custody_cost / 100 / 12
@@ -386,28 +428,63 @@ def side_economy(args):
     return found
 
 
-def side_check_refused(args):
+def side_check_refused(args, w=None):
     """Why a run that asks for an exploratory side check is refused, or None. The side checks (a custody cost, an
-    owners' spread or a shock date away from the build, the fixed cost at a multiple, a low outside rate) run on
-    the side seeds only, and the shock date must leave the distress year inside the run."""
+    owners' spread or a shock date away from its default, the fixed cost at a multiple, a low outside rate) run on
+    the side seeds only, and the shock date must leave the distress year inside the run: inside the months of the
+    run's own Economy ``w``, or without one the Economy's defaults."""
     asked = sorted(side_economy(args)) + [f"fixed cost {args.fixed_cost}"] * (args.fixed_cost in FIXED_COST_TIMES) \
         + [f"r_out {rate}" for rate in sorted(set(args.r_out) & set(LOW_RATES))]
     if asked and args.seeds != SIDE_CHECK_SEEDS:
         return (f"the exploratory side checks run on the side seeds only (--seeds {SIDE_CHECK_SEEDS}); got --seeds "
                 f"{args.seeds} with {', '.join(asked)}")
-    if args.distress_start is not None and not 0 <= args.distress_start <= Economy.months - Economy.distress_length:
-        return (f"--distress-start is from 0 to {Economy.months - Economy.distress_length} months after launch, so "
-                f"that the distress year ends inside the run; got {args.distress_start}")
+    last = (Economy.months - Economy.distress_length if w is None else w.months - w.distress_length)
+    if args.distress_start is not None and not 0 <= args.distress_start <= last:
+        return (f"--distress-start is from 0 to {last} months after launch, so that the distress year ends inside "
+                f"the run; got {args.distress_start}")
     return None
 
 
 def cut_refused(args):
     """Why a run that selects a level of the rate cut is refused, or None: the cut runs on the exploratory seeds (or
-    development seeds), never on the confirmation seeds."""
+    development seeds), never on the confirmation seeds. Under --second-run those rates are the run's own grid, and
+    the run is refused for the reasons ``second_run_refused`` gives instead."""
+    if args.second_run is not None:
+        return second_run_refused(args)
     cut = sorted(set(args.r_out) & set(SIDE_RATES))
     if cut and args.seeds not in CUT_SEEDS:
         return (f"the rate cut's levels run on the exploratory seeds or development seeds only; got --seeds "
                 f"{args.seeds} with r_out {', '.join(map(str, cut))}")
+    return None
+
+
+def second_reads(args):
+    """The saver readings a run of --second-run makes: the one --entry-reads names, or with none named every reading
+    of the run or side set (``second_run.reads``)."""
+    if isinstance(args.entry_reads, _Unnamed):
+        return second_run.reads(args.second_run)
+    return (str(args.entry_reads),)
+
+
+def second_run_refused(args):
+    """Why a run of --second-run is refused, or None. Its settings fix the stress year, the edge and the card lines,
+    so the options that set them otherwise are refused rather than overridden; a saver reading the run or side set
+    does not make is refused; a side set never runs on the confirmation seeds, which see the registered run alone; and
+    a part of a map (--only-seeds, the driver's) runs one reading, so it names it."""
+    clashing = [option for option, given in (("--distress-start", args.distress_start is not None),
+                                             ("--lenders-interest returned", args.lenders_interest == "returned"),
+                                             ("--card-lines cut", args.card_lines == "cut")) if given]
+    if clashing:
+        return (f"--second-run sets the stress year, the edge and the card lines itself (a side set changes them); "
+                f"got {', '.join(clashing)}")
+    wrong = [reading for reading in second_reads(args) if reading not in second_run.reads(args.second_run)]
+    if wrong:
+        return (f"--second-run {args.second_run} runs on the saver readings {second_run.reads(args.second_run)}, "
+                f"not {wrong}")
+    if args.second_run != "base" and args.seeds == "confirmation":
+        return f"the second run's side sets never run on the confirmation seeds; got --second-run {args.second_run}"
+    if args.only_seeds is not None and len(second_reads(args)) > 1:
+        return "a part of the second run (--only-seeds) runs one saver reading: name it with --entry-reads"
     return None
 
 
@@ -424,14 +501,14 @@ def main():
     one job; or, with --dry-run, print the launch and stop."""
     parser = options()
     args = parser.parse_args()
-    # Refused before anything runs or is written: more workers than --most-workers allows (12 by default, since more
-    # ran out of memory on a 31 GB laptop; each worker needs about 1.5 GB at 4,000 people), or the confirmation set
-    # while its count is not fixed (``seeds_for``).
+    # Refused before anything runs or is written: more workers than --most-workers allows (12 by default; a cell
+    # task's measured peak is about 1.0 GB at 4,000 people), or the confirmation set while its count is not fixed
+    # (``seeds_for``).
     if args.workers > args.most_workers or args.workers < 1:
         parser.error(f"--workers must be from 1 to {args.most_workers}, the limit --most-workers sets (12 by default, "
-                     f"about 1.5 GB a worker at 4,000 people); got {args.workers}")
+                     f"about 1.0 GB a worker at 4,000 people); got {args.workers}")
     try:
-        seeds = seeds_for(args.seeds)
+        seeds = seeds_for(args.seeds, second=args.second_run is not None)
     except ValueError as refused:
         parser.error(str(refused))
     # A part of the map (--only-seeds): some seeds of the set, in the set's order; a seed outside the set is refused.
@@ -441,60 +518,78 @@ def main():
         if stray:
             parser.error(f"--only-seeds must name seeds of the {args.seeds} set {list(seeds)}; got {stray}")
         seeds = tuple(seed for seed in seeds if seed in args.only_seeds)
-    # The robustness switches and the stress boundary's levels are side checks, run on development seeds only
-    # (docs/ROBUSTNESS_PLAN.md, section 6), so the confirmation seeds never see them. The rate cut's levels
-    # (SIDE_RATES) run on the exploratory seeds, as the plan requires of any run made after the confirmation is
-    # read, or on development seeds; the confirmation seeds never see them either (decided 17 Nov 2026).
+    # The robustness switches and the stress boundary's levels run on development seeds only
+    # (docs/ROBUSTNESS_PLAN.md, section 6), and the rate cut's levels (SIDE_RATES) on the exploratory or the
+    # development seeds: the plan requires that the confirmation seeds see the registered run and nothing else.
     changed, side_levels = side_settings(args)
     if (changed or side_levels) and args.seeds != "development":
         parser.error(f"the robustness switches and the stress boundary's levels run on development seeds only; got "
                      f"--seeds {args.seeds} with {', '.join(changed + [f'distress {v}' for v in side_levels])}")
-    refused = cut_refused(args) or side_check_refused(args)
+    refused = cut_refused(args)
     if refused:
         parser.error(refused)
     selection = selected(args.r_out, args.a0, args.distress)
-    # Lenders' interest returned over the whole grid (decided 12 Nov): every job runs with it, no extra set.
+    # Lenders' interest returned over the whole grid: every job runs with it, no extra set.
     returned = args.lenders_interest == "returned"
     tasks = tasks_for(seeds, args.n, selection, returned)
     s0_only = args.arms == "S0"
-    # The monthly cap and the replay's price of a failure past it, for the S0 check and its fallbacks (3 Nov); M0's
-    # crypto collateral share (0 by default, decided 12 Nov: not run), the leaving rule's noise multiple (4 Nov) and
-    # what entry reads (11 Nov, the entry check) and loan losses (12 Nov). The run record stores every Economy field,
-    # so it shows the entry and loan-loss options.
+    # The run's Economy from the command line: the monthly fee cap and the replay's price of a failure past it, M0's
+    # crypto collateral share (0 by default, no collateral lending), the leaving rule's noise multiple, what entrants
+    # read, loan losses, lenders' interest, card lines and the robustness switches. The run record stores every
+    # Economy field, so it shows each option.
     try:
         template = Economy(n=args.n, fees_a_month=args.fees_a_month, buffer_prices_past_cap=args.past_cap > 0,
                            crypto_share=args.crypto_share, leave_noise=args.leave_noise, m0_rates=args.m0_rates,
-                           entry_reads=args.entry_reads, loan_losses=args.loan_losses,
+                           entry_reads=str(args.entry_reads), loan_losses=args.loan_losses,
                            lender_income_recirculated=returned, card_line_cut=args.card_lines == "cut",
                            **{name: getattr(args, name) for name in SWITCHES}, **side_economy(args))
+        # The second run (``second_run``): one Economy a saver reading, each with the run's or the side set's settings
+        # and lengths; without --second-run the one Economy above.
+        templates = [template] if args.second_run is None else [
+            replace(template, **second_run.economy(args.second_run, reading)) for reading in second_reads(args)]
     except ValueError as refused:
         parser.error(str(refused))
+    # The side checks are refused on the run's own Economy (its months), before anything runs or is written.
+    refused = next(filter(None, (side_check_refused(args, w) for w in templates)), None)
+    if refused:
+        parser.error(refused)
     count = partial(runs_in, s0_only=s0_only)
     total = sum(map(count, tasks))
     output = None if args.output is None else (ROOT / args.output).resolve()
     if output is not None and not output.is_relative_to(ROOT) and not args.timing:
         raise ValueError("Output must stay in this workspace")
+    # Where each Economy's map is written: --output, or with two saver readings a folder of each under it.
+    outputs = [output if output is None or len(templates) == 1 else output / w.entry_reads for w in templates]
     if args.dry_run:
-        # The launch as it would run, built and printed, nothing simulated or written (the 13 Nov speed pass).
+        # The second run's launch beside the rest: its set, readings, lengths, settings and each reading's folder.
+        second = {} if args.second_run is None else dict(
+            second_run=args.second_run, entry_reads=[w.entry_reads for w in templates],
+            lengths={name: getattr(templates[0], name) for name in second_run.LENGTHS},
+            settings=second_run.economy(args.second_run, templates[0].entry_reads),
+            outputs=[None if folder is None else str(folder) for folder in outputs])
+        # The launch as it would run, built and printed, nothing simulated or written.
         cells = [[p["r_out"], p["a0"], p["distress"]]
                  for p in finite_catalogue({name: list(values) for name, values in selection.items()})]
         print(json.dumps(dict(seed_set=args.seeds, seeds=list(seeds),
-                              **(dict(part_of=list(seeds_for(args.seeds))) if part else {}), cells=len(cells),
+                              **(dict(part_of=list(seeds_for(args.seeds, second=args.second_run is not None)))
+                                 if part else {}), cells=len(cells),
                               recirculation_set_jobs=sum(bool(task[5]) and not returned for task in tasks),
                               jobs=len(tasks), population_runs=total, arms=["S0"] if s0_only else ["S0", *ARMS],
                               workers=args.workers, population=args.n,
                               switches={name: getattr(template, name) for name in SWITCHES},
                               output=None if output is None else str(output),
                               output_exists=None if output is None else output.exists(),
-                              mode="plain" if s0_only or args.plain else "shared S0 and distress fork"), indent=1))
+                              mode="plain" if s0_only or args.plain else "shared S0 and distress fork", **second),
+                         indent=1))
         print("cells (r_out, a0, distress):\n" + "\n".join(f"  {rate}, {a0}, {level}" for rate, a0, level in cells))
         return
     if args.timing:
         # One job at the baseline cell with the most distress, and the whole run projected from it: a job's runs go one
-        # after another and only as many workers as jobs are busy, so the longest job bounds a small selection.
+        # after another and only as many workers as jobs are busy, so the longest job bounds a small selection. Under
+        # --second-run the job is the first reading's, and the projection is for one reading.
         probe = (BASE[0], BASE[1], DISTRESS[-1], seeds[0], args.n, returned)
         began = time.perf_counter()
-        job(probe, template, s0_only=s0_only, fixed_cost=args.fixed_cost)
+        job(probe, templates[0], s0_only=s0_only, fixed_cost=args.fixed_cost)
         seconds = (time.perf_counter() - began) / count(probe)
         print(json.dumps(dict(seed_set=args.seeds, jobs=len(tasks), population_runs=total, workers=args.workers,
                               seconds_per_run=round(seconds, 1),
@@ -504,18 +599,33 @@ def main():
     if output is None:
         parser.error("--output is required unless --timing or --dry-run")
     output.mkdir(parents=True, exist_ok=False)
+    # S0's runs shared by the saver readings: S0 has no pool, so no saver reads anything in it, and where the run's
+    # Economies differ in entry_reads alone each reading's map reads S0's runs from one folder, made once, which
+    # outlives both maps and is removed after them. Every other arm, and each arm's state at launch, is run again for
+    # each reading.
+    shared = (len(templates) > 1 and not (s0_only or args.plain)
+              and all(replace(w, entry_reads="quote") == replace(templates[0], entry_reads="quote") for w in templates))
+    with (tempfile.TemporaryDirectory(prefix="cpm_s0_shared_") if shared else nullcontext()) as s0_cache:
+        for w, folder in zip(templates, outputs):
+            folder.mkdir(exist_ok=folder == output)
+            run_map(args, w, folder, tasks, selection, seeds, part, total, s0_only, s0_cache)
+
+
+def run_map(args, w, output, tasks, selection, seeds, part, total, s0_only, s0_cache=None):
+    """One map: every job of ``tasks`` on the Economy ``w``, its stores written to ``output`` (a folder already made),
+    then the cells decided, the claim read and the figures drawn; a part (``part``) writes its jobs only. With
+    ``s0_cache``, S0's runs are read from that folder, and made into it where they are not there yet (``run_tasks``)."""
     if s0_only or args.plain:
         with ProcessPoolExecutor(max_workers=args.workers) as pool:
-            work = partial(_stored, job, template=template, s0_only=s0_only, fixed_cost=args.fixed_cost)
+            work = partial(_stored, job, template=w, s0_only=s0_only, fixed_cost=args.fixed_cost)
             named = {pool.submit(work, task): (f"job r_out {task[0]}, a0 {task[1]}, distress {task[2]}, seed "
                                                f"{task[3]}, lenders' interest {'returned' if task[5] else 'leaving'}")
                      for task in tasks}
             done = gathered(pool, named)
             jobs = [done[future] for future in named]
     else:
-        preflight(template, args.workers, args.fixed_cost)
-        jobs = run_tasks(tasks, template, args.workers, args.fixed_cost)
-    w = template
+        preflight(w, args.workers, args.fixed_cost)
+        jobs = run_tasks(tasks, w, args.workers, args.fixed_cost, s0_cache)
     if part:
         # A part decides no cell and reads no claim: those are read once, over every seed, on the joined map
         # (scripts/join_parts.py). Its stores hold its jobs and say which seeds of which set they are.

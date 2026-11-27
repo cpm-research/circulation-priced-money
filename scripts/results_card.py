@@ -221,7 +221,7 @@ def setup_rows(store):
 
 def claim_rows(store, cells):
     """For a whole map, the cells with no distress that pass the claim (each reads its distress levels through
-    the claim's stress clause): on a majority of seeds as built (``majority_code``), and as registered (the claim
+    the claim's stress clause): on a majority of seeds (``majority_code``), and as registered (the claim
     block's "all"); for a part of the map, "not in this run". The 2-point column does not apply."""
     labels = (("Cells stable on a majority of seeds, as built", "summary.json cells[].M1.region.verdict_majority"),
               ("Cells passing the registered claim", "summary.json cells[].M1.claim.all"))
@@ -239,24 +239,29 @@ def card_rows(store):
     """Every row of the card: (section, label, no distress, 2 points, stored field)."""
     by_level = {level: store.pick(distress=level, arm=pn.CPM) for level, _ in LEVELS}
     rows = [(section, label, value, "", source) for section, label, value, source in setup_rows(store)]
+
+    def text(level, reader, fmt, only):
+        """One row's entry at one distress level: the summary of its reading over that level's cells, or "not here"
+        where the row is not read at that level."""
+        if only is not None and level not in only:
+            return NOT_HERE
+        cells = by_level[level]
+        values, absent = reader(store, cells) if cells else (np.array([]), 0)
+        return summarised(values, absent, fmt, cells)
+
+    def positive(level, yard):
+        """At one distress level, the count of cells whose money gain over ``yard`` is positive."""
+        cells = by_level[level]
+        values = pn.column(cells, gain(yard))[0]
+        return (NOT_HERE if not cells else NOT_STORED if not np.isfinite(values).all() else
+                f"{int(np.sum(values > 0))} of {len(cells)}")
+
+    # M0 is named DeFi (stablecoin payments) on a card of the second run, and otherwise by its first-run name.
+    named = lambda label: pn.defi_named(label, store.summary)
     for section, label, reader, fmt, source, only in ROWS:
-        texts = []
-        for level, _ in LEVELS:
-            cells = by_level[level]
-            if only is not None and level not in only:
-                texts.append(NOT_HERE)
-                continue
-            values, absent = reader(store, cells) if cells else (np.array([]), 0)
-            texts.append(summarised(values, absent, fmt, cells))
-        rows.append((section, label, *texts, source))
-    positive = lambda path, cells: pn.column(cells, path)[0]
-    for yard, name in (("S0", "banks and cards"), ("M0", "best-case DeFi")):
-        texts = []
-        for level, _ in LEVELS:
-            cells = by_level[level]
-            values = positive(gain(yard), cells)
-            texts.append(NOT_HERE if not cells else NOT_STORED if not np.isfinite(values).all() else
-                         f"{int(np.sum(values > 0))} of {len(cells)}")
+        rows.append((section, named(label), *(text(level, reader, fmt, only) for level, _ in LEVELS), source))
+    for yard, name in (("S0", "banks and cards"), ("M0", named("best-case DeFi"))):
+        texts = [positive(level, yard) for level, _ in LEVELS]
         rows.append(("Gain", f"Cells where the money gain over {name} is positive", *texts,
                      f"summary.json cells[].M1.against.{yard}.gain_usd_a_year > 0"))
     # Keep the gain rows together: the counts follow the four gain rows.

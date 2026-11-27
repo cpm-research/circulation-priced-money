@@ -2,9 +2,9 @@
 
 What is covered
 ---------------
-* Own shortfall and knock-on, same day (``shortfall_split``): the plan's hand case on the arithmetic and through the
+* Own shortfall and knock-on, same day (``shortfall_split``): an example on the arithmetic and through the
   settlement itself.
-* Dependence on netting (``netting_set``, ``netting_loss``): the plan's hand case, the same pair when one of them holds
+* Dependence on netting (``netting_set``, ``netting_loss``): an example, the same pair when one of them holds
   money, and the pair when one of them is paid by an outsider with money, on the arithmetic and through the
   settlement.
 * Every arm stores the new monthly series, finite, and own shortfall plus signed knock-on is the month's failures.

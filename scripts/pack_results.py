@@ -104,20 +104,26 @@ def pack(run, target, stores=STORES, limit=LIMIT_MB * 10**6):
     target.mkdir(parents=True, exist_ok=True)
     written = []
     for name in stores:
-        source = run / name
-        if not source.exists():
-            continue
-        data = source.read_bytes()
-        blobs = volumes(data, limit)
-        for old in shipped(target, name):                    # an earlier copy may have had another number of volumes
-            old.unlink()
-        names = volume_names(name, len(blobs))
-        for file_name, blob in zip(names, blobs):
-            (target / file_name).write_bytes(blob)
-        if unpacked(target, name) != data:                   # never ship a copy that does not read back
-            raise ValueError(f"{source}: the compressed copy does not read back to the original")
-        written += names
+        if (run / name).exists():
+            written += _pack_store(run, name, target, limit)
     return written + _records(run, target)
+
+
+def _pack_store(run, name, target, limit):
+    """Copy the store ``name`` of ``run`` into ``target`` compressed in volumes of at most ``limit`` bytes, replacing
+    any earlier copy (which may have had another number of volumes); returns the volumes' names. Refused unless the copy
+    reads back to the original."""
+    source = run / name
+    data = source.read_bytes()
+    blobs = volumes(data, limit)
+    for old in shipped(target, name):
+        old.unlink()
+    names = volume_names(name, len(blobs))
+    for file_name, blob in zip(names, blobs):
+        (target / file_name).write_bytes(blob)
+    if unpacked(target, name) != data:                   # never ship a copy that does not read back
+        raise ValueError(f"{source}: the compressed copy does not read back to the original")
+    return names
 
 
 def _records(run, target):
@@ -200,8 +206,8 @@ def main(argv=None):
         print(f"{args.into}: {len(verified)} files verified, {len(absent)} absent, {len(changed)} changed, "
               f"{len(unlisted)} not listed")
         for label, names in (("changed", changed), ("absent", absent), ("not listed", unlisted)):
-            for name in names:
-                print(f"  {label}: {name}")
+            if names:
+                print("\n".join(f"  {label}: {name}" for name in names))
         return 1 if changed or (args.complete and absent) else 0
     if args.sums:
         print(f"{args.into / SUMS}: {write_sums(args.into)} files")

@@ -69,5 +69,5 @@ To follow one rule from the paper to the code and back:
 ## What the model does not contain
 
 Total spending is fixed. There is no production, growth or wider-economy effect, no unemployment insurance,
-and no mortgages. The calibration is stylised United States data. Section 8 of the paper states each limit
+and no mortgages. The calibration is to United States data. Section 8 of the paper states each limit
 and the direction in which it leans.

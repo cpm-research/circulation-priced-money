@@ -4,16 +4,20 @@ Seed means of the stored rows, the paired distress reading and recovery, the reg
 forms and persists, the issuer stays and no group loses, read with Wilson and t intervals), the interval parts of
 "worse than M0", and ``decide``, which turns a cell's jobs into its summary and verdict.
 """
-from itertools import product
+from itertools import chain, product
 
 import numpy as np
 
 from cpm_abm.catalogue import finite_catalogue
 from cpm_abm.economy_abm import CARD_LENDING_COST, EPS, TERM_LENDING_COST, m0_rates
-from run_economy_figures import issuer_clause
-from cpm_abm.experiment.notes import (APPLIES, ARMS, BASE, GROUP_NAMES, POOL_ARMS, REAL_LINES, RECOVERY_MONTHS,
-                                      RECOVERY_SHARE, REGION_AGAINST, REGION_GROUPS, REGION_MARGIN, REWARD_SHARE, SCALE)
-from cpm_abm.experiment.statistics import check, _group_bounds, persistent_on_wilson, t_interval, wilson
+from run_economy_figures import all_hold, issuer_clause
+from cpm_abm.experiment.notes import (APPLIES, ARMS, BASE, DIP_MARGIN, GROUP_NAMES, POOL_ARMS, REAL_LINES,
+                                      RECOVERY_MONTHS, RECOVERY_SHARE, REGION_AGAINST, REGION_GROUPS, REGION_MARGIN,
+                                      MONEY_CHANGE_NOTE, REWARD_SHARE, SCALE, WHO_PAYS_NOTE,
+                                      conserves_money)
+from cpm_abm.experiment.statistics import (bootstrap_draws, check, _group_bounds, persistent_on_wilson, resampled,
+                                           t_interval, wilson)
+from cpm_abm.experiment.steady import stress_year
 
 def seed_means(rows):
     """Seed means of report dicts with the same keys, nested dicts and lists included (None stays None)."""
@@ -27,7 +31,7 @@ def seed_means(rows):
 
 def seed_nanmeans(rows):
     """Seed means like ``seed_means`` where a seed's value may be undefined (None, or NaN for an empty group): the mean
-    over the seeds that define it, or None if none does (3 Nov)."""
+    over the seeds that define it, or None if none does."""
     first = rows[0]
     if isinstance(first, dict):
         return {key: seed_nanmeans([row[key] for row in rows]) for key in first}
@@ -38,39 +42,77 @@ def seed_nanmeans(rows):
 
 
 def share_of(rows, read):
-    """The share of seeds whose reading is True (3 Nov); a test that cannot be evaluated (None) counts as not
+    """The share of seeds whose reading is True; a test that cannot be evaluated (None) counts as not
     holding."""
     return round(float(np.mean([read(row) is True for row in rows])), 3)
 
 
 def registered_shares(rows):
     """The share of seeds in which each use and collapse test as first registered holds or fires (from
-    ``persistence``'s registered_tests), None for a test no seed stores. Hand case: P1 True, True, False over three
+    ``persistence``'s registered_tests), None for a test no seed stores. Example: P1 True, True, False over three
     seeds reads 0.667."""
-    names = sorted({name for row in rows for name in (row.get("registered_tests") or {})})
+    names = sorted(set(chain.from_iterable(row.get("registered_tests") or {} for row in rows)))
     return {name: share_of(rows, lambda row, name=name: (row.get("registered_tests") or {}).get(name)) for name in names}
 
 
 def w2_of(pair):
-    """The second window's value of a reading by window, None where the reading is (3 Nov)."""
+    """The second window's value of a reading by window, None where the reading is."""
     return None if pair is None else pair[1]
 
 
-def recovery(gap, w):
-    """The paired distress reading of one measure in one seed (decided 31 Oct).
+def steady_of(row):
+    """The windows a stored row's steady-state readings are read in, as (name, position in a reading by window):
+    ("W2", 1) by default; in a long run each of its two windows by its years (the row's ``windows``), a reading
+    holding only where it holds in both."""
+    names = row.get("windows")
+    return (("W2", 1),) if names is None else tuple((name, k) for k, name in enumerate(names))
+
+
+def names_of(row):
+    """The names of a stored row's two windows in order: W1 and W2 by default, a long run's by their years."""
+    return tuple(row.get("windows") or ("W1", "W2"))
+
+
+def by_window_means(rows):
+    """A long run's window means by window (``gains.WINDOW_MEANS``, each row's ``by_window``), seed means over the
+    seeds that define them, and for a pool arm the shares of seeds whose own reading in that window is Persistent (every
+    test holds and no falsifier fires) and worse than M0 on trade (V1); None for released rows, which store no
+    ``by_window``."""
+    if rows[0].get("by_window") is None:
+        return None
+    out = {}
+    for name, first in rows[0]["by_window"].items():
+        values = [row["by_window"][name] for row in rows]
+        out[name] = {key: seed_nanmeans([value[key] for value in values]) for key in first
+                     if key not in ("P", "X", "verdict", "V1_worse")}
+        if "P" in first:
+            out[name].update(
+                persistent_share=share_of(values, lambda value: all(v is True for v in value["P"].values())
+                                          and not any(v is True for v in value["X"].values())),
+                V1_worse_share=share_of(values, lambda value: value["V1_worse"]))
+    return out
+
+
+def recovery(gap, w, seed=None):
+    """The paired distress reading of one measure in one seed.
 
     ``gap`` is the measure's gap from the same seed's run without distress in each month after launch. Returns the
     largest gap from the start of the distress year and its month after launch; the months after the distress year
     until the gap stays within a quarter of that largest gap for three months running after it (None if it never
-    does, 0 if there was no gap); and the lasting gap, its average over the last 12 months.
+    does, 0 if there was no gap); and the lasting gap, its average over the last 12 months. The distress year is the
+    run's own (``stress_year``): months 25 to 36 after launch in the first run, 121 to 132 in the second run, and under
+    random distress years the first of them, drawn from ``seed``; a run with no distress month reads no gap.
     """
-    start, end = w.distress_start, w.distress_start + w.distress_length
+    year = stress_year(w, seed)
+    if year is None:
+        return dict(gap=0.0, month=None, months_to_recover=0, lasting=float(np.mean(np.nan_to_num(gap[-12:]))))
+    start, end = year
     window = np.nan_to_num(gap[start:])
     at = int(np.argmax(np.abs(window)))
     peak, lasting = float(window[at]), float(np.mean(np.nan_to_num(gap[-12:])))
     if abs(peak) <= EPS:
         return dict(gap=0.0, month=None, months_to_recover=0, lasting=lasting)
-    # The three months come after both the distress year and the largest gap (the 31 Oct review), so a gap that peaks
+    # The three months come after both the distress year and the largest gap, so a gap that peaks
     # late cannot read as recovered before its peak; with fewer than three months left after it, it has not recovered.
     first = max(end, start + at + 1)
     inside = np.abs(np.nan_to_num(gap[first:])) <= RECOVERY_SHARE * abs(peak)
@@ -82,7 +124,7 @@ def recovery(gap, w):
 
 
 def paired(mine, base, w):
-    """The distress reading of one cell: each arm against its own run without distress, seed by seed (31 Oct).
+    """The distress reading of one cell: each arm against its own run without distress, seed by seed.
 
     Per measure: the seed mean of the largest gap and of the lasting gap (on the measure's reporting scale), the share
     of seeds that recovered and their median months to recover. Each arm's failure dip against S0's: the mean
@@ -94,14 +136,15 @@ def paired(mine, base, w):
     if not pairs:
         return dict(seeds_paired=0)
     gap = lambda j, b, arm, name: np.array(j["measures"][arm][name]) - np.array(b["measures"][arm][name])
-    year = slice(w.distress_start, w.distress_start + w.distress_length)
+    # The distress year of each seed's run (``stress_year``): one dated year by default, the first random one by seed.
+    year = lambda seed: slice(*(stress_year(w, seed) or (0, 0)))
 
     def reading(arm):
         """One arm's reading over the cell's paired seeds."""
         def measure(name):
             """One measure over the paired seeds: the mean largest gap on its reporting scale, the share of seeds that
             recovered, the median months to recover and the mean lasting gap."""
-            seen = [recovery(gap(j, b, arm, name), w) for j, b in pairs]
+            seen = [recovery(gap(j, b, arm, name), w, j["seed"]) for j, b in pairs]
             months = [r["months_to_recover"] for r in seen if r["months_to_recover"] is not None]
             return dict(gap=round(float(np.mean([r["gap"] for r in seen])) * SCALE[name], 4),
                         recovered_share=round(len(months) / len(seen), 3),
@@ -109,14 +152,14 @@ def paired(mine, base, w):
                         lasting_gap=round(float(np.mean([r["lasting"] for r in seen])) * SCALE[name], 4))
         out = dict(map(lambda name: (name, measure(name)), APPLIES[arm]))
         if arm != "S0":
-            dips = [(recovery(gap(j, b, arm, "failures"), w)["gap"], recovery(gap(j, b, "S0", "failures"), w)["gap"])
-                    for j, b in pairs]
+            dips = [(recovery(gap(j, b, arm, "failures"), w, j["seed"])["gap"],
+                     recovery(gap(j, b, "S0", "failures"), w, j["seed"])["gap"]) for j, b in pairs]
             out["failures_against_S0"] = dict(
                 gap_difference=round(float(np.mean([d - s for d, s in dips])) * SCALE["failures"], 4),
                 share_smaller=round(float(np.mean([abs(d) < abs(s) for d, s in dips])), 3))
         if arm in POOL_ARMS:
-            wallet = lambda job: float(np.sum(job["measures"][arm]["issuer_wallet"][year]))
-            higher = float(np.mean([wallet(j) > wallet(b) for j, b in pairs]))
+            wallet = lambda job, seed: float(np.sum(job["measures"][arm]["issuer_wallet"][year(seed)]))
+            higher = float(np.mean([wallet(j, j["seed"]) > wallet(b, j["seed"]) for j, b in pairs]))
             out.update(issuer_higher_share=round(higher, 3), issuer_rewarded_for_failure=bool(higher >= REWARD_SHARE))
         return out
 
@@ -125,21 +168,21 @@ def paired(mine, base, w):
 
 
 def region(arm, rate, rows, persistent, w):
-    """The region reading of one pool arm in one cell (5 Nov, ``REGION_NOTE``) from its seeds' rows and whether each
+    """The region reading of one pool arm in one cell (``REGION_NOTE``) from its seeds' rows and whether each
     seed's own verdict is Persistent (``decide``).
 
     Each part is stored: the declared limit (M2 at a zero real reserve rate); the share of seeds whose pool formed; the
     seeds counted Persistent, their share and Wilson interval, and the cell Persistent on its lower bound above one half
     and, beside it, on a bare majority; the seeds whose issuer records "would leave"; and claim (d) on the complete gain
-    (decided 11 Nov: the wealth change plus purchases received, ``differences``), complete_gain: at each end of the
-    bracket, sellers' extra sales at face value ("face") and at zero ("zero"), every claim (d) group's 95% t lower
-    bound across seeds of its mean gain against S0 and against M0 (``REGION_AGAINST``), read in full (decided
-    5 Nov: M2's indexation is the holder's own yield, not an issuer transfer), with the seed mean beside it (the bound
+    (the wealth change plus purchases received, ``differences``), complete_gain: at each end of the bracket,
+    sellers' extra sales at face value ("face") and at zero ("zero"), every claim (d) group's 95% t lower bound across
+    seeds of its mean gain against S0 and against M0 (``REGION_AGAINST``), read in full (M2's indexation is the
+    holder's own yield, not an issuer transfer), with the seed mean beside it (the bound
     None with fewer than two seeds defining it, and then the group does not pass), the lowest bound with its group and
     yardstick, and whether all are at or above the margin. The value of completed trade is not assumed, and against
-    DeFi the result is reported as a break-even value (decided 11 Nov, second round), so the clause
-    (clause_holds) holds when every group's bound against S0 is at or above the margin at both ends and every group's
-    bound against M0 is at the face end. by_yardstick holds, for S0 and for M0, face_passes and zero_passes (every
+    DeFi the result is reported as a break-even value, so the clause (clause_holds) holds when every group's bound
+    against S0 is at or above the margin at both ends and every group's bound against M0 is at the face end.
+    by_yardstick holds, for S0 and for M0, face_passes and zero_passes (every
     group's bound at or above the margin at that end), break_even_share, the smallest surplus share s on a 0.01 grid
     from which every group's bound, on each seed's gain (1 - s) x zero + s x face, is at or above the margin at every
     larger grid share, and break_even_share_on_means, the same search on the groups' seed means; each None when it
@@ -148,13 +191,18 @@ def region(arm, rate, rows, persistent, w):
     (None). The verdict names the first condition failed, in the order of ``VERDICTS``, "a group loses" reading the
     complete gain's clause, and "stable" when none is; verdict_majority reads the bare-majority Persistent instead. The
     issuer stays only when no seed records "would leave" (claim (a): it never records it), and the pool forms when it
-    forms in any seed: each a reading of the rule (4 Nov). Owners' return less their alternative
-    stays reported only (decided 11 Nov), and the entry rule's two readings, quote and realised
-    (``Economy.entry_reads``), are run as bounds at confirmation, not read here.
+    forms in any seed: each a reading of the rule. Owners' return less their alternative is reported only, and the
+    entry rule's two readings, quote and realised (``Economy.entry_reads``), are run as bounds at confirmation, not
+    read here.
 
-    The cash-advance bound (decided 15 Nov 2026): complete_gain_bound holds the same clause on the gains under the
+    Under the cash-advance bound: complete_gain_bound holds the same clause on the gains under the
     bound (``differences``), verdict_bound and verdict_majority_bound the verdicts with the group test read on it, and
-    in_region_both whether the cell is stable both as built and under the bound; the keys above are as built.
+    in_region_both whether the cell is stable both as stored and under the bound; the keys above are as stored.
+
+    In a run that conserves money the group test is clause (d) on each group's own failed payments, on the 95% t
+    upper bounds alone (``groups_harmed``, stored as groups_harmed), and its failure reads "a group is
+    harmed"; the complete gain's clause is still stored at both ends and under the bound and read by no verdict, and
+    the verdicts under the bound read that test, which has no bound reading.
     """
     seeds = len(rows)
     limit = bool(arm == "M2" and rate - 12 * w.inflation <= 1e-12)
@@ -192,7 +240,7 @@ def region(arm, rate, rows, persistent, w):
     def groups(read, k=0):
         """The table of ``bounds`` at the share in row ``k`` as stored: each group's seed mean and t lower bound
         against S0 and against M0, the lowest bound with its group and yardstick, and whether every group's bound
-        against both is at or above the margin (the 5 Nov review)."""
+        against both is at or above the margin."""
         clean = lambda array: [round(float(value), 2) if np.isfinite(value) else None for value in array]
         out, listed = {other: {} for other in REGION_AGAINST}, []
         for other, name in pairs:
@@ -207,14 +255,14 @@ def region(arm, rate, rows, persistent, w):
                                      against=lowest[3]),
                     at_or_above_margin=all(bool(holding(read, other)[k]) for other in REGION_AGAINST))
 
-    # The wealth measure (5 Nov), stored beside the clause.
+    # The wealth measure, stored beside the clause.
     wealth = groups(bounds(table(lambda against, name: against[f"gain_usd_a_year_by_{name}"])))
-    # Claim (d) on the complete gain (decided 11 Nov), at each surplus share s on the 0.01 grid, each seed's group
-    # mean at s being (1 - s) zero + s face, so the grid's ends are the two ends exactly. Every share is read at once
-    # (the 13 Nov speed pass), number for number as one share at a time (``_group_bounds``).
+    # Claim (d) on the complete gain, at each surplus share s on the 0.01 grid, each seed's group mean at s being
+    # (1 - s) zero + s face, so the grid's ends are the two ends exactly. Every share is read at once, number for
+    # number as one share at a time (``_group_bounds``).
     def clause(block):
         """The clause on the complete gain, each seed's gains at each end being ``block(against, side)``: the stored
-        end itself as built, or under the cash-advance bound its ``bound`` (15 Nov 2026)."""
+        end itself as stored, or under the cash-advance bound its ``bound``."""
         ends = {side: table(lambda against, name, side=side: block(against, side, f"gain_usd_a_year_by_{name}"))
                 for side in ("zero", "face")}
         grid = bounds(ends, np.arange(101) / 100)
@@ -225,7 +273,7 @@ def region(arm, rate, rows, persistent, w):
             after = np.logical_and.accumulate(holding(grid, other, on)[::-1])[::-1]   # every share from k on holds
             return round(int(np.argmax(after)) / 100, 2) if after.any() else None
 
-        # Per yardstick (decided 11 Nov, second round): each end's pass on bounds and the break-even share on
+        # Per yardstick: each end's pass on bounds and the break-even share on
         # bounds and on means. The clause asks S0 at both ends and M0 at face: the value of completed trade is not
         # assumed against S0, and against DeFi the result is the break-even value.
         yardsticks = {other: dict(face_passes=bool(holding(grid, other)[100]),
@@ -237,30 +285,107 @@ def region(arm, rate, rows, persistent, w):
                                       and yardsticks["M0"]["face_passes"]))
 
     complete = clause(lambda against, side, key: against["complete_gain"][side][key])
-    # The same clause under the cash-advance bound (decided 15 Nov 2026); a seed that stores no bound reads every
+    # The same clause under the cash-advance bound; a seed that stores no bound reads every
     # group as empty there, so the clause does not hold.
     unstored = lambda against, side, key: [np.nan] * len(against["complete_gain"][side][key])
     bounded = clause(lambda against, side, key: against["complete_gain"][side].get("bound", {}).get(
         key, unstored(against, side, key)))
 
-    def verdict(persists, read=complete):
-        """The first condition failed, in the order of VERDICTS, or "stable"; the group test read on ``read``."""
+    # In a run that conserves money the group test is clause (d) on each group's own failed payments, on the 95% t
+    # upper bounds alone, named "a group is harmed"; it has no reading under the cash-advance bound, so the verdicts
+    # under the bound read it too. By default the group test is the complete gain's clause.
+    harmed = groups_harmed(rows) if conserves_money(w) else None
+    tests = (complete, bounded) if harmed is None else (harmed, harmed)
+    harm = "a group loses" if harmed is None else "a group is harmed"
+
+    def verdict(persists, read=tests[0]):
+        """The first condition failed, in the order of the run's verdicts (``verdicts_of``), or "stable"; the group
+        test read on ``read``."""
         failed = ((limit, "declared limit"), (formed == 0, "no pool"), (not persists, "not persistent"),
-                  (leaves > 0, "issuer leaves"), (not read["clause_holds"], "a group loses"))
+                  (leaves > 0, "issuer leaves"), (not read["clause_holds"], harm))
         return next((name for fails, name in failed if fails), "stable")
 
-    # Read on the unrounded bound; the interval is stored rounded (the 13 Nov audit).
+    # Read on the unrounded bound; the interval is stored rounded.
     persists, majority = persistent_on_wilson(sum(counted), seeds)[0], bool(np.mean(counted) > 0.5)
+    extra = {} if harmed is None else dict(groups_harmed=harmed)
     return dict(verdict=verdict(persists), verdict_majority=verdict(majority), in_region=verdict(persists) == "stable",
                 declared_limit=limit, pool_forms_share=round(formed, 3), persistent_seeds=int(sum(counted)),
                 persistent_share=round(float(np.mean(counted)), 3), persistent_interval=interval,
                 persistent=persists, persistent_majority=majority, issuer_leaves_seeds=int(leaves),
                 margin_usd_a_year=REGION_MARGIN, complete_gain=complete, groups=wealth, groups_measure="wealth",
-                # Under the cash-advance bound (decided 15 Nov 2026): the clause and the verdicts with the group
-                # test read on the gains under the bound, and in the region only when stable both as built and so.
-                complete_gain_bound=bounded, verdict_bound=verdict(persists, bounded),
-                verdict_majority_bound=verdict(majority, bounded),
-                in_region_both=bool(verdict(persists) == "stable" and verdict(persists, bounded) == "stable"))
+                # Under the cash-advance bound: the clause and the verdicts with the group test read on the gains
+                # under the bound, and in the region only when stable both as stored and so.
+                complete_gain_bound=bounded, verdict_bound=verdict(persists, tests[1]),
+                verdict_majority_bound=verdict(majority, tests[1]),
+                in_region_both=bool(verdict(persists) == "stable" and verdict(persists, tests[1]) == "stable"),
+                **extra)
+
+
+def who_pays(rows):
+    """Who pays and who receives in one pool arm of one cell of a run that conserves money (``WHO_PAYS_NOTE``), from the
+    payout itself: the seed means of each group's payout received, its own payments across the edge and the
+    difference, $ a person a year, with everyone's beside and the stored total returned it
+    is reconciled to (``gains.payout_by_group``). Where no seed stores the payout, "not stored". Read by no
+    verdict."""
+    found = [row.get("payout_by_group") for row in rows]
+    if not found or any(not isinstance(one, dict) for one in found):
+        return dict(note=WHO_PAYS_NOTE, payout="not stored")
+    return dict(note=WHO_PAYS_NOTE, seeds=len(found), **seed_nanmeans(found))
+
+
+def money_change_at_zero_end(rows):
+    """Each group's change in money once completed purchases and sales net out, in one pool arm of one cell of a run
+    that conserves money (``MONEY_CHANGE_NOTE``): against S0 and against M0, each group's seed mean of the complete
+    gain with sellers' extra sales at zero (the gain's "zero" end), $ a person a year, by class, quintile and billing
+    cycle in the order of ``GROUP_NAMES``, with everyone's mean beside. It is not the payout's incidence: two people
+    with the same payout differ here when one completed a purchase the other lost. Read by no verdict."""
+    zero = lambda row, other: row["against"][other]["complete_gain"]["zero"]
+    table = lambda other: dict(
+        everyone=seed_nanmeans([zero(row, other)["gain_usd_a_year"] for row in rows]),
+        **{name: seed_nanmeans([zero(row, other)[f"gain_usd_a_year_by_{name}"] for row in rows])
+           for name in REGION_GROUPS})
+    return dict(note=MONEY_CHANGE_NOTE, **{f"against_{other}": table(other) for other in REGION_AGAINST})
+
+
+def groups_harmed(rows):
+    """The region reading's group test in a run that conserves money (clause (d) on each group's own failed payments, on
+    the 95% t upper bounds alone): for each steady window the rows store (``gains.failed_by_group``) and each yardstick
+    (``REGION_AGAINST``), each class, quintile and billing-cycle group's seed mean and 95% t upper bound across seeds of
+    its own payments that did not complete as payer (failed shares of bills and wages plus declined shares of
+    card-eligible purchases), the arm less the yardstick, a person a year; clause_holds when every group's
+    upper bound in every window against both is at or below one failed payment (``DIP_MARGIN``), a group empty in
+    every seed being no group and a group with a value in one seed only having no bound, which does not pass; highest,
+    the highest bound with its group, yardstick and window (a missing bound counts highest). A row that stores no
+    failed_by_group has every group empty, and with no group at all the clause does not hold. The upper bound is the
+    lower bound of the negated values negated, the same t arithmetic as the complete gain's (``_group_bounds``).
+    Example: differences 0.4 and 0.6 in two seeds have mean 0.5 and upper bound 0.5 + 12.706 x 0.1414 / sqrt(2) = 1.77,
+    above the margin, so the group is harmed."""
+    names = [name for name, _ in steady_of(rows[0])]
+    places = tuple(product(names, REGION_AGAINST, REGION_GROUPS))
+    size = dict(zip(REGION_GROUPS, (len(GROUP_NAMES[name]) for name in REGION_GROUPS)))
+    read = lambda row, window, other, name: [np.nan if v is None else v for v in (
+        ((row.get("failed_by_group") or {}).get("by_window") or {}).get(window, {}).get(f"against_{other}", {})
+        .get(name, [None] * size[name]))]
+    found = {place: _group_bounds(-np.array([read(row, *place) for row in rows], float)[:, None, :])
+             for place in places}
+    clean = lambda value: round(float(value), 4) if np.isfinite(value) else None
+    out, listed = {}, []
+    for (window, other, name), bounds in found.items():
+        mean, upper, seen = -bounds["mean"][0], -bounds["lower_95"][0], bounds["seen"][0]
+        out.setdefault(window, {}).setdefault(other, {})[name] = dict(mean=list(map(clean, mean)),
+                                                                     upper_95=list(map(clean, upper)))
+        listed += [(float(high) if np.isfinite(high) else np.inf, float(average), GROUP_NAMES[name][g], other, window)
+                   for g, (high, average, count) in enumerate(zip(upper, mean, seen)) if count > 0]
+    highest = max(listed, key=lambda item: item[0]) if listed else (None, None, None, None, None)
+    # A seed whose row lacks the record or one of its windows does not let the test pass, however the other seeds read.
+    stored = lambda row: set(((row.get("failed_by_group") or {}).get("by_window") or {}))
+    lacking = sum(not set(names) <= stored(row) for row in rows)
+    holds = bool(listed) and not lacking and all(item[0] <= DIP_MARGIN for item in listed)   # no group: no pass
+    bound = highest[0] if highest[0] is None or np.isfinite(highest[0]) else None
+    return dict(by_window=out, margin=DIP_MARGIN, clause_holds=bool(holds), seeds_without_record=int(lacking),
+                highest=dict(upper_95=None if bound is None else round(bound, 4),
+                             mean=None if highest[1] is None else round(highest[1], 4), group=highest[2],
+                             against=highest[3], window=highest[4]))
 
 
 def decide(jobs, rate, a0, distress, recirculated, w):
@@ -284,7 +409,7 @@ def decide(jobs, rate, a0, distress, recirculated, w):
     def summary(arm):
         """Seed means for one arm, and for the pool arms worse-than-M0 and the verdict."""
         rows = [j["arms"][arm] for j in mine]
-        # The headline (decided 31 Oct): the real part, each line's saving against S0, beside the transfers and
+        # The headline: the real part, each line's saving against S0, beside the transfers and
         # the cash check.
         saving = lambda j: {key: j["S0"]["real_part"][key] - j["arms"][arm]["real_part"][key] for key in REAL_LINES}
         end_money = lambda run: run["cash"]["everyone"]["end_usd"]
@@ -292,7 +417,8 @@ def decide(jobs, rate, a0, distress, recirculated, w):
                    issuer_usd=round(mean(arm, "issuer_usd"), 1),
                    p_yield_pct=round(mean(arm, "p_yield_pct"), 3),
                    better_off=round(mean(arm, "better_off"), 3), A_launch=round(mean(arm, "A_launch"), 3),
-                   A_W1=round(mean(arm, "A_W1"), 3), A_W2=round(mean(arm, "A_W2"), 3),
+                   # Participation by window, W1 and W2 by default and a long run's by their years.
+                   **{f"A_{name}": round(mean(arm, f"A_{name}"), 3) for name in names_of(rows[0])},
                    failures_pct=round(mean(arm, "failures_pct"), 3),
                    merchant_fees_pct=round(mean(arm, "merchant_fees_pct"), 3), split=split_mean(arm),
                    real_saving_against_S0_usd=seed_means(list(map(saving, mine))),
@@ -305,15 +431,34 @@ def decide(jobs, rate, a0, distress, recirculated, w):
                    failed_usd_a_year_by_quintile=by_group(rows, "failed_usd_a_year"),
                    transfers_usd_a_year_by_quintile=by_group(rows, "transfers_usd_a_year"),
                    crossings=seed_nanmeans([row["crossings"] for row in rows]),
-                   # Liquidity by window and the paired differences' seed means against each arm read (5 Nov): the
-                   # gain overall, by class, quintile, billing cycle and role, read in full (5 Nov).
+                   # Liquidity by window and the paired differences' seed means against each arm read: the gain overall,
+                   # by class, quintile, billing cycle and role, read in full.
                    liquidity=seed_nanmeans([row["liquidity"] for row in rows]),
-                   # Credit and purchases by class (11 Nov), reported only.
+                   # Credit and purchases by class, reported only.
                    by_class=seed_nanmeans([row["by_class"] for row in rows]),
                    against={other: seed_nanmeans([row["against"][other] for row in rows])
                             for other in rows[0]["against"]})
+        windowed = by_window_means(rows)
+        if windowed is not None:
+            out["by_window"] = windowed   # a long run's means by window
         if arm == "M0":
-            return out
+            # DeFi's credit beside its results in a run of the second run: both zero there; and
+            # in a run that conserves money who pays and who receives in DeFi as in the pool arms.
+            paying = dict(who_pays_who_receives=who_pays(rows)) if conserves_money(w) else {}
+            return dict(out, **paying, **({} if "defi_credit" not in rows[0] else dict(
+                defi_credit=seed_means([row["defi_credit"] for row in rows]))))
+        steady = steady_of(rows[0])
+        at = lambda pair, k: None if pair is None else pair[k]   # one window's value of a reading by window
+
+        def by_seed(name, k):
+            """Each seed's value in the steady window ``name`` (position ``k``) of the pool's own margin, of the
+            household-held months that margin is annualised from, and of the joint issuer-and-pool test."""
+            return {f"own_margin_{name}_by_seed": [at(row["own_margin_usd_a_year"], k) for row in rows],
+                    f"own_margin_held_months_{name}_by_seed": [at(row["own_margin_held_months"], k) for row in rows],
+                    f"joint_{name}_by_seed": [at(row["joint_usd_a_year"], k) for row in rows]}
+
+        held = chain.from_iterable((f"households_hold_90_{name}", f"households_hold_90_{name}_all_capital",
+                                    f"p_routes_{name}") for name, _ in steady)
         worse_trade = np.array([j["arms"][arm]["V1_worse"] for j in mine], bool)
         harm = np.array([j["arms"][arm]["V3_harmed"] for j in mine], bool)      # seeds x harm groups
         v1 = float(worse_trade.mean()) >= 0.8
@@ -324,16 +469,16 @@ def decide(jobs, rate, a0, distress, recirculated, w):
         better = better_than_m0(arm, rate, mine, w)
         interval = bool(better["shown_worse"])
         x4 = bool(v1 or harmed.any() or interval)
-        # Worse than M0 is read over the cell's paired seeds: worse in at least 80% of them. Decided
-        # 4 Nov: a seed counts it only where the cell is systematically worse and that seed is one of the seeds
-        # worse on the part that fired, on trade when trade fires or in a group that fires (the 3 Nov review).
+        # Worse than M0 is read over the cell's paired seeds: worse in at least 80% of them. A seed
+        # counts it only where the cell is systematically worse and that seed is one of the seeds worse on the part
+        # that fired, on trade when trade fires or in a group that fires.
         # Elsewhere it counts in no seed, so the majority verdict is unchanged and a cell Against on it cannot show its
         # seeds Persistent. V2 and V4 have no seed-level threshold, so where either is shown worse every seed counts
         # worse (``fire_interval_falsifier``, which applies the same to a stored cell).
         worse = (worse_trade & v1) | (harm & harmed).any(axis=1) | interval
         falsifiers = [bool(bad) or any(v is True for v in j["arms"][arm]["X"].values()) for j, bad in zip(mine, worse)]
-        # A seed is Persistent only when its own verdict is: every persistence test holds and no falsifier fires (the
-        # 31 Oct review). A cell Persistent by majority says in how many seeds a falsifier fired.
+        # A seed is Persistent only when its own verdict is: every persistence test holds and no falsifier fires. A cell
+        # Persistent by majority says in how many seeds a falsifier fired.
         persistent = [not x and all(v is True for v in j["arms"][arm]["P"].values()) for j, x in zip(mine, falsifiers)]
         fired = f"a falsifier in {sum(falsifiers)} of {seeds} seeds" if any(falsifiers) else "no falsifier"
         verdict = ("Against CPM" if x4 or np.mean(falsifiers) > 0.5 else
@@ -346,6 +491,15 @@ def decide(jobs, rate, a0, distress, recirculated, w):
             verdict += issuer_clause(all(j["arms"][arm]["issuer_limit"] for j in mine))
         seed_mean = lambda key: float(np.nanmean([np.nan if j["arms"][arm][key] is None else j["arms"][arm][key]
                                                   for j in mine]))
+        if conserves_money(w):
+            # Who pays and who receives, from the payout, and each group's change in money at the gain's zero end
+            # beside it under its own name, both read by no verdict.
+            out["who_pays_who_receives"] = who_pays(rows)
+            out["money_change_at_zero_end"] = money_change_at_zero_end(rows)
+        # Beside the 90% reading, the pool's capital over its target by window, the seed mean (a run of the second
+        # run; ``households_pool``), read by no verdict.
+        out.update({key: seed_nanmeans([row["households"][key] for row in rows])
+                    for key in rows[0]["households"] if key.startswith("capital_over_target_")})
         return dict(out, X4=x4, V1_systematically_worse=bool(v1), V3_groups_harmed=int(harmed.sum()),
                     better_than_M0=better,
                     worse_than_M0=worse_than_m0(dict(V1_systematically_worse=bool(v1),
@@ -353,24 +507,24 @@ def decide(jobs, rate, a0, distress, recirculated, w):
                     seed_verdicts=[("Against CPM" if bad else j["arms"][arm]["verdict"])[:12]
                                    for j, bad in zip(mine, worse)],
                     worse_than_M0_seeds=int(worse.sum()), verdict=verdict,
-                    # The tests as first registered beside the decided ones: the share of seeds
-                    # in which each holds or fires, read by no verdict.
+                    # The tests as first registered beside the current ones: the share of seeds in which each holds or
+                    # fires, read by no verdict.
                     registered_tests_share=registered_shares(rows),
                     persistent_share=round(float(np.mean(persistent)), 3),
                     persistent_share_interval=wilson(int(np.sum(persistent)), seeds),
                     c_pct=round(mean(arm, "c_pct"), 3), r_g_pct=round(mean(arm, "r_g_pct"), 3),
                     theta=round(mean(arm, "theta"), 3), N=round(mean(arm, "N"), 3),
                     bridges_drawn_over_wanted=round(mean(arm, "bridges_drawn_over_wanted"), 3),
-                    # The contract's other W2 means and demurrage by window (5 Nov).
+                    # The contract's other W2 means and demurrage by window.
                     N_star=round(mean(arm, "N_star"), 4), coverage=round(mean(arm, "coverage"), 3),
                     r_b_pct=round(mean(arm, "r_b_pct"), 3), quote_pct=round(mean(arm, "quote_pct"), 3),
                     pool_formed_share=share_of(rows, lambda row: row["pool_formed"]),
                     demurrage=seed_nanmeans([row["demurrage"] for row in rows]),
-                    # The region reading (5 Nov, ``REGION_NOTE``), on the seeds' own Persistent verdicts.
+                    # The region reading (``REGION_NOTE``), on the seeds' own Persistent verdicts.
                     region=region(arm, rate, rows, persistent, w),
                     issuer_would_leave_seeds=round(leaves, 3),
-                    # The issuer's headroom beyond its own costs, those costs and the most cost it could bear in all
-                    # (the 4 Nov review), seed means, $ a person a year and % of P.
+                    # The issuer's headroom beyond its own costs, those costs and the most cost it could bear in all,
+                    # seed means, $ a person a year and % of P.
                     **{f"issuer_{key}_usd_a_year": round(seed_mean(f"issuer_{key}_usd_a_year"), 2)
                        for key in ("headroom", "costs", "most_cost")},
                     **{f"issuer_{key}_pct_of_P": round(100 * seed_mean(f"issuer_{key}_share_of_P"), 3)
@@ -381,26 +535,26 @@ def decide(jobs, rate, a0, distress, recirculated, w):
                     fee_refused_usd=round(mean(arm, "fee_refused_usd"), 2),
                     fee_refused_n=round(mean(arm, "fee_refused_n"), 1),
                     owners=seed_nanmeans([row["owners"] for row in rows]),
-                    # Owners' net return less their alternative by window (11 Nov), reported only: the seed mean and
+                    # Owners' net return less their alternative by window, reported only: the seed mean and
                     # its 95% t interval across the seeds whose households held capital in the window.
                     owners_excess_pct={window: t_interval([row["owners_excess"][window] for row in rows])
-                                       for window in ("W1", "W2")},
-                    # The yardsticks (decided 3 Nov): seed means by window and each seed's W2 value, which Step 7's
-                    # intervals read, of the pool's own margin and the joint issuer-and-pool test; and the shares of
-                    # seeds whose pool pays its own way, whose issuer never records "would leave", whose households hold
-                    # 90% on each base, where P routes and counting toward claim (a) (a test that cannot be evaluated
-                    # counts as not holding).
+                                       for window in names_of(rows[0])},
+                    # The yardsticks: seed means by window and each seed's W2 value, which the claim's intervals read,
+                    # of the pool's own margin and the joint issuer-and-pool test; and the shares of seeds whose pool
+                    # pays its own way, whose issuer never records "would leave", whose households hold 90% on each
+                    # base, where P routes and counting toward claim (a) (a test that cannot be evaluated counts as not
+                    # holding).
                     own_margin_usd_a_year=seed_nanmeans([row["own_margin_usd_a_year"] for row in rows]),
                     joint_usd_a_year=seed_nanmeans([row["joint_usd_a_year"] for row in rows]),
-                    own_margin_W2_by_seed=[w2_of(row["own_margin_usd_a_year"]) for row in rows],
-                    # The household-held months each seed's W2 margin is annualised from (the 4 Nov review).
-                    own_margin_held_months_W2_by_seed=[w2_of(row["own_margin_held_months"]) for row in rows],
-                    joint_W2_by_seed=[w2_of(row["joint_usd_a_year"]) for row in rows],
-                    pays_its_way_share=share_of(rows, lambda row: row["pays_its_way_W2"]),
+                    # Each in W2, and in a long run in each window by its years, with the
+                    # household-held months each seed's margin is annualised from.
+                    **dict(chain.from_iterable(by_seed(name, k).items() for name, k in steady)),
+                    # The pool pays its own way in W2, and in a long run in both windows.
+                    pays_its_way_share=share_of(rows, lambda row: all_hold(row[f"pays_its_way_{name}"]
+                                                                           for name, _ in steady)),
                     issuer_never_leaves_share=share_of(rows, lambda row: row["issuer_never_leaves"]),
                     **{key + "_share": share_of(rows, lambda row, key=key: row["households"][key])
-                       for key in ("households_hold_90_W2", "households_hold_90_W2_all_capital", "p_routes_W2",
-                                   "counts")})
+                       for key in (*held, "counts")})
 
     best = max(arms, key=lambda arm: mean(arm, "mean_gain_usd")) if arms else None
     base = [j for j in jobs if cell(j, 0.0)] if distress > 0 else []
@@ -415,6 +569,11 @@ def decide(jobs, rate, a0, distress, recirculated, w):
                 S0_cash=seed_means([j["S0"]["cash"] for j in mine]),
                 S0_liquidity=seed_nanmeans([j["S0"]["liquidity"] for j in mine]),
                 S0_by_class=seed_nanmeans([j["S0"]["by_class"] for j in mine]),
+                # Who pays and who receives in banks, from S0's payout, in a run that conserves money only.
+                **(dict(S0_who_pays_who_receives=who_pays([j["S0"] for j in mine])) if conserves_money(w) else {}),
+                # A long run's S0 means by window, stored only there.
+                **({} if mine[0]["S0"].get("by_window") is None else dict(
+                    S0_by_window=seed_nanmeans([j["S0"]["by_window"] for j in mine]))),
                 **dict(map(lambda arm: (arm, summary(arm)), arms)),
                 distress_reading=paired(mine, base, w) if distress > 0 else None)
 
@@ -422,10 +581,17 @@ def decide(jobs, rate, a0, distress, recirculated, w):
 def decide_cells(jobs, selection, w, n):
     """Every selected cell decided (``decide``) in the catalogue's order, each with its N, and the baseline cell under
     the recirculation convention (None when that set did not run). The grid's cells are read under the convention
-    the Economy ``w`` runs them at: lenders' interest returned over the whole grid (decided 12 Nov), or as built,
-    leaving the economy; with it returned there is no separate set, so None."""
+    the Economy ``w`` runs them at: lenders' interest returned over the whole grid, or as in the first run,
+    leaving the economy; with it returned there is no separate set, so None. Every bootstrap inside draws the run's
+    resamples (``bootstrap_draws``: 200,000 in a run of the second run)."""
+    with resampled(bootstrap_draws(w)):
+        return _decide_cells(jobs, selection, w, n)
+
+
+def _decide_cells(jobs, selection, w, n):
+    """``decide_cells`` at the resamples in force."""
     returned = w.lender_income_recirculated
-    # Each cell's jobs found once (the 13 Nov speed pass): ``decide`` reads only a cell's own jobs and, under distress,
+    # Each cell's jobs found once: ``decide`` reads only a cell's own jobs and, under distress,
     # those of the same r_out and a0 without it, so it is handed those alone, in the run's order.
     by_cell = {}
     for j in jobs:
@@ -458,7 +624,7 @@ def better_than_m0(arm, rate, jobs, w):
     worse, and a part that fires makes the cell's worse-than-M0 falsifier fire as trade or a harmed group does
     (``worse_than_m0``, ``decide`` and ``claim_statistics``).
 
-    V2, borrowers' credit cost, fires on the rate only (decided 13 Nov): the interest borrowers pay over the
+    V2, borrowers' credit cost, fires on the rate only: the interest borrowers pay over the
     principal-time they borrow, % a year, the arm less M0, paired by seed; shown worse when the interval lies wholly
     above zero on the t interval and on the bootstrap both. The interest is accrued by borrowers to every lender (pool,
     card, outside), $ a person a year from the by-class records, and the principal-time is recovered from the real
@@ -468,9 +634,10 @@ def better_than_m0(arm, rate, jobs, w):
     by person, so this is the population's mean, not a borrower's; overdraft interest is in the interest but no
     overdraft balance is in the principal-time.
     V4, owners' realised return: households' W2 return as pool owners, net of issuer money, % a year, less what the
-    same money earns in DeFi, USDC's savings rate at the cell's r_out (``m0_rates``), with CPI added to M2's return
-    (P terms); shown worse, as V2 is, when the t interval and the bootstrap interval both lie wholly below zero (the
-    13 Nov audit; the t upper bound alone before). None where households held no capital in W2."""
+    same money earns in DeFi, USDC's savings rate at the cell's r_out (``m0_rates``) by default and nothing under real
+    DeFi (``usdc_yield`` "none", the second run), with CPI added to M2's return (P terms); shown worse, as V2 is, when
+    the t interval and the bootstrap interval both lie wholly below zero, each read unrounded. None where households
+    held no capital in W2; in a long run read in each window by its years."""
     rows = [j["arms"][arm] for j in jobs]
     interest = lambda run: None if run.get("by_class") is None else sum(
         _class_mean(run["by_class"], key) or 0.0 for key in ("interest_pool", "interest_card", "interest_outside"))
@@ -494,21 +661,38 @@ def better_than_m0(arm, rate, jobs, w):
     v2["rate_pct"].update(shown_worse=wrong_side(v2["rate_pct"]), role="fires: the rate, t and bootstrap both")
     v2["rate_pct"]["fires"] = v2["rate_pct"]["shown_worse"]
     v2["shown_worse"] = bool(v2["rate_pct"]["shown_worse"])
-    savings = 1200 * m0_rates(rate / 12, getattr(w, "m0_rates", "observed"))[0]
+    # Under real DeFi (``Economy.usdc_yield`` "none") the stablecoin pays its holder nothing, so the owners' return is
+    # set against zero.
+    savings = (0.0 if getattr(w, "usdc_yield", "reserve") == "none"
+               else 1200 * m0_rates(rate / 12, getattr(w, "m0_rates", "observed"))[0])
     cpi = 1200 * w.inflation if arm == "M2" else 0.0
-    owners = [((row.get("owners") or {}).get("net_pct") or {}).get("W2") for row in rows]
-    v4 = check([None if value is None else value + cpi - savings for value in owners], 0.0, "above")
-    # Shown worse as V2 is: the t and the bootstrap interval both wholly below zero, read on the unrounded bounds
-    # (the 13 Nov audit; it fired on the stored, rounded t upper bound alone before).
-    v4.update(defi_savings_pct=round(savings, 4), cpi_added_pct=round(cpi, 4), shown_worse=wrong_side(v4),
-              computed=bool(v4["seeds"] > 0))
+
+    def owners_check(name):
+        """V4 in one steady window: households' return as owners there."""
+        owners = [((row.get("owners") or {}).get("net_pct") or {}).get(name) for row in rows]
+        v4 = check([None if value is None else value + cpi - savings for value in owners], 0.0, "above")
+        # Shown worse as V2 is: the t and the bootstrap interval both wholly below zero, read on the unrounded bounds.
+        v4.update(defi_savings_pct=round(savings, 4), cpi_added_pct=round(cpi, 4), shown_worse=wrong_side(v4),
+                  computed=bool(v4["seeds"] > 0))
+        return v4
+
+    steady = steady_of(rows[0]) if rows else (("W2", 1),)
+    if len(steady) == 1:
+        v4 = owners_check(steady[0][0])
+    else:
+        # In a long run V4 is read in each window by its years, and the arm is shown worse on
+        # owners' return where it is shown worse in either: not worse only where it is not worse in both.
+        by_window = {name: owners_check(name) for name, _ in steady}
+        v4 = dict(by_window=by_window, defi_savings_pct=round(savings, 4), cpi_added_pct=round(cpi, 4),
+                  shown_worse=any(block["shown_worse"] for block in by_window.values()),
+                  computed=any(block["computed"] for block in by_window.values()))
     return dict(V2=v2, V4=v4, shown_worse=bool(v2["shown_worse"] or v4["shown_worse"]))
 
 
 def worse_than_m0(summary, better):
     """The four registered parts of "worse than M0" and whether each fired, for one pool arm in one cell: completed
     trade (V1, systematically worse in at least 80% of paired seeds) and harm to any group (V3), as ``decide`` stored
-    them in ``summary`` (False where the decided cell does not carry them), borrowers' credit cost (V2, the rate) and
+    them in ``summary`` (False where the cell does not carry them), borrowers' credit cost (V2, the rate) and
     owners' realised return (V4) from ``better`` (``better_than_m0``). fires when any part fires."""
     parts = dict(completed_trade=bool(summary.get("V1_systematically_worse") is True),
                  group_harm=bool((summary.get("V3_groups_harmed") or 0) > 0),

@@ -609,7 +609,7 @@ class ContractEquationTests(unittest.TestCase):
                 self.assertTrue(np.all(world.forced), (arm, variant))
                 self.assertTrue(np.all(learned.max(axis=0) > 0), (arm, variant))
                 self.assertGreater(float(column(world, "close", "recovered", chosen).sum()), 0.0)
-        # The lag: a month's exposure counts only from the fourth month's terms after it (hand case on the records).
+        # The lag: a month's exposure counts only from the fourth month's terms after it (shown on the records).
         world = run("M1")[0]
         m = max(months(world, "terms"))
         exposure = world.rec["terms"][m]["exposure"]

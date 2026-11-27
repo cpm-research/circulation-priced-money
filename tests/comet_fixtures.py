@@ -1,4 +1,4 @@
-"""Named Comet unit fixtures; none is a reviewed research-economy scenario."""
+"""Named Comet unit fixtures; none is a research-economy scenario."""
 from fractions import Fraction
 
 from cpm_abm import comet

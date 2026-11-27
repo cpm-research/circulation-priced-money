@@ -3,6 +3,8 @@
 Earned wages accrued, arrears flags, instalments falling due, term purchases settling today, then the settlement
 of every obligation due today and its failure counts.
 """
+from operator import itemgetter
+
 import numpy as np
 
 from cpm_abm.engine.constants import (BIG, BRIDGE, BUSINESS_PRODUCT, CARD_REWARDS, CASH_ADVANCE, CASH_LINE_SHARE,
@@ -25,23 +27,28 @@ class DayMixin:
 
         1. Arrears flags (read by today's credit eligibility).
         2. Instalments falling due today, collected from all cash.
-        3. Term purchases settling today (own money, pool or outside loan).
+        3. Term purchases settling today (own money, pool or outside loan). Under ``Economy.durable_savings``
+           "kept" the savings kept in own cash run down to the person's own money (``_run_down_kept``) before the
+           purchases, after the day's payments (before overdue wages are received) and at the day's end.
         4. Today's payment obligations: routing, receipts, bridging, earned-wage
            advances, failures.
-        5. The card statement on day 20, with its minimum payment and late fee
-           (14 Nov 2026).
+        5. The card statement on day 20, with its minimum payment and late fee; under each holder's own date the
+           statements due today.
         6. The day's own cash flow is recorded for next month's buffer replay.
         7. Repayment from cash above the buffer: overdue wages, then debts.
            Before both, everything that is due (missed instalments, then
            bridges that have reached their due date) is collected from all
-           the borrower's money (decided 12 Nov; ``_collect_due``).
+           the borrower's money (``_collect_due``). Under ``Economy.collect_first`` "wages" overdue wages are
+           paid from all the borrower's money first and what is due after,
+           and under "wages_same_budget" first but from the
+           money above the buffer (``_end_of_day_collection``).
         8. Overdrafts are booked, interest and costs accrue, write-offs apply,
-           and a card 180 days past due is charged off (14 Nov 2026).
+           and a card 180 days past due is charged off; under each holder's own date the statements closing today
+           close.
         9. In the pool arms, in the burn-in's last month, the bridging-need path
            is recorded (the launch plan's lending need).
         10. The day's crossings between E and P are counted (reported only).
-        With earned-wage access (3 Nov), today's wages are first earned on
-        every job not in a spell (``_accrue_wages``).
+        With earned-wage access, today's wages are first earned on every job not in a spell (``_accrue_wages``).
         """
         t = month * DAYS + d
         self._day_cache = {}
@@ -54,66 +61,97 @@ class DayMixin:
             self._accrue_wages(t)
         self._arrears(t)
         self._instalments(t)
+        self._run_down_kept()   # under durable_savings "kept" only: what the morning's instalments drew
         self._term_purchases(t)
         self._settle(month, t)
         self._statement(d, t)
         today = self.today
         # The buffer replay sees every payment that fell due, paid or not, so a failure is a visible need next month;
         # savings drawn today are not income (the replay draws them itself). today["unpaid"] corrects the day's flow to
-        # each payment's first due date, so a re-queued wage counts once (decided 3 Nov).
+        # each payment's first due date, so a re-queued wage counts once.
         flow = (self.cash + self.pcash - cash_start - today["financing"] - today["savings"] + today["discretionary"]
                 - today["unpaid"])
         self.acc["flows"][:, d] = flow
         # The same day as it would have looked without P: no fees, merchant fees paid on what was received in P,
-        # and card-eligible P payments deferred to the card statement on day 20 (the card float).
+        # and card-eligible P payments deferred to the card statement on day 20 (the card float), or under each holder's
+        # own date to its own due day (``_s0_deferred``).
         self.acc["flows_s0"][:, d] = (flow + today["fees"] - today["saved"] + today["card_internal"]
-                                      - (self.last["card_internal"] if d == 20 else 0.0))
+                                      - self._s0_deferred(d))
         # What is due (a missed instalment, then a bridge that has reached its due date) ranks ahead of overdue wages
-        # and of debts not yet due, as an instalment falling due does (decided 12 Nov): repaid first, the payer
-        # keeps its pool credit and pays the next wage on time; paid after overdue wages, a payer with no buffer never
-        # clears it and stays refused.
-        self._collect_due(t)
-        self._wage_arrears(np.maximum(self.cash + self.pcash - self.buffer, 0.0))
+        # and of debts not yet due, as an instalment falling due does: repaid first, the payer keeps its pool credit
+        # and pays the next wage on time; paid after overdue wages, a payer with no buffer never clears it and stays
+        # refused. Under collect_first "wages" overdue wages are paid from all the borrower's money first, and what is
+        # due is collected after, from what is left (``_end_of_day_collection``).
+        self._end_of_day_collection(t)
         self._repay(np.maximum(self.cash + self.pcash - self.buffer, 0.0))
         self._book_overdrafts()
         self._accrue()
         if self.pool_arm:
-            # Demurrage pays for liquidity kept available (decided 5 Nov): the day's carried pool bridging principal
-            # and the pool cash held ready, the cash new loans may take (``_cash_for_loans``: cash not owed to the
-            # pool's creditors less the due exits the last dealing's unused offers would not cover, 12 Nov), at the
-            # day's accruals, as the bridging principal-time counts them; next month's terms read the standby from
-            # them (``_kept_ready``).
+            # Demurrage pays for liquidity kept available: the day's carried pool bridging principal and the pool
+            # cash held ready, the cash new loans may take (``_cash_for_loans``: cash not owed to the pool's creditors
+            # less the due exits the last dealing's unused offers would not cover), at the day's accruals, as the
+            # bridging principal-time counts them; next month's terms read the standby from them (``_kept_ready``).
             bk = self.book
             bridge = bk["pool"] & bk["carried"] & (bk["kind"] != TERM)
             self.acc["bridge_day"][d] = float(bk["principal"][bridge].sum())
             self.acc["ready_day"][d] = self._cash_for_loans()
+            # A record only, read by no rule: the cash held back from term loans for bridges at the same moment, zero
+            # but under reserved standby in the arrangements with demurrage; its monthly mean is kept
+            # (``standby_held``).
+            self.acc["standby_held"] += self._standby_held() / DAYS
         self._write_off(t)
         self._charge_off(t)
+        self._close_statements(d)   # under each holder's own date only
+        self._run_down_kept()   # under durable_savings "kept" only: the day's own money at its end
         if self.pool_arm and month == self.economy.burn_in - 1:
             # The bridging need path, which only the launch plan reads, from the burn-in's last month.
             bk = self.book
             bridging = bk["kind"] == BRIDGE
             self.acc["bridge_path"][:, d] = (np.bincount(bk["borrower"][bridging], weights=bk["principal"][bridging],
                                                          minlength=self.n) + self.acc["failed_cum"])
-        # Keep this the day's last statement (3 Nov): it closes the day's crossings, so a move between E and P added
-        # after it would be counted with the next step's.
+        # Keep this the day's last statement: it closes the day's crossings, so a move between E and P added after it
+        # would be counted with the next step's.
         self._count_crossings()
         self._day_cache = None
         if d < DAYS - 1:
             self._coin_day(t)   # a record only; the last day is handed over with the close (``month``)
 
+    def _end_of_day_collection(self, t):
+        """The day's end collection from all the borrower's money, in the order ``Economy.collect_first`` sets.
+
+        "bridge" (the default): what is due, missed instalments then due bridges, is collected from all the borrower's
+        money (``_collect_due``), then overdue wages are paid from the money above the buffer (``_wage_arrears``).
+        "wages": overdue wages are paid from all the borrower's money first, then what is due is collected from what
+        is left. "wages_same_budget": overdue wages are paid first, but from the money above the buffer only, the
+        budget they have under "bridge", so the order changes and the budget does not; then what is due is collected.
+
+        Example: money $400, buffer $300, a due bridge of $250 and an overdue wage of $200. Under "bridge" the bridge
+        gets 250 and the wage nothing (the 150 left is below the buffer); under "wages" the wage gets 200 and the
+        bridge the 200 left, so 50 of it stays past due; under "wages_same_budget" the wage gets the 100 above the
+        buffer and the bridge 250 of the 300 left."""
+        # The savings kept in own cash first read the money the settlement left, before overdue wages are received
+        # here: a wallet the day's bills emptied has spent them, whatever a late wage then brings.
+        self._run_down_kept()
+        first = self.economy.collect_first
+        if first in ("wages", "wages_same_budget"):
+            buffer = self.buffer if first == "wages_same_budget" else 0.0
+            self._wage_arrears(np.maximum(self.cash + self.pcash - buffer, 0.0))
+            self._collect_due(t)
+            return
+        self._collect_due(t)
+        self._wage_arrears(np.maximum(self.cash + self.pcash - self.buffer, 0.0))
+
     def _accrue_wages(self, t):
-        """Earned-wage access (decided 3 Nov): each job not in a spell earns today's wage, the daily accrual its
-        obligations were made of, so it is earned and still unpaid until its pay date (``_settle`` takes it out of the
-        base when it falls due). A day's earnings count as earned that day, its pay date included:
-        a reading of the rule (4 Nov)."""
+        """Earned-wage access: each job not in a spell earns today's wage, the daily accrual its obligations were made
+        of, so it is earned and still unpaid until its pay date (``_settle`` takes it out of the base when it falls
+        due). A day's earnings count as earned that day, its pay date included."""
         active = ~((self.spell_start <= t) & (t < self.spell_end))
         self.accrued += np.where(active, LABOUR_SHARE * self.spending / DAYS, 0.0)
 
     def _arrears(self, t):
-        """Flag people in arrears with any lender (a bridge past its due date, or an overdue instalment; since card
-        limits, 14 Nov 2026, a card minimum missed and not yet made up at a later statement, or a charged-off card
-        balance still owed, as a written-off pool loan still owed keeps its borrower past due).
+        """Flag people in arrears with any lender: a bridge past its due date, an overdue instalment, a card minimum
+        missed and not yet made up at a later statement, or a charged-off card balance still owed (as a written-off
+        pool loan still owed keeps its borrower past due).
 
         Arrears block new pool credit and business term credit.
         """
@@ -130,7 +168,7 @@ class DayMixin:
         60-day biller can owe two instalments on one date. Due amounts are
         collected from all cash, then same-day savings; any unpaid part is
         overdue from today and is collected the same way at each day's end
-        until it is paid (``_collect_due``, decided 12 Nov), and the loan
+        until it is paid (``_collect_due``), and the loan
         is written off if it stays overdue 90 days.
         """
         bk = self.book
@@ -149,11 +187,38 @@ class DayMixin:
         late = due[self._overdue(due) > EPS]
         bk["since"][late] = np.minimum(bk["since"][late], t)
 
+    def _durable_money(self):
+        """Each person's own money available for a durable before it borrows: bank money and P above its buffer.
+        With ``Economy.durable_savings`` "kept", the savings kept in its own cash at the last dealing are left alone as
+        well, as far as they remain (``_run_down_kept``), as a bank customer's outside savings are, so the same person
+        borrows the same amount for the same durable whichever vehicle holds its savings.
+
+        Example: $70,000 of own money, a $9,000 buffer and $50,000 of kept savings give $11,000 under "kept" and
+        $61,000 otherwise."""
+        kept = self.kept_savings if self.economy.durable_savings == "kept" else 0.0
+        return np.maximum(self.cash + self.pcash - self.buffer - kept, 0.0)
+
+    def _run_down_kept(self):
+        """Savings kept in the person's own cash run down as outside savings do. Applies under
+        ``Economy.durable_savings`` "kept" only; otherwise nothing reads them and nothing is done.
+
+        A bank customer's outside savings fall when a shortfall draws on them (``_use_savings``: only once its bank
+        money is gone) and are refilled by later receipts only at the next dealing. Savings kept in a wallet sit in the
+        same money as the buffer, so between dealings they are the lowest the person's own money, E and P floored at
+        zero, has been since the dealing, and never more than the dealing kept. It is read where the day's order makes
+        it exact: after the morning's instalments, before any durable, after the day's payments and before overdue
+        wages are received (``_end_of_day_collection``), and at the day's end. Example: a buffer of
+        $100 and $100 of savings kept; a $200 bill takes the wallet to $0, so the savings are $0, and a later $150
+        receipt leaves $50 above the buffer for a durable, as the bank customer, whose savings paid half the bill, has
+        $50 of bank money above its buffer."""
+        if self.economy.durable_savings == "kept":
+            self.kept_savings = np.minimum(self.kept_savings, np.maximum(self.cash + self.pcash, 0.0))
+
     def _term_purchases(self, t):
         """Instalment purchases settling today.
 
-        Funding order: own spare money above the buffer, then credit for the
-        rest. Households need debt service within the 43% DTI cap, with one
+        Funding order: own spare money above the buffer (``_durable_money``),
+        then credit for the rest. Households need debt service within the 43% DTI cap, with one
         household's same-day requests sharing it in arrival order; firms must
         not be in arrears. Pool credit goes to participants not in arrears
         while the pool takes requests and its nominal-equivalent coupon is no
@@ -171,7 +236,7 @@ class DayMixin:
         b, s, price, rate, months = r["buyer"][sl], r["seller"][sl], r["price"][sl], r["rate"][sl], r["months"][sl]
         business = BUSINESS_PRODUCT[r["product"][sl]]
         order = np.arange(b.size)
-        own = allocate(b, price, (order,), np.maximum(self.cash + self.pcash - self.buffer, 0.0))
+        own = allocate(b, price, (order,), self._durable_money())
         need = price - own
         bk = self.book
         term = bk["kind"] == TERM
@@ -180,7 +245,7 @@ class DayMixin:
         # Debt service in the coming month: existing instalments plus interest, and the new loan at the outside rate.
         new = need / months + need * rate
         qualifies = np.where(business, ~self.arrears[b], debt_service[b] + new <= DTI_CAP * self.spending[b])
-        # Same-day requests by one household share its limit (decided 30 Oct): in arrival order, the order its own
+        # Same-day requests by one household share its limit: in arrival order, the order its own
         # money was used in, each also counts the new debt service of its earlier requests today that qualified. Taken
         # rank by rank, every household's first request, then every second one, ...: each household's load adds the
         # same amounts in the same order as request by request.
@@ -199,19 +264,21 @@ class DayMixin:
         eligible = (go & (need > EPS) & self.part[b] & self.asking & ~self.arrears[b]
                     & self._term_cheaper(rate, business))
         want = np.where(eligible, need, 0.0)
-        capacity = self._cash_for_loans() if self.service else 0.0
+        # Under reserved standby term loans take only the cash above the standby held for bridges
+        # (``_cash_for_term``); otherwise it is the cash for loans.
+        capacity = self._cash_for_term() if self.service else 0.0
         lend = want * min(1.0, capacity / want.sum()) if want.sum() > 0 else want
         acc["refused"] += float((want - lend).sum())
-        acc["refused_term"] += float((want - lend).sum())   # the term part of the capital target (5 Nov)
+        acc["refused_term"] += float((want - lend).sum())   # the term part of the capital target
         outside = np.where(go, need - lend, 0.0)
-        # Records only (decided 11 Nov): the principal lent today by the pool and by the outside lender, and the
+        # Records only: the principal lent today by the pool and by the outside lender, and the
         # price of each request that needed credit and did not qualify, so was cancelled, by buyer.
         acc["credit_term_pool"] += np.bincount(b, weights=lend, minlength=n)
         acc["credit_term_outside"] += np.bincount(b, weights=outside, minlength=n)
         acc["credit_term_cancelled"] += np.bincount(b, weights=np.where(go, 0.0, price), minlength=n)
         price, own = np.where(go, price, 0.0), np.where(go, own, 0.0)
         # Under fee routing a term purchase is not card-eligible, so it is an E payment; under "all" routing, P,
-        # whenever P is issued (3 Nov), at one transfer's gas (decided 5 Nov).
+        # whenever P is issued, at one transfer's gas.
         p_route = self.part[b] & self.part[s] & self.launched & (self.economy.routing == "all")
         paid_p = (p_route & (price > EPS)).astype(float)
         gas = self.gas * paid_p
@@ -228,20 +295,20 @@ class DayMixin:
         self._pay_gas(b, gas)
         self.pool_cash -= lend.sum()
         # A term purchase paid in P is a P payment, counted among P payments, which the real part's P rail prices, and
-        # kept apart too (the 4 Nov review).
+        # kept apart too.
         acc["p_n"] += float(paid_p.sum())
         acc["p_value"] += float((price * p_route).sum())
         acc["p_term_n"] += float(paid_p.sum())
         acc["p_term_value"] += float((price * p_route).sum())
         self._receive(s, price, p_route)
-        # A record only (decided 11 Nov): the price of each durable that settled, received by its buyer and sold
+        # A record only: the price of each durable that settled, received by its buyer and sold
         # by its seller; a cancelled request has price 0 here.
         np.add.at(acc["bought_durables"], b, price)
         np.add.at(acc["sold"], s, price)
-        acc["durables_n"] += float((price > EPS).sum())   # a record only (3 Nov): durables settled, a count
+        acc["durables_n"] += float((price > EPS).sum())   # a record only: durables settled, a count
         m0 = t // DAYS
         take = lend > EPS
-        # Each loan marks whether its product is a business one (a record, decided 12 Nov: the loan-loss class).
+        # Each loan marks whether its product is a business one (a record: the loan-loss class).
         self._add_loans(b[take], True, TERM, lend[take], self._term_coupon(business[take]), rate[take], BIG,
                         months[take], m0, business=business[take])
         take = outside > EPS
@@ -257,7 +324,7 @@ class DayMixin:
 
     def _term_coupon(self, business):
         """The pool's term coupon a month for each loan: r_term, and for a business product r_term_business, which
-        differs only under the loan-loss bound (decided 12 Nov: each class carries its own sourced rate)."""
+        differs only under the loan-loss bound (each class carries its own sourced rate)."""
         return np.where(business, self.r_term_business, self.r_term)
 
     def _term_cheaper(self, rate, business):
@@ -275,27 +342,24 @@ class DayMixin:
         Routing: P between participants for fee-saving payments (or USDC with
         gas in M0), card for other card-eligible purchases by holders, E
         otherwise. A holder whose own money cannot pay the day's payments puts
-        that day's card purchases on the card. Card limits (decided 14 Nov
-        2026): card purchases go on the card up to the holder's room on its
+        that day's card purchases on the card. Card purchases go on the card up to the holder's room on its
         line, smallest first, and the rest goes the cash route, in P where P
         could carry it, else E. Shortfalls are paid first from
-        the payer's outside savings the same day (decided 30 Oct), then
+        the payer's outside savings the same day, then
         financed in order: pool draw (participants, pro rata to pool cash),
         Comet against collateral (M0), a cash advance on the card (holders, up
-        to the cash line within the room, at the cash APR and its fee; 14 Nov
-        2026), earned-wage
-        access (3 Nov: up to half of the payer's wages earned and still unpaid,
-        repaid first from those wages; holders too since card limits), else
+        to the cash line within the room, at the cash APR and its fee),
+        earned-wage access (up to half of the payer's wages earned and still unpaid,
+        repaid first from those wages; holders too), else
         the payment fails. Today's
         receipts, net of the advances today's wages repay at source, can fund
         today's payments; a few fixed-point sweeps settle the circular
         dependence.
         A failed service or shock purchase is lost; a failed wage is re-queued
-        to its job's next pay date. An extra layoff's wage (14 Nov 2026: the
-        harsh stress) is settled by its payer as a wage and received by
-        nobody. Every failed bill or wage carries the flat
+        to its job's next pay date. An extra layoff's wage (the harsh stress) is settled by its payer as a wage and
+        received by nobody. Every failed bill or wage carries the flat
         failure fee once, at most one fee a payer a day and ``fees_a_month``
-        a month (3 Nov), booked as interest-free fee debt repaid first; a
+        a month, booked as interest-free fee debt repaid first; a
         failed card-eligible purchase carries none.
         """
         inputs, n, acc = self.inputs, self.n, self.acc
@@ -303,34 +367,33 @@ class DayMixin:
         sl = slice(lo, hi)
         b, s, amt = self.ob["buyer"][sl], self.ob["seller"][sl], self.ob["amount"][sl]
         crd, kind = self.ob["card"][sl], self.ob["kind"][sl]
-        # The harsh stress (decided 14 Nov 2026): an extra layoff's wage (``sink``) is settled as a wage by its
+        # The harsh stress: an extra layoff's wage (``sink``) is settled as a wage by its
         # payer, fee-bearing the first time and re-queued while unpaid, but paid out of the household economy: nobody
         # receives it, so it is no receipt, no wage paid, no earned-wage room and never a P payment. ``requeued_row``
         # marks the re-queued wages of both kinds.
         sink = (kind == OUTSIDE_WAGE) | (kind == LATE_OUTSIDE_WAGE)
         requeued_row = (kind == LATE_WAGE) | (kind == LATE_OUTSIDE_WAGE)
-        # Routing (decided 21 Oct): P where it saves the card fee, i.e. card-eligible purchases by card holders;
+        # Routing: P where it saves the card fee, i.e. card-eligible purchases by card holders;
         # routing="all": every payment between participants in P.
         fee_saving = crd & self.holder[b] if self.economy.routing == "fee" else ~sink
-        # Gas on Base, the same for every payment whatever its value (decided 5 Nov): two legs a USDC payment in
-        # M0, one transfer a P payment, and no provider fee (P payments run on stablecoin rails); written as a rate on
-        # each payment's own value. P payments do not depend on the pool (3 Nov): they settle whenever P is issued, in
-        # the pool arms from launch.
+        # Gas on Base, the same for every payment whatever its value: two legs a USDC payment in M0, one transfer a
+        # P payment, and no provider fee (P payments run on stablecoin rails); written as a rate on each payment's own
+        # value. P payments do not depend on the pool: they settle whenever P is issued, in the pool arms from launch.
         rail_fee = self.gas / np.maximum(amt, EPS)
         p_route = self.part[b] & self.part[s] & (self.launched | self.defi) & fee_saving
-        # The October 2026 draft's fee lock, applied to gas: a payment's gas comes from funds the payer already owns.
+        # A payment's gas comes from funds the payer already owns (the fee lock).
         # A payer that cannot fund today's gas settles those payments outside P instead (by card, or E under routing
         # "all").
         owned = np.maximum(self.cash + self.pcash, 0.0)
         fees_due = np.bincount(b, weights=rail_fee * amt * p_route, minlength=n)
         p_route = p_route & (owned >= fees_due - EPS)[b]
         # A card holder whose own money cannot pay the day's payments puts that day's card purchases on the card,
-        # free until the statement is due as in S0, rather than borrowing for them (decided 29 Oct).
+        # free until the statement is due as in S0, rather than borrowing for them.
         payments = np.bincount(b, weights=amt * (1 + rail_fee * p_route), minlength=n)
         p_ready = p_route
         p_route = p_route & ~(crd & (self.holder & (owned < payments - EPS))[b])
         card = crd & self.holder[b] & ~p_route
-        # Card limits (decided 14 Nov 2026): the day's card purchases go on the card up to the holder's room on its
+        # Card limits: the day's card purchases go on the card up to the holder's room on its
         # line, whole purchases smallest first (``in_order``); the rest goes the cash route, funded like any payment, in
         # P where P could carry it before the short holder's purchases went to the card, else E, and if it still
         # cannot be paid it is declined without a fee. What the card takes leaves the room the cash line reads.
@@ -349,7 +412,7 @@ class DayMixin:
         need_p = np.bincount(b, weights=amt * (1 + rail_fee) * p_route, minlength=n)
         need_e = np.bincount(b, weights=amt * (cash_route & ~p_route), minlength=n)
         need = need_p + need_e
-        # The seller pays the 1.7% merchant fee on card purchases, to the card network and issuers (31 Oct).
+        # The seller pays the 1.7% merchant fee on card purchases, to the card network and issuers.
         merchant = inputs.f_card * amt * card
         received = amt - merchant
         received[sink] = 0.0   # an extra layoff's wage leaves the household economy: its payee receives nothing
@@ -358,21 +421,30 @@ class DayMixin:
         eligible = self.part & self.asking & ~self.arrears
         comet = self.part * self.cover
         # Covering-date budget: the receipts of the next two months left after the debts that rank ahead of the pool,
-        # and what one unit of each financing costs by the last receipt date in that horizon (12 Nov: wages expected
-        # on their jobs' pay dates, other receipts on own billing dates).
+        # and what one unit of each financing costs by the last receipt date in that horizon (wages are expected on
+        # their jobs' pay dates, other receipts on own billing dates).
         _, spare_rec, _, last = self._c1_budget(t)
+        screen_card = self.economy.screen_card_owed
+        if screen_card:
+            # Under ``Economy.screen_card_owed`` the card purchases each holder makes today are owed to the card from
+            # now, though they join ``card_unbilled`` only after the day settles, so the screen counts them with the
+            # card bill already owed. The day's card purchases are fixed before the sweeps, so every sweep reads the
+            # same amounts. Example: $100 of expected receipts and a $60 card purchase today leave $40 spare, so a $70
+            # bridge is cut to what $40 repays.
+            card_today = np.bincount(b[card], weights=amt[card], minlength=n)
+            spare_rec = np.maximum(spare_rec - card_today, 0.0)
         f_pool = self._pool_factor(t, last)
         f_card = 1 + self.card_apr * (last - t) / DAYS
         # A cash advance costs its APR to that date and its fee, the greater of the floor and the rate on it, which goes
-        # on the card's purchase balance at the purchase APR (14 Nov 2026).
+        # on the card's purchase balance at the purchase APR.
         f_cash = 1 + self.cash_apr * (last - t) / DAYS
         card_fee = lambda advanced: np.where(advanced > EPS,
                                              np.maximum(self.advance_floor, self.advance_rate * advanced), 0.0)
         line_open = cash_room > EPS
-        # Each holder's cash room today, gross of the month's own advances still owed, kept by day for the replays (14
-        # Nov 2026), since the replay's path takes the month's shortfalls itself: an advance repaid within the month
-        # has given its room back already, so it is not added again (the review), and the room is never above the cash
-        # line. Hand case: a $1,000 line takes a $200 advance on day 3, repaid on day 10; day 11 records $200, not $400.
+        # Each holder's cash room today, gross of the month's own advances still owed, kept by day for the replays,
+        # since the replay's path takes the month's shortfalls itself: an advance repaid within the month has given its
+        # room back already, so it is not added again, and the room is never above the cash line.
+        # Example: a $1,000 line takes a $200 advance on day 3, repaid on day 10; day 11 records $200, not $400.
         this_month = ~self.book["pool"] & (self.book["kind"] == CASH_ADVANCE) & (self.book["m0"] == month)
         acc["card_room"][:, t - month * DAYS] = np.minimum(cash_room + self._card_owed(this_month),
                                                            CASH_LINE_SHARE * self.card_line)
@@ -381,14 +453,23 @@ class DayMixin:
         money = self.cash + self.pcash
         capacity = self._cash_for_loans() if self.service else 0.0
         s_cash, b_cash, received_cash = s[cash_route], b[cash_route], received[cash_route]
-        # The failure fee (decided 30 Oct): a flat fee per failed bill or wage, at most one a payer a day; a failed
+        # The failure fee: a flat fee per failed bill or wage, at most one a payer a day; a failed
         # card-eligible purchase is declined without one, and a re-queued wage carries none. A payer completes the same
         # share of each of its payments today, so a payment left partly unpaid counts as that share of a failed
         # payment: until the cap, a unit of the payer's need that fails costs the fee times its fee-bearing payments
-        # over its need. Fee debt bears no interest (decided 3 Nov; as built, it grew at r_ext to the covering
-        # horizon). At most fees_a_month fees a payer a model month (3 Nov): today's cap is one fee or what the month
+        # over its need. Fee debt bears no interest (``fee_debt_free``; otherwise it grows at r_ext to the
+        # covering horizon). At most fees_a_month fees a payer a model month: today's cap is one fee or what the month
         # still allows, whichever is less, and the pool's same-day limit counts that capped fee exactly.
         fee_bearing = cash_route & ~crd & ~requeued_row
+        # What each payment takes from its payer's money (with the rail fee in P), nothing by card, for the counts of
+        # whole items (``_count_failures``).
+        fail_cost = np.where(cash_route, amt * (1 + rail_fee * p_route), 0.0)
+        if self.economy.stress_paydays == "merged":
+            # One payday, one obligation: every first-time wage row of one job due today,
+            # its worker's and the outside's, counts as one row of their total. They all complete the payer's same
+            # share, so counting one of them with the total's cost leaves one obligation's failed share and fee.
+            others, fail_cost = self._one_payday(b, kind, fail_cost)
+            fee_bearing = fee_bearing & ~others
         count = np.bincount(b, weights=fee_bearing.astype(float), minlength=n)
         grow = np.ones(n) if self.economy.fee_debt_free else 1 + inputs.r_ext * (last - t) / DAYS
         f_fail = FAIL_FEE * count / np.where(need > EPS, need, 1.0) * grow   # the fee debt per failed unit
@@ -398,15 +479,13 @@ class DayMixin:
         fee_debt = lambda fail: np.minimum(fail * f_fail, cap_today)         # at most one fee, and the month's rest
         ewa = self.economy.earned_wage_share > 0
         if ewa:
-            # Earned-wage access (decided 3 Nov). Wages falling due today leave the base; what remains is earned and
-            # still unpaid: accrued wages and a job's failed wages re-queued to a later date (that these count is
-            # a reading of the rule (4 Nov)), on a job not in a spell today, for an earner who holds
-            # access. The room is half of that base less the advances already owed against it, the fee left out, since
-            # the half limits the advance and not its fee: a reading of the rule (4 Nov). Holders
-            # reach it too since card limits (decided 14 Nov 2026), after their cash line. Instalments, term
-            # purchases and the card statement draw no advance, only today's bills, wages and purchases settled here:
-            # a reading of the rule (4 Nov). A wage paid to the outside (14 Nov 2026) was never earned
-            # by its worker, so it is in neither the base nor the wages that repay advances.
+            # Earned-wage access. Wages falling due today leave the base; what remains is earned and still unpaid:
+            # accrued wages and a job's failed wages re-queued to a later date, on a job not in a spell today, for an
+            # earner who holds access. The room is half of that base less the advances already owed against it, the fee
+            # left out, since the half limits the advance and not its fee. Holders reach it too, after their cash line.
+            # Instalments, term purchases and the card statement draw no advance, only today's bills, wages and
+            # purchases settled here. A wage paid to the outside was never earned by its worker, so it is in neither the
+            # base nor the wages that repay advances.
             wage_row = (kind == WAGE) | (kind == LATE_WAGE)
             np.subtract.at(self.accrued, b[kind == WAGE], amt[kind == WAGE])
             self.accrued = np.maximum(self.accrued, 0.0)
@@ -424,6 +503,8 @@ class DayMixin:
             wage_amt = amt * wage_row
 
         ewa_room = room if ewa else np.zeros(n)
+        # The requests that stand on a held day (``Economy.settle_cycle`` "hold", ``hold``): empty on every other day.
+        floors = {}
 
         def receipts(f):
             """Each payee's receipts today when the payers complete the shares ``f``."""
@@ -441,7 +522,7 @@ class DayMixin:
             """Receipts from today's completions, then pool, the card's cash advance, earned-wage access and
             failures. It moves no money and changes nothing outside itself."""
             rec = receipts(state["f"])
-            # Same-day savings (decided 30 Oct) pay what own money and today's receipts cannot.
+            # Same-day savings pay what own money and today's receipts cannot.
             gap = np.maximum(need - (money + rec), 0.0)
             used = np.minimum(gap, self.savings)
             short = gap - used
@@ -449,7 +530,7 @@ class DayMixin:
             # including whatever finances the rest of today's shortfall, however capacity rations it. Without a card
             # the rest fails and leaves its fee debt, at most one fee and the month's rest, so the pool lends what is
             # repaid after that debt. A card holder's rest goes to its cash line, repaid first, up to its room, and
-            # only what is beyond it fails (decided 14 Nov 2026: the holder's test is partial,
+            # only what is beyond it fails (the holder's test is partial,
             # ``limit_with_card``); a holder with no room left on its cash line is read as a payer without a card.
             limit = limit_with_fee(short, spare_rec, f_pool, f_fail, cap_today)
             if ewa and any_room:
@@ -465,19 +546,36 @@ class DayMixin:
                                               cap_today[pick], cash_room[pick], f_cash[pick], self.advance_floor,
                                               self.advance_rate, f_card[pick], ewa_room[pick], 1 + EWA_FEE)
             want = np.where(allowed, np.minimum(short, limit), 0.0)
+            if floors:
+                # A held day (``Economy.settle_cycle`` "hold"): each request for credit stands at
+                # the most asked in any sweep since the cycle was found, whatever the payer's receipts now are.
+                want = np.where(allowed, np.maximum(want, floors["want"]), 0.0)
             total = want.sum()
             draw = want * (min(1.0, capacity / total) if total > 0 else 0.0)
-            secured = comet * (short - draw)  # M0: collateralised Comet borrowing for the covered share
-            cash = np.minimum(short - draw - secured, cash_room)   # the card's cash advance, up to its cash line
-            if ewa:
-                # Earned-wage access after the card's cash line, before failure (3 Nov; holders too, 14 Nov 2026).
-                advance = np.minimum(short - draw - secured - cash, room)
-                fail = short - draw - secured - cash - advance
+            if floors:
+                # The same for the outside lenders' same-day credit: Comet's, the card's cash advance and earned-wage
+                # access each stand at the most taken, within their own limits; what is lent beyond a payer's need
+                # stays as its money and is repaid as any bridge, and nothing fails below zero.
+                secured = np.maximum(comet * np.maximum(short - draw, 0.0), floors["secured"])
+                cash = np.maximum(np.minimum(np.maximum(short - draw - secured, 0.0), cash_room), floors["cash"])
+                if ewa:
+                    advance = np.maximum(np.minimum(np.maximum(short - draw - secured - cash, 0.0), room),
+                                         floors["advance"])
+                    fail = np.maximum(short - draw - secured - cash - advance, 0.0)
+                else:
+                    fail = np.maximum(short - draw - secured - cash, 0.0)
             else:
-                fail = short - draw - secured - cash
+                secured = comet * (short - draw)  # M0: collateralised Comet borrowing for the covered share
+                cash = np.minimum(short - draw - secured, cash_room)   # the card's cash advance, up to its cash line
+                if ewa:
+                    # Earned-wage access after the card's cash line, before failure (holders too).
+                    advance = np.minimum(short - draw - secured - cash, room)
+                    fail = short - draw - secured - cash - advance
+                else:
+                    fail = short - draw - secured - cash
             f = np.where(need > 0, 1.0 - fail / np.where(need > 0, need, 1.0), 1.0)
-            # Reported (decided 31 Oct): what the pool refuses a payer whose rest would partly fail (without a card,
-            # or beyond a holder's cash line, 14 Nov 2026) although the loan alone would be repaid, because the
+            # Reported: what the pool refuses a payer whose rest would partly fail (without a card,
+            # or beyond a holder's cash line) although the loan alone would be repaid, because the
             # receipts would not also cover the fee were capacity to ration the draw.
             refused = np.where(allowed & (cash_room < short) & (short * f_pool <= spare_rec),
                                short - np.minimum(short, limit), 0.0)
@@ -488,6 +586,25 @@ class DayMixin:
             return out
 
         first = {}   # the latest sweep started from every payer completing in full
+        credit = ("want", "secured", "cash", "advance") if ewa else ("want", "secured", "cash")
+
+        def hold(*states):
+            """Under ``Economy.settle_cycle`` "hold": from now to the day's end every request
+            for same-day credit stands at the most asked in ``states`` and in every later sweep, so the requests only
+            rise and the sweeps end; returns whether the rule may be applied (once a day, and only under "hold").
+
+            It is used only where the plain sweeps would never settle: two states that repeat with money still
+            moving (a payer short in one asks for credit, with it everyone is paid and its own receipts arrive, so in
+            the other it no longer asks and the payments fail again), or the sweep cap. A payer short when it must pay
+            takes the credit, and receipts that arrive because others were then paid do not undo a loan already taken;
+            it is repaid by the day's collection as any bridge. Example: a payer short $100 asks a $100 bridge in one
+            sweep and nothing in the next; held, it draws $100 and the day settles with every payment made."""
+            if self.economy.settle_cycle != "hold" or floors:
+                return False
+            most = np.max(np.array(list(map(itemgetter(*credit), states))), axis=0)   # (credit kinds, n)
+            floors.update(zip(credit, most))
+            self.acc["settle_held"] += 1
+            return True
 
         def fixed_point(allowed):
             """Find each payer's completed share and return the remaining queue.
@@ -497,14 +614,18 @@ class DayMixin:
             states repeat, a request that fails the repayment check in either
             state and qualifies in the other is deferred for the day. At the
             sweep cap a day whose completions move by no more than EPS of money
-            is settled (14 Nov 2026); otherwise the cap is an error.
+            is settled; otherwise the cap is an error. Under
+            ``Economy.settle_cycle`` "hold" two repeating states
+            with money moving and nothing to defer, or the cap, hold the day's
+            requests for credit instead (``hold``); a held day that still does
+            not settle within the cap is the error.
             """
             full = dict(f=np.ones(n))
             flow = previous = None
             sweeps = 0
 
             def slow(state, used):
-                """Counts a day that needed more than SLOW_SWEEPS sweeps (decided 14 Nov 2026), and the most used."""
+                """Counts a day that needed more than SLOW_SWEEPS sweeps, and the most used."""
                 if used > SLOW_SWEEPS:
                     self.acc["slow_days"] += 1
                 self.acc["most_sweeps"] = max(self.acc["most_sweeps"], used)
@@ -517,17 +638,33 @@ class DayMixin:
                     sweeps += 1
                 following = sweep(flow, allowed)
                 sweeps += 1
+                if floors:
+                    # On a held day the requests only rise (``hold``).
+                    floors.update(zip(credit, np.maximum(np.array(itemgetter(*credit)(floors)),
+                                                         np.array(itemgetter(*credit)(following)))))
                 change = float(np.abs(following["f"] - flow["f"]).max())
                 if change <= 1e-14:
                     return slow(following, sweeps), allowed
                 if sweeps >= self.economy.sweeps:
                     # At the cap, a day whose completions still move by no more than EPS of money is at its fixed point
-                    # up to rounding (14 Nov 2026): a payer whose amount due is tiny (the remainder of a re-queued wage)
+                    # up to rounding: a payer whose amount due is tiny (the remainder of a re-queued wage)
                     # has its completed share moved by the rounding of its receipts, which no sweep removes, while the
                     # money it moves is nil. Only a day that would otherwise stop is read so, so no other day changes.
                     if float((np.abs(following["f"] - flow["f"]) * need).max()) <= EPS:
                         return slow(following, sweeps), allowed
-                    # What the error names (14 Nov 2026), so a failed day can be read without rerunning it: whether the
+                    # Under "hold" a day that would stop here is settled where no payer's completion still moves by
+                    # a cent of money: a cycle of rounding with no credit asked, such as a payer due $123,000 whose
+                    # share moves by 6e-8 for ever (under a cent) with nobody lending. A day moving more is held
+                    # instead and given the sweeps again; a held day that still does not settle stops with the error.
+                    if (self.economy.settle_cycle == "hold"
+                            and float((np.abs(following["f"] - flow["f"]) * need).max()) <= CENT):
+                        self.acc["settle_held"] += 0 if floors else 1   # a held day is counted once
+                        return slow(following, sweeps), allowed
+                    if hold(*(state for state in (previous, flow, following) if state is not None)):
+                        sweeps = 0
+                        previous, flow = None, following
+                        continue
+                    # What the error names, so a failed day can be read without rerunning it: whether the
                     # last sweeps repeat two states, and the payers whose completion or request still moves.
                     back = (float(np.abs(following["f"] - previous["f"]).max()) if previous is not None
                             else float("nan"))
@@ -544,7 +681,8 @@ class DayMixin:
                         f"({moving.size} in all); whose pool request moves: {asks[:12].tolist()} ({asks.size}); "
                         f"of them holders {asks[self.holder[asks]][:12].tolist()}, screened out in either sweep "
                         f"{asks[(following['fails_screen'] | flow['fails_screen'])[asks]][:12].tolist()}. The movers "
-                        f"hold a card: {self.holder[moving][:12].tolist()}; their money: {money[moving][:12].tolist()}; "
+                        f"hold a card: {self.holder[moving][:12].tolist()}; "
+                        f"their money: {money[moving][:12].tolist()}; "
                         f"their amounts due today: {need[moving][:12].tolist()}; "
                         f"their payments to each other today: {int(among.sum())}, in P {int((among & p_route).sum())}, "
                         f"by card {int((among & card).sum())}, past a holder's room {int((among & spilled).sum())}, "
@@ -552,12 +690,19 @@ class DayMixin:
                         f"{int((np.isin(b, moving) & ~among).sum())}."
                     )
                 if previous is not None and float(np.abs(following["f"] - previous["f"]).max()) <= 1e-14:
-                    # A request can use enough of the pool to cut the receipts that made it qualify (6 Nov).
+                    # A request can use enough of the pool to cut the receipts that made it qualify.
                     defer = allowed & (((flow["want"] > EPS) & following["fails_screen"])
                                        | ((following["want"] > EPS) & flow["fails_screen"]))
                     if defer.any():
                         allowed = allowed & ~defer
                         flow = previous = None
+                        continue
+                    # Two states that repeat with money still moving and nothing to defer never settle: under "hold"
+                    # the day is held from here. With money moving by no more than EPS the cap settles it, so it is
+                    # left to the cap.
+                    if (float((np.abs(following["f"] - flow["f"]) * need).max()) > EPS
+                            and hold(previous, flow, following)):
+                        previous, flow = None, following
                         continue
                 previous, flow = flow, following
 
@@ -567,14 +712,19 @@ class DayMixin:
         ahead = lambda flow: (flow["cash"] * f_cash + card_fee(flow["cash"]) * f_card
                               + flow["secured"] * (1 + comet_rate * (last - t) / DAYS) + fee_debt(flow["fail"]))
         if ewa:
-            # An earned-wage advance and its fee are repaid from the wage before the pool (3 Nov).
+            # An earned-wage advance and its fee are repaid from the wage before the pool.
             debts = ahead
             ahead = lambda flow: debts(flow) + flow["advance"] * (1 + EWA_FEE)
         # Loan-cost comparison: a card holder borrows from the pool only if, on the draw's own covering date,
-        # repaying it costs no more than a cash advance on the part its room could take (14 Nov 2026), and a payer
-        # with earned-wage room and no cash line only if it costs no more than the advance (3 Nov). Payers whose draw
+        # repaying it costs no more than a cash advance on the part its room could take, and a payer
+        # with earned-wage room and no cash line only if it costs no more than the advance. Payers whose draw
         # would be dearer leave the pool's queue and the day is settled again; the queue only shrinks, so this ends.
         held = room if ewa else None
+        if screen_card:
+            # The draw's covering date counts today's card purchases too, not yet in ``card_unbilled`` here; the due
+            # date booked below reads them there, once they are booked.
+            unbooked = ahead
+            ahead = lambda flow: unbooked(flow) + card_today
         flow, eligible = fixed_point(eligible)
         dearer = self._dearer(flow["draw"], t, ahead(flow), held, cash_room)
         while dearer.any():
@@ -585,24 +735,24 @@ class DayMixin:
         secured = flow.get("secured", np.zeros(n))
         self._chain_records(flow, first["full"], receipts, b, b_cash, s_cash, received_cash,
                             amt * cash_route, amt * (cash_route & ~requeued_row), need, money, card_rec)
-        # The part of each payer's pool draw that paid in place of failing (records only, the review of 14 Nov 2026):
+        # The part of each payer's pool draw that paid in place of failing (records only):
         # without the draw a holder's cash line would take the shortfall up to its room, so it is what the draw took
         # of the rest; for a payer without a card, whose room is zero, the whole draw.
         rescued = np.minimum(draw, np.maximum(flow["short"] - cash_room, 0.0))
         done = np.where(card, 1.0, f[b])
         self._receive(s, received * done, p_route)
         # Each job's wages paid to its recipient, on time or late: next month's budget expects them on that job's pay
-        # dates (decided 12 Nov).
+        # dates.
         wage_paid = received * done * ((kind == WAGE) | (kind == LATE_WAGE))
         acc["wages_paid"] += np.bincount(b, weights=wage_paid, minlength=n)
-        # A record only (decided 11 Nov): service and shock purchases completed and lost by their buyers, and
+        # A record only: service and shock purchases completed and lost by their buyers, and
         # completed to their sellers at face value, before the merchant fee. Wages are not purchases.
         purchase = (kind == SERVICE) | (kind == SHOCK)
         completed = amt * done * purchase
         acc["bought_completed"] += np.bincount(b, weights=completed, minlength=n)
         acc["bought_lost"] += np.bincount(b, weights=amt * (1 - done) * purchase, minlength=n)
         acc["sold"] += np.bincount(s, weights=completed, minlength=n)
-        # A record only (3 Nov): how many purchases completed, a partly completed one counted at its completed share,
+        # A record only: how many purchases completed, a partly completed one counted at its completed share,
         # as completed P payments are counted.
         acc["bought_n"] += float((done * purchase).sum())
         if ewa:
@@ -624,7 +774,7 @@ class DayMixin:
         gas = rail_fee * amt * done * p_route
         self._pay_gas(b, gas)
         self.pool_cash -= draw.sum()
-        # The card fee leaves the economy (the boundary rule, 31 Oct); the buyer earns card rewards on the purchase,
+        # The card fee leaves the economy (the boundary rule); the buyer earns card rewards on the purchase,
         # paid at the close. Payments by rail are counted for the real-part report: card payments, and completed P
         # (USDC in M0) payments.
         acc["merchant"] += np.bincount(s, weights=merchant, minlength=n)
@@ -636,8 +786,8 @@ class DayMixin:
         acc["p_value"] += float((amt * done * p_route).sum())
         # The merchant fee a seller avoided because the buyer paid in P: a transfer, reported as a channel. In S0 a
         # holder's card-eligible purchase paid in P would have gone on its card only where its room could take it with
-        # the day's other card-eligible purchases, whole purchases smallest first, as the card route takes them (the
-        # review, 14 Nov 2026); past the room S0 pays it by debit, with no merchant fee and no float to its buyer.
+        # the day's other card-eligible purchases, whole purchases smallest first, as the card route takes them;
+        # past the room S0 pays it by debit, with no merchant fee and no float to its buyer.
         in_s0 = np.ones(b.size, bool)
         if (p_route & crd).any():
             held = crd & self.holder[b]
@@ -650,82 +800,84 @@ class DayMixin:
         self.today["card_internal"] += card_internal
         acc["card_internal"] += card_internal
         np.add.at(self.card_unbilled, b[card], amt[card])
-        acc["card_spilled"] += float(amt[spilled].sum())   # card purchases past the room (a record only, 14 Nov 2026)
+        acc["card_spilled"] += float(amt[spilled].sum())   # card purchases past the room (a record only)
         # Bridging is booked in repayment order: Comet bridging first, due on its covering date (outside debt is repaid
-        # first, dated at its own nominal rate), and the card's cash advances, with no due date (14 Nov 2026), then
+        # first, dated at its own nominal rate), and the card's cash advances, with no due date, then
         # pool draws, whose dates count the same day's outside financing and fee debt.
         who = np.flatnonzero(secured > EPS)
         self._add_loans(who, False, BRIDGE, secured[who], comet_rate, self.card_apr[who],
                         self._due_c1(who, secured[who], t, np.full(who.size, comet_rate)))
         self._book_advances(cash, t)
-        # Reported (3 Nov, for the S0 check): holders' card bridging of what their money could not pay, since card
-        # limits their cash advances (14 Nov 2026), against US cash advances. No rule reads it.
+        # Reported, for the S0 check: holders' card bridging of what their money could not pay, since the card limits
+        # their cash advances, against US cash advances. No rule reads it.
         acc["card_bridging"] += float(cash.sum())
-        acc["comet_bridging"] += float(secured.sum())   # a record only (5 Nov)
-        acc["credit_bridge_card"] += cash               # the same two, by payer (records only, decided 11 Nov)
+        acc["comet_bridging"] += float(secured.sum())   # a record only
+        acc["credit_bridge_card"] += cash               # the same two, by payer (records only)
         acc["credit_bridge_comet"] += secured
-        acc["credit_advance_card"] += cash              # the cash advances alone (records only, 14 Nov 2026)
+        acc["credit_advance_card"] += cash              # the cash advances alone (records only)
         took = draw > EPS
         who = np.flatnonzero(took)
         if ewa:
-            # Today's advance and its fee rank ahead of the draw too (3 Nov); the advance is booked below, after the
+            # Today's advance and its fee rank ahead of the draw too; the advance is booked below, after the
             # draw's date, so it is not counted twice.
             due = self._due_c1(who, draw[took], t, ahead=(fee_debt(flow["fail"]) + advance * (1 + EWA_FEE))[took])
         else:
             due = self._due_c1(who, draw[took], t, ahead=fee_debt(flow["fail"])[took])
-        # Reported (3 Nov): the share of the draw of a payer without a card that paid its card-eligible purchases, new
+        # Reported: the share of the draw of a payer without a card that paid its card-eligible purchases, new
         # lending rather than a replaced failure. The draw pays the same share of each payment, so it is their share of
-        # the payer's need (each with its rail fee in P). No rule reads it. For a holder (the review, 14 Nov 2026) the
+        # the payer's need (each with its rail fee in P). No rule reads it. For a holder the
         # share the real part counts as card credit is the part of the draw its cash line would otherwise have taken,
         # and of the part that paid in place of failing, the share that paid purchases past its room, read as a payer
-        # without a card's purchases are; the rest the real failure line counts, so no dollar is counted twice. Hand
-        # case: a $150 draw for a $150 bill with $50 of room counts $50 as card credit and $100 as bridged.
+        # without a card's purchases are; the rest the real failure line counts, so no dollar is counted twice.
+        # Example: a $150 draw for a $150 bill with $50 of room counts $50 as card credit and $100 as bridged.
         bought = crd & cash_route & (~self.holder[b] | spilled)
         purchases = np.bincount(b, weights=amt * (1 + rail_fee * p_route) * bought, minlength=n)
         share = purchases / np.where(need > EPS, need, 1.0)
         card_part = np.where(self.holder, np.divide(draw - rescued * (1 - share), draw, out=np.zeros(n),
                                                     where=draw > EPS),
                              np.where(need > EPS, share, 0.0))
-        # Dated by the month made, which only the loan-year record reads for a bridge (4 Nov). Sealed at this month's
-        # bridging rate r_b, the coupon less the part of its capital part demurrage pays (decided 4 Nov).
+        # Dated by the month made, which only the loan-year record reads for a bridge. Sealed at this month's
+        # bridging rate r_b, the coupon less the part of its capital part demurrage pays.
         self._add_loans(who, True, BRIDGE, draw[took], self.r_b, self.card_apr[took], due, m0=t // DAYS,
                         card_part=card_part[took], cover=self.r_g - self.r_b)
         acc["new_pool_loans"] += float(took.sum())
         acc["bridges"] += float(draw.sum())
-        # Payer-days with a pool bridge to a payer without a card (the real part's count as built).
+        # Payer-days with a pool bridge to a payer without a card (the real part's count).
         acc["nocard_bridges"] += float((took & ~self.holder).sum())
         acc["want"] += flow["want"]
         acc["drawn"] += draw
         acc["refused"] += float((flow["want"] - draw).sum())
-        acc["refused_bridging"] += float((flow["want"] - draw).sum())   # the peak bridging need's part (5 Nov)
+        acc["refused_bridging"] += float((flow["want"] - draw).sum())   # the peak bridging need's part
         acc["fee_refused"] += float(flow["fee_refused"].sum())
         acc["fee_refused_n"] += float((flow["fee_refused"] > EPS).sum())
         acc["borrowed"] |= took
         if ewa:
             # Each earner's advance is owed against its jobs, with its fee, spread over them by their room
-            # (a reading of the rule (4 Nov)), and repaid from those jobs' wages; the fee goes to
-            # the provider, outside the economy, and is still owed if the wage fails. A use is a payer-day with an
-            # advance.
+            # and repaid from those jobs' wages; the fee goes to the provider, outside the economy, and is still
+            # owed if the wage fails. A use is a payer-day with an advance.
             per_room = np.divide(advance, room, out=np.zeros(n), where=room > EPS)
             self.ewa_owed += per_room[wage_to] * room_job * (1 + EWA_FEE)
             fee = EWA_FEE * advance
             self.external -= float(fee.sum())
+            self._edge_debt(fee)   # owed with the advance, repaid from the wage (a record only)
+            # The fee part of what each job's earner owes, which its repayment pays first (a record
+            # unless the payout reads it, ``_edge_owed``).
+            self.ewa_fee_owed += per_room[wage_to] * room_job * EWA_FEE
             acc["ewa_uses"] += advance > EPS
             acc["ewa_value"] += advance
             acc["ewa_fees"] += fee
-        # Failures (decided 30 Oct): the flat fee on each failed bill or wage, or its unpaid share, at most one a
-        # payer a day and fees_a_month a model month (3 Nov), once per obligation, booked as fee debt (no interest,
-        # repaid first; as built, outside debt at r_ext); a service or shock purchase is lost, an unpaid wage stays
-        # owed and is re-queued to its job's next pay date (as built, the recipient's next billing date). The payer's
-        # fee-bearing payments and need are counted for its average payment, next month's price of the fee in the
-        # buffer choice. An extra layoff's wage (14 Nov 2026) is a wage here: re-queued while unpaid, still owed, and
-        # out of the failure share's failed and due; it was nobody's receivable.
+        # Failures: the flat fee on each failed bill or wage, or its unpaid share, at most one a payer a day and
+        # fees_a_month a model month, once per obligation, booked as fee debt (no interest, repaid first; without
+        # ``fee_debt_free``, outside debt at r_ext); a service or shock purchase is lost, an unpaid wage stays owed and
+        # is re-queued to its job's next pay date (without ``pay_dates``, the recipient's next billing date). The
+        # payer's fee-bearing payments and need are counted for its average payment, next month's price of the fee in
+        # the buffer choice. An extra layoff's wage is a wage here: re-queued while unpaid, still owed, and out of the
+        # failure share's failed and due; it was nobody's receivable.
         wage = (kind == WAGE) | (kind == LATE_WAGE) | sink
         unpaid = amt * (1 - done) * cash_route
         if self.economy.requeued_once:
-            # Each obligation once, on the day it first fell due (decided 3 Nov): a re-queued wage adds nothing to
-            # the replay's flow when it fails again, and what it pays on a later date is taken back out of that day's
-            # flow; the paid case is a reading of the rule (4 Nov).
+            # Each obligation once, on the day it first fell due: a re-queued wage adds nothing to the replay's flow
+            # when it fails again, and what it pays on a later date is taken back out of that day's flow.
             timing = np.where(requeued_row, -amt * done * cash_route, unpaid)
         else:
             timing = unpaid
@@ -739,8 +891,7 @@ class DayMixin:
         unpaid_shares = np.bincount(b, weights=(1 - done) * fee_bearing, minlength=n)
         units = np.minimum(unpaid_shares, 1.0)
         if monthly_cap:
-            # The month's fee count in shares of a fee, so a day can carry a fractional last fee:
-            # a reading of the rule (4 Nov).
+            # The month's fee count in shares of a fee, so a day can carry a fractional last fee.
             units = np.minimum(units, left)
         acc["fee_units"] += units
         penalty = FAIL_FEE * units
@@ -750,30 +901,31 @@ class DayMixin:
         else:
             self._add_loans(who, False, OVERDRAFT, penalty[who], inputs.r_ext, inputs.r_ext, BIG)
         self.external -= penalty.sum()
+        self._edge_debt(penalty)   # booked as a debt, paid later (a record only)
         acc["penalties"] += float(penalty.sum())
         acc["fee"] += penalty
         acc["failed_new"] += np.bincount(b, weights=unpaid * ~requeued_row, minlength=n)
         acc["failed_cum"] += np.bincount(b, weights=amt * (1 - done) * cash_route, minlength=n)
         acc["failed"] += float((amt * (1 - done))[cash_route & ~wage].sum())
         acc["wage_failed"] += float((amt * (1 - done))[kind == WAGE].sum())
-        # The same by payer (a record only, decided 11 Nov): a wage not paid on its first due date, once.
+        # The same by payer (a record only): a wage not paid on its first due date, once.
         acc["credit_wages_late"] += np.bincount(b, weights=amt * (1 - done) * (kind == WAGE), minlength=n)
         acc["due"] += float(amt[~wage].sum())
-        # Records only (14 Nov 2026): an extra layoff's wage not paid on its first due date, in a record of its own, so
+        # Records only: an extra layoff's wage not paid on its first due date, in a record of its own, so
         # the wage arrears keep their meaning; and the failure share's failed and due of hit workers as payers.
         acc["wage_out_failed"] += float((amt * (1 - done))[kind == OUTSIDE_WAGE].sum())
         hit = acc["hit"][b] & ~wage
         acc["failed_hit"] += float((amt * (1 - done))[cash_route & hit].sum())
         acc["due_hit"] += float(amt[hit].sum())
-        # The failure counts (3 Nov), from the money this settlement paid each payer, read before today's amounts are
+        # The failure counts, from the money this settlement paid each payer, read before today's amounts are
         # cleared. Each payment takes its amount (with the rail fee in P) from its payer's money, nothing by card.
-        # A holder's draw replaces a failure only beyond what its cash line could take (14 Nov 2026): without the draw
-        # the cash line would take the shortfall up to its room, so the draw paid in place of failing what it took of
-        # the rest, min(draw, shortfall less room), whether the pool lent the whole shortfall or part of it (the
-        # review); for a payer without a card that is the whole draw. Hand case: a $300 bill, $100 of room and a draw
-        # of $145.05 paid $145.05 in place of failing, of $200 that would have failed.
-        self._count_failures(b, np.where(cash_route, amt * (1 + rail_fee * p_route), 0.0), cash_route, crd,
-                             fee_bearing, done, need * f, rescued, need, count, unpaid_shares, spilled)
+        # A holder's draw replaces a failure only beyond what its cash line could take: without the draw the cash line
+        # would take the shortfall up to its room, so the draw paid in place of failing what it took of the rest,
+        # min(draw, shortfall less room), whether the pool lent the whole shortfall or part of it; for a payer without
+        # a card that is the whole draw. Example: a $300 bill, $100 of room and a draw of $145.05 paid $145.05 in
+        # place of failing, of $200 that would have failed.
+        self._count_failures(b, fail_cost, cash_route, crd, fee_bearing, done, need * f, rescued, need, count,
+                             unpaid_shares, spilled)
         if month in (self.economy.burn_in, self.total - 1):
             # The payment network's log: an extra layoff's wage pays nobody in the household economy, so it is left out.
             route = np.where(p_route, ROUTE_P, np.where(card, ROUTE_CARD, ROUTE_E))
@@ -783,18 +935,38 @@ class DayMixin:
         if requeue.any():
             seller = s[requeue]
             if self.economy.pay_dates:
-                # To the job's next pay date (as built, the recipient's next billing date):
-                # a reading of the rule (4 Nov).
+                # To the job's next pay date (the recipient's next billing date without ``pay_dates``):
                 job = b[requeue]
                 later = next_billing(self.pop["pay_days"][job], self.pop["pay_phase"][job], t, strict=True)
             else:
                 later = next_billing(self.pop["cycles"][seller], self.pop["phases"][seller], t, strict=True)
             # Inserted in settle order, as a stable sort of the list with them appended would place them. An extra
-            # layoff's wage is re-queued as a wage paid to the outside still (14 Nov 2026).
+            # layoff's wage is re-queued as a wage paid to the outside still.
             again = np.full(seller.size, LATE_WAGE)
             again[sink[requeue]] = LATE_OUTSIDE_WAGE
             self.ob = _merge_sorted(self.ob, dict(buyer=b[requeue], seller=seller, amount=back, settle=later,
                                                   card=np.zeros(seller.size, bool), kind=again))
+
+    def _one_payday(self, b, kind, cost):
+        """One payday as one obligation (``Economy.stress_paydays`` "merged"): today's
+        first-time wage rows of each job, its payer ``b``, worker's (``WAGE``) and outside's (``OUTSIDE_WAGE``)
+        together, all on one pay date. A job can have several: the month that makes the rows merges a pay date's days
+        only within itself, so a pay period across a month's end leaves two worker rows on one date, and an extra
+        layoff splits a period into worker and outside rows. Returns the rows not counted apart, every row of a group
+        but its first, and ``cost`` with the group's whole cost on its first row and none on the others, so the counts
+        of whole items read the group as one row of its total. Example: rows of $60 and $40 of one job today flag
+        the $40 row and give the $60 row a cost of $100."""
+        wage = (kind == WAGE) | (kind == OUTSIDE_WAGE)
+        rows = np.flatnonzero(wage)
+        _, first = np.unique(b[rows], return_index=True)
+        lead = rows[first]
+        total = np.bincount(b[rows], weights=cost[rows], minlength=self.n)
+        merged = cost.copy()
+        merged[rows] = 0.0
+        merged[lead] = total[b[lead]]
+        others = wage.copy()
+        others[lead] = False
+        return others, merged
 
     def _chain_records(self, flow, full, receipts, b, b_cash, s_cash, received_cash, face, fresh, need, money,
                        card_rec):
@@ -811,8 +983,9 @@ class DayMixin:
         the day it first falls due, as the month's failures (``failed_new``) count it; the own-shortfall part is the
         share of its need it fails in ``full``, at the same face value. Dependence on netting (``netting_set``,
         ``netting_loss``): the members complete at least a cent of the cash-route payments they have due (rounding
-        remainders of a payment are not payments), hold no own money and no outside savings, draw no pool, Comet, cash-advance or earned-wage credit today and receive
-        nothing by card; values are completed face value on the cash route.
+        remainders of a payment are not payments), hold no own money and no outside savings, draw no pool, Comet,
+        cash-advance or earned-wage credit today and receive nothing by card; values are completed face value on the
+        cash route.
         """
         acc, n, f = self.acc, self.n, flow["f"]
         failed = np.bincount(b, weights=fresh * (1 - f[b]), minlength=n)
@@ -844,7 +1017,7 @@ class DayMixin:
 
     def _count_failures(self, b, cost, cash_route, crd, fee_bearing, done, paid, draw, need, count, unpaid_shares,
                         spilled=None):
-        """Failure counts by payer for one settlement (decided 3 Nov), reported only: no rule reads them.
+        """Failure counts by payer for one settlement, reported only: no rule reads them.
 
         A payer's bills and wages each count their unpaid share once, capped at one a day in fail_units as the fee is
         and without a cap in fail_shares. Whole items are the fewest of the payer's payments today that a bank paying
@@ -853,7 +1026,7 @@ class DayMixin:
         share of each of a payer's payments: for a payer without a card, in place of failing for its bills and wages,
         and as new lending for its card-eligible purchases. ``cost`` is what each payment takes from its payer's money,
         ``paid`` and ``need`` what the settlement paid and owed each payer's payments, and ``count`` its bills and
-        wages that can carry the fee. Since card limits (14 Nov 2026) ``draw`` is the part of each payer's pool draw
+        wages that can carry the fee. ``draw`` is the part of each payer's pool draw
         that replaced a failure, for a holder what its cash line could not have taken, and ``spilled`` flags the card
         purchases past a holder's room, which compete and are declined as a payer without a card's are. No random
         number is drawn and no money moves.
@@ -861,13 +1034,13 @@ class DayMixin:
         acc, n = self.acc, self.n
         # Re-queued wages compete for the day's money but are never counted again, in failures or in bridges; a payer
         # without a card has its card-eligible purchases compete in the same pass, counted apart as declined with no
-        # fee (decided 4 Nov), and so do a holder's purchases past its room (14 Nov 2026).
+        # fee, and so do a holder's purchases past its room.
         nocard = ~self.holder
         purchases = crd & cash_route & (nocard[b] if spilled is None else nocard[b] | spilled)
         within = in_order(b, cost)
         # Only a payer left short returns a payment; one the draw paid is bridged if it would be returned without it.
         # Only the pool's draw counts as a bridge, as in nocard_bridges, not M0's Comet borrowing against collateral
-        # (none at collateral cover 0), as decided 4 Nov.
+        # (none at collateral cover 0).
         short, bridging = need - paid > EPS, draw > EPS
         returned = cash_route & short[b] & (within > paid[b] + EPS)
         rescued = cash_route & ~returned & bridging[b] & (within > (paid - draw)[b] + EPS)

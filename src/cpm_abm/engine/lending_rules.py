@@ -9,6 +9,9 @@ import numpy as np
 
 from cpm_abm.engine.constants import BUFFER_MULTIPLES, BUFFER_REVIEW_STREAM, DAYS, EPS
 
+# The people a buffer replay takes at once (``replay_cost``), a speed device that changes no value.
+REPLAY_ROWS = 256
+
 
 def _rises(x, out):
     """Each day's rise of ``x`` over the day before (the first day's over zero), floored at zero, into ``out``: the
@@ -27,24 +30,32 @@ def replay_cost(flows, buffers, credit_rate, hold_rate, fail_cost=None, reserve=
     expected failure cost of each new shortfall (fail_cost per unit, the
     unfunded share times the failure fee per unit, at most ``fail_cap`` a
     day and, with ``fail_month``, at most that over the month: the monthly
-    cap of fees, decided 3 Nov). Demurrage is in P's yield, which
-    ``hold_rate`` nets (decided 5 Nov; the charge on the idle part of
-    the buffer it replaced is gone). Same-day savings
-    (decided 30 Oct): a shortfall first draws on ``reserve`` (n, k), the
-    savings above each buffer, giving up ``draw_rate`` on what is drawn
-    (savings earn on the month-end balance), and only the rest needs credit
-    or fails. Earned-wage access (decided 3 Nov): with ``advance`` (n,
-    DAYS), each day's room, the shortfall savings leave is advanced up to
-    that room at ``advance_rate`` per unit drawn, and only the rest fails;
-    the credit term still reads the whole shortfall. Card limits (decided
-    14 Nov 2026): with ``card_room`` (n, DAYS), each day's room on a holder's
-    cash line, the shortfall savings leave goes first to the cash line up to
+    cap of fees). Demurrage is in P's yield, which ``hold_rate`` nets (the
+    charge on the idle part of the buffer it replaced is gone). Same-day
+    savings: a shortfall first draws on ``reserve`` (n, k), the savings
+    above each buffer, giving up ``draw_rate`` on what is drawn (savings
+    earn on the month-end balance), and only the rest needs credit or
+    fails. Earned-wage access: with ``advance`` (n, DAYS), each day's room,
+    the shortfall savings leave is advanced up to that room at
+    ``advance_rate`` per unit drawn, and only the rest fails; the credit
+    term still reads the whole shortfall. Card limits: with ``card_room``
+    (n, DAYS), each day's room on a holder's cash line, the shortfall savings leave goes first to the cash line up to
     that room, each rise of what it takes a new advance paying the greater of
     ``card_floor`` and ``card_fee`` per unit, and the credit term gives back
     ``card_rate``, the cash line's part of ``credit_rate``, on the rest above
     the room, which earned-wage access and failure then meet. flows is (n,
     DAYS) own net trade cash flow; buffers is (n, k). Rates are per month.
     """
+    n = len(flows)
+    if n > REPLAY_ROWS:
+        # People are replayed in blocks of REPLAY_ROWS (a speed device: each person's replay reads only its own row
+        # of every argument, so the blocks compute the same values; their work arrays fit in the processor's cache).
+        # An argument with one row a person is cut by block; a scalar or None is passed whole.
+        args = (flows, buffers, credit_rate, hold_rate, fail_cost, reserve, draw_rate, fail_cap, fail_month, advance,
+                advance_rate, card_room, card_rate, card_floor, card_fee)
+        block = lambda lo: replay_cost(*(value[lo:lo + REPLAY_ROWS] if np.ndim(value) and np.shape(value)[0] == n
+                                         else value for value in args))
+        return np.concatenate(list(map(block, range(0, n, REPLAY_ROWS))))
     # Three (n, k, days) work arrays, every step written in place (a speed and memory device: the same element-wise
     # operations on the same operands, and every sum over the same contiguous last axis).
     shape = buffers.shape + (np.shape(flows)[1],)
@@ -60,7 +71,7 @@ def replay_cost(flows, buffers, credit_rate, hold_rate, fail_cost=None, reserve=
         drawn = work.max(axis=2)
     deficit = shortfall.sum(axis=2) / DAYS
     if card_room is not None:
-        # The cash line takes the shortfall up to each day's room (14 Nov 2026), at the fee on each rise of what it
+        # The cash line takes the shortfall up to each day's room, at the fee on each rise of what it
         # takes; what is above the room is left for earned-wage access and failure below, and owes no cash APR.
         np.minimum(shortfall, card_room[:, None, :], out=work)                       # the cash line takes this
         _rises(work, fresh)
@@ -75,8 +86,7 @@ def replay_cost(flows, buffers, credit_rate, hold_rate, fail_cost=None, reserve=
     else:
         # The advance pays what savings leave, up to the day's room; each rise of what it pays is a new advance, paying
         # its fee, and only the rest of a new shortfall fails. The room is half of the wages earned and still unpaid,
-        # gross of the month's advances, and the fee is priced per unit drawn:
-        # a reading of the rule (4 Nov).
+        # gross of the month's advances, and the fee is priced per unit drawn.
         np.minimum(shortfall, advance[:, None, :], out=work)                             # lent
         taken = _rises(work, fresh).sum(axis=2)
         np.subtract(shortfall, work, out=work)
@@ -96,7 +106,7 @@ def replay_cost(flows, buffers, credit_rate, hold_rate, fail_cost=None, reserve=
 
 def choose_buffer(flows, spending, wealth, credit_rate, hold_rate, fail_cost=None, draw_rate=None, drawable=None,
                   fail_cap=None, fail_month=None, advance=None, advance_rate=None, card_room=None, card_rate=None,
-                  card_floor=None, card_fee=None):
+                  card_floor=None, card_fee=None, spare_share=None):
     """Buffer replay: each person's cheapest buffer among declared multiples of own spending; ties go to less.
 
     Experiential, not optimising: the person replays its own last month of
@@ -107,13 +117,17 @@ def choose_buffer(flows, spending, wealth, credit_rate, hold_rate, fail_cost=Non
     ``wealth``) counts as savings at that rate. A day's failures cost at most
     ``fail_cap``, and a month's at most ``fail_month`` when given. With
     ``advance``, each day's earned-wage room, the rest of a shortfall is
-    advanced at ``advance_rate`` per unit before it fails (3 Nov). With
-    ``card_room``, a holder's cash line takes it first, up to each day's room
-    (14 Nov 2026, ``replay_cost``).
+    advanced at ``advance_rate`` per unit before it fails. With ``card_room``,
+    a holder's cash line takes it first, up to each day's room
+    (``replay_cost``). With ``spare_share`` (in place of ``drawable``) the
+    savings above each candidate are that share of the money above it, as the
+    dealing leaves them once the candidate is the buffer.
+
+    Example: $100 of money, a candidate of $40 and a share of 0.5 leave $30,
+    where a ``drawable`` of $50 leaves $10.
     """
     candidates = np.minimum(BUFFER_MULTIPLES[None, :] * spending[:, None], np.maximum(wealth, 0.0)[:, None])
-    base = wealth if drawable is None else drawable
-    reserve = None if draw_rate is None else np.maximum(np.maximum(base, 0.0)[:, None] - candidates, 0.0)
+    reserve = None if draw_rate is None else savings_above(candidates, wealth, drawable, spare_share)
     cost = replay_cost(flows, candidates, credit_rate, hold_rate, fail_cost, reserve, draw_rate, fail_cap, fail_month,
                        advance, advance_rate, card_room, card_rate, card_floor, card_fee)
     pick = np.argmin(cost + 1e-15 * np.arange(cost.shape[1])[None, :], axis=1)
@@ -121,15 +135,29 @@ def choose_buffer(flows, spending, wealth, credit_rate, hold_rate, fail_cost=Non
     return candidates[rows, pick], cost[rows, pick]
 
 
+def savings_above(candidates, wealth, drawable=None, spare_share=None):
+    """The savings a shortfall can draw the same day above each candidate buffer (``choose_buffer``), (n, k): by
+    default the money it may draw (``drawable``, else all of ``wealth``) less the candidate, never below zero; with
+    ``spare_share`` that share of the money above the candidate.
+
+    Example: wealth $100, a candidate of $40, ``drawable`` $50: $10; a share of 0.5 instead: $30."""
+    if spare_share is not None:
+        return spare_share[:, None] * np.maximum(np.maximum(wealth, 0.0)[:, None] - candidates, 0.0)
+    base = wealth if drawable is None else drawable
+    return np.maximum(np.maximum(base, 0.0)[:, None] - candidates, 0.0)
+
+
 def reviewed_buffer(chosen, kept, economy, month):
     """The buffer each person holds after this month's choice under the buffer review share alpha
     (``Economy.buffer_review``, a robustness switch): the one just chosen where the person's review draw is below
     alpha, last month's otherwise. With alpha 1, the base, everyone takes its choice and no draw is made; below 1 the
-    draws come from a stream of their own for the month, so no other stream moves. Hand case: alpha 0.5 and draws 0.3
-    and 0.7, the first re-chooses and the second keeps its buffer."""
+    draws come from a stream of their own for the month, so no other stream moves.
+
+    Example: alpha 0.5 and draws 0.3 and 0.7, the first re-chooses and the second keeps its buffer."""
     if economy.buffer_review >= 1:
         return chosen
-    draw = np.random.default_rng(np.random.SeedSequence([economy.seed, BUFFER_REVIEW_STREAM, month])).random(chosen.size)
+    stream = np.random.SeedSequence([economy.seed, BUFFER_REVIEW_STREAM, month])
+    draw = np.random.default_rng(stream).random(chosen.size)
     return review(chosen, kept, draw, economy.buffer_review)
 
 
@@ -162,7 +190,7 @@ def limit_with_advance(short, spare, f_pool, unit, cap, room, f_advance):
     """The most the pool lends a payer without a card whose earned-wage access covers the rest up to ``room``.
 
     The receipts must repay the draw at ``f_pool``, the advance and its fee at
-    ``f_advance`` (taken from the wage first, decided 3 Nov) and the fee
+    ``f_advance`` (taken from the wage first) and the fee
     debt on what still fails, ``unit`` per failed unit and at most ``cap``,
     for this draw and every smaller one, since capacity may ration it. The
     debt D(x) = x f_pool + f_advance min(short - x, room) + min(unit max(short
@@ -189,8 +217,8 @@ def limit_with_advance(short, spare, f_pool, unit, cap, room, f_advance):
 
 
 def limit_with_card(short, spare, f_pool, unit, cap, room, f_cash, floor, rate, f_fee, ewa_room, f_ewa):
-    """The most the pool lends a card holder whose cash line covers the rest up to ``room`` (decided 14 Nov 2026:
-    the pool's test for holders is partial, the card room in place of the advance).
+    """The most the pool lends a card holder whose cash line covers the rest up to ``room``. The pool's test for
+    holders is partial: the card room takes the place of the advance.
 
     What the pool does not lend goes to the cash line up to ``room``, at ``f_cash`` per unit and a fee, the greater of
     ``floor`` and ``rate`` per unit, owed on the card's purchase balance at ``f_fee``; then to earned-wage access up to
@@ -228,8 +256,8 @@ def limit_with_card(short, spare, f_pool, unit, cap, room, f_cash, floor, rate, 
 
 
 def limit_with_revolve(short, spare, f_pool, f_card, unmet, fee):
-    """The most the pool pays of a card statement's unpaid part (decided 14 Nov 2026: the pool's statement test is
-    the same piecewise limit). What it does not pay revolves on the card at ``f_card``, repaid first, and while the
+    """The most the pool pays of a card statement's unpaid part (the statement test is the same
+    piecewise limit). What it does not pay revolves on the card at ``f_card``, repaid first, and while the
     payment leaves ``unmet`` of the minimum unpaid the late fee ``fee`` is owed too, so the receipts must repay D(x) =
     x f_pool + (short - x) f_card + fee [x < unmet] for this draw and every smaller one, since capacity may ration it.
     With the pool no dearer than the card, D falls, so it pays all of it or nothing, the late fee counted where nothing

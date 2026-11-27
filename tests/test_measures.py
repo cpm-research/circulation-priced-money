@@ -1,23 +1,20 @@
-"""Tests for the recording-only measures (decided 3 and 12 Nov), at tiny scale.
+"""Tests for the recording-only measures, at tiny scale. No rule reads any of these records.
 
 What is covered
 ---------------
-* Velocity records (3 Nov): each person's payments to others out of E and P (the outflow, ``_debit``), conversion
-  fees paid to outsiders included and the dealing's move into own savings and shares left out (13 Nov), the yearly
-  records against the monthly balance-time series, and two readings by year on three definitions of money, for
-  participants and non-participants apart (13 Nov review): wallet turnover, outflow over the person's
-  own average balance (``turnover``), and MicroVelocity (Campajola, D'Errico and Tessone, equations 5 to 7), the
-  person's contribution to the aggregate velocity, outflow over everyone's average balance (``microvelocity``).
-* MicroVelocity as its authors define it (13 Nov), from the holding time of every unit of money, first in first out
-  and last in first out (``Coinage``, ``holding_velocity``): hand cases, removals, CPI's pro rata loss, a year end,
-  the monthly cohorts' mean receipt day, the reconciliation of every person's money in every arm, and the aggregate
+* Velocity records: each person's payments to others out of E and P (the outflow, ``_debit``), conversion fees paid
+  to outsiders included and the dealing's move into own savings and shares left out, the yearly records against the
+  monthly balance-time series, and two readings by year on three definitions of money, for participants and
+  non-participants apart: wallet turnover, outflow over the person's own average balance (``turnover``), and
+  MicroVelocity (Campajola, D'Errico and Tessone, equations 5 to 7), the person's contribution to the aggregate
+  velocity, outflow over everyone's average balance (``microvelocity``).
+* MicroVelocity as its authors define it, from the holding time of every unit of money, first in first out and last
+  in first out (``Coinage``, ``holding_velocity``): worked examples, removals, CPI's pro rata loss, a year end, the
+  monthly cohorts' mean receipt day, the reconciliation of every person's money in every arm, and the aggregate
   against the outflow-based reading.
-* Completed purchases as a count (3 Nov), at the share completed.
-* The largest single pool loan, and the largest borrower's pool debt, as shares of pool capital (12 Nov).
+* Completed purchases as a count, at the share completed.
+* The largest single pool loan, and the largest borrower's pool debt, as shares of pool capital.
 * The runner's ``measures`` stores them, None where undefined.
-
-None of these records is read by a rule; that every other record is unchanged bit for bit is checked outside the
-suite, on default runs, against the commit before them.
 """
 import unittest
 from dataclasses import replace
@@ -41,12 +38,14 @@ def records(outflow, money, savings=None, shares=None):
 
 class MicroVelocityReading(unittest.TestCase):
     def test_hand_case_two_people_turnover_and_microvelocity(self):
-        """From the 13 Nov review. A person holding 100 all year (balance-time 1,200 unit-months) and one
-        holding 300 (3,600), each paying out 1,200. Turnover, outflow over the person's own average balance: 12 and 4.
-        MicroVelocity (Campajola, D'Errico and Tessone, equations 5 to 7), each person's contribution to the aggregate
-        velocity, outflow over everyone's average balance: 12 x 1,200 / 4,800 = 3 and 3, summing to 6, the aggregate
-        velocity 2,400 / 400, which is also turnover's balance-weighted mean. Each person is half the sum; the top tenth
-        of two persons is one, so its share is 0.5."""
+        """Turnover is outflow over the person's own average balance; MicroVelocity (Campajola, D'Errico and Tessone,
+        equations 5 to 7) is each person's contribution to the aggregate velocity, outflow over everyone's average
+        balance.
+
+        Example: a person holding 100 all year (balance-time 1,200 unit-months) and one holding 300 (3,600), each
+        paying out 1,200. Turnover: 12 and 4. MicroVelocity: 12 x 1,200 / 4,800 = 3 and 3, summing to 6, the aggregate
+        velocity 2,400 / 400, which is also turnover's balance-weighted mean. Each person is half the sum; the top
+        tenth of two persons is one, so its share is 0.5."""
         flows = records([[1200, 1200]], [[1200, 3600]])
         nobody = np.zeros((12, 2), bool)
         rate = turnover(flows, nobody)["broad"]["non_participants"]
@@ -77,7 +76,7 @@ class MicroVelocityReading(unittest.TestCase):
         self.assertAlmostEqual(out["non_participants"]["top_tenth_share"][0], 1.0, places=12)
 
     def test_turnover_hand_case_two_people(self):
-        """Hand case: a person holding 100 all year (balance-time 100 x 12 = 1,200 unit-months) that pays out 1,200
+        """Example: a person holding 100 all year (balance-time 100 x 12 = 1,200 unit-months) that pays out 1,200
         turns its money 12 times a year; a person holding 300 (balance-time 3,600) that pays out 1,200 turns it 4 times.
         Their mean is 8, their median 8, and the balance-weighted mean (the aggregate velocity) is
         (100 x 12 + 300 x 4) / (100 + 300) = 2,400 / 400 = 6. Nobody participates, so the participants' group is empty
@@ -94,7 +93,7 @@ class MicroVelocityReading(unittest.TestCase):
                                                             p10=[None], p90=[None]))
 
     def test_definitions_add_savings_then_shares(self):
-        """Hand case: one person pays out 1,200 in the year and holds 100 of E and P, 100 of savings and 200 of pool
+        """Example: one person pays out 1,200 in the year and holds 100 of E and P, 100 of savings and 200 of pool
         shares all year (balance-times 1,200, 1,200 and 2,400). On E and P alone it turns 12 times a year, on E, P and
         savings 1,200 / 200 = 6, on broad money 1,200 / 400 = 3: the same payments over a wider stock."""
         out = turnover(records([[1200]], [[1200]], [[1200]], [[2400]]), np.zeros((12, 1), bool))
@@ -123,7 +122,7 @@ class MicroVelocityReading(unittest.TestCase):
 
 class MeasuresInTheEngine(unittest.TestCase):
     def test_outflow_counts_payments_to_others_with_their_fee(self):
-        """Hand case: a person holding 5 in P and nothing in E pays 3 in P and 2 in E, converting the 2 at its
+        """Example: a person holding 5 in P and nothing in E pays 3 in P and 2 in E, converting the 2 at its
         conversion rate r, so the debit takes 3 + 2 x (1 + r) from its money and that is its outflow. The dealing's move
         of its own money into its savings and shares (``spend=False``) is no outflow."""
         w = controlled_world()
@@ -138,10 +137,12 @@ class MeasuresInTheEngine(unittest.TestCase):
         self.assertEqual(float(w.acc["outflow"][1]), 0.0)
 
     def test_conversion_fees_at_joining_leaving_and_subscribing_are_outflow(self):
-        """From the 13 Nov review: a conversion fee is paid to an outsider, so it is outflow, while the principal
-        moved between a person's own balances is not. Hand cases at the arm's conversion rate r: leaving with 1 of P
-        adds r (the review's reproducer, about 0.001979 in M1); joining with E of 1 + r adds r; a subscription of 3 in
-        P paid from E alone (``spend=False``) adds 3r, the fee on the part converted."""
+        """A conversion fee is paid to an outsider, so it is outflow, while the principal moved between a person's
+        own balances is not.
+
+        Examples at the arm's conversion rate r: leaving with 1 of P adds r (about 0.001979 in M1); joining with E of
+        1 + r adds r; a subscription of 3 in P paid from E alone (``spend=False``) adds 3r, the fee on the part
+        converted."""
         w = controlled_world("M1")
         w.acc["outflow"][:], w.acc["conversion"][:] = 0.0, 0.0
         w.part[0], w.pcash[0] = True, 1.0
@@ -167,7 +168,7 @@ class MeasuresInTheEngine(unittest.TestCase):
         self.assertAlmostEqual(float(w.acc["outflow"][2]), 3.0 * rate, places=15)
 
     def test_completed_purchases_count_at_the_share_completed(self):
-        """Hand case: a payer with no card, no savings, no pool and 0.4 of money owes a service invoice of 1.0; it pays
+        """Example: a payer with no card, no savings, no pool and 0.4 of money owes a service invoice of 1.0; it pays
         0.4 and the rest fails, so 0.4 of a purchase is completed (counted as completed P payments are) and its
         outflow is 0.4. The same invoice paid in full counts one purchase."""
         w = controlled_world()
@@ -185,7 +186,7 @@ class MeasuresInTheEngine(unittest.TestCase):
         self.assertAlmostEqual(w.acc["bought_n"], 1.0, places=12)
 
     def test_largest_pool_loan_share(self):
-        """Hand case: pool capital 100 (100 shares at NAV 1), carried pool bridges of 10 and 6 to person 0 and 12 to
+        """Example: pool capital 100 (100 shares at NAV 1), carried pool bridges of 10 and 6 to person 0 and 12 to
         person 1: the largest single loan is 12 / 100 = 0.12 of capital and the largest borrower's debt 16 / 100 = 0.16
         (12 U.S.C. 84 caps one borrower at 0.15). A written-off loan is carried at zero and drops out; with no capital
         the share is undefined (NaN)."""
@@ -247,7 +248,7 @@ class MeasuresInTheEngine(unittest.TestCase):
             self.assertEqual(set(stored[name]), {"broad", "e_p_savings", "e_p"})
             self.assertEqual(stored[name]["broad"]["participants"]["people"], [0])
             self.assertEqual(stored[name]["broad"]["non_participants"]["people"], [economy.n])
-        holding = stored["holding_velocity"]    # MicroVelocity from holding times (13 Nov), both conventions
+        holding = stored["holding_velocity"]    # MicroVelocity from holding times, both conventions
         self.assertEqual(set(holding), {"edges", "fifo", "lifo"})
         self.assertEqual(len(holding["fifo"]["non_participants"]["histogram"][0]), len(holding["edges"]))
         self.assertGreater(holding["lifo"]["non_participants"]["sum"][0], 0.0)
@@ -272,11 +273,11 @@ def day(book, t, inflow=0.0, spend=0.0, removal=0.0, scale=None):
 
 class HoldingTimes(unittest.TestCase):
     """MicroVelocity as Campajola, D'Errico and Tessone define it (arXiv 2201.13416, equations 4 to 7 and their
-    estimator; 13 Nov): the holding time of every unit of money, under first in first out (index 0) and last in first
-    out (index 1)."""
+    estimator): the holding time of every unit of money, under first in first out (index 0) and last in first out
+    (index 1)."""
 
     def test_one_unit_held_ten_days(self):
-        """Hand case: 100 received on day 0 and spent on day 10 (launch day 0). Its holding time is tau = 10 under
+        """Example: 100 received on day 0 and spent on day 10 (launch day 0). Its holding time is tau = 10 under
         both conventions; its spell is days 1 to 10, all in year 0, so it adds 100 x 10 / 10 = 100 to ``held``, 100 to
         ``spent``, 100 / 10 = 10 to ``inverse`` and 100 x 10 = 1,000 to ``spent_tau``, in the bin [8, 15). The year's
         balance-time is 100 for 10 days, 100 x 10 / 30 = 33.33 unit-months, so V = 12 x 100 / 33.33 = 36 turns a
@@ -295,7 +296,7 @@ class HoldingTimes(unittest.TestCase):
         np.testing.assert_allclose(book.total(), 0.0, atol=1e-12)
 
     def test_first_in_first_out_and_last_in_first_out(self):
-        """Hand case: 100 received on day 0 and 100 on day 20, then 100 spent on day 30: tau 30 under first in first
+        """Example: 100 received on day 0 and 100 on day 20, then 100 spent on day 30: tau 30 under first in first
         out (the day 0 units, ``spent_tau`` 3,000) and 10 under last in first out (the day 20 units, 1,000). Then 100
         spent on day 40: tau 20 (the day 20 units) and 40 (the day 0 units)."""
         book = ledger()
@@ -317,7 +318,7 @@ class HoldingTimes(unittest.TestCase):
         np.testing.assert_allclose(book.rec["held"][:, 0, 0], [50.0, 50.0], atol=1e-12)
 
     def test_a_unit_held_across_a_year_end_is_split(self):
-        """Hand case: 100 received on day 300 and spent on day 400 (launch day 0, years of 360 days): tau 100, held on
+        """Example: 100 received on day 300 and spent on day 400 (launch day 0, years of 360 days): tau 100, held on
         days 301 to 400, 59 of them in year 0 and 41 in year 1, so ``held`` adds 100 x 59 / 100 = 59 to year 0 and
         41 to year 1; the spending (100, tau 100) is recorded in year 1, the year it is spent. The unit passes through
         the monthly cohorts (older than 90 days), whose mean receipt day is exactly 300 here."""
@@ -341,7 +342,7 @@ class HoldingTimes(unittest.TestCase):
         self.assertLess(abs(200 / 290 / (100 / 300 + 100 / 280) - 1), 0.002)
 
     def test_a_share_purchase_removes_units_without_a_holding_time(self):
-        """Hand case: 100 received on day 0 and 100 on day 20; pool shares bought for 100 on day 25 take the day 0
+        """Example: 100 received on day 0 and 100 on day 20; pool shares bought for 100 on day 25 take the day 0
         units under first in first out and the day 20 units under last in first out, recording nothing; 100 spent on
         day 30 then has tau 10 under first in first out and 30 under last in first out, and only 100 is spent."""
         book = ledger()
@@ -393,29 +394,31 @@ class HoldingTimes(unittest.TestCase):
     def test_windows_change_nothing(self):
         """The tiers of ``Coinage._consume`` (the edge cohort, then windows of cohorts, then every cohort) are a speed
         device: 40 persons with random receipts, spending, removals and CPI losses over 400 days give the same records
-        and the same ledger with windows as wide as every cohort."""
-        import cpm_abm.economy_abm as engine
+        and the same ledger, to rounding, with the default windows and with windows of 2 and 6 cohorts (so the windows
+        are passed in a 400-day run) as with windows as wide as every cohort."""
+        import cpm_abm.engine.ledger as engine   # the module ``Coinage`` reads its window from
         rng = np.random.default_rng(5)
         n, days = 40, 400
         flows = rng.random((days, 4, n)) * (rng.random((days, 4, n)) < [[0.3], [0.5], [0.05], [0.01]])
         flows[:, 1:3] *= 0.6
 
-        def run():
-            book = Coinage(np.full(n, 2.0), days, 100, 1)
-            list(map(lambda t: book.step(t, flows[t, 0], flows[t, 1], flows[t, 2], flows[t, 3] * 0.01), range(days)))
+        def run(window):
+            saved = engine.COIN_WINDOW
+            engine.COIN_WINDOW = window
+            try:
+                book = Coinage(np.full(n, 2.0), days, 100, 1)
+                list(map(lambda t: book.step(t, flows[t, 0], flows[t, 1], flows[t, 2], flows[t, 3] * 0.01),
+                         range(days)))
+            finally:
+                engine.COIN_WINDOW = saved
             return book
 
-        narrow = run()
-        saved = engine.COIN_WINDOW
-        engine.COIN_WINDOW = 10 ** 6
-        try:
-            wide = run()
-        finally:
-            engine.COIN_WINDOW = saved
-        for key in narrow.rec:
-            np.testing.assert_allclose(narrow.rec[key], wide.rec[key], rtol=1e-12, atol=1e-12, err_msg=key)
-        np.testing.assert_allclose(narrow.amt, wide.amt, rtol=1e-12, atol=1e-12)
-        self.assertGreater(float(narrow.rec["held"].sum()), 0.0)
+        wide = run(10 ** 6)
+        for narrow in (run(engine.COIN_WINDOW), run(2)):
+            for key in narrow.rec:
+                np.testing.assert_allclose(narrow.rec[key], wide.rec[key], rtol=1e-12, atol=1e-12, err_msg=key)
+            np.testing.assert_allclose(narrow.amt, wide.amt, rtol=1e-12, atol=1e-12)
+        self.assertGreater(float(wide.rec["held"].sum()), 0.0)
 
     def test_runs_reconcile_in_every_arm(self):
         """For every person and month of a 100-person run of every arm, opening money (E, P and savings) plus
@@ -439,13 +442,13 @@ class HoldingTimes(unittest.TestCase):
         """With short holding times the sum over persons of a year's V_i is close to the year's outflow over its total
         balance-time (``microvelocity``'s aggregate): every unit spent adds its value once to ``held``, spread over its
         spell. A synthetic case: one person spends and receives its 100 every ten days, all year, with 36 spells
-        inside the year, gives exactly the outflow, 3,600. On a 300-person M1 run (30 months, the last a part year),
-        measured 13 Nov: year 1 reads 11.153 turns a year on the outflow, 11.113 first in first out and 11.102 last in
-        first out (0.4% and 0.5% lower: spells that began before launch count only their days after it, and spells
-        running into year 2 move value into it); year 2 reads 10.926, 10.985 and 10.925; the part year at the end
-        9.794, 8.872 and 9.341, lower since money unspent when the run ends is right-censored, more so under first in
-        first out, whose units are older (mean holding time of money spent about 32 days against 17 to 23). The test
-        holds year 1 within 3%."""
+        inside the year, gives exactly the outflow, 3,600. On a 300-person M1 run (30 months, the last a part year)
+        year 1 reads 11.153 turns a year on the outflow, 11.113 first in first out and 11.102 last in first out (0.4%
+        and 0.5% lower: spells that began before launch count only their days after it, and spells running into year
+        2 move value into it); year 2 reads 10.926, 10.985 and 10.925; the part year at the end 9.794, 8.872 and
+        9.341, lower since money unspent when the run ends is right-censored, more so under first in first out, whose
+        units are older (mean holding time of money spent about 32 days against 17 to 23). The test holds year 1
+        within 3%."""
         book = ledger(days=400, years=1)
         day(book, 0, inflow=100.0)
         list(map(lambda k: day(book, 10 * k, inflow=100.0, spend=100.0), range(1, 36)))

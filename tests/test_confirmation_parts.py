@@ -19,6 +19,7 @@ from pathlib import Path
 import shutil
 import sys
 import tempfile
+import threading
 import unittest
 from unittest import mock
 import warnings
@@ -273,6 +274,77 @@ class TinyMap(unittest.TestCase):
                     contextlib.redirect_stdout(io.StringIO()):
                 driver.main()
             self.assertEqual(calls, [])
+            # Continued with another number of workers the map is the same map; with another population it is not.
+            fewer = [*argv, "--workers", "3", "--most-workers", "3"]
+            with mock.patch.object(sys, "argv", fewer), mock.patch.object(driver.subprocess, "run", runner(None)), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                driver.main()
+            self.assertEqual(calls, [])
+            with mock.patch.object(sys, "argv", [*argv, "--n", "77"]), self.assertRaises(SystemExit), \
+                    contextlib.redirect_stderr(io.StringIO()):
+                driver.main()
+
+    def test_the_worker_options_are_not_part_of_the_map(self):
+        """--workers and --most-workers, each with its value in either form, are left out; the rest is kept."""
+        passed = ["--n", "300", "--workers", "40", "--most-workers=40", "--entry-reads", "quote", "--workers=2"]
+        self.assertEqual(driver.same_map(passed), ["--n", "300", "--entry-reads", "quote"])
+        self.assertEqual(driver.same_map([]), [])
+
+    def test_an_integrity_record_that_cannot_be_read_is_no_check(self):
+        """A record that says passed counts; one that says failed, is missing or was left half written does not."""
+        with tempfile.TemporaryDirectory(dir=self.scratch.name) as folder:
+            record = Path(folder) / driver.INTEGRITY
+            self.assertFalse(driver.passed_check(record))
+            for text, passed in (("{\"passed\": true}", True), ("{\"passed\": false}", False), ("{\"pas", False),
+                                 ("[]", False)):
+                record.write_text(text, encoding="utf-8")
+                self.assertEqual(driver.passed_check(record), passed, text)
+
+    def test_parts_run_together_write_the_same_map(self):
+        """With --together 3 the three parts run at the same time (each stand-in waits until all three have started),
+        the second failing: the driver stops with the first and the third complete. Run again with --together 2, only
+        the failed part runs, and the joined stores are the ones one run writes. --together 0 is refused."""
+        calls = []
+
+        def runner(stop, together):
+            """The stand-in of the restart test, each call waiting until ``together`` calls are under way."""
+            gate = threading.Barrier(together, timeout=30)
+
+            def run(command, cwd, stdout, stderr):
+                seed = int(command[command.index("--only-seeds") + 1])
+                target = ROOT / command[command.index("--output") + 1]
+                calls.append(seed)
+                gate.wait()
+                target.mkdir(parents=True)
+                for name in STORES[:2] if seed == stop else STORES:
+                    shutil.copy(self.parts / f"seed_{seed}" / name, target / name)
+                return mock.Mock(returncode=1 if seed == stop else 0)
+            return run
+
+        with tempfile.TemporaryDirectory(dir=self.scratch.name) as folder:
+            output = Path(folder) / "map"
+            argv = ["run_confirmation.py", "--seeds", "development", "--output", str(output), *CELLS, "--no-figures"]
+            with mock.patch.object(sys, "argv", [*argv, "--together", "0"]), self.assertRaises(SystemExit), \
+                    contextlib.redirect_stderr(io.StringIO()):
+                driver.main()
+            with mock.patch.object(sys, "argv", [*argv, "--together", "3"]), \
+                    mock.patch.object(driver.subprocess, "run", runner(SEEDS[1], 3)), self.assertRaises(SystemExit):
+                driver.main()
+            self.assertEqual(sorted(calls), sorted(SEEDS))
+            complete = [seed for seed in SEEDS if (join_parts.part_folder(output, seed) / join_parts.COMPLETE).exists()]
+            self.assertEqual(complete, [SEEDS[0], SEEDS[2]])
+            calls.clear()
+            with warnings.catch_warnings(), mock.patch.object(sys, "argv", [*argv, "--together", "2"]), \
+                    mock.patch.object(driver.subprocess, "run", runner(None, 1)), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                warnings.simplefilter("ignore", RuntimeWarning)
+                driver.main()
+            self.assertEqual(calls, [SEEDS[1]])
+            whole, joined = stored(self.whole), stored(output)
+            for name in STORES:
+                self.assertEqual(joined[name], whole[name], name)
+            progress = (output / driver.PROGRESS).read_text(encoding="utf-8")
+            self.assertEqual(progress.count("integrity passed"), 3)
 
 
 if __name__ == "__main__":

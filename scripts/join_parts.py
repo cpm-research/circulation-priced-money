@@ -30,6 +30,7 @@ import argparse
 from contextlib import ExitStack
 from dataclasses import asdict, fields
 import hashlib
+from itertools import chain, product
 import json
 import os
 from pathlib import Path
@@ -142,7 +143,7 @@ def parts_of(output):
                             if common(head).get(name) != common(first).get(name))
             raise ValueError(f"{path.name} was not run on the same record as {found[0][0].name}: {differ}")
     every = [seed for seed in first["part"]["set_seeds"] if seed not in aside]
-    held = [seed for _, head in found for seed in head["seeds"]]
+    held = list(chain.from_iterable(head["seeds"] for _, head in found))
     if sorted(held) != sorted(every):
         raise ValueError(f"The parts hold seeds {sorted(held)}, not the set's {every} once each"
                          + (f" (set aside: {sorted(aside)})" if aside else ""))
@@ -189,21 +190,30 @@ def gathered_jobs(parts, tasks):
     of its seeds and its three job stores agree."""
     jobs, spans = {}, {}
     for folder, head in parts:
-        own = [key(dict(r_out=t[0], a0=t[1], distress=t[2], seed=t[3], recirculated=t[5])) for t in tasks
-               if t[3] in head["seeds"]]
-        listed = json.loads((folder / "cells.json").read_text(encoding="utf-8"))["jobs"]
-        measured, series = _indexed(folder / "measures.json", distress_measures)
-        counted, readings = _indexed(folder / "failure_counts.json", failure_reading)
-        for name, order in (("cells.json", [key(j) for j in listed]), ("measures.json", list(measured)),
-                            ("failure_counts.json", list(counted))):
-            if order != own:
-                raise ValueError(f"{folder.name}/{name} does not hold exactly its seeds' jobs in the run's order")
-        for job in listed:
-            place = key(job)
-            jobs[place] = dict(job, measures=series[place], failure_counts=readings[place])
-            spans[place] = (folder, measured[place], counted[place])
+        own_jobs, own_spans = _part_jobs(folder, head, tasks)
+        jobs.update(own_jobs)
+        spans.update(own_spans)
     places = [key(dict(r_out=t[0], a0=t[1], distress=t[2], seed=t[3], recirculated=t[5])) for t in tasks]
     return [jobs[place] for place in places], spans
+
+
+def _part_jobs(folder, head, tasks):
+    """One part's jobs for ``gathered_jobs``, by key, each with its distress measures and failure reading attached,
+    and where its two compact records lie in the part's files; refused unless cells.json, measures.json and
+    failure_counts.json each hold exactly the jobs of the part's seeds, in the run's order."""
+    own = [key(dict(r_out=t[0], a0=t[1], distress=t[2], seed=t[3], recirculated=t[5])) for t in tasks
+           if t[3] in head["seeds"]]
+    listed = json.loads((folder / "cells.json").read_text(encoding="utf-8"))["jobs"]
+    measured, series = _indexed(folder / "measures.json", distress_measures)
+    counted, readings = _indexed(folder / "failure_counts.json", failure_reading)
+    for name, order in (("cells.json", [key(j) for j in listed]), ("measures.json", list(measured)),
+                        ("failure_counts.json", list(counted))):
+        if order != own:
+            raise ValueError(f"{folder.name}/{name} does not hold exactly its seeds' jobs in the run's order")
+    places = [key(job) for job in listed]
+    jobs = {place: dict(job, measures=series[place], failure_counts=readings[place])
+            for place, job in zip(places, listed)}
+    return jobs, {place: (folder, measured[place], counted[place]) for place in places}
 
 
 def _copied(handles, spans, places, which):
@@ -259,8 +269,8 @@ def join(output, figures=True):
     w = economy_of(parts[0][1]["economy"])
     began = time.perf_counter()
     jobs, spans = gathered_jobs(parts, tasks)
-    # The cells and the claim as main() reads them from its jobs: decided over the selection, the claim's statistics
-    # over the cells and jobs, none with S0 alone.
+    # The cells and the claim as main() reads them from its jobs: the cells over the selection, the claim's
+    # statistics over the cells and jobs, none with S0 alone.
     cells, recirculated = decide_cells(jobs, selection, w, parts[0][1]["economy"]["n"])
     s0_only = parts[0][1]["arms"] == ["S0"]
     statistics = None if s0_only else claim_statistics(cells, jobs, w)
@@ -273,7 +283,7 @@ def join(output, figures=True):
     places = [key(job) for job in jobs]
     with ExitStack() as stack:
         handles = {(folder, which): stack.enter_context((folder / name).open("rb"))
-                   for folder, _ in parts for which, name in enumerate(COMPACT)}
+                   for (folder, _), (which, name) in product(parts, enumerate(COMPACT))}
         write_stores(staging, meta, jobs, cells, recirculated, statistics,
                      texts=(_copied(handles, spans, places, 0), _copied(handles, spans, places, 1)))
     for name in STORES:

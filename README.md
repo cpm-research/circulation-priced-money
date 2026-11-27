@@ -25,13 +25,14 @@ seeds, are exploratory and are labelled so.
 | `docs/DECISIONS.md` | Every rule in force, with its date and reason |
 | `docs/ANALYSIS_PLAN.md` | The registered plan: the claim, its tests and the sample sizes |
 | `docs/PARAMETERS.csv` | Every calibrated value under the code's own name, with its source |
+| `docs/RUNNING_ON_A_SERVER.md` | The second run on a Linux server: setup, self-test, the maps and what comes back |
 
 ## Layout
 
 | Folder | Contents |
 |---|---|
-| `src/cpm_abm/engine/` | The model: constants, settings, the population, the contract's arithmetic, and the world in the order of its events (15 modules) |
-| `src/cpm_abm/experiment/` | The experiment: the grid, the jobs, the measured quantities, the statistics and the registered claim (10 modules) |
+| `src/cpm_abm/engine/` | The model: constants, settings, the population, the contract's arithmetic, and the world in the order of its events (16 modules) |
+| `src/cpm_abm/experiment/` | The experiment: the grid, the jobs, the measured quantities, the statistics and the registered claim (11 modules) |
 | `src/cpm_abm/` | `economy_abm.py` re-exports the engine under its older name; `core_model.py` holds the shared inputs; `comet.py` is the Compound III market in integer arithmetic; `catalogue.py` builds the parameter sweep with PySPG |
 | `scripts/` | Command lines: the population map, one arrangement with figures, stress checks, the region figures, and the rebuild of the paper's numbers, tables and figures |
 | `tests/` | The test suite, among it conservation of money in every arrangement, each contract equation against a run, and the parameter table against the code |
@@ -101,7 +102,7 @@ part.
 # The parts it would run, running nothing
 PYTHONPATH="src;." .venv/Scripts/python -X utf8 scripts/run_confirmation.py --seeds confirmation --output runs/confirmation_quote --workers 12 --dry-run
 
-# The quote rule, as built: entrants read the pool's quote
+# The quote rule: entrants read the pool's quote
 PYTHONPATH="src;." .venv/Scripts/python -X utf8 scripts/run_confirmation.py --seeds confirmation --output runs/confirmation_quote --workers 12
 
 # The record rule: entrants read the pool's realised return
@@ -109,6 +110,23 @@ PYTHONPATH="src;." .venv/Scripts/python -X utf8 scripts/run_confirmation.py --se
 ```
 
 `scripts/join_parts.py --output <folder>` joins the parts on its own.
+
+## The second run
+
+A second run is registered in `docs/ANALYSIS_PLAN.md` ("The second run, registered 26 November 2026") and has not
+been run. It is a new version of the model and of the claim; the paper and the results in this repository are the
+first run's.
+
+What changes: money is conserved (what households pay to lenders returns to households each month, so a long run
+can settle), each run covers 25 years with a stress year ten years after launch, and the grid has six outside
+rates and 210 cells. In it the DeFi arrangement (`M0`) is stablecoin payments with no yield and no credit. The
+claim is registered anew, on seeds never used. Every change is a setting of the model
+whose default is the first run's rule, so the first run's results rebuild from this code unchanged. The second
+run's settings and side sets are in `src/cpm_abm/experiment/second_run.py`, each with its reason in
+`docs/DECISIONS.md`, and `--second-run base` selects them in both runners.
+
+The run takes about 60 core-hours a seed. One command, `./run.sh all`, runs all of it unattended on a Linux
+server and leaves everything to send back in one folder, `send_back/` (`docs/RUNNING_ON_A_SERVER.md`).
 
 ## From the stored results to the paper
 

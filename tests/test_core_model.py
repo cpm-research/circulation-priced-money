@@ -142,7 +142,7 @@ class CoreModelTests(unittest.TestCase):
         self.assertTrue(np.all(out["gain_participant"] < 0))
 
     def test_buffers_earn_yield_only_on_the_part_not_spent_on_needs(self):
-        """From review: S0 and every arm credit idle yield on buffer - term * used, and channels sum to the gain."""
+        """S0 and every arm credit idle yield on buffer - term * used, and channels sum to the gain."""
         for change in ({}, dict(arm="M2"), dict(arm="M0"), dict(pool_cash_return=True)):
             inputs = replace(Inputs(), buffer_at_outside=True, **change)
             out = gains(inputs, [inputs.rho_H], [0.0, 0.5, 1.0])

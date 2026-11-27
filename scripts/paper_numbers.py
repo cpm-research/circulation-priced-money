@@ -29,7 +29,7 @@ import io
 import json
 import re
 import sys
-from itertools import product
+from itertools import chain, product, repeat
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -51,6 +51,28 @@ from cpm_abm.experiment.statistics import (bonferroni_cells, seeds_needed, sprea
 # What the paper reads, in one place
 # ----------------------------------------------------------------------------------------------------------------------
 ARMS = ("S0", "M0", "U", "M1", "M2")                  # the runner's arrangements, in the order the paper lists them
+# M0's name in a store of the second run, where DeFi pays no yield and lends nothing.
+DEFI_SECOND = "DeFi (stablecoin payments)"
+
+
+def second_run_store(summary):
+    """Whether a stored summary is of a run of the second run, read from its economy as
+    ``cpm_abm.experiment.notes.second_run`` reads an Economy: the conserved edge, the extra layoffs' wages kept,
+    purchases dropped in the stress year or distress years at random; a released store, whose economy has none of
+    them or predates them, reads False."""
+    economy = (summary or {}).get("economy") or {}
+    return bool(economy.get("edge", "open") not in (None, "open")
+                or economy.get("distress_wages", "outside") not in (None, "outside")
+                or (economy.get("distress_purchases") or 0) > 0
+                or economy.get("distress_dates", "dated") not in (None, "dated"))
+
+
+def defi_named(text, summary):
+    """``text`` with M0's released name, best-case DeFi, read as DeFi (stablecoin payments) in a store of the second
+    run (``second_run_store``), and as it is for a released store."""
+    if not second_run_store(summary):
+        return text
+    return text.replace("best-case DeFi", DEFI_SECOND).replace("Best-case DeFi", DEFI_SECOND)
 NAMES = dict(S0="Banks and cards", M0="Best-case DeFi", U="Pool without the holding charge", M1="CPM",
              M2="Indexed CPM")
 CPM = "M1"                                            # the paper's CPM is the nominal one
@@ -566,7 +588,7 @@ LENDER_SHARE = 0.10                          # the sourced share of outside lend
 
 def lender_macros(store, ledger):
     """The household gain when a share of outside lenders' income returns to households as the lenders' owners, read
-    from the map as built as a ledger line with no change in behaviour: CPM's gain in money over each yardstick less
+    from the map as stored as a ledger line with no change in behaviour: CPM's gain in money over each yardstick less
     LENDER_SHARE times the income CPM takes away from outside lenders (what households pay them under the yardstick
     less what they pay under CPM, a person a year). Also the share at which that gain reaches zero. Medians over the
     cells with no distress."""
@@ -605,7 +627,7 @@ WILSON_LEVELS = (("", None), ("Bonf", CPM), ("BonfIndexed", "M2"))
 
 def fewest_above_half(total, alpha):
     """The fewest of ``total`` seeds whose share has its Wilson lower bound at 1 - alpha above one half
-    (``wilson_bounds``). Hand cases: of 30 seeds 21 at 95%, 24 at the Bonferroni level over 21 cells and 23 over 14;
+    (``wilson_bounds``). Example: of 30 seeds 21 at 95%, 24 at the Bonferroni level over 21 cells and 23 over 14;
     of 60, 38, 42 and 42."""
     return next(hits for hits in range(total + 1) if wilson_bounds(hits, total, alpha)[0] > 0.5)
 
@@ -622,7 +644,7 @@ def cents_down(value):
 
 
 def assured_reading(reading, seeds_per_cell, alpha):
-    """One stored planner reading's assured seeds (the rule of 17 Nov 2026): its spread at the upper end of its
+    """One stored planner reading's assured seeds: its spread at the upper end of its
     one-sided interval at SEED_ASSURANCE (``spread_bound``), its degrees of freedom stored or, in a map stored before
     the rule, cells x (seeds - 1), and the seeds that bound needs at the reading's margin (``seeds_needed``; None
     beyond its reach). Returns (freedom, bound, seeds)."""
@@ -677,13 +699,13 @@ def design_macros(ledger):
                                         f"{GRID_SOURCE}: CONFIRMATION_EXTENSION"),
                SeedAssurance=ledger.add("SeedAssurance", f"{SEED_ASSURANCE:g}",
                                         "src/cpm_abm/experiment/notes.py: SEED_ASSURANCE"))
-    for stem, total, name in (("WilsonConfirm", CONFIRMATION_COUNT, "CONFIRMATION_COUNT"),
-                              ("WilsonExtended", CONFIRMATION_EXTENSION, "CONFIRMATION_EXTENSION")):
-        for tail, arm in WILSON_LEVELS:
-            alpha = CLAIM_ALPHA if arm is None else arm_alpha(arm)
-            level = "95%" if arm is None else f"{arm}'s Bonferroni level, alpha {alpha:.6f}"
-            out[stem + tail] = ledger.add(stem + tail, str(fewest_above_half(total, alpha)),
-                                          f"fewest of {name} = {total} with wilson_bounds lower above 0.5 at {level}")
+    counts = (("WilsonConfirm", CONFIRMATION_COUNT, "CONFIRMATION_COUNT"),
+              ("WilsonExtended", CONFIRMATION_EXTENSION, "CONFIRMATION_EXTENSION"))
+    for (stem, total, name), (tail, arm) in product(counts, WILSON_LEVELS):
+        alpha = CLAIM_ALPHA if arm is None else arm_alpha(arm)
+        level = "95%" if arm is None else f"{arm}'s Bonferroni level, alpha {alpha:.6f}"
+        out[stem + tail] = ledger.add(stem + tail, str(fewest_above_half(total, alpha)),
+                                      f"fewest of {name} = {total} with wilson_bounds lower above 0.5 at {level}")
     resolved = spread_resolved(CONFIRMATION_COUNT, abs(CLAIM_MARGIN), arm_alpha(CPM))
     out["SpreadResolved"] = ledger.add("SpreadResolved", cents_down(resolved),
                                        f"spread_resolved({CONFIRMATION_COUNT}, {abs(CLAIM_MARGIN)}, "
@@ -727,10 +749,10 @@ CLAIM_COUNTS = (("ClaimCellsAsBuilt", "passes (a), (b) and (d) as built", lambda
 
 def claim_macros(store, ledger):
     """The registered claim as the map's summary stores it, for the running text: the cells in CPM's region at each
-    distress level; over the cells with no distress, how many pass as built, pass also under the cash-advance bound,
-    have a falsifier fire and are underpowered at the seeds the map ran (CLAIM_COUNTS); the cells that pass at the
-    Bonferroni level; and the seed planner's reading of this map, its count and the most seeds a cell with no
-    distress needs on its own spread."""
+    distress level; over the cells with no distress, how many pass without the bound, pass also under the
+    cash-advance bound, have a falsifier fire and are underpowered at the seeds the map ran (CLAIM_COUNTS); the
+    cells that pass at the Bonferroni level; and the seed planner's reading of this map, its count and the most
+    seeds a cell with no distress needs on its own spread."""
     out = {}
     slices = dig(store.summary, ["claim_statistics", "regions", CPM])
     for level, word in LEVEL_WORDS:
@@ -798,7 +820,7 @@ def indexed_macros(store, ledger):
     return out
 
 
-# The group clause by leg, for the running text: macro, the claim block (as built, or under the cash-advance
+# The group clause by leg, for the running text: macro, the claim block (without the bound, or under the cash-advance
 # bound) and the leg (against best-case DeFi with completed purchases at their price; against banks and cards at
 # the zero end of the bracket, the complete gain with a seller's extra sales valued at nothing, which for a group is
 # not its gain in money alone).
@@ -823,7 +845,8 @@ def group_macros(store, ledger):
         if not found or any(f is MISSING or not f for f in found):
             out[name] = ledger.lack(name, where)
             continue
-        low = min((g["lower"], cell_key(c), group) for c, groups in zip(cells, found) for group, g in groups.items())
+        entries = lambda c, groups: ((g["lower"], cell_key(c), group) for group, g in groups.items())
+        low = min(chain.from_iterable(map(entries, cells, found)))     # every group of every cell, in order
         out[name] = ledger.add(name, usd(low[0]), f"{where}: cell {low[1]}, group {low[2]}")
     seeds, absent = column(cells, [CPM, "region", "persistent_seeds"])
     out["SeedsPersistentLeast"] = reduce(ledger, "SeedsPersistentLeast", seeds, absent, "low",
@@ -949,27 +972,34 @@ def path_columns(store, ledger, tag):
     if not cells or lacking or unit is MISSING:
         why = f"{source}: {', '.join(PATH_SERIES)} not stored for every seed, or no cells, or no MONTH_USD"
         columns = [[ledger.lack(f"Path{tag}{stem}{word}", why) for stem, _ in PATH_COLUMNS] for word in YEAR_WORDS]
-        out.update({f"Path{tag}{stem}{word}": PLACEHOLDER for stem, _ in PATH_COLUMNS for word in YEAR_WORDS})
+        out.update({f"Path{tag}{stem}{word}": PLACEHOLDER for (stem, _), word in product(PATH_COLUMNS, YEAR_WORDS)})
         return columns, out
-    by_cell = {stem: [] for stem, _ in PATH_COLUMNS}
-    for found in blocks.values():
+
+    def by_year(found):
+        """One cell's four paths by year after launch, the seed mean of each year: capital over its target, capital
+        and the target in dollars a person, and bridges served (the stems of ``PATH_COLUMNS``)."""
         capital, target = found["N"], found["Q"]
         ratio = np.divide(capital, target, out=np.full(capital.shape, np.nan), where=target > 0)
-        for stem, block in (("Ratio", ratio), ("Capital", capital * float(unit)), ("Target", target * float(unit)),
-                            ("Served", found["bridges_drawn_over_wanted"])):
-            by_cell[stem].append(np.nanmean(yearly(block), axis=0))       # the seed mean of each year
+        paths = dict(Ratio=ratio, Capital=capital * float(unit), Target=target * float(unit),
+                     Served=found["bridges_drawn_over_wanted"])
+        return {stem: np.nanmean(yearly(block), axis=0) for stem, block in paths.items()}
+
+    by_cell = [by_year(found) for found in blocks.values()]
     formats = dict(Ratio=lambda v: share(v, 2), Capital=usd, Target=usd, Served=lambda v: share(v, 2))
-    columns = []
-    for k, word in enumerate(YEAR_WORDS):
+
+    def year_row(k, word):
+        """The table's row for year ``k + 1`` after launch: each column's median over the cells, written as its
+        macro."""
         row = []
         for stem, _ in PATH_COLUMNS:
-            values = np.array([path[k] if k < path.size else np.nan for path in by_cell[stem]], float)
+            values = np.array([cell[stem][k] if k < cell[stem].size else np.nan for cell in by_cell], float)
             name = f"Path{tag}{stem}{word}"
             out[name] = reduce(ledger, name, values, 0, "median", formats[stem],
                                f"{source}: year {k + 1} after launch, the seed mean in each cell")
             row.append(out[name])
-        columns.append(row)
-    return columns, out
+        return row
+
+    return [year_row(k, word) for k, word in enumerate(YEAR_WORDS)], out
 
 
 def path_table(store, second, ledger):
@@ -982,7 +1012,7 @@ def path_table(store, second, ledger):
     width = len(PATH_COLUMNS)
     over = (f" & \\multicolumn{{{width}}}{{c}}{{Quote rule}}"
             f" & \\multicolumn{{{width}}}{{c}}{{Record rule}} \\\\")
-    head = ["Year after launch"] + [title for _ in range(2) for _, title in PATH_COLUMNS]
+    head = ["Year after launch"] + [title for _, title in PATH_COLUMNS] * 2
     return dict(spec="l" + "r" * (2 * width), over=over, head=head, rows=rows), {**macros_first, **macros_second}
 
 
@@ -1028,23 +1058,22 @@ def sources_table(store, ledger):
     rows = [[label] + [entry(label, stem, rate, *split_sum(rate, names), usd,
                              f"{where(rate)}.{CPM}.split: {' + '.join(names)}, a year") for rate in rates]
             for stem, label, names in SOURCE_ROWS]
-    every = tuple(name for _, _, names in SOURCE_ROWS for name in names)
+    every = tuple(chain.from_iterable(names for _, _, names in SOURCE_ROWS))
     rows.append(["Gain over banks and cards"] + [entry("gain", "Total", rate, *split_sum(rate, every), usd,
                                                        f"{where(rate)}.{CPM}.split: every component, a year")
                                                  for rate in rates])
     # Each line named in the text as a share of the gain, from the two medians the table prints at that rate.
-    for stem, _, names in SOURCE_ROWS[:2]:
-        for rate in rates:
-            if rate not in RATE_WORDS:
-                continue
-            part, lacking = split_sum(rate, names)
-            total, missing = split_sum(rate, every)
-            name = f"Source{stem}Share{RATE_WORDS[rate]}"
-            source = f"{where(rate)}.{CPM}.split: the median of {' + '.join(names)} over the median of every component"
-            if lacking or missing or not part.size or abs(np.nanmedian(total)) < TOL:
-                out[name] = ledger.lack(name, source)
-            else:
-                out[name] = ledger.add(name, whole_pct(np.nanmedian(part) / np.nanmedian(total)), source)
+    for (stem, _, names), rate in product(SOURCE_ROWS[:2], rates):
+        if rate not in RATE_WORDS:
+            continue
+        part, lacking = split_sum(rate, names)
+        total, missing = split_sum(rate, every)
+        name = f"Source{stem}Share{RATE_WORDS[rate]}"
+        source = f"{where(rate)}.{CPM}.split: the median of {' + '.join(names)} over the median of every component"
+        if lacking or missing or not part.size or abs(np.nanmedian(total)) < TOL:
+            out[name] = ledger.lack(name, source)
+        else:
+            out[name] = ledger.add(name, whole_pct(np.nanmedian(part) / np.nanmedian(total)), source)
     head = ["Outside rate"] + [pct(rate * 100, 1) for rate in rates]
     return dict(spec="l" + "r" * len(rates), head=head, rows=rows, rule_before=[len(SOURCE_ROWS)]), out
 
@@ -1175,8 +1204,8 @@ def lending_table(store, cut, ledger):
 def grid_macros(store, ledger):
     """Counts over every cell of the grid, at every level of distress: the cells, the cells in which CPM's mean gain
     over banks and cards and over best-case DeFi is positive on every reading (money alone and with completed
-    purchases at their price, as built and under the cash-advance bound), and the cells in which CPM fails fewer
-    payments than both."""
+    purchases at their price, without the bound and under the cash-advance bound), and the cells in which CPM fails
+    fewer payments than both."""
     cells = store.pick(arm=CPM)
     count, positive, fewer = grid_counts(store)
     where = f"summary.json: cells[{describe(cells)}]"
@@ -1189,9 +1218,9 @@ def grid_macros(store, ledger):
 
 
 # Every reading of CPM's mean gain: against banks and cards and against best-case DeFi, in money alone and with
-# completed purchases at their price, each as built and under the cash-advance bound.
-GAIN_READINGS = tuple([CPM, "against", yard, *tail, "gain_usd_a_year"] for yard in ("S0", "M0")
-                      for tail in ((), ("bound",), ("complete_gain", "face"), ("complete_gain", "face", "bound")))
+# completed purchases at their price, each without the bound and under the cash-advance bound.
+GAIN_READINGS = tuple([CPM, "against", yard, *tail, "gain_usd_a_year"] for yard, tail in product(
+    ("S0", "M0"), ((), ("bound",), ("complete_gain", "face"), ("complete_gain", "face", "bound"))))
 
 
 def grid_counts(store):
@@ -1326,8 +1355,8 @@ CLAUSE_COUNTS = (("Clause (a)", lambda b: status(b, "a")), ("Clause (b)", lambda
                  ("All of (a), (b), (d) as built", lambda b: flag(b, "all_as_built")),
                  ("All of (a), (b), (d) under the bound", lambda b: both(status(b, "a"), status(b, "b"),
                                                                          status(b, "d_bound"))),
-                 # Before the cash-advance bound (15 Nov 2026) the runner's "all" and "in_region" were as built only,
-                 # so they are read here only from a claim block that stores (d) under the bound.
+                 # A claim block without (d) under the bound has "all" and "in_region" without the bound only, so
+                 # they are read here only from a block that stores (d) under the bound.
                  ("All, as built and under the bound", lambda b: bounded(b, flag(b, "all"))),
                  ("In the region (largest joined block)", lambda b: bounded(b, flag(b, "in_region"))))
 
@@ -1357,7 +1386,7 @@ def both(*parts):
 
 def gains_table(store, ledger):
     """CPM against banks and against best-case DeFi over the cells with no distress: each gain's median and range
-    over cells, the lowest group lower bound over cells (as built and under the bound) and the number of cells
+    over cells, the lowest group lower bound over cells (without and under the bound) and the number of cells
     passing each clause."""
     cells = store.pick(distress=0.0, arm=CPM)
     against = tuple(product((("S0", "banks"), ("M0", "DeFi")), ("median", "range")))   # the four value columns
@@ -1478,7 +1507,7 @@ def charge_gain_columns(store, ledger, tag):
         row = dict(Median=median, Low=low, Above=above, Fewer=fewer)
         out.update({name(stem): text for stem, text in row.items()})
         columns.append([row[stem] for stem, _ in CHARGE_GAIN_COLUMNS])
-    whole = any(text == PLACEHOLDER for row in columns for text in row)
+    whole = any(PLACEHOLDER in row for row in columns)
     for stem, count in totals.items():
         name = f"ChargeGain{tag}{stem}All" if stem != "Cells" else f"ChargeGain{tag}Cells"
         out[name] = (ledger.lack(name, f"{folder}: a level's count is not stored") if whole and stem != "Cells" else
@@ -1497,11 +1526,11 @@ def charge_gain_table(store, second, ledger):
         columns, macros = charge_gain_columns(one, ledger, tag)
         blocks.append(columns)
         out.update(macros)
-    rows = [[f"{level * 100:g} pt"] + [text for block in blocks for text in block[k]]
+    rows = [[f"{level * 100:g} pt", *chain.from_iterable(block[k] for block in blocks)]
             for k, (level, _) in enumerate(LEVEL_WORDS)]
     width = len(CHARGE_GAIN_COLUMNS)
     over = "".join(f" & \\multicolumn{{{width}}}{{c}}{{{title}}}" for _, title, _ in readings) + r" \\"
-    head = ["Distress"] + [title for _ in readings for _, title in CHARGE_GAIN_COLUMNS]
+    head = ["Distress"] + [title for _, title in CHARGE_GAIN_COLUMNS] * len(readings)
     return dict(spec="l" + "r" * (width * len(readings)), over=over, head=head, rows=rows), out
 
 
@@ -1655,7 +1684,7 @@ def region_table(store, ledger):
     ledger.add("region[marks]", "grid", f"summary.json: claim_statistics.regions.{CPM}[*].passing and .region, "
                "cells present in summary.json: cells")
     if not any(status(dig(c, [CPM, "claim"]), "d_bound") is not None for c in store.pick(distress=0.0, arm=CPM)):
-        # A map written before the cash-advance bound joined the region stores the region as built only.
+        # A map written without the cash-advance bound stores the region without the bound only.
         ledger.notes.append("region: no claim block stores (d) under the cash-advance bound, so the stored region is "
                             "the region as built only")
     rows = [[f"{slices[k]['distress'] * 100:g} pt" if j == 0 else "", pct(rates[j] * 100, 1)] + list(grid[k, j])
@@ -1663,12 +1692,12 @@ def region_table(store, ledger):
     return dict(spec="ll" + "c" * len(launches) + "r", head=head, rows=rows)
 
 
-MAJORITY_MARKS = np.array(["", r"$\times$", r"$\circ$", r"$\bullet$"])   # not run, not stable, as built only, both
+MAJORITY_MARKS = np.array(["", r"$\times$", r"$\circ$", r"$\bullet$"])   # not run, not stable, unbounded only, both
 
 
 def majority_code(cell):
-    """One cell read on a majority of its seeds, from the runner's stored view: 3 stable as built and under the
-    cash-advance bound, 2 stable as built only, 1 not stable, 0 not stored."""
+    """One cell read on a majority of its seeds, from the runner's stored view: 3 stable without the bound and under
+    the cash-advance bound, 2 stable without the bound only, 1 not stable, 0 not stored."""
     view = dig(cell, [CPM, "region"])
     as_built, bound = dig(view, ["verdict_majority"]), dig(view, ["verdict_majority_bound"])
     if MISSING in (view, as_built):
@@ -1679,8 +1708,8 @@ def majority_code(cell):
 def majority_table(store, ledger):
     """The claim read on a majority of seeds, for a map whose seeds are too few for the interval on the share of
     seeds (three development seeds cannot pass it): for each distress level the grid of marks by outside rate
-    (rows) and launch level (columns), and the count of cells stable as built and stable both ways. Read from each
-    cell's stored view (summary.json cells[].M1.region.verdict_majority and .verdict_majority_bound)."""
+    (rows) and launch level (columns), and the count of cells stable without the bound and stable both ways. Read
+    from each cell's stored view (summary.json cells[].M1.region.verdict_majority and .verdict_majority_bound)."""
     rates, launches, levels = (dig(store.summary, [key]) for key in ("r_out", "a0", "distress"))
     if MISSING in (rates, launches, levels):
         return dict(spec="ll", head=["Distress", "Outside rate"],
@@ -1827,10 +1856,10 @@ def group_sum(parts):
 
 # The aggregate velocity's four stored parts, coin ages under last in first out (``group_sum``), and the same
 # aggregate from outflows, which no right-censoring touches (a check written to the report's notes).
-EVERYONE = tuple(["holding_velocity", "lifo", g, key] for g in ("participants", "non_participants")
-                 for key in ("sum", "people"))
-EVERYONE_OUTFLOW = tuple(["microvelocity", "e_p_savings", g, key] for g in ("participants", "non_participants")
-                         for key in ("sum", "people"))
+EVERYONE = tuple(["holding_velocity", "lifo", g, key]
+                 for g, key in product(("participants", "non_participants"), ("sum", "people")))
+EVERYONE_OUTFLOW = tuple(["microvelocity", "e_p_savings", g, key]
+                         for g, key in product(("participants", "non_participants"), ("sum", "people")))
 
 
 def one_place(value):
@@ -1859,7 +1888,8 @@ CIRCULATION_ROWS = (
     ("(c)", "Mean holding time of money spent, first in first out", "days",
      (["holding_velocity", "fifo", GROUP, "mean_tau"],), None, None, one_place))
 # Every stored path the table and its checks read, kept from each job (``kept_circulation``).
-CIRCULATION_PATHS = tuple({path_text(p): p for row in CIRCULATION_ROWS for p in row[3]}.values()) + EVERYONE_OUTFLOW
+CIRCULATION_PATHS = (tuple({path_text(p): p for p in chain.from_iterable(row[3] for row in CIRCULATION_ROWS)}.values())
+                     + EVERYONE_OUTFLOW)
 
 
 def people_of(arm, override=None):
@@ -1873,7 +1903,7 @@ def circulation_cell(store, key, arm, paths, combine):
     when a seed does not store a path (or the cell has no stored job)."""
     jobs = store.monthly.get(key, [])
     found = [[dig(job, ["circulation", arm, path_text(p)]) for p in paths] for job in jobs]
-    if not found or any(v is MISSING for lists in found for v in lists):
+    if not found or any(v is MISSING for v in chain.from_iterable(found)):
         return np.nan, True
     # seeds x paths x years, None (undefined) as NaN; then each seed's yearly value and its window mean.
     blocks = [np.array(lists, dtype=float) for lists in found]
@@ -1914,7 +1944,7 @@ def circulation_table(store, ledger):
                 reduce(ledger, where("median"), values, absent, "median", fmt, source),
                 reduce(ledger, where("range"), values, absent, "range", fmt, source)]
 
-    rows = [row(spec, arm) for spec in CIRCULATION_ROWS for arm in CIRCULATION_ARMS]
+    rows = [row(spec, arm) for spec, arm in product(CIRCULATION_ROWS, CIRCULATION_ARMS)]
     circulation_checks(store, ledger, cells)
     per = len(CIRCULATION_ARMS)
     return dict(spec="lllllrr", head=["", "Statistic", "Unit", "Arrangement", "People", "Median", "Range"], rows=rows,
@@ -2151,7 +2181,7 @@ def side_table(main, sides, ledger, label=None):
             return ledger.lack(where, f"{file_of(store)}: no cell at launch {launch} and distress {level}")
         return read(ledger, where, [store.index[key]], path, "only", fmt, file=file_of(store))
 
-    rows = [[label_of(name)] + [value(name, store, block, a) for block in SIDE_BLOCKS for a in launches]
+    rows = [[label_of(name)] + [value(name, store, block, a) for block, a in product(SIDE_BLOCKS, launches)]
             for name, store in ((label or base_label(main), main), *sides)]
     over = " & " + " & ".join(f"\\multicolumn{{{len(launches)}}}{{c}}{{{block[0]}}}" for block in SIDE_BLOCKS) + r" \\"
     head = ["Launch participation"] + [f"{a * 100:g}\\%" for a in launches] * len(SIDE_BLOCKS)
@@ -2164,7 +2194,7 @@ def bounds_table(main, bounds, ledger):
     choice changed: CPM's median gain over banks and cards and over best-case DeFi with no distress (in money
     alone, and with completed purchases at their price), the cells of the whole grid in which every gain is
     positive and in which CPM fails fewer payments than both, the mean bridge price, and the cells with no
-    distress that are stable on a majority of seeds (as built, and also under the cash-advance bound)."""
+    distress that are stable on a majority of seeds (without the bound, and also under the cash-advance bound)."""
     gain = lambda yard, *tail: [CPM, "against", yard, *tail, "gain_usd_a_year"]
 
     def row(name, store):
@@ -2293,19 +2323,22 @@ def after_shock_macros(store, ledger, tag=""):
     above zero are listed in the report's notes."""
     months, out = dig(store.summary, ["economy", "months"]), {}
     folder = Path(store.folder).name
-    for word, yard in (("Banks", "S0"), ("Defi", "M0")):
+
+    def against(word, yard):
+        """The macros of the gain earned after the shock against one yardstick, ``yard``, named by ``word``,
+        and the cells where it is not above zero, in the report's notes."""
         name = lambda tail: f"GainAfter{tag}{word}{tail}"
         path = [CPM, "against", yard, "gain_usd_a_year_at_month"]
         source = f"{folder}/summary.json: {path_text(path)}, end and {SHOCK_END}"
 
-        earned = lambda cells: earned_after_shock(store, cells, yard)       # noqa: E731, B023 (used at once)
+        earned = lambda cells: earned_after_shock(store, cells, yard)       # noqa: E731
         cells = store.pick(arm=CPM)
         values, absent = earned(cells)
         if not cells or absent:
             out.update({name(tail): ledger.lack(name(tail), source) for tail in ("Positive", "Behind", "Low",
                                                                                  "MedianZero", "MedianTwo",
                                                                                  "LowerTwo")})
-            continue
+            return
         out[name("Positive")] = ledger.add(name("Positive"), str(int((values > 0).sum())),
                                            f"cells of {len(cells)} with the gain earned after month {SHOCK_END} above "
                                            f"zero; {source}")
@@ -2325,6 +2358,9 @@ def after_shock_macros(store, ledger, tag=""):
             ledger.notes.append(f"{folder}: the gain earned after month {SHOCK_END} against {NAMES[yard]} is not "
                                 "above zero at (outside rate, launch, distress): "
                                 + "; ".join(f"({r * 100:g}%, {a * 100:g}%, {d * 100:g} pt)" for r, a, d in behind))
+
+    for word, yard in (("Banks", "S0"), ("Defi", "M0")):
+        against(word, yard)
     return out
 
 
@@ -2351,7 +2387,8 @@ def shortfall_macros(store, ledger):
         return ((wages * sizes).sum() / value.sum(), value[mine].sum() / value.sum(), sizes[mine].sum() / sizes.sum(),
                 value.sum() / sizes.sum())
 
-    for word, path in (("Banks", ["S0_by_class"]), ("Cpm", [CPM, "by_class"])):
+    def failed_of(word, path):
+        """The shortfall macros of one arrangement, named by ``word``, from its by-class records at ``path``."""
         found = [shares(dig(cell, path)) for cell in cells]
         source = f"summary.json: cells[{describe(cells)}].{path_text(path)}: class_sizes, failed, wages_late"
         wanted = [(f"FailedWageShare{word}", 0, whole), (f"NoCardFailedShare{word}", 1, whole),
@@ -2363,6 +2400,9 @@ def shortfall_macros(store, ledger):
                 out[name] = ledger.lack(name, source)
             else:
                 out[name] = reduce(ledger, name, np.array([one[k] for one in found], float), 0, "median", fmt, source)
+
+    for word, path in (("Banks", ["S0_by_class"]), ("Cpm", [CPM, "by_class"])):
+        failed_of(word, path)
     return out
 
 
@@ -2461,10 +2501,12 @@ def robust_stress_macros(robust, ledger):
     payments than both (...Fewer), the cells in which its gain in money over both is positive (...GainPositive)
     and bridges served at the highest launch level (...ServedHigh). A variant with no such cell gets no macro."""
     out = {}
-    for _, stem, _, store in robust:
+
+    def variant(stem, store):
+        """One variant's macros under the stress headline, none where it holds no such cell."""
         cells = [c for c in store.pick(distress=HEADLINE, r_out=ROBUST_RATE, arm=CPM)]
         if not cells:
-            continue
+            return
         name, src = (lambda tail: f"RobustStress{stem}{tail}"), f"{file_of(store)}: cells[{describe(cells)}]"
         out[name("Cells")] = ledger.add(name("Cells"), str(len(cells)), src)
         fails = {}
@@ -2480,6 +2522,9 @@ def robust_stress_macros(robust, ledger):
         top = max(cells, key=lambda c: c["a0"])
         out[name("ServedHigh")] = read(ledger, name("ServedHigh"), [top], [CPM, "bridges_drawn_over_wanted"], "only",
                                        lambda v: share(v, 2), file=file_of(store))
+
+    for _, stem, _, store in robust:
+        variant(stem, store)
     return out
 
 
@@ -2553,10 +2598,11 @@ def robust_table(robust, ledger):
                      median("failed payments, banks", failure_path("S0"), lambda v: pct(v, 2)),
                      median("bridge price", [CPM, "r_b_pct"], lambda v: pct(v, 2)),
                      median("holding charge", [CPM, "c_pct"], lambda v: pct(v, 3)), mass])
-        for name, text, column_name in (("SurviveBanks", banks_count, "cells where the gain over banks survives"),
-                                        ("SurviveDefi", defi_count, "cells where the gain over DeFi survives"),
-                                        ("PartFive", shown[0], f"participation at month {END_MONTH}, launch 5%")):
-            out[f"Robust{stem}{name}"] = ledger.add(f"Robust{stem}{name}", text, f"as {tag(column_name)}")
+        named = (("SurviveBanks", banks_count, "cells where the gain over banks survives"),
+                 ("SurviveDefi", defi_count, "cells where the gain over DeFi survives"),
+                 ("PartFive", shown[0], f"participation at month {END_MONTH}, launch 5%"))
+        out.update({f"Robust{stem}{name}": ledger.add(f"Robust{stem}{name}", text, f"as {tag(column_name)}")
+                    for name, text, column_name in named})
         if threshold is not None or store.is_pending:
             out[f"Robust{stem}CriticalMass"] = ledger.add(f"Robust{stem}CriticalMass", mass,
                                                            f"as {tag('critical mass')}, common threshold "
@@ -2640,7 +2686,7 @@ def chain_readings(sums, days):
     """The chain readings of one cell from ``chain_sums``, each seed's value: the knock-on share of failed value
     (knock-on over own shortfall plus knock-on), payers with a knock-on failure a day (payer-days over ``days``),
     the share of days on which 32 or more payers had one (over the days the records count), the share of completed
-    cash-route value that rests on netting, and the days with a non-empty netting set. Hand case of the plan: own
+    cash-route value that rests on netting, and the days with a non-empty netting set. Example: own
     shortfall 10 and knock-on 6 give a share of 6 / 16."""
     ratio = lambda top, bottom: np.divide(top, bottom, out=np.full(np.shape(top), np.nan), where=bottom > 0)
     counted = np.sum([sums[name] for name in KNOCK_DAYS], axis=0)
@@ -2665,7 +2711,8 @@ def chain_table(records, ledger):
         found = [chain_sums(records, cell_key(c), arm) for c in cells]
         readings[(level, arm)] = (None if days is None or not cells or any(f is None for f in found)
                                   else [chain_readings(f, days) for f in found], cells)
-    counts = {int(v) for (found, _) in readings.values() if found for r in found for v in r["counted"]}
+    stored = chain.from_iterable(found for found, _ in readings.values() if found)
+    counts = {int(v) for v in chain.from_iterable(r["counted"] for r in stored)}
     if counts and counts != {days}:
         ledger.notes.append(f"chains: the days the records count are {sorted(counts)}, not the run's {days}")
     why = lambda level, arm: absent_why(records, f"{file_of(records)}: measures.json monthly {arm}."
@@ -2688,16 +2735,18 @@ def chain_table(records, ledger):
         return reduce(ledger, where, values, 0, how, fmt, source(level, arm, key))
 
     rows, rules = [], []
-    for level, _, name in levels:
-        if rows:
+    columns = tuple(product(CHAIN_COLUMNS, ("median", "range")))
+    for (level, _, name), (k, arm) in product(levels, enumerate(ARMS)):
+        if k == 0 and rows:                                  # a rule before each level but the first
             rules.append(len(rows))
-        for k, arm in enumerate(ARMS):
-            rows.append([name if k == 0 else "", NAMES[arm]] + [entry(level, arm, label, key, fmt, how)
-                                                                for label, key, fmt in CHAIN_COLUMNS
-                                                                for how in ("median", "range")])
+        rows.append([name if k == 0 else "", NAMES[arm]] + [entry(level, arm, label, key, fmt, how)
+                                                            for (label, key, fmt), how in columns])
     out = {}
     share_fmt = CHAIN_COLUMNS[0][2]
-    for level, tail, _ in levels:
+
+    def knock_on(level, tail):
+        """One distress level's macros, in order: knock-on shares under banks and CPM, CPM's gap to banks paired by
+        seed (median and range), and the share of days with many knock-on failures under banks, the pool and CPM."""
         for arm, name in (("S0", "Banks"), (CPM, "Cpm")):
             values = per_cell(level, arm, "knock_share")
             macro = f"KnockOn{name}{tail}"
@@ -2718,8 +2767,16 @@ def chain_table(records, ledger):
             out[macro] = (ledger.lack(macro, why(level, arm)) if values is None else
                           reduce(ledger, macro, values, 0, "median", CHAIN_COLUMNS[2][2],
                                  source(level, arm, "many_days")))
-    every = [(float(v), arm, cell_key(c), level) for (level, arm), (found, cells) in readings.items() if found
-             for r, c in zip(found, cells) for v in r["netting_share"]]
+
+    for level, tail, _ in levels:
+        knock_on(level, tail)
+    def netting(level, arm, found, cells):
+        """Every job's netting share in one level's arrangement, each with the arrangement, its cell and the level."""
+        jobs = chain.from_iterable(zip(r["netting_share"], repeat(c)) for r, c in zip(found, cells))
+        return [(float(v), arm, cell_key(c), level) for v, c in jobs]
+
+    every = list(chain.from_iterable(netting(level, arm, found, cells)
+                                     for (level, arm), (found, cells) in readings.items() if found))
     if not every or any(found is None for found, _ in readings.values()):
         out["NettingShareMost"] = ledger.lack("NettingShareMost", why(0.0, "every arm"))
     else:
@@ -2731,8 +2788,8 @@ def chain_table(records, ledger):
                                              f"largest over every job and arrangement of netting_value / "
                                              f"cash_completed summed over the months; at {NAMES[most[1]]}, "
                                              f"{most[2]}")
-    head = ["Distress", "Arrangement"] + [f"{label} ({how})" for label, _, _ in CHAIN_COLUMNS
-                                          for how in ("median", "range")]
+    head = ["Distress", "Arrangement"] + [f"{label} ({how})" for (label, _, _), how in product(CHAIN_COLUMNS,
+                                                                                               ("median", "range"))]
     return dict(spec="ll" + "r" * (len(head) - 2), head=head, rows=rows, rule_before=rules), out
 
 
@@ -2773,18 +2830,20 @@ def boundary_table(main, boundary, ledger):
     Macros Boundary<launch>: the lowest distress level, over every level either store holds at that launch, at
     which a majority of seeds read a run, or "none up to 2 points"."""
     rows, out = [], {}
+
+    def entries(level, launch):
+        """The table's two entries at one distress level and launch level: bridges served and the seeds with a run."""
+        tag = lambda col: f"boundary[a0 {launch:g}, distress {level * 100:.1f} pt, {col}]"
+        values, source = runs_at(main, boundary, launch, level)
+        if values is None:
+            return [ledger.lack(tag("bridges served"), source), ledger.lack(tag("seeds with a run"), source)]
+        return [reduce(ledger, tag("bridges served"), values, 0, "mean", share, source),
+                ledger.add(tag("seeds with a run"), f"{int(np.sum(values < RUN_LINE))} of {values.size}",
+                           f"count of {source} < {RUN_LINE}")]
+
     for level in BOUNDARY_LEVELS:
-        row = [f"{level * 100:.1f}"]
-        for launch, _ in BOUNDARY_LAUNCHES:
-            tag = lambda col: f"boundary[a0 {launch:g}, distress {level * 100:.1f} pt, {col}]"
-            values, source = runs_at(main, boundary, launch, level)
-            if values is None:
-                row += [ledger.lack(tag("bridges served"), source), ledger.lack(tag("seeds with a run"), source)]
-                continue
-            row += [reduce(ledger, tag("bridges served"), values, 0, "mean", share, source),
-                    ledger.add(tag("seeds with a run"), f"{int(np.sum(values < RUN_LINE))} of {values.size}",
-                               f"count of {source} < {RUN_LINE}")]
-        rows.append(row)
+        rows.append([f"{level * 100:.1f}", *chain.from_iterable(entries(level, launch)
+                                                               for launch, _ in BOUNDARY_LAUNCHES)])
     for launch, word in BOUNDARY_LAUNCHES:
         macro = f"Boundary{word}"
         levels = sorted({k[2] for k in set(main.index) | set(boundary.index) if abs(k[0] - STRESS_RATE) < TOL
@@ -2854,18 +2913,24 @@ def repeat_check(main, boundary, ledger, level=0.0):
     names = ("BoundaryRepeatValues", "BoundaryRepeatDiffer")
     if not keys:
         return {name: ledger.lack(name, absent_why(boundary, "no level-0 cell shared with the map")) for name in names}
+
+    def compared(old_of, new_of):
+        """One kind of record compared over the shared cells, the map's (``old_of``) against the set's (``new_of``):
+        the values compared, the paths that differ and the records read."""
+        differ, total, jobs = [], 0, 0
+        for key in keys:
+            old, new = old_of(key), new_of(key)
+            jobs += len(old)
+            total += same_values(old, new, [str(key)], differ)
+        return total, differ, jobs
+
     found = {}
     for label, old_of, new_of in (
             ("cells.json jobs", lambda k: main.jobs.get(k, []), lambda k: boundary.jobs.get(k, [])),
             ("measures.json monthly", lambda k: [j["monthly"] for j in main.monthly.get(k, [])],
              lambda k: [j["monthly"] for j in boundary.monthly.get(k, [])]),
             ("summary.json cells", lambda k: [main.index[k]], lambda k: [boundary.index[k]])):
-        differ, total, jobs = [], 0, 0
-        for key in keys:
-            old, new = old_of(key), new_of(key)
-            jobs += len(old)
-            total += same_values(old, new, [str(key)], differ)
-        found[label] = (total, differ, jobs)
+        found[label] = total, differ, jobs = compared(old_of, new_of)
         ledger.notes.append(f"repeat check, {Path(boundary.folder).name} against {Path(main.folder).name} at distress "
                             f"{level * 100:g}, {len(keys)} cells, {label} ({jobs} records): {total} values compared, "
                             f"{len(differ)} differ" + (f"; first: {', '.join(map(path_text, differ[:5]))}"
@@ -2942,8 +3007,12 @@ def series_reading(values):
 def period_two_rows(store):
     """Every stored monthly series of every job and arrangement, read by ``series_reading``: a list of (arm, series,
     seed, share, amplitude, amplitude over level)."""
-    return [(arm, name, job["seed"], *series_reading(values)) for jobs in store.monthly.values() for job in jobs
-            for arm, block in job["monthly"].items() for name, values in block.items()]
+    def of_job(job):
+        """One job's readings, arrangement by arrangement and series by series."""
+        series = chain.from_iterable(zip(repeat(arm), block.items()) for arm, block in job["monthly"].items())
+        return [(arm, name, job["seed"], *series_reading(values)) for arm, (name, values) in series]
+
+    return list(chain.from_iterable(map(of_job, chain.from_iterable(store.monthly.values()))))
 
 
 def period_two_table(store, ledger):
@@ -2997,7 +3066,7 @@ def period_two_table(store, ledger):
                                          f"period_two_share of monthly.{arm}.{FOCUS_SERIES}, every job; {source}")
     out["PeriodTwoRestMost"] = reduce(ledger, "PeriodTwoRestMost", share_[focus], 0, "high", lambda v: share(v, 2),
                                       f"period_two_share of monthly.<every arm>.{FOCUS_SERIES}; {source}")
-    by_arm_seed = np.array([np.nanmedian(ratio[focus & (arms == a) & (seed_of == s)]) for a in ARMS for s in seeds
+    by_arm_seed = np.array([np.nanmedian(ratio[focus & (arms == a) & (seed_of == s)]) for a, s in product(ARMS, seeds)
                             if (focus & (arms == a) & (seed_of == s)).any()])
     out["PeriodTwoAmplitude"] = reduce(ledger, "PeriodTwoAmplitude", by_arm_seed, 0, "range",
                                        lambda v: pct(100 * v, 1), f"|alternating_amplitude| over the mean absolute "
@@ -3081,7 +3150,9 @@ def spread_table(store, ledger):
     src = lambda cells, what: (f"{Path(store.folder).name}/spread.json: cells[{describe(cells)}].{what}, seed means"
                                if cells else absent_why(store, f"{Path(store.folder).name}/spread.json not shipped"))
     rows, rules, out, wide, narrow = [], [], {}, [], []
-    for level, word in SPREAD_LEVELS:
+
+    def level_rows(level, word):
+        """One distress level's rows, one for each arrangement of SPREAD_ARMS, and its macros, in that order."""
         cells = spread_cells(store, level)
         if rows:
             rules.append(len(rows))
@@ -3125,25 +3196,28 @@ def spread_table(store, ledger):
                 f"cells of {len(cells)} with CPM's seed mean below banks', {label}; " + src(cells, what))
             out[f"SpreadGap{tail}{word}"] = reduce(ledger, f"SpreadGap{tail}{word}", mine - banks, 0, "median",
                                                    excess, f"CPM less banks, {label}; " + src(cells, what))
+
+    for level, word in SPREAD_LEVELS:
+        level_rows(level, word)
     counts = {len(spread_cells(store, level)) for level, _ in SPREAD_LEVELS}
     out["SpreadCells"] = (ledger.add("SpreadCells", str(counts.pop()), src(spread_cells(store, HEADLINE), "cells"))
                           if len(counts) == 1 and 0 not in counts else
                           ledger.lack("SpreadCells", src([], "") if store.spread is None else
                                       f"spread.json levels hold {sorted(counts)} cells"))
-    for name, values in (("Wide", wide), ("Narrow", narrow)):
-        for how, tail in (("low", "Low"), ("high", "High")):
-            out[f"Spread{name}{tail}"] = (
-                reduce(ledger, f"Spread{name}{tail}", np.array(values), 0, how, part,
-                       f"the spread table's {name.lower()} shares, every level and arrangement shown")
-                if len(values) == len(SPREAD_LEVELS) * len(SPREAD_ARMS) else
-                ledger.lack(f"Spread{name}{tail}", src([], "")))
+    for (name, values), (how, tail) in product((("Wide", wide), ("Narrow", narrow)),
+                                               (("low", "Low"), ("high", "High"))):
+        out[f"Spread{name}{tail}"] = (
+            reduce(ledger, f"Spread{name}{tail}", np.array(values), 0, how, part,
+                   f"the spread table's {name.lower()} shares, every level and arrangement shown")
+            if len(values) == len(SPREAD_LEVELS) * len(SPREAD_ARMS) else
+            ledger.lack(f"Spread{name}{tail}", src([], "")))
     head = ["Distress", "Arrangement", "Excess (median)", "Excess (range)", "Not hit, wide", "Not hit, narrow",
             "Distress year (median)", "Distress year (range)", "Not hit, distress year"]
     return dict(spec="ll" + "r" * (len(head) - 2), head=head, rows=rows, rule_before=rules), out
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# The exploratory runs made after the confirmation was read (docs/ANALYSIS_PLAN.md, the additions of 17 and 18 Nov)
+# The exploratory runs made after the confirmation map was read (docs/ANALYSIS_PLAN.md, its additions)
 # ----------------------------------------------------------------------------------------------------------------------
 CUT_MARK = r"$^{\dagger}$"                                  # marks a rate of the rate cut in the table of six rates
 CUT_WORDS = {0.025: "TwoFive", 0.03: "Three", 0.035: "ThreeFive"}   # the cut's rates and their macro words
@@ -3154,13 +3228,18 @@ def region_marks(store):
     """Each of a map's CPM cells read from its stored regions: {(distress, rate, launch): 3 in the map's region,
     2 passing outside it, 1 not passing}."""
     slices = dig(store.summary, ["claim_statistics", "regions", CPM])
-    out = {}
-    for piece in [] if slices is MISSING else slices:
+
+    def marked(piece):
+        """The marks of one distress slice's CPM cells."""
         inside = {(float(r), float(a)) for r, a in piece["region"]}
         passing = {(float(r), float(a)) for r, a in piece["passing"]}
-        for (rate, launch, level), cell in store.index.items():
-            if abs(level - piece["distress"]) < TOL and CPM in cell:
-                out[(level, rate, launch)] = 3 if (rate, launch) in inside else 2 if (rate, launch) in passing else 1
+        return {(level, rate, launch): 3 if (rate, launch) in inside else 2 if (rate, launch) in passing else 1
+                for (rate, launch, level), cell in store.index.items()
+                if abs(level - piece["distress"]) < TOL and CPM in cell}
+
+    out = {}
+    for piece in [] if slices is MISSING else slices:
+        out.update(marked(piece))
     return out
 
 
@@ -3173,18 +3252,18 @@ def cut_table(store, cut, ledger):
     marks, own = {**registered, **extra}, {key[1] for key in extra}
     levels, rates, launches = (sorted({key[k] for key in marks}) for k in range(3))
     words, out, rows, rules = dict(LEVEL_WORDS), {}, [], []
-    for level in levels:
-        rules.append(len(rows))
-        for j, rate in enumerate(rates):
-            codes = [marks.get((level, rate, launch), 0) for launch in launches]
-            source = f"{file_of(cut if rate in own else store)}: claim_statistics.regions.{CPM}, distress {level:g}"
-            passing = ledger.add(f"cut[distress {level * 100:g} pt, rate {rate * 100:g}%, cells passing]",
-                                 str(sum(code >= 2 for code in codes)), source)
-            rows.append([f"{level * 100:g} pt" if j == 0 else "", pct(rate * 100, 1) + (CUT_MARK if rate in own else ""),
-                         *MARKS[codes], passing])
-            if rate in CUT_WORDS and level in words:
-                name = f"CutPass{words[level]}{CUT_WORDS[rate]}"
-                out[name] = ledger.add(name, passing, source)
+    for level, (j, rate) in product(levels, enumerate(rates)):
+        if j == 0:                                           # a rule before each level
+            rules.append(len(rows))
+        codes = [marks.get((level, rate, launch), 0) for launch in launches]
+        source = f"{file_of(cut if rate in own else store)}: claim_statistics.regions.{CPM}, distress {level:g}"
+        passing = ledger.add(f"cut[distress {level * 100:g} pt, rate {rate * 100:g}%, cells passing]",
+                             str(sum(code >= 2 for code in codes)), source)
+        rows.append([f"{level * 100:g} pt" if j == 0 else "", pct(rate * 100, 1) + (CUT_MARK if rate in own else ""),
+                     *MARKS[codes], passing])
+        if rate in CUT_WORDS and level in words:
+            name = f"CutPass{words[level]}{CUT_WORDS[rate]}"
+            out[name] = ledger.add(name, passing, source)
     seeds, aside = dig(cut.summary, ["seeds"]), dig(cut.summary, ["provenance", "joined_from_parts", "set_aside"])
     joined, left = (0 if seeds is MISSING else len(seeds)), (0 if aside is MISSING else len(aside))
     count, positive, fewer = grid_counts(cut)
@@ -3275,7 +3354,7 @@ def explore_tables(base, sets, low, ledger):
 
     def lowest_highest(stem, store, level, path, fmt):
         """The macros stem + Low and stem + High: a stored number's lowest and highest over the launch levels."""
-        keys = [k for k in store.index for a in EXPLORE_LAUNCHES
+        keys = [k for k, a in product(store.index, EXPLORE_LAUNCHES)
                 if abs(k[0] - STRESS_RATE) < TOL and abs(k[1] - a) < TOL and abs(k[2] - level) < TOL]
         found = [dig(store.index[k], path) for k in keys]
         source = (f"{file_of(store)}: cells at r_out {STRESS_RATE:g}, distress {level:g}: {path_text(path)}, over "
@@ -3478,7 +3557,7 @@ def path_store(folder):
             kept.append(dict(r_out=job["r_out"], a0=job["a0"], distress=job["distress"], seed=job["seed"],
                              recirculated=job.get("recirculated", False),
                              monthly={CPM: as_arrays({name: series[name] for name in PATH_SERIES if name in series})}))
-    jobs = [job for group in found.jobs.values() for job in group] if found.has_jobs else None
+    jobs = list(chain.from_iterable(found.jobs.values())) if found.has_jobs else None
     return Store(found.summary, jobs, kept, folder)
 
 

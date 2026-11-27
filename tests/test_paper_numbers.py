@@ -197,7 +197,7 @@ class PaperNumbersTest(unittest.TestCase):
             pn.build(pn.Store(fewer, jobs=jobs, monthly=[]))
 
     def test_the_seed_design_from_the_code(self):
-        """The registered seed design (17 Nov 2026), each macro traced in the report: 30 confirmation seeds and an
+        """The registered seed design, each macro traced in the report: 30 confirmation seeds and an
         extension to 60, at assurance 0.8; of 30 seeds 21 read above one half at 95%, 24 at CPM's Bonferroni level
         over 21 cells and 23 at indexed CPM's over 14 (wilson_bounds), and of 60, 38, 42 and 42; 30 seeds resolve the
         $2 margin at CPM's Bonferroni level up to a spread of $2.597, quoted at the cent below, $2.59."""

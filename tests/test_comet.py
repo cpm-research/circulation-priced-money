@@ -3,7 +3,7 @@
 Origins: pre-reset checks_compound_spec.input_identity; checks_comet
 pinned_state, revert_versus_preflight_gas, source_gates and
 closed_market_reverts_first_draw. Historical Declared values are confined to
-the named test fixture, not the new study's economic baseline. Review 1 adds
+the named test fixture, not the new study's economic baseline. The module also holds
 independent checks of explicit scenarios and the normal-time monetary normalization.
 """
 import copy

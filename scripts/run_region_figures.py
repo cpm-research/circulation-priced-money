@@ -1,10 +1,10 @@
 """Publication figures of the stable region, drawn from a population map's store in seconds.
 
-Reads ``summary.json`` (the decided cells, with each pool arm's region reading) and ``measures.json`` (each job's
+Reads ``summary.json`` (the judged cells, with each pool arm's region reading) and ``measures.json`` (each job's
 monthly series) that ``scripts/run_economy_population.py`` writes, runs nothing, and writes each figure as PNG at
 200 dpi and as PDF:
 
-* ``claim_map``                 the claim map (the 13 Nov review): M1's and M2's stored claim readings over (r_out, a0),
+* ``claim_map``                 the claim map: M1's and M2's stored claim readings over (r_out, a0),
                                 one row per distress slice: in the region, supported outside it, inconclusive,
                                 falsified, declared limit (skipped when the store holds no claim reading);
 * ``region_3d``                 the persistence-and-groups view (not the claim map) over r_out x a0 x distress, one
@@ -12,7 +12,7 @@ monthly series) that ``scripts/run_economy_population.py`` writes, runs nothing,
                                 coloured by the reading;
 * ``region_slice_distress_<k>`` the persistence-and-groups view, one per distress level k, in % a month ("0p5" for
                                 0.5): the M1 and M2 readings over (r_out, a0), each cell with its mean gain against S0,
-                                read in full (decided 5 Nov), $ a person a year;
+                                read in full, $ a person a year;
 * ``paths_baseline``            participation, pool capital N with its limit N*, the charge c, theta and the bridging
                                 rate with the coupon, month by month at the baseline cell without distress, for U, M1
                                 and M2 (seed mean, with the seeds' range shaded);
@@ -26,14 +26,14 @@ monthly series) that ``scripts/run_economy_population.py`` writes, runs nothing,
 
 A figure the store cannot support (a selection without the baseline cell, a run without U, S0 alone) is skipped with
 a printed note. Existing figures are never overwritten. With ``--majority`` the region figures read each cell's
-bare-majority reading instead of the decided one (statistics, 3 Nov), and their names end in ``_majority``.
+bare-majority reading instead of the default one, and their names end in ``_majority``.
 
 Usage (from the repository root):
     python -X utf8 scripts/run_region_figures.py --store results/<map>
     python -X utf8 scripts/run_region_figures.py --store results/<map> --majority
 """
 import argparse
-from itertools import product
+from itertools import chain, product
 import json
 from pathlib import Path
 import sys
@@ -53,6 +53,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from run_economy_figures import (AQUA, BLUE, DOLLARS, GRID, INK, MUTED, ORANGE, RED, SURFACE, VIOLET,  # noqa: E402
                                  YELLOW, style)
 from run_economy_population import BASE, POOL_ARMS, VERDICTS  # noqa: E402
+from cpm_abm.experiment.notes import VERDICTS_CONSERVED  # noqa: E402
 
 DPI = 200
 YEAR = 1200.0                     # a monthly rate to % a year
@@ -62,10 +63,21 @@ ARM_STYLE = dict(S0=(MUTED, "-", "o"), M0=(YELLOW, ":", "s"), U=(VIOLET, "--", "
                  M2=(ORANGE, "-.", "D"))
 VERDICT_COLOURS = {"stable": AQUA, "a group loses": "#f2c46d",
                    "issuer leaves": RED, "not persistent": "#c9d3de", "no pool": "#ecebe6", "declared limit": "#ffffff"}
+# A run that conserves money names its group test's failure "a group is harmed", in the same place and colour.
+VERDICT_COLOURS["a group is harmed"] = VERDICT_COLOURS["a group loses"]
+LEGEND_ORDER = VERDICTS[:-1] + ("a group is harmed",) + VERDICTS[-1:]   # every reading either store can hold
+
+
+def verdicts_shown(cells):
+    """The region readings a store's cells can hold, in order: ``VERDICTS_CONSERVED`` where any arm's region reading
+    holds the group test of a run that conserves money (``groups_harmed``), else the released ``VERDICTS``."""
+    arms = chain.from_iterable(cell.values() for cell in cells if cell)
+    harmed = any(isinstance(arm, dict) and "groups_harmed" in (arm.get("region") or {}) for arm in arms)
+    return VERDICTS_CONSERVED if harmed else VERDICTS
 # M1 less U: orange where M1 is lower, blue where it is higher, a neutral grey at zero.
 DIVERGING = LinearSegmentedColormap.from_list("m1_less_u", [ORANGE, "#efeeea", BLUE])
-# The older region figures read each cell's persistence-and-groups reading (``region``), not the registered claim:
-# labelled so, so nobody reads them as the claim map (13 Nov review), which is ``claim_map``.
+# The region figures read each cell's persistence-and-groups reading (``region``), not the registered claim:
+# labelled so, so nobody reads them as the claim map, which is ``claim_map``.
 PERSISTENCE_VIEW = "Persistence-and-groups view (not the claim map; see claim_map)"
 LABELS = dict(a0="initial participation a0", r_out="r_out (% a year)", distress="extra job loss (% a month)",
               month="months after launch")
@@ -80,7 +92,7 @@ def setup():
 
 
 def load(store):
-    """The store's opening record and decided cells (summary.json), and the jobs' monthly series (measures.json, None
+    """The store's opening record and judged cells (summary.json), and the jobs' monthly series (measures.json, None
     when absent)."""
     summary = json.loads((store / "summary.json").read_text(encoding="utf-8"))
     path = store / "measures.json"
@@ -91,6 +103,28 @@ def load(store):
 def number(value):
     """A stored value as a float, NaN for None."""
     return np.nan if value is None else float(value)
+
+
+def window_names(row):
+    """The names of a stored row's two windows in order: W1 and W2 in the first run. In a run read in two settled
+    windows they are named by their years, which a seed's row lists (``windows``) and a judged cell's row carries as
+    the names of its window means (``by_window``)."""
+    return tuple(row.get("windows") or row.get("by_window") or ("W1", "W2"))
+
+
+def late(row, stem):
+    """A reading an arm's row stores once per window, at the last window: ``{stem}_W2`` in the first run, and in a
+    run read in two settled windows the later of them (``A_years_21_to_25``)."""
+    return row[f"{stem}_{window_names(row)[-1]}"]
+
+
+def late_label(cells):
+    """How the last window reads in a title: "years 4 and 5" in the first run, and its own years in a run read in two
+    settled windows (``years_21_to_25`` reads "years 21 to 25"). Every cell of a store has the same windows, so the
+    first cell that holds CPM answers."""
+    row = next((cell["M1"] for cell in cells if isinstance(cell.get("M1"), dict)), {})
+    name = window_names(row)[-1]
+    return "years 4 and 5" if name == "W2" else name.replace("_", " ")
 
 
 def w2(pair):
@@ -105,14 +139,14 @@ def grid_of(cells):
 
 
 def reading(cell, arm, majority):
-    """A pool arm's region reading in a cell, decided or bare majority; None where the arm did not run."""
+    """A pool arm's region reading in a cell, by the default rule or bare majority; None where the arm did not run."""
     if arm not in cell or "region" not in cell[arm]:
         return None
     return cell[arm]["region"]["verdict_majority" if majority else "verdict"]
 
 
-# The claim map (13 Nov review): each cell's stored claim reading (``claim_statistics``), not the
-# persistence-and-groups view above. In order of the legend.
+# The claim map: each cell's stored claim reading (``claim_statistics``), not the persistence-and-groups view
+# above. In order of the legend.
 CLAIM_READINGS = ("in the region", "supported outside it", "inconclusive", "falsified", "declared limit")
 CLAIM_COLOURS = {"in the region": AQUA, "supported outside it": "#a9d8cf", "inconclusive": "#c9d3de",
                  "falsified": RED, "declared limit": "#ffffff"}
@@ -149,6 +183,10 @@ def claim_map(cells, output, written):
         print("claim_map skipped: the store holds no claim reading (claim_statistics).")
         return
     order = list(CLAIM_READINGS)
+    # A map of the second run also stores the region at the stricter level, so its title says that the region
+    # drawn here reads each cell at 95%; the first run's title does not.
+    claim_of = lambda cell, arm: ((cell or {}).get(arm) or {}).get("claim") or {}
+    pointwise = any("in_region_bonferroni" in claim_of(cell, arm) for cell, arm in product(cells, arms))
     palette = ListedColormap([CLAIM_COLOURS[name] for name in order])
     fig, axes = plt.subplots(len(levels), len(arms), figsize=(0.95 * len(a0s) * len(arms) + 1.2,
                                                               (0.55 * len(rates) + 0.9) * len(levels) + 0.8),
@@ -162,8 +200,9 @@ def claim_map(cells, output, written):
                for name in CLAIM_READINGS if name in shown]
     fig.legend(handles=handles, ncol=min(len(handles), 5), frameon=False, loc="outside lower center")
     fig.suptitle("Claim map: the registered claim's stored reading by distress slice (claim_statistics; the region is "
-                 "the largest edge-joined block of supported cells that are not underpowered)", x=0.01, ha="left",
-                 color=INK, fontsize=9)
+                 "the largest edge-joined block of supported cells that are not underpowered"
+                 + (", each cell read pointwise at 95%" if pointwise else "") + ")", x=0.01,
+                 ha="left", color=INK, fontsize=9)
     save(fig, output, "claim_map", written)
 
 
@@ -192,8 +231,8 @@ def claim_panel(axis, arm, level, grid, order, palette, shown):
 
 
 def gain_against_s0(cell, arm):
-    """The arm's seed-mean gain against S0, read in full (decided 5 Nov: M2's indexation is the holder's own
-    yield, not an issuer transfer), $ a person a year (claim (d)'s basis)."""
+    """The arm's seed-mean gain against S0, read in full (M2's indexation is the holder's own yield, not an issuer
+    transfer), $ a person a year (claim (d)'s basis)."""
     against = cell.get(arm, {}).get("against", {}).get("S0")
     return np.nan if against is None else number(against["gain_usd_a_year"])
 
@@ -220,7 +259,7 @@ def legend_of_readings(fig, shown, outside=False):
     figure laid out by constrained layout, which then makes room for it)."""
     handles = [Patch(facecolor=VERDICT_COLOURS[name], edgecolor=MUTED if name == "declared limit" else "none",
                      hatch="///" if name == "declared limit" else None, label=name)
-               for name in VERDICTS if name in shown]
+               for name in LEGEND_ORDER if name in shown]
     place = dict(loc="outside lower center") if outside else dict(loc="lower center", bbox_to_anchor=(0.5, -0.02))
     fig.legend(handles=handles, ncol=min(len(handles), 4), frameon=False, **place)
 
@@ -282,7 +321,7 @@ def region_slices(cells, output, majority, written):
     if not arms:
         print("region slices skipped: the store holds no M1 or M2 region reading.")
         return
-    order = list(VERDICTS)
+    order = list(verdicts_shown(cells))
     palette = ListedColormap([VERDICT_COLOURS[name] for name in order])
     for level in levels:
         fig, axes = plt.subplots(1, len(arms), figsize=(0.95 * len(a0s) * len(arms) + 1.2, 0.7 * len(rates) + 1.6),
@@ -347,8 +386,8 @@ def paths(jobs, arm, key, scale):
 
 def baseline_jobs(measures, level):
     """The stored jobs at the baseline r_out and a0 at one distress level, under the map's own convention: without
-    lenders' interest recirculated, or, in a map that returns it over the whole grid (decided 12 Nov: its economy
-    record says so), with it."""
+    lenders' interest recirculated, or, in a map that returns it over the whole grid (its economy record says so),
+    with it."""
     if measures is None:
         return []
     returned = bool((measures.get("economy") or {}).get("lender_income_recirculated"))
@@ -424,43 +463,74 @@ def distress_panel(axis, arm, path, sets, shades, year):
     style(axis, f"{arm}: {title.split(' (')[0]}", LABELS["month"], unit)
 
 
-# What demurrage adds, M1 less U (key reader, title, unit).
-EFFECTS = ((lambda c, arm: number(c[arm]["A_W2"]) * 100, "Participation, years 4 and 5", "points"),
-           (lambda c, arm: number(c[arm]["N"]) * DOLLARS, "Pool capital N, years 4 and 5", "$ a person"),
-           (gain_against_s0, "Mean gain against S0", "$ a person a year"),
-           (lambda c, arm: w2(c[arm]["liquidity"]["failed_usd_a_year"]), "Failed payments, years 4 and 5",
-            "$ a person a year"))
+# What demurrage adds, M1 against U (key reader, title, unit, sign): the sign is +1 where the panel shows M1 less U
+# and -1 where it shows U less M1. ``{late}`` in a title is the last window as ``late_label`` words it.
+EFFECTS = ((lambda c, arm: number(late(c[arm], "A")) * 100, "Participation, {late}", "points", 1),
+           (lambda c, arm: number(c[arm]["N"]) * DOLLARS, "Pool capital N, {late}", "$ a person", 1),
+           (gain_against_s0, "Mean gain against S0", "$ a person a year", 1),
+           (lambda c, arm: w2(c[arm]["liquidity"]["failed_usd_a_year"]), "Failed payments, {late}",
+            "$ a person a year", 1))
+def bridges_per_capital(cell, arm):
+    """The pool's bridge lending a year per dollar of its capital in the last window, NaN with no pool: how many
+    times a year a dollar of pool capital is lent out as a bridge. Example: $4,500 a person a year lent on $1,500 a
+    person of capital is 3."""
+    capital = number(cell[arm]["N"]) * DOLLARS
+    return number(w2(cell[arm]["liquidity"]["pool_bridges_usd_a_year"])) / capital if capital > 0 else np.nan
 
 
-def demurrage_effect(cells, output, written):
-    """M1 less U over (r_out, a0), one column per distress level and one row per measure."""
+# The same figure for a run that conserves money (``edge`` "conserved"), all in the last window, which the figure's
+# heading names. Mean wealth then differs between arrangements only by their cumulative revaluation of loans, by the
+# change in the stock booked across the edge and not yet paid (under the payout "paid") and by what the payout keeps
+# back (``edge_kept``), so the mean gain against S0 is near zero, not zero by construction, and is left out. The
+# figure leads with what the holding charge (demurrage) does, each signed so that above zero is what it adds: the
+# bridge price it takes off (the charge pays part of the coupon), the bridges it gets served, the failed payments it
+# avoids and the bridges lent on each dollar of pool capital. Pool capital and participation follow as M1 less U: a
+# pool that lends more on less capital reads below zero on capital.
+EFFECTS_CONSERVED = (
+    (lambda c, arm: number(c[arm]["r_b_pct"]), "Bridge price cut", "points a year", -1),
+    (lambda c, arm: number(c[arm]["bridges_drawn_over_wanted"]) * 100, "More bridges served",
+     "points of bridges wanted", 1),
+    (lambda c, arm: w2(c[arm]["liquidity"]["failed_usd_a_year"]), "Failed payments avoided", "$ a person a year", -1),
+    (bridges_per_capital, "Bridges lent per $ of pool capital", "times a year", 1),
+    (lambda c, arm: number(c[arm]["N"]) * DOLLARS, "Pool capital N", "$ a person", 1),
+    (lambda c, arm: number(late(c[arm], "A")) * 100, "Participation", "points", 1))
+
+
+def demurrage_effect(cells, output, written, conserved=False):
+    """What demurrage adds over (r_out, a0), one column per distress level and one row per measure: M1 less U on
+    every row of the first run (``EFFECTS``), and in a run that conserves money (``conserved``) the rows of
+    ``EFFECTS_CONSERVED``, each colour bar naming which way its row is read."""
     rates, a0s, levels, by_key = grid_of(cells)
     if not any("U" in c and "M1" in c for c in cells):
         print("demurrage_effect skipped: it needs U and M1.")
         return
-    fig, axes = plt.subplots(len(EFFECTS), len(levels), figsize=(2.6 * len(levels) + 1.0, 2.0 * len(EFFECTS)),
+    effects = EFFECTS_CONSERVED if conserved else EFFECTS
+    fig, axes = plt.subplots(len(effects), len(levels), figsize=(2.6 * len(levels) + 1.0, 2.0 * len(effects)),
                              squeeze=False, constrained_layout=True)
-    for row, (read, title, unit) in zip(axes, EFFECTS):
-        values = {level: effect_grid(read, level, (rates, a0s, by_key)) for level in levels}
+    for row, (read, title, unit, sign) in zip(axes, effects):
+        title = title.format(late=late_label(cells))
+        values = {level: effect_grid(read, level, (rates, a0s, by_key), sign) for level in levels}
         top = max([float(np.nanmax(np.abs(grid))) for grid in values.values() if np.isfinite(grid).any()] + [1e-9])
         norm = TwoSlopeNorm(vcenter=0.0, vmin=-top, vmax=top)
         images = list(map(lambda axis, level: effect_panel(axis, values[level], norm, f"{title}\nextra job loss "
                                                            f"{percent(level)}% a month", (rates, a0s)), row, levels))
-        fig.colorbar(images[-1], ax=row.tolist(), fraction=0.02, pad=0.01, label=f"M1 less U, {unit}")
-    fig.suptitle("What demurrage adds: M1 less U on the same draws (seed means)", x=0.01, ha="left", color=INK,
-                 fontsize=9)
+        fig.colorbar(images[-1], ax=row.tolist(), fraction=0.02, pad=0.01,
+                     label=f"{'M1 less U' if sign > 0 else 'U less M1'}, {unit}")
+    fig.suptitle(f"What demurrage adds in {late_label(cells)}: CPM (M1) against the pool without it (U)\non the same "
+                 "draws (seed means)" if conserved else "What demurrage adds: M1 less U on the same draws (seed means)",
+                 x=0.01, ha="left", color=INK, fontsize=9)
     save(fig, output, "demurrage_effect", written)
 
 
-def effect_grid(read, level, grid):
-    """M1 less U on one measure (``read``) in every (r_out, a0) cell at one distress level, NaN where either is missing;
-    ``grid`` is ``grid_of``'s r_out values, a0 values and cells by key."""
+def effect_grid(read, level, grid, sign=1):
+    """M1 less U on one measure (``read``) in every (r_out, a0) cell at one distress level, or U less M1 with
+    ``sign`` -1, NaN where either is missing; ``grid`` is ``grid_of``'s r_out values, a0 values and cells by key."""
     rates, a0s, by_key = grid
     values = np.full((len(rates), len(a0s)), np.nan)
     for (j, rate), (i, a0) in product(enumerate(rates), enumerate(a0s)):
         cell = by_key.get((rate, a0, level))
         if cell and "U" in cell and "M1" in cell:
-            values[j, i] = read(cell, "M1") - read(cell, "U")
+            values[j, i] = sign * (read(cell, "M1") - read(cell, "U"))
     return values
 
 
@@ -493,7 +563,8 @@ def bridging_vs_card(cells, summary, output, written):
                              constrained_layout=True)
     list(map(lambda axis, rate: bridging_panel(axis, rate, card, arms, (a0s, by_key), inflation), axes[0], rates))
     axes[0][0].legend(frameon=False, loc="best")
-    fig.suptitle("A pool bridge against the card, years 4 and 5 without distress (dashed: the coupon r_g, the rate "
+    fig.suptitle(f"A pool bridge against the card, {late_label(cells)} without distress (dashed: the coupon r_g, "
+                 "the rate "
                  "before demurrage's cut)", x=0.01, ha="left", color=INK, fontsize=9)
     save(fig, output, "bridging_vs_card", written)
 
@@ -533,7 +604,8 @@ def liquidity_vs_s0(cells, output, written):
     for (place, column), axis in np.ndenumerate(axes):
         liquidity_panel(axis, rows[place], rates[column], arms, (a0s, by_key), place == len(rows) - 1)
     axes[1][0].legend(frameon=False, loc="best")
-    fig.suptitle("Liquidity against S0, years 4 and 5 without distress (seed means)", x=0.01, ha="left", color=INK,
+    fig.suptitle(f"Liquidity against S0, {late_label(cells)} without distress (seed means)", x=0.01, ha="left",
+                 color=INK,
                  fontsize=9)
     save(fig, output, "liquidity_vs_s0", written)
 
@@ -575,7 +647,7 @@ def draw(store, output=None, majority=False):
         claim_map(cells, output, written)
         paths_baseline(measures, output, written)
         paths_distress(measures, summary, output, written)
-        demurrage_effect(cells, output, written)
+        demurrage_effect(cells, output, written, summary.get("economy", {}).get("edge") == "conserved")
         bridging_vs_card(cells, summary, output, written)
         liquidity_vs_s0(cells, output, written)
     return written

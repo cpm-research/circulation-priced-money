@@ -92,7 +92,7 @@ class RobustTest(unittest.TestCase):
 
 def records_store():
     """A records run of two cells (launch 5%, no distress and 2 points), three seeds, every arrangement. Each month
-    every seed's own shortfall is 10 / 60 and its knock-on 6 / 60 (the plan's hand case over the run), 3 payers have a
+    every seed's own shortfall is 10 / 60 and its knock-on 6 / 60 (over the run), 3 payers have a
     knock-on failure a day and on 3 of 30 days 32 or more do; netting holds 0.5 of 40 completed in month 1 of seed
     12."""
     cells, monthly = [], []
@@ -306,7 +306,7 @@ class FigureReadersTest(unittest.TestCase):
             constants=dict(THRESHOLD_LOG_MEAN=-2.0, THRESHOLD_LOG_SPREAD=1.0)))
         self.assertIsNone(pf.threshold_values(run("uniform", "linear")))
         self.assertAlmostEqual(float(np.mean(pf.threshold_values(run("uniform")) <= 0.3)), 0.3, places=2)
-        # The plan's hand case: at a contact share of 0.05 a share Phi((ln 0.05 + 2) / 1) = 0.16 of thresholds is met.
+        # Example: at a contact share of 0.05 a share Phi((ln 0.05 + 2) / 1) = 0.16 of thresholds is met.
         self.assertAlmostEqual(float(np.mean(pf.threshold_values(run("measured")) <= 0.05)), 0.16, delta=0.005)
         self.assertEqual(list(pf.threshold_values(run(0.2))), [0.2])
         # Reaching 0.2 by innovation alone takes ln((1 - a0) / 0.8) / 0.0025 months: 69 from 5%, 47 from 10%, so

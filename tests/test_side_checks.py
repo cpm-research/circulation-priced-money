@@ -57,7 +57,7 @@ class SideCheckTest(unittest.TestCase):
         economy = Economy(n=4000, **found)
         self.assertEqual((economy.issuer_cost, economy.owner_spread, economy.distress_start),
                          (0.44 / 1200, 0.5 / 1200, 12))
-        # As built: 0.24% a year and 0.25 point a year, the shock from month 24.
+        # The defaults: 0.24% a year and 0.25 point a year, the shock from month 24.
         self.assertAlmostEqual(Economy.issuer_cost * 1200, 0.24, places=12)
         self.assertAlmostEqual(Economy.owner_spread * 1200, 0.25, places=12)
         self.assertEqual((Economy.distress_start, Economy.distress_length, Economy.months), (24, 12, 60))

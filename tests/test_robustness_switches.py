@@ -52,7 +52,7 @@ class BufferReviewTests(unittest.TestCase):
     """The buffer review share alpha (5.1)."""
 
     def test_alpha_one_half_with_draws_three_and_seven_tenths(self):
-        """The plan's hand case: alpha 0.5, draws 0.3 and 0.7: the first re-chooses, the second keeps its buffer."""
+        """Example: alpha 0.5, draws 0.3 and 0.7: the first re-chooses, the second keeps its buffer."""
         np.testing.assert_array_equal(review(np.array([4.0, 5.0]), np.array([1.0, 2.0]), np.array([0.3, 0.7]), 0.5),
                                       [4.0, 2.0])
 
