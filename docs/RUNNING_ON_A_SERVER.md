@@ -8,7 +8,7 @@ runs unattended and continues from where it stopped.
 ## The one line
 
 ```bash
-git clone --depth 1 -b second-run-1 https://github.com/cpm-research/circulation-priced-money.git cpm && cd cpm && ./run.sh all
+git clone --depth 1 -b second-run-2 https://github.com/cpm-research/circulation-priced-money.git cpm && cd cpm && ./run.sh all
 ```
 
 That is all there is to do. The line fetches the code into a new folder `cpm`, checks in a few seconds that the
@@ -95,7 +95,9 @@ WORKERS=64 ./run.sh all
 ## If something stops
 
 Every job survives a logout. A map runs one seed a part and each finished seed is kept, with a check that every
-cell is there and that money is conserved. After a crash, a reboot or `./run.sh stop`, give `./run.sh all` again
+cell is there and that money is conserved. A map that stops, for want of memory for example, is started again by
+the run itself after a minute, with half the workers and then a quarter; only after three stops does the run end.
+After that, a reboot or `./run.sh stop`, give `./run.sh all` again
 in the folder: setup and the self-test are not repeated, and finished seeds and finished maps are skipped. The
 number of workers may differ from the first start. A side set that failed is not run again once the count of
 confirmation seeds has been written, since that changes one line of the code; `MANIFEST.txt` names it.

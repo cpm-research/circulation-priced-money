@@ -68,6 +68,12 @@ dev_workers=$(( (mem_gb - PART_GB - 4) / 4 ))
 [ "$dev_workers" -gt "$WORKERS" ] && dev_workers="$WORKERS"
 [ "$dev_workers" -gt "$TASKS_A_SEED" ] && dev_workers="$TASKS_A_SEED"
 [ "$dev_workers" -lt 1 ] && dev_workers=1
+# A map that stopped is tried again with fewer workers (maps_retried): SHRINK divides the workers of a map.
+SHRINK="${SHRINK:-1}"
+map_workers=$(( map_workers / SHRINK ))
+dev_workers=$(( dev_workers / SHRINK ))
+[ "$map_workers" -lt 1 ] && map_workers=1
+[ "$dev_workers" -lt 1 ] && dev_workers=1
 # A side set is a few cells: its three seeds run at the same time with three workers each, and as many side sets at
 # the same time as the workers allow.
 SIDE_WORKERS=3
@@ -291,6 +297,22 @@ follow() {
     done
 }
 
+# Both maps of one seed set (run_maps), as a process of its own, tried up to three times: after a stop it waits a
+# minute and starts again with half the workers, then a quarter, so a map that stopped for want of memory goes on by
+# itself. Finished seeds are kept between tries; the same seeds and settings are run, so the map is the same map.
+maps_retried() {
+    local shrink
+    for shrink in 1 2 4; do
+        if SHRINK="$shrink" "$HERE/run.sh" maps "$@"; then return 0; fi
+        if [ "$shrink" != 4 ]; then
+            echo "$(stamp)  the $1 map stopped; in a minute it is tried again with fewer workers"
+            sleep 60
+        fi
+    done
+    echo "$(stamp)  the $1 map stopped three times; the run ends here. See the log above and $HERE/runs"
+    return 1
+}
+
 # The steps of the run after the self-test, in the foreground of the job "all" starts. The side sets come before the
 # count is written into the code, so the development map and the side sets read against it ran on the same code.
 # A step whose failure does not stop the run is started as a process of its own: inside it the first failing
@@ -298,7 +320,7 @@ follow() {
 chain() {
     need_setup
     cd "$HERE"
-    run_maps development
+    maps_retried development
     if [ -f "$HERE/runs/second_confirmation_count.json" ]; then
         echo "$(stamp)  the count is set: the side sets are not run again on the code it changed"
     else
@@ -308,11 +330,11 @@ chain() {
     "$HERE/run.sh" pack || echo "$(stamp)  the results so far could not be packed; the run goes on"
     if trial; then
         echo "$(stamp)  a trial: the side seeds stand in for the main run; no count is set, no confirmation seed run"
-        run_maps side trial_main
+        maps_retried side trial_main
     else
         echo "$(stamp)  the count of confirmation seeds"
         set_count
-        run_maps confirmation
+        maps_retried confirmation
     fi
     pack
     echo "$(stamp)  ALL DONE. Everything to send back is in $SEND"
@@ -566,7 +588,7 @@ case "${1:-}" in
     pack) pack ;;
     everything) everything ;;                         # the five below are what "all" and the jobs run
     chain) chain ;;
-    maps) need_setup; cd "$HERE"; run_maps "$2" ;;
+    maps) need_setup; cd "$HERE"; run_maps "$2" "${3:-}" ;;
     count) need_setup; set_count ;;
     side-sets) need_setup; run_sides ;;
     side-one) side_one "$2" "$3" "${4:-}" ;;
