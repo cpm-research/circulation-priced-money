@@ -8,7 +8,7 @@ runs unattended and continues from where it stopped.
 ## The one line
 
 ```bash
-git clone --depth 1 -b second-run-2 https://github.com/cpm-research/circulation-priced-money.git cpm && cd cpm && ./run.sh all
+git clone --depth 1 -b second-run-3 https://github.com/cpm-research/circulation-priced-money.git cpm && cd cpm && ./run.sh all
 ```
 
 That is all there is to do. The line fetches the code into a new folder `cpm`, checks in a few seconds that the

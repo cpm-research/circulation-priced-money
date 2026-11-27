@@ -236,8 +236,10 @@ start() {
         fi
     done
     rm -f "$LOGS/$name.pid"
-    (cd "$HERE" && JOB="$*" PIDFILE="$LOGS/$name.pid" setsid nohup bash -c 'echo $$ > "$PIDFILE"; eval "$JOB"' \
-        < /dev/null >> "$LOGS/$name.log" 2>&1 &)
+    # The job takes nothing from this terminal and holds nothing of it open: its input is empty and all it writes
+    # goes to its log, so the terminal can be closed and a remote session ends at once.
+    (cd "$HERE" && JOB="$*" PIDFILE="$LOGS/$name.pid" exec setsid nohup bash -c 'echo $$ > "$PIDFILE"; eval "$JOB"') \
+        < /dev/null >> "$LOGS/$name.log" 2>&1 &
     sleep 2
     echo "Started $name in the background with $WORKERS workers, $(stamp). It keeps running after you log out."
 }
